@@ -18,27 +18,37 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+  Roadmap To Anything
 
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  Show others the steps to learning something you love.
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  If someone asked you to teach them some skill, or if you wanted to share a new music artist with a friend, showing them one article or one song isn't going to cut it. It often takes a step-by-step process to truly learn or appreciate new things. With Roadmap To Anything you create simple step-by-step paths to help others learn about any topic -- from bands to programming to birdwatching -- or earn points and badges for following a roadmap to learn something new yourself.
 
 ## Problem ##
   > Describe the problem your product solves.
+  This web application solves the problem of sharing complex skills and tastes. Just sending someone a link doesn't do the topic justice.
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
+  Roadmap to Anything makes it easy to craft simple step-by-step guides to help people fully appreciate the thing you are trying to share with them.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
+  "This application is essentially making the resource curation process simple, shareable, and fun."
 
 ## How to Get Started ##
   > Describe how easy it is to get started.
+  Sign up in seconds and run a search on anything thing you want to learn more about. Pick the Roadmap that's right for you, and follow its trail of links. Then when you want to share the right way to learn something you know, pull together links to make a roadmap of your own and share it with the world. 
 
 ## Customer Quote ##
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  "My mom's an expert in impressionist art, and it's always been around, but I never really appreciated it. I had him make a roadmap for me, and now I don't just appreciate the art now, but I've connected with my mom."
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+  "Exerybody wants to learn something, and the answers are probably on the Internet, but why explore in the dark by yourself? Let experts around the world show you what to look up, and in what order. Everyone knows something special also, so help others that too with something as simple as a collection of links. Sign up today and grab a map!"
+
