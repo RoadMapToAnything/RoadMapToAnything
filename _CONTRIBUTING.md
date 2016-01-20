@@ -27,6 +27,18 @@
 1. Once the pull request has been reviewed, it will be merged by another member of the team. Do not merge your own commits.
 
 ## Detailed Workflow
+git clone (from your fork).
+git branch (include new branchName). 
+git checkout `your-branch-name` # Do your work here using: 
+# after completing ur work
+git commit from your features branch (Use # for waffle.io)
+git pull --rebase upstream master . #updating any changes.
+git push origin featureBranch .
+be awesome and go submit a pull request.
+git checkout master
+git pull upstream master
+go to line 31 and repeat
+
 
 ### Fork the repo
 
