@@ -1,6 +1,14 @@
+# Dependencies
 node_modules/
 bower_components/
-*.log
 
+# Build Folders
 build/
 dist/
+
+# OS X
+.DS_Store
+
+*.log
+
+
