@@ -1,0 +1,29 @@
+{
+  "name": "roadmap_to_anything",
+  "description": "Now anyone can build and share their own lesson plans for anything.",
+  "main": "index.js",
+  "authors": [
+    "Jam&Badger"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "roadmap",
+    "learning",
+    "art",
+    "issues"
+  ],
+  "homepage": "https://github.com/delventhalz/RoadMapToAnything",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-ui-router": "~0.2.15"
+  }
+}
