@@ -27,7 +27,7 @@
   > "My mom's an expert in impressionist art, and it's always been around, but I never really appreciated it. I had him make a roadmap for me, and now I don't just appreciate the art now, but I've connected with my mom."
 
 ## Closing and Call to Action ##
-  > "Exerybody wants to learn something, and the answers are probably on the Internet, but why explore in the dark by yourself? Let experts around the world show you what to look up, and in what order.
+  > Exerybody wants to learn something, and the answers are probably on the Internet, but why explore in the dark by yourself? Let experts around the world show you what to look up, and in what order.
 
   > Everyone knows something special also, so help others that too with something as simple as a collection of links. Sign up today and grab a map!"
 
