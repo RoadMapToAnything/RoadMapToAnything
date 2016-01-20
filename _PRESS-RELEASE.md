@@ -20,7 +20,7 @@
 
 ## How to Get Started ##
   > Sign up in seconds and run a search on anything thing you want to learn more about. Pick the Roadmap that's right for you, and follow its trail of links.
-  >Then when you want to share the right way to learn something you know, pull together links to make a roadmap of your own and share it with the world. 
+  >Then when you want to share the right way to learn something you know, pull together a special order of links to make a roadmap of your own and share it with the world. 
 
 ## Customer Quote ##
   > "My mom's an expert in impressionist art, and it's always been around, but I never really appreciated it. I had him make a roadmap for me, and now I don't just appreciate the art now, but I've connected with my mom."
