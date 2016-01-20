@@ -1,0 +1,29 @@
+{
+  "name": "roadmap_to_anything",
+  "version": "0.0.0",
+  "description": "Now anyone can build and share their own lesson plans for anything.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoadMapToAnything/RoadMapToAnything.git"
+  },
+  "keywords": [
+    "roadmap",
+    "learning",
+    "art",
+    "issues"
+  ],
+  "author": "Jam&Badger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoadMapToAnything/RoadMapToAnything/issues"
+  },
+  "homepage": "https://github.com/RoadMapToAnything/RoadMapToAnything#readme",
+  "dependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
