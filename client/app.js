@@ -1,4 +1,3 @@
-
 angular.module('app', [
   'ui.router',
   'app.main',
@@ -11,25 +10,27 @@ angular.module('app', [
   $stateProvider
     .state('main', {
       url: '/main',
-      templateUrl: 'main/main.html',
+      templateUrl: 'app/main/main.html',
       views: {
-        "footer": {
-          template: "main.footer"
-        },
         "header": {
-          template: "main.header"
+          templateUrl: "app/main/main.header.html",
+          controller: "MainController"
+        },
+        "footer": {
+          templateUrl: "app/main/main.footer.html",
+          controller: "MainController"
         }
-      }
+      },
       controller: "MainController"
     })
       // .state('main.footer', {
       //   url: '/footer',
-      //   templateUrl: "main/main.footer.html",
+      //   templateUrl: "app/main/main.footer.html",
       //   controller: "MainController"
       // })
       // .state('main.header', {
       //   url: '/header',
-      //   templateUrl: "main/main.footer.html",
+      //   templateUrl: "app/main/main.footer.html",
       //   controller: "MainController"
       // })
 

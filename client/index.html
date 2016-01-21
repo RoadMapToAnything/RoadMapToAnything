@@ -7,17 +7,19 @@
 <h1>Test Home Page</h1>
 {{1+1}}
 
-<div ui-view="main.header"></div>
 
-<div>
+<div ui-view>
 </div>
+
 
   <a ui-sref="signup">Click to go to signup</a>
   <a ui-sref="signin">Click to go to signIn</a>
+  <a ui-sref="main">Click to go to main</a>
+
+<!-- When main is up put a main.footer and a main.header -->
 
 </body>
 
-<div ui-view="main.footer"></div>
 
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
