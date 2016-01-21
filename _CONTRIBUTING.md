@@ -32,7 +32,7 @@ git branch (include new branchName).
 git checkout `your-branch-name` # Do your work here using: 
 # after completing ur work
 git commit from your features branch (Use # for waffle.io)
-git pull --rebase upstream master . #updating any changes.
+git pull --rebase upstream master . #updating any changes. 
 git push origin featureBranch .
 be awesome and go submit a pull request.
 git checkout master
