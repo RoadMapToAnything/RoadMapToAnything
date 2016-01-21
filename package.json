@@ -2,6 +2,9 @@
   "name": "roadmap_to_anything",
   "version": "0.0.0",
   "description": "Now anyone can build and share their own lesson plans for anything.",
+  "engines": {
+    "node": "4.1.1"
+  },
   "main": "server.js",
   "scripts": {
     "start": "nodemon server/server.js",
