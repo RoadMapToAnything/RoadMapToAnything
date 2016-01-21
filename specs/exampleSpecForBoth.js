@@ -1,3 +1,10 @@
+// Allow running from either npm or karma.
+if (typeof window === 'undefined') {
+  var expect = require('chai').expect;
+  var should = require('chai').should();
+}
+
+
 describe('The Mocha-Chai testing suite', function() {
 
   describe('Comparing Numbers', function() {
@@ -7,7 +14,7 @@ describe('The Mocha-Chai testing suite', function() {
     });
 
     it('is expected to know 5 is less than 10', function() {
-      expect(5).to.be.lessThan(1);
+      expect(5).to.be.lessThan(10);
       expect(5).to.be.below(10);
     });
 

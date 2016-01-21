@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/server.js",
     "postinstall": "bower install",
-    "test": "./node_modules/.bin/mocha --bail specs/npmTests.js;"
+    "test": "./node_modules/.bin/mocha --bail specs/*.js specs/server/**/*.js & karma start"
   },
   "repository": {
     "type": "git",
@@ -28,21 +28,21 @@
     "bluebird": "^3.1.1",
     "body-parser": "^1.14.2",
     "bower": "^1.7.2",
-    "chai": "^3.4.1",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "karma": "^0.13.19",
-    "karma-chai": "^0.1.0",
-    "karma-mocha": "^0.2.1",
-    "karma-phantomjs-launcher": "^0.2.3",
     "kerberos": "0.0.18",
-    "mocha": "^2.3.4",
     "mongoose": "^4.3.6",
-    "morgan": "^1.6.1",
-    "phantomjs": "^1.9.19"
+    "morgan": "^1.6.1"
   },
   "devDependencies": {
-    "karma-chrome-launcher": "^0.2.2"
+    "chai": "^3.4.1",
+    "karma": "^0.13.19",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-mocha": "^0.2.1",
+    "karma-mocha-reporter": "^1.1.5",
+    "karma-phantomjs-launcher": "^0.2.3",
+    "mocha": "^2.3.4",
+    "phantomjs": "^1.9.19"
   }
 }
-

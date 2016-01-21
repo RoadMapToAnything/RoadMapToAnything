@@ -15,10 +15,18 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'karmaspec/**/*.js'
-      // 'client/**/*.js',
-      // 'server/**/*.js',
-      // 'node_modules/expect.js/index.js'
+      // angular source
+      'client/lib/angular/angular.js',
+      'client/lib/angular-ui-router/release/angular-ui-router.js',
+      'client/lib/angular-mocks/angular-mocks.js',
+
+      // our app code
+      'client/app.js',
+      'client/app/**/*.js',
+
+      // our spec files
+      'specs/*.js',
+      'specs/client/**/*.js'
 
     ],
 
@@ -38,7 +46,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
 
     // web server port
@@ -67,8 +75,9 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
+
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
-}
+  });
+};
