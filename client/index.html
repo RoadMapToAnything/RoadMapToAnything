@@ -69,6 +69,25 @@
       </div>
     </div>
   </footer>
+
+
+<!-- TO REFACTOR -->
+
+
+
+<div ui-view="header"></div>
+<div ui-view="content"></div>
+<div ui-view="footer"></div>
+  
+<!-- ui-sref takes you to a different state -->
+  <div ui-view="signup"></div>
+  <div ui-view="signin"></div>
+  <a ui-sref="signup">Click to go to signup</a>
+  <a ui-sref="signin">Click to go to signIn</a>
+  <a ui-sref="home">Click to go to main</a>
+  <a ui-sref="dashboard">Click to go to dashboard</a>
+<!-- When main is up put a main.footer and a main.header -->
+  
 </body>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -81,4 +100,3 @@
 <script src="app/main/main.js"></script>
 <script src="app/progress/dashboard.js"></script>
 </html>
-
