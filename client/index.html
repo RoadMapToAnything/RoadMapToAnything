@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
@@ -7,8 +6,10 @@
 <body>
 <h1>Test Home Page</h1>
 {{1+1}}
-<div ui-view>
 
+<div ui-view="main.header"></div>
+
+<div>
 </div>
 
   <a ui-sref="signup">Click to go to signup</a>
@@ -16,11 +17,13 @@
 
 </body>
 
+<div ui-view="main.footer"></div>
 
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="app.js"></script>
-<script src="app/auth/authController.js"></script>
+<script src="app/auth/auth.js"></script>
 <script src="app/main/main.js"></script>
 
 </html>
+
