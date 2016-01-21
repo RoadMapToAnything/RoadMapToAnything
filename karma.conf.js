@@ -20,11 +20,11 @@ module.exports = function(config) {
       'client/lib/angular-ui-router/release/angular-ui-router.js',
       'client/lib/angular-mocks/angular-mocks.js',
 
-      // our app code
+      // our client-side app code
       'client/app.js',
       'client/app/**/*.js',
 
-      // our spec files
+      // our client-side and general spec files
       'specs/*.js',
       'specs/client/**/*.js'
 
