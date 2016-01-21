@@ -1,9 +1,26 @@
+
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
   <title></title>
 </head>
 <body>
+<h1>Test Home Page</h1>
+{{1+1}}
+<div ui-view>
+
+</div>
+
+  <a ui-sref="signup">Click to go to signup</a>
+  <a ui-sref="signin">Click to go to signIn</a>
 
 </body>
+
+
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="app.js"></script>
+<script src="app/auth/authController.js"></script>
+<script src="app/main/main.js"></script>
+
 </html>
