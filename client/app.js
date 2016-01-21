@@ -9,20 +9,23 @@ angular.module('app', [
   $urlRouterProvider.otherwise('/');
   $stateProvider
     .state('main', {
-      url: '/main',
+      abstract : true,
       templateUrl: 'app/main/main.html',
-      views: {
-        "header": {
-          templateUrl: "app/main/main.header.html",
-          controller: "MainController"
-        },
-        "footer": {
-          templateUrl: "app/main/main.footer.html",
-          controller: "MainController"
-        }
-      },
-      controller: "MainController"
+      controller: 'MainController'
     })
+    .state('main.main', {
+      url: "/main",
+      views: {
+        'header@': {
+          templateUrl: 'app/main/main.header.html'
+        },
+        'footer@': {
+          templateUrl: 'app/main/main.footer.html'
+        }
+      } 
+    })
+
+
       // .state('main.footer', {
       //   url: '/footer',
       //   templateUrl: "app/main/main.footer.html",
