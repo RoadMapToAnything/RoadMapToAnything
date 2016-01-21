@@ -38,7 +38,8 @@ angular.module('app', [
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
         }
-      }})
+      }
+    })
     .state('dashboard', {
       url: '/dashboard',
       views: {
