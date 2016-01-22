@@ -1,4 +1,4 @@
-var express = require('express'),
+var express  = require('express'),
     mongoose = require('mongoose');
 
     mongoose.Promise = require('bluebird');
@@ -14,4 +14,8 @@ require('./router.js'    )(app, express);
 
 app.listen(port, function(){ 
   console.log('APP IS RUNNING ON', port);
-}); 
+});
+
+module.exports = {
+  app: app  // used in server spec
+};

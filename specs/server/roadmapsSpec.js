@@ -26,7 +26,7 @@ describe('/api/roadmaps routes', function() {
       });
     });
 
-    xit('Should respond with 201 when creating a new roadmap', function(done){
+    it('Should respond with 201 when creating a new roadmap', function(done){
       request(server.app)
         .post('/api/roadmaps')
         .send(testMap)
@@ -35,53 +35,53 @@ describe('/api/roadmaps routes', function() {
     });
   });
 
-  describe('GET /api/roadmaps', function(){
+  // describe('GET /api/roadmaps', function(){
 
-    before('Create test roadmap', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              done();
-            });
-        });
-    });
+  //   before('Create test roadmap', function(done) {
+  //     Roadmap(testMap)
+  //       .save()
+  //       .then(function(){
+  //         request(server.app)
+  //           .get('/api/roadmaps')
+  //           .end(function(err, serverResponse){
+  //             if (err) throw err;
+  //             result = serverResponse.body;
+  //             done();
+  //           });
+  //       });
+  //   });
 
-    after('Remove test roadmap', function(done) {
-      Roadmap.find({title: 'TestMap'})
-      .remove(function(err, dbResults){
-        done();
-      });
-    });
+  //   after('Remove test roadmap', function(done) {
+  //     Roadmap.find({title: 'TestMap'})
+  //     .remove(function(err, dbResults){
+  //       done();
+  //     });
+  //   });
 
-    it('Should respond with an array', function(done){
-      expect( Array.isArray(result) ).to.be(true);
-    });
+  //   it('Should respond with an array', function(done){
+  //     expect( Array.isArray(result) ).to.be(true);
+  //   });
 
-    it('If Roadmaps exist, response array should contain Roadmaps', function(done){
-      expect( result[0].hasOwnProperty('nodes') ).to.be(true);
-    });
+  //   it('If Roadmaps exist, response array should contain Roadmaps', function(done){
+  //     expect( result[0].hasOwnProperty('nodes') ).to.be(true);
+  //   });
 
-    it('If no Roadmaps exist, response array should be empty', function(done){
-      Roadmap.find({title: 'TestMap'})
-        .remove()
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              expect( result[0].hasOwnProperty('nodes') ).to.be(true);
-            });
-        });
-    });
+  //   it('If no Roadmaps exist, response array should be empty', function(done){
+  //     Roadmap.find({title: 'TestMap'})
+  //       .remove()
+  //       .then(function(){
+  //         request(server.app)
+  //           .get('/api/roadmaps')
+  //           .end(function(err, serverResponse){
+  //             if (err) throw err;
+  //             result = serverResponse.body;
+  //             expect( result[0].hasOwnProperty('nodes') ).to.be(true);
+  //           });
+  //       });
+  //   });
 
 
-  });
+  // });
 
 
 });
