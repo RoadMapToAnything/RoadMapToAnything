@@ -6,7 +6,7 @@ var request  = require('supertest'),
 
 
 
-describe('/api/roadmaps routes', function() {
+describe('RoadMap Routes - /api/roadmaps', function() {
   
   var result;
 
@@ -17,13 +17,16 @@ describe('/api/roadmaps routes', function() {
     nodes      : []
   };
 
+
+
+
   describe('POST /api/roadmaps', function(){
 
     after('Remove test roadmap', function(done) {
       Roadmap.find({title: 'TestMap'})
-      .remove(function(err, dbResults){
-        done();
-      });
+        .remove(function(err, dbResults){
+          done();
+        });
     });
 
     it('Should respond with 201 when creating a new roadmap', function(done){
@@ -35,55 +38,58 @@ describe('/api/roadmaps routes', function() {
     });
   });
 
-  // describe('GET /api/roadmaps', function(){
-
-  //   before('Create test roadmap', function(done) {
-  //     Roadmap(testMap)
-  //       .save()
-  //       .then(function(){
-  //         request(server.app)
-  //           .get('/api/roadmaps')
-  //           .end(function(err, serverResponse){
-  //             if (err) throw err;
-  //             result = serverResponse.body;
-  //             done();
-  //           });
-  //       });
-  //   });
-
-  //   after('Remove test roadmap', function(done) {
-  //     Roadmap.find({title: 'TestMap'})
-  //     .remove(function(err, dbResults){
-  //       done();
-  //     });
-  //   });
-
-  //   it('Should respond with an array', function(done){
-  //     expect( Array.isArray(result) ).to.be(true);
-  //   });
-
-  //   it('If Roadmaps exist, response array should contain Roadmaps', function(done){
-  //     expect( result[0].hasOwnProperty('nodes') ).to.be(true);
-  //   });
-
-  //   it('If no Roadmaps exist, response array should be empty', function(done){
-  //     Roadmap.find({title: 'TestMap'})
-  //       .remove()
-  //       .then(function(){
-  //         request(server.app)
-  //           .get('/api/roadmaps')
-  //           .end(function(err, serverResponse){
-  //             if (err) throw err;
-  //             result = serverResponse.body;
-  //             expect( result[0].hasOwnProperty('nodes') ).to.be(true);
-  //           });
-  //       });
-  //   });
 
 
-  // });
 
+  describe('GET /api/roadmaps', function(){
 
+    before('Create test roadmap', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(){
+          request(server.app)
+            .get('/api/roadmaps')
+            .end(function(err, serverResponse){
+              if (err) throw err;
+              result = serverResponse.body;
+              done();
+            });
+        });
+    });
+
+    after('Remove test roadmap', function(done) {
+      Roadmap.find({title: 'TestMap'})
+      .remove(function(err, dbResults){
+        if (err) throw err;
+        done();
+      });
+    });
+
+    it('Should respond with an array', function(done){
+      expect( Array.isArray(result) ).to.equal(true);
+      done();
+    });
+
+    it('If Roadmaps exist, response array should contain Roadmaps', function(done){
+      expect( result[0].hasOwnProperty('nodes') ).to.equal(true);
+      done();
+    });
+
+    it('If no Roadmaps exist, response array should be empty', function(done){
+      Roadmap.find({title: 'TestMap'})
+        .remove()
+        .then(function(){
+          request(server.app)
+            .get('/api/roadmaps')
+            .end(function(err, serverResponse){
+              if (err) throw err;
+              result = serverResponse.body;
+              expect( result.length ).to.equal(0);
+              done();
+            });
+        });
+    });
+  });
 });
 
 
@@ -96,8 +102,8 @@ describe('/api/roadmaps routes', function() {
 
 
 
-
   /*
+
 
 post(  '/roadmaps'
 get(   '/roadmaps'
