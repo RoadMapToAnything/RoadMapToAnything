@@ -42,6 +42,13 @@ module.exports = function(config) {
     preprocessors: {
     },
 
+    customLaunchers: {
+        Chrome_travis_ci: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        }
+    },
+
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -68,7 +75,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS', 'Chrome'],
+    browsers: ['PhantomJS', 'Chrome','Chrome_travis_ci'],
 
 
     // Continuous Integration mode
