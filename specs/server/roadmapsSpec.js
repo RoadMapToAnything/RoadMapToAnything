@@ -94,7 +94,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
             });
         });
     });
-    
+
   });
 
       /* * * * * * * * * * * * * * * * * * * * * 
@@ -128,8 +128,52 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         .get('/api/roadmaps/'+testMapID)
         .end(function(err, serverResponse){
           if (err) throw err;
-          result = serverResponse.body;
           expect( serverResponse.body._id ).to.equal( String(testMapID) );
+          done();
+        });
+
+    });
+
+    });
+
+
+      /* * * * * * * * * * * * * * * * * * * * * 
+       *      PUT /api/roadmaps/:roadmapID     *
+       * * * * * * * * * * * * * * * * * * * * */
+
+  describe('PUT /api/roadmaps/:roadmapID', function(){
+   
+    var testMapID;
+
+    before('Create test Roadmap', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(savedRoadmap){
+          testMapID = savedRoadmap._id;
+          done();
+        });
+    });
+
+    after('Remove test Roadmap', function(done) {
+      Roadmap.find({title: 'TestMap'})
+        .remove(function(err, dbResults){
+          if (err) throw err;
+          done();
+        });
+    });
+
+    it('Should update specified field on Roadmap with provided value', function(done){
+     
+      request(server.app)
+        .put('/api/roadmaps/'+testMapID)
+        .send({description: "Learn JavaScript"})
+        .end(function(err, serverResponse){
+          if (err) throw err;
+
+          Roadmap.findById(testMapID)
+            .then(function(dbResults){
+              expect( dbResults.description ).to.equal( "Learn JavaScript" );
+            });
           done();
         });
 
