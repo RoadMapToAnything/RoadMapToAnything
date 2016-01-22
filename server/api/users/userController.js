@@ -32,7 +32,7 @@ module.exports = {
       });
   },
 
-  getUser: function(req, res, next) {
+  getOne: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
@@ -43,7 +43,7 @@ module.exports = {
       });
   },
 
-  getUsers: function(req, res, next) {
+  getMany: function(req, res, next) {
     User.find()
       .then(function (users) {
         if (!users) return res.sendStatus(401);
@@ -54,7 +54,7 @@ module.exports = {
       });
   },
 
-  deleteUser: function(req, res, next) {
+  deleteOne: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401);
@@ -66,5 +66,5 @@ module.exports = {
         next(err);
       });
   }
-}
+};
 
