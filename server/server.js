@@ -14,7 +14,7 @@ require('./middleware.js')(app, express);
 require('./router.js')(app, express);
 
 app.listen(port, function(){ 
-  console.log("APP IS RUNNING ON", port)
+  console.log('APP IS RUNNING ON', port);
 }); //the port you want to use
 
 

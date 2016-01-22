@@ -8,13 +8,15 @@
 {{1+1}}
 
 
-<div ui-view>
-</div>
+<div ui-view="header"></div>
+<div ui-view="content"></div>
+<div ui-view="footer"></div>
 
-
-  <a ui-sref="signup">Click to go to signup</a>
-  <a ui-sref="signin">Click to go to signIn</a>
-  <a ui-sref="main.main">Click to go to main</a>
+  
+<!-- ui-sref takes you to a different state -->
+  <div ui-view="signup"></div>
+  <div ui-view="signin"></div>
+  <a ui-sref="home">Click to go to main</a>
 
 <!-- When main is up put a main.footer and a main.header -->
 
