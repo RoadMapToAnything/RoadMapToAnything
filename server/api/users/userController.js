@@ -32,18 +32,38 @@ module.exports = {
       });
   },
 
-  get: function(req, res, next) {
-    User.find()
-      .then(function (users) {
-        if (users) res.status(200).json(users);
+  getUser: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json(user);
+      })
+      .catch(function(err){
+        next(err);
       });
   },
 
-  del: function(req, res, next) {
+  getUsers: function(req, res, next) {
+    User.find()
+      .then(function (users) {
+        if (!users) return res.sendStatus(401);
+        res.status(200).json(users);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
+  deleteUser: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
-        if (user) user.remove();
-        res.sendStatus(201);
+        if (!user) return res.sendStatus(401);
+        user.remove();
+        console.log('deleteing user with', req.params);
+        res.status(201).json(user);
+      })
+      .catch(function(err){
+        next(err);
       });
   }
 }

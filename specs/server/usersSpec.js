@@ -87,7 +87,7 @@ describe('The users API', function() {
 
     });
 
-    xit('should retrieve a specifc user', function (done) {
+    it('should retrieve a specifc user', function (done) {
 
       request(url + 'users/Bob', function (err, res, body) {
         var user = JSON.parse(body);
