@@ -13,7 +13,13 @@ module.exports = {
       });
   },
   getRoadmaps : function (req, res, next) {
-    
+    Roadmap.find({})
+      .then(function(dbResults){
+        res.status(200).json(dbResults);
+      })
+      .catch(function(err){
+        next(err);
+      });
   },
   getRoadmapByID : function (req, res, next) {
     
