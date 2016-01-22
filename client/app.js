@@ -28,8 +28,15 @@ angular.module('app', [
         'signin': {
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
-        },
+        }
       }
-    });
+    })
+    .state('auth', {
+      url: '/auth',
+      views: {
+        'signupForm'
+        'signUpButton'
+      }
+    })
 
 });
