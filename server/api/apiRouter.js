@@ -6,6 +6,7 @@ module.exports = function (apiRouter) {
   
   apiRouter.get('/login', userController.login);
   apiRouter.post('/signup', userController.createUser);
-
+  apiRouter.get('/users', userController.get);
+  apiRouter.delete('/users/:username', userController.del);
 
 }
