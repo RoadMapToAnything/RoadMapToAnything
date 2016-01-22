@@ -1,4 +1,5 @@
 var User = require('./userModel.js');
+var handleQuery = require('../queryHandler.js');
 //user controller methods
 
 module.exports = {
@@ -44,7 +45,9 @@ module.exports = {
   },
 
   getMany: function(req, res, next) {
-    User.find()
+    var dbArgs = handleQuery(req.query);
+
+    User.find(dbArgs[0], dbArgs[1], dbArgs[2])
       .then(function (users) {
         if (!users) return res.sendStatus(401);
         res.status(200).json(users);
@@ -59,7 +62,7 @@ module.exports = {
       .then( function (user) {
         if (!user) return res.sendStatus(401);
         user.remove();
-        console.log('deleteing user with', req.params);
+        console.log('deleting user with', req.params);
         res.status(201).json(user);
       })
       .catch(function(err){
