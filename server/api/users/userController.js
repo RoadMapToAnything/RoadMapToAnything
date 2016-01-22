@@ -1,4 +1,5 @@
 var User = require('./userModel.js');
+var handleQuery = require('../queryHandler.js');
 //user controller methods
 
 module.exports = {
@@ -44,9 +45,13 @@ module.exports = {
   },
 
   getMany: function(req, res, next) {
-    User.find()
+    // console.log ('QUERY: ', req.query);
+    var dbArgs = handleQuery(req.query);
+    // console.log('PARAMS:', dbParams);
+    User.find(dbArgs[0], dbArgs[1], dbArgs[2])
       .then(function (users) {
         if (!users) return res.sendStatus(401);
+        console.log('USERS:', users);
         res.status(200).json(users);
       })
       .catch(function(err){
