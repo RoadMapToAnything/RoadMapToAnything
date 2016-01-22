@@ -63,7 +63,7 @@ describe('Query String Handler', function() {
     });
 
 
-    it('should sort users in descending order', function() {
+    it('should sort users in descending order', function(done) {
       request(url + 'users?sort=-username', function(err, res, body) {
         var users = JSON.parse(body);
 
