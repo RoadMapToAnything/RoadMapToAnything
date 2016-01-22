@@ -38,7 +38,7 @@ describe('Query String Handler', function() {
     });
 
 
-    xit('should sort users by username', function(done) {
+    it('should sort users by username', function(done) {
       request(url + 'users?sort=username', function(err, res, body) {
         var users = JSON.parse(body);
 
@@ -51,7 +51,7 @@ describe('Query String Handler', function() {
     });
 
 
-    xit('should not sort users by password', function(done) {
+    it('should not sort users by password', function(done) {
       request(url + 'users?sort=password', function(err, res, body) {
         var users = JSON.parse(body);
 
@@ -63,7 +63,7 @@ describe('Query String Handler', function() {
     });
 
 
-    xit('should sort users in descending order', function() {
+    it('should sort users in descending order', function() {
       request(url + 'users?sort=-username', function(err, res, body) {
         var users = JSON.parse(body);
 
