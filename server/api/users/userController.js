@@ -62,7 +62,7 @@ module.exports = {
       .then( function (user) {
         if (!user) return res.sendStatus(401);
         user.remove();
-        console.log('deleteing user with', req.params);
+        console.log('deleting user with', req.params);
         res.status(201).json(user);
       })
       .catch(function(err){

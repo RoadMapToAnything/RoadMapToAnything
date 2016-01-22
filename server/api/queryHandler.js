@@ -4,6 +4,7 @@ var paramHandler = {
   sort: function (value) {
     var forbidden = {
       'password': true,
+      '-password': true
     };
 
     if (forbidden[value]) return false;
