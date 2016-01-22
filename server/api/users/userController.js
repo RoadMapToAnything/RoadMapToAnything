@@ -9,7 +9,7 @@ module.exports = {
     console.log('creating user with', req);
     User(newUser).save()
       .then(function(createdUserResults){ 
-        res.status(201).json(createdUserResults)
+        res.status(201).json(createdUserResults);
       })
       .catch(function(err){
         next(err);
