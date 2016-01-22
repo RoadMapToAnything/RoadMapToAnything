@@ -70,6 +70,9 @@ describe('Query String Handler', function() {
         done();
       });
     });
+=======
+    it('should sort users by ')
+>>>>>>> (feat) Build framework for first sort query tests.
 
   });
 
