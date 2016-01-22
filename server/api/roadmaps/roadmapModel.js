@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    ObjectId = mongoose.Schema.ObjectId;
 
 var RoadmapSchema = new mongoose.Schema({
     title      : { type: String,   required: true },

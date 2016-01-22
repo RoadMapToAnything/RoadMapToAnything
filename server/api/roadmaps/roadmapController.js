@@ -1,13 +1,21 @@
-var mongoose = require('mongoose');
+var Roadmap = require('./roadmapModel.js');
 
-var RoadmapSchema = new mongoose.Schema({
-    title      : { type: String,   required: true },
-    description: { type: String,   required: true },
-    author     : { type: ObjectId, required: true, ref: 'User' },
-    nodes      : [ { type: ObjectId, ref: 'Node'} ],
-    created    : { type: Date, default: Date.now}
-});
+module.exports = {
 
-module.exports = mongoose.model('Roadmap', RoadmapSchema);
+  createRoadmap : function (req, res, next) {
+    
+  },
+  getRoadmaps : function (req, res, next) {
+    
+  },
+  getRoadmapByID : function (req, res, next) {
+    
+  },
+  updateRoadmap : function (req, res, next) {
+    
+  },
+  deleteRoadmap : function (req, res, next) {
+    
+  }
 
-// mongoose.Schema.ObjectId
+};

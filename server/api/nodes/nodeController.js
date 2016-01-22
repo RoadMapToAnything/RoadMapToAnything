@@ -1,12 +1,13 @@
-var mongoose = require('mongoose');
+var Node = require('./nodeModel.js');
 
-var NodeSchema = new mongoose.Schema({
-    title        : { type: String,   required: true },
-    description  : { type: String,   required: true },
-    resourceType : { type: String,   required: true },
-    resourceURL  : { type: String,   required: true },
-    parentRoadmap: [ { type: ObjectId, ref: 'Roadmap'} ],
-    created      : { type: Date, default: Date.now}
-});
+module.exports = {
+  createNode : function (req, res, next) {
 
-module.exports = mongoose.model('Node', NodeSchema);
+  },
+  updateNode : function (req, res, next) {
+
+  },
+  deleteNode : function (req, res, next) {
+
+  }
+};
