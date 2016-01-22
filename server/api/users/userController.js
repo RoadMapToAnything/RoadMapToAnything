@@ -9,7 +9,7 @@ module.exports = {
     console.log('creating user with', req);
     User(newUser).save()
       .then(function(createdUserResults){ 
-        res.status(201).json(createdUserResults)
+        res.status(201).json(createdUserResults);
       })
       .catch(function(err){
         next(err);
@@ -30,6 +30,41 @@ module.exports = {
       .catch(function(err){
         next(err);
       });
+  },
+
+  getOne: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json(user);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
+  getMany: function(req, res, next) {
+    User.find()
+      .then(function (users) {
+        if (!users) return res.sendStatus(401);
+        res.status(200).json(users);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
+  deleteOne: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401);
+        user.remove();
+        console.log('deleteing user with', req.params);
+        res.status(201).json(user);
+      })
+      .catch(function(err){
+        next(err);
+      });
   }
-}
+};
 
