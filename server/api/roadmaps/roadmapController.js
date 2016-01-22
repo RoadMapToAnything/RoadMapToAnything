@@ -1,4 +1,5 @@
-var Roadmap = require('./roadmapModel.js');
+var Roadmap = require('./roadmapModel.js'),
+    handleError = require('../../util.js').handleError;
 
 module.exports = {
 
@@ -8,21 +9,22 @@ module.exports = {
       .then(function(dbResults){
         res.status(201).json(dbResults);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
   getRoadmaps : function (req, res, next) {
     Roadmap.find({})
       .then(function(dbResults){
         res.status(200).json(dbResults);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
   getRoadmapByID : function (req, res, next) {
-    
+    var _id = req.params.roadmapID;
+    Roadmap.findById(_id)
+      .then(function(dbResults){
+        res.json(dbResults);
+      })
+      .catch(handleError(next));
   },
   updateRoadmap : function (req, res, next) {
     
