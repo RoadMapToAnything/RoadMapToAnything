@@ -30,6 +30,21 @@ module.exports = {
       .catch(function(err){
         next(err);
       });
+  },
+
+  get: function(req, res, next) {
+    User.find()
+      .then(function (users) {
+        if (users) res.status(200).json(users);
+      });
+  },
+
+  del: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (user) user.remove();
+        res.sendStatus(201);
+      });
   }
 }
 
