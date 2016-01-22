@@ -31,12 +31,4 @@ angular.module('app', [
         }
       }
     })
-    .state('auth', {
-      url: '/auth',
-      views: {
-        'signupForm'
-        'signUpButton'
-      }
-    })
-
 });
