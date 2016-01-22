@@ -6,7 +6,7 @@ var request  = require('supertest'),
 
 
 
-describe('RoadMap Routes - /api/roadmaps', function() {
+describe('Roadmap Routes - /api/roadmaps', function() {
   
   var result;
 
@@ -18,18 +18,20 @@ describe('RoadMap Routes - /api/roadmaps', function() {
   };
 
 
-
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *      POST /api/roadmaps/              *
+   * * * * * * * * * * * * * * * * * * * * */
 
   describe('POST /api/roadmaps', function(){
 
-    after('Remove test roadmap', function(done) {
+    after('Remove test Roadmap', function(done) {
       Roadmap.find({title: 'TestMap'})
         .remove(function(err, dbResults){
           done();
         });
     });
 
-    it('Should respond with 201 when creating a new roadmap', function(done){
+    it('Should respond with 201 when creating a new Roadmap', function(done){
       request(server.app)
         .post('/api/roadmaps')
         .send(testMap)
@@ -40,10 +42,13 @@ describe('RoadMap Routes - /api/roadmaps', function() {
 
 
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *      GET /api/roadmaps/               *
+   * * * * * * * * * * * * * * * * * * * * */
 
   describe('GET /api/roadmaps', function(){
 
-    before('Create test roadmap', function(done) {
+    before('Create test Roadmap', function(done) {
       Roadmap(testMap)
         .save()
         .then(function(){
@@ -57,7 +62,7 @@ describe('RoadMap Routes - /api/roadmaps', function() {
         });
     });
 
-    after('Remove test roadmap', function(done) {
+    after('Remove test Roadmap', function(done) {
       Roadmap.find({title: 'TestMap'})
       .remove(function(err, dbResults){
         if (err) throw err;
@@ -89,7 +94,50 @@ describe('RoadMap Routes - /api/roadmaps', function() {
             });
         });
     });
+    
   });
+
+      /* * * * * * * * * * * * * * * * * * * * * 
+       *      GET /api/roadmaps/:roadmapID     *
+       * * * * * * * * * * * * * * * * * * * * */
+
+  describe('GET /api/roadmaps/:roadmapID', function(){
+   
+    var testMapID;
+
+    before('Create test Roadmap', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(savedRoadmap){
+          testMapID = savedRoadmap._id;
+          done();
+        });
+    });
+
+    after('Remove test Roadmap', function(done) {
+      Roadmap.find({title: 'TestMap'})
+        .remove(function(err, dbResults){
+          if (err) throw err;
+          done();
+        });
+    });
+
+    it('Should respond with the Roadmap specified by ID', function(done){
+     
+      request(server.app)
+        .get('/api/roadmaps/'+testMapID)
+        .end(function(err, serverResponse){
+          if (err) throw err;
+          result = serverResponse.body;
+          expect( serverResponse.body._id ).to.equal( String(testMapID) );
+          done();
+        });
+
+    });
+
+    });
+
+
 });
 
 
