@@ -1,4 +1,6 @@
-var userController = require('./users/userController.js');
+var userController    = require('./users/userController.js'),
+    roadmapController = require('./roadmaps/roadmapController.js'),
+    nodeController    = require('./nodes/nodeController.js');
 
 module.exports = function (apiRouter) {
 
@@ -8,8 +10,33 @@ module.exports = function (apiRouter) {
 
   apiRouter.get( '/login',  userController.login);
   apiRouter.post('/signup', userController.createUser);
-  apiRouter.get('/users/:username', userController.getOne);
-  apiRouter.get('/users', userController.getMany);
+
+
+  /*
+   *      User Routes
+   */
+  apiRouter.get(   '/users',           userController.getMany);
+  apiRouter.get(   '/users/:username', userController.getOne);
   apiRouter.delete('/users/:username', userController.deleteOne);
+
+
+  /*
+   *      Roadmap Routes
+   */
+   apiRouter.post(  '/roadmaps',            roadmapController.createRoadmap  );
+   apiRouter.get(   '/roadmaps',            roadmapController.getRoadmaps    );
+   apiRouter.get(   '/roadmaps/:roadmapID', roadmapController.getRoadmapByID );
+   apiRouter.put(   '/roadmaps/:roadmapID', roadmapController.updateRoadmap  );
+   apiRouter.delete('/roadmaps/:roadmapID', roadmapController.deleteRoadmap  );
+
+
+   /*
+    *      Node Routes
+    */
+
+    apiRouter.get(   '/nodes/:nodeID', nodeController.createNode);
+    apiRouter.put(   '/nodes/:nodeID', nodeController.updateNode);
+    apiRouter.delete('/nodes/:nodeID', nodeController.deleteNode);
+
 
 };
