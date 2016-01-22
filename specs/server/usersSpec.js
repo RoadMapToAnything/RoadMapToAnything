@@ -1,8 +1,15 @@
+process.env.NODE_ENV = 'test'; // disable morgan
+
 var expect = require('chai').expect,
     request = require('request'),
     url = 'http://localhost:3000/api/';
 
-describe('The users API', function() {
+// Create a describe equivalent of 'xit' to disable blocks of tests
+var xdescribe = function () {};
+
+
+
+xdescribe('The users API', function() {
 
   describe('Authentication', function() {
     var username = 'Bob';
