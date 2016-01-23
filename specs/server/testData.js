@@ -4,21 +4,27 @@ var User = require('../../server/api/users/userModel.js'),
 
 var users = [
   {
-    username: 'Bob',
-    password: 'c',
-    roadmaps: []
+    username : 'bowieloverx950',
+    password : 'c',
+    firstName: 'Bob',
+    lastName : 'Johnson',
+    roadmaps : []
   },
 
   {
-    username: 'Susan', 
-    password: 'a',
-    roadmaps: []
+    username : 'supercoder31337', 
+    password : 'a',
+    firstName: 'Susan',
+    lastName : 'Kozlowski',
+    roadmaps : []
   },
 
   {
-    username: 'Alejandro', 
-    password: 'b',
-    roadmaps: []
+    username : 'alex<3hiphop', 
+    password : 'b',
+    firstName: 'Alejandro',
+    lastName : 'Bautista',
+    roadmaps : []
   }
 ];
 
@@ -67,6 +73,11 @@ var nodes = [
     parentRoadmap: []
   }
 ];
+
+
+module.exports.users = users;
+module.exports.maps = maps;
+module.exports.nodes = nodes;
 
 
 module.exports.seedUsers = function(next) {

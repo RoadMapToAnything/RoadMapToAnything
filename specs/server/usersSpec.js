@@ -21,8 +21,9 @@ var expect = require('chai').expect,
 
 
 describe('The users API', function() {
-  var username = 'Bob';
-  var password = 'c';
+  var user = testData.users[0];
+  var username = user.username;
+  var password = user.password;
 
 
   /* * * * * * * * * * * * * * * * * * * * * 
@@ -97,7 +98,7 @@ describe('The users API', function() {
       testData.clearUsers(done);
     });
 
-    it('should retrieve a specifc user', function (done) {
+    it('should retrieve a specifc user with first and last name', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -106,6 +107,8 @@ describe('The users API', function() {
         .end(function (err, res) {
 
           expect(res.body).to.have.property('username', username);
+          expect(res.body).to.have.property('firstName', user.firstName);
+          expect(res.body).to.have.property('lastName', user.lastName);
           done();
 
         });
