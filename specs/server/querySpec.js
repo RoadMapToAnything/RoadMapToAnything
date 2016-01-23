@@ -27,8 +27,8 @@ describe('Query Strings', function() {
     testData.seedData(done);
   });
 
-  after(function() {
-    testData.clearData();
+  after(function(done) {
+    testData.clearData(done);
   });
 
   /* * * * * * * * * * * * * * * * * * * * * 
@@ -38,7 +38,7 @@ describe('Query Strings', function() {
   describe('Sort parameter', function() {
 
 
-    it('should sort users by username', function(done) {
+    it('should sort users by username', function (done) {
 
       request(server.app)
         .get(route.users)
@@ -55,7 +55,7 @@ describe('Query Strings', function() {
     });
 
 
-    it('should not sort users by password', function(done) {
+    it('should not sort users by password', function (done) {
 
       request(server.app)
         .get(route.users)
@@ -72,7 +72,7 @@ describe('Query Strings', function() {
     });
 
 
-    it('should sort users in descending order', function(done) {
+    it('should sort users in descending order', function (done) {
 
       request(server.app)
         .get(route.users)
@@ -86,6 +86,36 @@ describe('Query Strings', function() {
           done();
         });
 
+    });
+
+    it('should sort roadmaps by title', function (done) {
+
+      request(server.app)
+        .get(route.maps)
+        .query({sort: 'title'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body[0].title).to.equal('Take Codecademy\'s Intro Course');
+          expect(res.body[1].title).to.equal('Watch Life On Mars?');
+          expect(res.body[2].title).to.equal('Watch Straight Outta Compton');
+          done();
+        });
+    });
+
+    it('should sort roadmaps in reverse chronological order', function (done) {
+
+      request(server.app)
+        .get(route.maps)
+        .query({sort: '-created'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body[0].title).to.equal('Watch Straight Outta Compton');
+          expect(res.body[1].title).to.equal('Take Codecademy\'s Intro Course');
+          expect(res.body[2].title).to.equal('Watch Life On Mars?');
+          done();
+        });
     });
 
   });
@@ -125,6 +155,21 @@ describe('Query Strings', function() {
           // but a response with many results indicates no filter
           // was done.
           expect(res.body).to.not.have.length(1);          
+          done();
+        });
+
+    });
+
+    it('should filter roadmaps by title', function (done) {
+
+      request(server.app)
+        .get(route.maps)
+        .query({title: 'Take Codecademy\'s Intro Course'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body).to.not.be.empty;          
+          expect(res.body[0].title).to.equal('Take Codecademy\'s Intro Course');        
           done();
         });
 

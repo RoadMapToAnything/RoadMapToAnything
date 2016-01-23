@@ -90,14 +90,20 @@ module.exports.seedUsers = function(next) {
 
 module.exports.clearUsers = function(next) {
 
-  users.forEach(function (user) {
-    User.findOne(user)
+  var clearUser = function(i) {
+    if (i >= maps.length) {
+      if (next) next();
+      return;
+    }
+
+    User.findOne(users[i])
       .then(function (user) {
         if (user) user.remove();
+        clearUser(i + 1);
       });
-  });
+  };
 
-  if (next) next();
+  clearUser(0);
 };
 
 
@@ -124,14 +130,18 @@ module.exports.seedData = function(next) {
 
 module.exports.clearData = function(next) {
 
-  module.exports.clearUsers();
+  var clearRoadmap = function(i) {
+    if (i >= maps.length) {
+      if (next) next();
+      return;
+    }
 
-  maps.forEach(function (map) {
-    Roadmap.findOne(map)
+    Roadmap.findOne(maps[i])
       .then(function (map) {
         if (map) map.remove();
+        clearRoadmap(i + 1);
       });
-  });
+  };
 
-  if (next) next();
+  module.exports.clearUsers(clearRoadmap.bind(null, 0));
 };
