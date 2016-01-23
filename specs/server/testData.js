@@ -72,7 +72,10 @@ var nodes = [
 module.exports.seedUsers = function(next) {
 
   var addUser = function(i) {
-    if (i >= users.length) return next();
+    if (i >= users.length) {
+      if (next) next();
+      return;
+    }
 
     User(users[i]).save()
       .then(function (user) {
@@ -101,18 +104,21 @@ module.exports.clearUsers = function(next) {
 module.exports.seedData = function(next) {
 
   var addRoadmap = function(i) {
-    if (i >= maps.length) return next();
+    if (i >= maps.length) {
+      if (next) next();
+      return;
+    }
 
     maps[i].author = users[i]._id;
+
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
         addRoadmap(i + 1);
-        if (next) next();
       });
   };
 
-  module.exports.seedUsers(addRoadmap(0));
+  module.exports.seedUsers(addRoadmap.bind(null, 0));
 };
 
 

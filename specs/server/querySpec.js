@@ -24,11 +24,11 @@ var expect = require('chai').expect,
 describe('Query Strings', function() {
 
   before(function(done) {
-    testData.seedUsers(done);
+    testData.seedData(done);
   });
 
-  after(function(done) {
-    testData.clearUsers(done);
+  after(function() {
+    testData.clearData();
   });
 
   /* * * * * * * * * * * * * * * * * * * * * 
