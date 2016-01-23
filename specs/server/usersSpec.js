@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
+    testData = require('./testData.js'),
     User = require('../../server/api/users/userModel.js'),
 
     server = require('../../server/server.js'),
@@ -89,34 +90,11 @@ describe('The users API', function() {
   describe('Fetching Users', function() {
 
     before(function(done) {
-      // Create three test users.
-      User({username: username, password: password}).save()
-        .then(function() {
-          User({username: 'Susan', password: 'a'}).save()
-            .then(function() {
-              User({username: 'Alejandro', password: 'b'}).save()
-                .then(function() {
-                  done();
-                });
-            });
-        });
+      testData.seedUsers(done);
     });
 
     after(function(done) {
-      // Delete the test users.
-      User.findOne({username: username})
-        .then(function (user) {
-          if (user) user.remove();
-        });
-      User.findOne({username: 'Susan'})
-        .then(function (user) {
-          if (user) user.remove();
-        });
-      User.findOne({username: 'Alejandro'})
-        .then(function (user) {
-          if (user) user.remove();
-          done();
-        });
+      testData.clearUsers(done);
     });
 
     it('should retrieve a specifc user', function (done) {
