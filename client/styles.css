@@ -1,0 +1,21 @@
+.progress-bar {
+  colspan: 4;
+}
+.made-box {
+  margin-top: 100px;
+  width: 400px !important;
+  max-width: 400px !important;
+}
+.follow-box {
+  width: 500px !important;
+  max-width: 400px !important;
+}
+.dash-holder {
+  margin: 20px;
+}
+#follow-box {
+  border: 1px solid black !important;
+  background-color: black !important;
+}
+
+body { background-color: black;}

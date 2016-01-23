@@ -1,7 +1,8 @@
 angular.module('app', [
   'ui.router',
   'app.main',
-  'app.auth'
+  'app.auth',
+  'app.dash'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -15,7 +16,7 @@ angular.module('app', [
         },
         'content': {
           templateUrl: 'app/main/main.content.html',
-          controller: 'MainController'
+          controller: 'MainController',
         },
         'footer': {
           templateUrl: 'app/main/main.footer.html',
@@ -29,6 +30,23 @@ angular.module('app', [
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
         }
+      }})
+    .state('dashboard', {
+      url: '/dashboard',
+      views: {
+        'content': {
+          templateUrl: 'app/progress/dashboard.html',
+          controller: 'DashboardController'
+        },
+        'header': {
+          templateUrl: 'app/main/main.header.html',
+          controller: 'MainController'
+        },
+        'footer': {
+          templateUrl: 'app/main/main.footer.html',
+          controller: 'MainController'
+        }
       }
     })
+
 });
