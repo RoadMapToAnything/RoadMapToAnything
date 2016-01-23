@@ -4,21 +4,27 @@ var User = require('../../server/api/users/userModel.js'),
 
 var users = [
   {
-    username: 'Bob',
-    password: 'c',
-    roadmaps: []
+    username : 'bowieloverx950',
+    password : 'c',
+    firstName: 'Bob',
+    lastName : 'Johnson',
+    roadmaps : []
   },
 
   {
-    username: 'Susan', 
-    password: 'a',
-    roadmaps: []
+    username : 'supercoder31337', 
+    password : 'a',
+    firstName: 'Susan',
+    lastName : 'Kozlowski',
+    roadmaps : []
   },
 
   {
-    username: 'Alejandro', 
-    password: 'b',
-    roadmaps: []
+    username : 'alex<3hiphop', 
+    password : 'b',
+    firstName: 'Alejandro',
+    lastName : 'Bautista',
+    roadmaps : []
   }
 ];
 
@@ -69,13 +75,15 @@ var nodes = [
 ];
 
 
+module.exports.users = users;
+module.exports.maps = maps;
+module.exports.nodes = nodes;
+
+
 module.exports.seedUsers = function(next) {
 
   var addUser = function(i) {
-    if (i >= users.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= users.length) return next && next();
 
     User(users[i]).save()
       .then(function (user) {
@@ -91,12 +99,9 @@ module.exports.seedUsers = function(next) {
 module.exports.clearUsers = function(next) {
 
   var clearUser = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= users.length) return next && next();
 
-    User.findOne(users[i])
+    User.findOne(users[i].username)
       .then(function (user) {
         if (user) user.remove();
         clearUser(i + 1);
@@ -110,10 +115,7 @@ module.exports.clearUsers = function(next) {
 module.exports.seedData = function(next) {
 
   var addRoadmap = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= maps.length) return next && next();
 
     maps[i].author = users[i]._id;
 
@@ -131,12 +133,9 @@ module.exports.seedData = function(next) {
 module.exports.clearData = function(next) {
 
   var clearRoadmap = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= maps.length) return next && next();
 
-    Roadmap.findOne(maps[i])
+    Roadmap.findOne(maps[i]._id)
       .then(function (map) {
         if (map) map.remove();
         clearRoadmap(i + 1);

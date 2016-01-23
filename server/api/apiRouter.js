@@ -15,9 +15,10 @@ module.exports = function (apiRouter) {
   /*
    *      User Routes
    */
-  apiRouter.get(   '/users',           userController.getMany);
-  apiRouter.get(   '/users/:username', userController.getOne);
-  apiRouter.delete('/users/:username', userController.deleteOne);
+  apiRouter.get(   '/users',           userController.getUsers);
+  apiRouter.get(   '/users/:username', userController.getUserByName);
+  apiRouter.put(   '/users/:username', userController.updateUserByName);
+  apiRouter.delete('/users/:username', userController.deleteUserByName);
 
 
   /*

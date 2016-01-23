@@ -32,18 +32,7 @@ module.exports = {
       });
   },
 
-  getOne: function(req, res, next) {
-    User.findOne({username: req.params.username})
-      .then( function (user) {
-        if (!user) return res.sendStatus(401); 
-        res.status(200).json(user);
-      })
-      .catch(function(err){
-        next(err);
-      });
-  },
-
-  getMany: function(req, res, next) {
+  getUsers: function(req, res, next) {
     var dbArgs = handleQuery(req.query);
 
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
@@ -56,7 +45,35 @@ module.exports = {
       });
   },
 
-  deleteOne: function(req, res, next) {
+  getUserByName: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json(user);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
+  updateUserByName: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+
+        for (var key in req.body) {
+          user[key] = req.body[key];
+        }
+        user.save();
+        
+        res.status(200).json(user);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
+  deleteUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401);
