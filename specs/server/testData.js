@@ -22,7 +22,7 @@ var users = [
   }
 ];
 
-var roadmaps = [
+var maps = [
   {
     title      : 'Understanding Bowie',
     description: 'This roadmap will help you learn about David Bowie',
@@ -69,40 +69,63 @@ var nodes = [
 ];
 
 
-module.exports.seedUsers = function(done) {
-  User(users[0]).save()
-    .then(function (user) {
-      if (user) users[0] = user;
+module.exports.seedUsers = function(next) {
 
-      User(users[1]).save()
-        .then(function (user) {
-          if (user) users[1] = user;
+  var addUser = function(i) {
+    if (i >= users.length) return next();
 
-          User(users[2]).save()
-            .then(function (user) {
-              if (user) users[2] = user;
+    User(users[i]).save()
+      .then(function (user) {
+        if (user) users[i] = user;
+        addUser(i + 1);
+      });
+  };
 
-              if (done) done();
-            });
-        });
-    });
+  addUser(0);
 };
 
 
-module.exports.clearUsers = function(done) {
-    User.findOne( {username: users[0].username} )
-      .then(function (user) {
-        if (user) user.remove();
-      });
+module.exports.clearUsers = function(next) {
 
-    User.findOne( {username: users[1].username} )
+  users.forEach(function (user) {
+    User.findOne(user)
       .then(function (user) {
         if (user) user.remove();
       });
+  });
 
-    User.findOne( {username: users[2].username} )
-      .then(function (user) {
-        if (user) user.remove();
-        if (done) done();
+  if (next) next();
+};
+
+
+module.exports.seedData = function(next) {
+
+  var addRoadmap = function(i) {
+    if (i >= maps.length) return next();
+
+    maps[i].author = users[i]._id;
+    Roadmap(maps[i]).save()
+      .then(function (map) {
+        if (map) maps[i] = map;
+        addRoadmap(i + 1);
+        if (next) next();
       });
+  };
+
+  module.exports.seedUsers(addRoadmap(0));
+};
+
+
+module.exports.clearData = function(next) {
+
+  module.exports.clearUsers();
+
+  maps.forEach(function (map) {
+    Roadmap.findOne(map)
+      .then(function (map) {
+        if (map) map.remove();
+      });
+  });
+
+  if (next) next();
 };
