@@ -5,9 +5,8 @@ var handleQuery = require('../queryHandler.js');
 module.exports = {
 
   createUser : function(req, res, next){
-    //request.body should have a username and password
     var newUser = req.body;
-    console.log('creating user with', req);
+
     User(newUser).save()
       .then(function(createdUserResults){ 
         res.status(201).json(createdUserResults);
@@ -25,8 +24,8 @@ module.exports = {
 
     User.findOne(credentials)
       .then(function(validUser){
-        if (!validUser) res.sendStatus(401); 
-        else res.status(200).json(validUser);
+        if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
+        else res.status(200).json(validUser); // TODO: send back a token, not DB results
       })
       .catch(function(err){
         next(err);

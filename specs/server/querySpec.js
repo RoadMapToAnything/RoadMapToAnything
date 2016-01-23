@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'; // disable morgan
+
 var expect = require('chai').expect,
     request = require('request'),
     url = 'http://localhost:3000/api/';
