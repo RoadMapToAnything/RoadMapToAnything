@@ -12,7 +12,7 @@ describe('Testing through the browser.', function() {
 
 });
 
-describe('MainController', function () {
+describe('DashboardController', function () {
   var $scope, $rootScope, $location, createController, $httpBackend;
 
   // using angular mocks, we can inject the injector
@@ -30,7 +30,7 @@ describe('MainController', function () {
     var $controller = $injector.get('$controller');
 
     createController = function () {
-      return $controller('MainController', {
+      return $controller('DashboardController', {
         $scope: $scope
       });
     };

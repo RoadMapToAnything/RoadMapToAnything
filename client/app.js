@@ -15,7 +15,7 @@ angular.module('app', [
         },
         'content': {
           templateUrl: 'app/main/main.content.html',
-          controller: 'MainController'
+          controller: 'MainController',
         },
         'footer': {
           templateUrl: 'app/main/main.footer.html',
