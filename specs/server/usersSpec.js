@@ -85,7 +85,7 @@ describe('The users API', function() {
 
 
   /* * * * * * * * * * * * * * * * * * * * * 
-   *           GET /api/users              *
+   *              /api/users               *
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Fetching Users', function() {
@@ -98,7 +98,24 @@ describe('The users API', function() {
       testData.clearUsers(done);
     });
 
-    it('should retrieve a specifc user with first and last name', function (done) {
+    it('should retrieve an array of users', function (done) {
+
+      request(server.app)
+        .get(route)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+
+          expect(res.body).to.be.an('array');
+          expect(res.body).to.not.be.empty;
+          expect(res.body).to.have.deep.property('[0].username');
+          done();
+
+        });
+
+    });
+
+    it('should retrieve a specific user with properties firstName and lastName', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -115,18 +132,24 @@ describe('The users API', function() {
 
     });
 
-    it('should retrieve an array of users', function (done) {
+
+    it('should update a specific user with new first name', function (done) {
 
       request(server.app)
-        .get(route)
+        .put(route + '/' + username)
+        .send({firstName: 'Robert'})
         .expect('Content-Type', /json/)
-        .expect(200)
+        .expect(201)
         .end(function (err, res) {
 
-          expect(res.body).to.be.an('array');
-          expect(res.body).to.not.be.empty;
-          expect(res.body).to.have.deep.property('[0].username');
-          done();
+          expect(res.body).to.have.property('username', username);
+          User.findOne({username: username})
+            .then(function (user) {
+
+              expect(user).to.have.property('firstName', 'Robert');
+              expect(user.created).to.not.equal(user.updated);
+              done();
+            });
 
         });
 

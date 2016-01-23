@@ -107,7 +107,7 @@ module.exports.clearUsers = function(next) {
       return;
     }
 
-    User.findOne(users[i])
+    User.findOne(users[i].username)
       .then(function (user) {
         if (user) user.remove();
         clearUser(i + 1);
@@ -147,7 +147,7 @@ module.exports.clearData = function(next) {
       return;
     }
 
-    Roadmap.findOne(maps[i])
+    Roadmap.findOne(maps[i]._id)
       .then(function (map) {
         if (map) map.remove();
         clearRoadmap(i + 1);
