@@ -11,13 +11,15 @@ module.exports = {
       })
       .catch(handleError(next));
   },
+
   getRoadmaps : function (req, res, next) {
     Roadmap.find({})
       .then(function(dbResults){
-        res.status(200).json(dbResults);
+        res.json(dbResults);
       })
       .catch(handleError(next));
   },
+
   getRoadmapByID : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findById(_id)
@@ -26,6 +28,7 @@ module.exports = {
       })
       .catch(handleError(next));
   },
+
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     var updateCommand = req.body;
@@ -35,6 +38,7 @@ module.exports = {
       })
       .catch(handleError(next));
   },
+
   deleteRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findByIdAndRemove(_id)
@@ -43,4 +47,5 @@ module.exports = {
       })
       .catch(handleError(next));
   }
+
 };

@@ -5,6 +5,12 @@ var request  = require('supertest'),
     Roadmap  = require('../../server/api/roadmaps/roadmapModel.js');
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * *       ROADMAP ROUTES        * * * * */
+/* * * * *       /api/roadmaps         * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
 
 describe('Roadmap Routes - /api/roadmaps', function() {
   
@@ -25,10 +31,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   describe('POST /api/roadmaps', function(){
 
     after('Remove test Roadmap', function(done) {
-      Roadmap.find({title: 'TestMap'})
-        .remove(function(err, dbResults){
-          done();
-        });
+      Roadmap.findOneAndRemove({title: 'TestMap'})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
     });
 
     it('Should respond with 201 when creating a new Roadmap', function(done){
@@ -63,11 +68,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Remove test Roadmap', function(done) {
-      Roadmap.find({title: 'TestMap'})
-      .remove(function(err, dbResults){
-        if (err) throw err;
-        done();
-      });
+      Roadmap.findOneAndRemove({title: 'TestMap'})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
     });
 
     it('Should respond with an array', function(done){
@@ -81,8 +84,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     it('If no Roadmaps exist, response array should be empty', function(done){
-      Roadmap.find({title: 'TestMap'})
-        .remove()
+      Roadmap.findOneAndRemove({title: 'TestMap'})
         .then(function(){
           request(server.app)
             .get('/api/roadmaps')
@@ -115,11 +117,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Remove test Roadmap', function(done) {
-      Roadmap.find({title: 'TestMap'})
-        .remove(function(err, dbResults){
-          if (err) throw err;
-          done();
-        });
+      Roadmap.findOneAndRemove({title: 'TestMap'})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
     });
 
     it('Should respond with the Roadmap specified by ID', function(done){
@@ -155,11 +155,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Remove test Roadmap', function(done) {
-      Roadmap.find({title: 'TestMap'})
-        .remove(function(err, dbResults){
-          if (err) throw err;
-          done();
-        });
+      Roadmap.findOneAndRemove({title: 'TestMap'})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
     });
 
     it('Should update specified field on Roadmap with provided value', function(done){
@@ -197,11 +195,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Ensure test Roadmap is removed', function(done) {
-      Roadmap.find({title: 'TestMap'})
-        .remove(function(err, dbResults){
-          if (err) throw err;
-          done();
-        });
+      Roadmap.findOneAndRemove({title: 'TestMap'})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
     });
 
     it('Should delete the Roadmap specified by ID', function(done){
@@ -221,34 +217,4 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   });
 
 
-
 });
-
-
-
-
-
-
-
-
-
-
-
-  /*
-
-
-post(  '/roadmaps'
-get(   '/roadmaps'
-get(   '/roadmaps/:roadmapID
-put(   '/roadmaps/:roadmapID
-delete('/roadmaps/:roadmapID'
-
-
-
-  title      : { type: String,   required: true },
-  description: { type: String,   required: true },
-  author     : { type: ObjectId, required: true, ref: 'User' },
-  nodes      : [ { type: ObjectId, ref: 'Node'} ],
-  created    : { type: Date, default: Date.now}
-
-  */
