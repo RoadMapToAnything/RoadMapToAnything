@@ -1,10 +1,24 @@
 process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
-    request = require('request'),
-    url = 'http://localhost:3000/api/';
+    request = require('supertest'),
+    User = require('../../server/api/users/userModel.js'),
 
-xdescribe('Query String Handler', function() {
+    server = require('../../server/server.js'),
+    route = '/api/users';
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * *        QUERY STRINGS        * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+
+describe('Query Strings', function() {
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *                 SORT                  *
+   * * * * * * * * * * * * * * * * * * * * */
 
   describe('Sort parameter', function() {
 
@@ -41,39 +55,53 @@ xdescribe('Query String Handler', function() {
 
 
     it('should sort users by username', function(done) {
-      request(url + 'users?sort=username', function(err, res, body) {
-        var users = JSON.parse(body);
 
-        expect(users[0].username).to.equal('Alejandro');
-        expect(users[1].username).to.equal('Bob');
-        expect(users[2].username).to.equal('Susan');
-        done();
-      });
+      request(server.app)
+        .get(route)
+        .query({sort: 'username'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body[0].username).to.equal('Alejandro');
+          expect(res.body[1].username).to.equal('Bob');
+          expect(res.body[2].username).to.equal('Susan');
+          done();
+        });
 
     });
 
 
     it('should not sort users by password', function(done) {
-      request(url + 'users?sort=password', function(err, res, body) {
-        var users = JSON.parse(body);
 
-        expect(users[0].username).to.not.equal('Susan');
-        expect(users[1].username).to.not.equal('Alejandro');
-        expect(users[2].username).to.not.equal('Bob');
-        done();
-      });
+      request(server.app)
+        .get(route)
+        .query({sort: 'password'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body[0].username).to.not.equal('Susan');
+          expect(res.body[1].username).to.not.equal('Alejandro');
+          expect(res.body[2].username).to.not.equal('Bob');
+          done();
+        });
+
     });
 
 
     it('should sort users in descending order', function(done) {
-      request(url + 'users?sort=-username', function(err, res, body) {
-        var users = JSON.parse(body);
 
-        expect(users[0].username).to.equal('Susan');
-        expect(users[1].username).to.equal('Bob');
-        expect(users[2].username).to.equal('Alejandro');
-        done();
-      });
+      request(server.app)
+        .get(route)
+        .query({sort: '-username'})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body[0].username).to.equal('Susan');
+          expect(res.body[1].username).to.equal('Bob');
+          expect(res.body[2].username).to.equal('Alejandro');
+          done();
+        });
+
     });
 
   });
