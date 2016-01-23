@@ -1,61 +1,66 @@
 process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
-    request = require('request'),
-    url = 'http://localhost:3000/api/';
+    request = require('supertest'),
+    User = require('../../server/api/users/userModel.js'),
 
-// Create a describe equivalent of 'xit' to disable blocks of tests
-var xdescribe = function () {};
+    server = require('../../server/server.js'),
+    route = '/api/users/';
+    
 
 
-
-xdescribe('The users API', function() {
+describe('The users API', function() {
+  var username = 'Bob';
+  var password = 'c';
 
   describe('Authentication', function() {
-    var username = 'Bob';
-    var password = '123';
 
     after(function (done) {
 
-      request({
-        method: 'DELETE',
-        url: url + '/users/' + username
-      }, function (err, red, body) {
-        done();
-      });
+      User.findOne({username: username})
+        .then(function (user) {
+          user.remove();
+          done();
+        });
 
     });
 
     it('should create a new user', function (done) {
 
-      request({
-        method: 'POST',
-        url: url + 'signup',
-        json: {
-          username: username,
-          password: password
-        }
-      }, function (err, res, body) {
-        expect(body).to.have.property('username', username);
-        done();
-      });
+      request(server.app)
+        .post('/api/signup')
+        .send({username: username, password: password})
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function (err, res) {
+
+          expect(res.body).to.have.property('username', username);
+
+          User.findOne({username: username})
+            .then(function (user) {
+
+              expect(user).to.have.property('username', username);
+              done();
+
+            });
+          
+        });
 
     });
 
     it('should be able to log in', function (done) {
 
-      request({
-        url: url + 'login',
-        qs: {
-          username: username,
-          password: password
-        }
-      }, function (err, res, body) {
-        var user = JSON.parse(body);
-        
-        expect(user).to.have.property('username', username);
-        done();
-      });
+      request(server.app)
+        .get('/api/login')
+        .query({username: username, password: password})
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function (err, res) {
+
+          expect(res.body).to.have.property('username', username);
+          done();
+
+        });
 
     });
 
@@ -65,57 +70,86 @@ xdescribe('The users API', function() {
 
     before(function(done) {
       // Create three test users.
-      var signupUser = function(user, cb) {
-        request({
-          url: url + 'signup',
-          method: 'POST',
-          json: user
-        }, function(){ if(cb) cb(); });
-      };
-
-      signupUser({username: 'Bob', password: 'c'});
-      signupUser({username: 'Susan', password: 'a'});
-      signupUser({username: 'Alejandro', password: 'b'}, done);
-
+      User({username: username, password: password}).save()
+        .then(function() {
+          User({username: 'Susan', password: 'a'}).save()
+            .then(function() {
+              User({username: 'Alejandro', password: 'b'}).save()
+                .then(function() {
+                  done();
+                });
+            });
+        });
     });
 
     after(function(done) {
       // Delete the test users.
-      var deleteUser = function(username, cb) {
-        request({
-          url: url + 'users/' + username,
-          method: 'DELETE'
-        }, function(){ if(cb) cb(); });
-      };
-
-      deleteUser('Bob');
-      deleteUser('Susan');
-      deleteUser('Alejandro', done);
-
+      User.findOne({username: username})
+        .then(function (user) {
+          if (user) user.remove();
+        });
+      User.findOne({username: 'Susan'})
+        .then(function (user) {
+          if (user) user.remove();
+        });
+      User.findOne({username: 'Alejandro'})
+        .then(function (user) {
+          if (user) user.remove();
+          done();
+        });
     });
 
     it('should retrieve a specifc user', function (done) {
 
-      request(url + 'users/Bob', function (err, res, body) {
-        var user = JSON.parse(body);
-        
-        expect(user).to.have.property('username', 'Bob');
-        done();
-      });
+      request(server.app)
+        .get(route + username)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+
+          expect(res.body).to.have.property('username', username);
+          done();
+
+        });
 
     });
 
     it('should retrieve an array of users', function (done) {
 
-      request(url + 'users', function (err, res, body) {
-        var users = JSON.parse(body);
+      request(server.app)
+        .get(route)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
 
-        expect(users).to.be.an('array');
-        expect(users).to.not.be.empty;
-        expect(users).to.have.deep.property('[0].username');
+          expect(res.body).to.be.an('array');
+          expect(res.body).to.not.be.empty;
+          expect(res.body).to.have.deep.property('[0].username');
+          done();
 
-        done();
-      });
+        });
+
+    });
+
+    it('should delete a user', function (done) {
+
+      request(server.app)
+        .delete(route + username)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function (err, res) {
+
+          expect(res.body).to.have.property('username', username);
+
+          User.findOne({username: username})
+            .then(function (user) {
+
+              expect(user).to.be.null;
+              done();
+
+            });
+
+        });
 
     });
 
