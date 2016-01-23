@@ -5,6 +5,7 @@ angular.module('app', [
   'app.dash',
   'app.roadmaps',
   'ngMaterial'
+  // 'ngMaterial'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -62,8 +63,16 @@ angular.module('app', [
   .state('roadmapTemplate', {
     url: '/roadmaps',
     views: {
-      'main': {
-        templateUrl: 'app/roadmaps/roadmaps.html',
+      'content': {
+        templateUrl: 'app/roadmaps/roadmaps.content.html',
+        controller: 'RoadMapsController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.header.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
         controller: 'RoadMapsController'
       }
     }
