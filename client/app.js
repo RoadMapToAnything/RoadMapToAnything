@@ -30,13 +30,12 @@ angular.module('app', [
         'signin': {
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
-        },
-        'dash': {
-          url: '/dashboard',
-          templateUrl: 'app/progress/dashboard.js',
-          controller: 'DashboardController'
         }
-      }
+      }})
+    .state('dashboard', {
+      url: '/dashboard',
+      templateUrl: 'app/progress/dashboard.html',
+      controller: 'DashboardController'
     })
 
 });
