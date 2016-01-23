@@ -2,7 +2,10 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
+    testData = require('../testData.js'),
     User = require('../../server/api/users/userModel.js'),
+    Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
+    Node = require('../../server/api/nodes/nodeModel.js'),
 
     server = require('../../server/server.js'),
     route = {
@@ -20,35 +23,12 @@ var expect = require('chai').expect,
 
 describe('Query Strings', function() {
 
-  // Seed the DB with three test users.
   before(function(done) {
-    User({username: 'Bob', password: 'c'}).save()
-      .then(function() {
-        User({username: 'Susan', password: 'a'}).save()
-          .then(function() {
-            User({username: 'Alejandro', password: 'b'}).save()
-              .then(function() {
-                done();
-              });
-          });
-      });
+    testData.seedUsers(done);
   });
 
-  // Clean up DB aftwerwards.
   after(function(done) {
-    User.findOne({username: 'Bob'})
-      .then(function (user) {
-        user.remove();
-      });
-    User.findOne({username: 'Susan'})
-      .then(function (user) {
-        user.remove();
-      });
-    User.findOne({username: 'Alejandro'})
-      .then(function (user) {
-        user.remove();
-        done();
-      });
+    testData.clearUsers(done);
   });
 
   /* * * * * * * * * * * * * * * * * * * * * 
