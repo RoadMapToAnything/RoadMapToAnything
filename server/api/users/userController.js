@@ -32,6 +32,19 @@ module.exports = {
       });
   },
 
+  getUsers: function(req, res, next) {
+    var dbArgs = handleQuery(req.query);
+
+    User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
+      .then(function (users) {
+        if (!users) return res.sendStatus(401);
+        res.status(200).json(users);
+      })
+      .catch(function(err){
+        next(err);
+      });
+  },
+
   getUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
@@ -43,13 +56,17 @@ module.exports = {
       });
   },
 
-  getUsers: function(req, res, next) {
-    var dbArgs = handleQuery(req.query);
+  updateUserByName: function(req, res, next) {
+    User.findOne({username: req.params.username})
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
 
-    User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
-      .then(function (users) {
-        if (!users) return res.sendStatus(401);
-        res.status(200).json(users);
+        for (var key in req.body) {
+          user[key] = req.body[key];
+        }
+        user.save();
+        
+        res.status(200).json(user);
       })
       .catch(function(err){
         next(err);

@@ -17,6 +17,7 @@ module.exports = function (apiRouter) {
    */
   apiRouter.get(   '/users',           userController.getUsers);
   apiRouter.get(   '/users/:username', userController.getUserByName);
+  apiRouter.put(   '/users/:username', userController.updateUserByName);
   apiRouter.delete('/users/:username', userController.deleteUserByName);
 
 
