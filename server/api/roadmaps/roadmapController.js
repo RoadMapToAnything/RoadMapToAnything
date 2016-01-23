@@ -1,5 +1,6 @@
 var Roadmap = require('./roadmapModel.js'),
-    handleError = require('../../util.js').handleError;
+    handleError = require('../../util.js').handleError,
+    handleQuery = require('../queryHandler.js');
 
 module.exports = {
 
@@ -13,7 +14,9 @@ module.exports = {
   },
 
   getRoadmaps : function (req, res, next) {
-    Roadmap.find({})
+    dbArgs = handleQuery(req.query);
+
+    Roadmap.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .then(function(dbResults){
         res.json(dbResults);
       })
