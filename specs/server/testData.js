@@ -83,10 +83,7 @@ module.exports.nodes = nodes;
 module.exports.seedUsers = function(next) {
 
   var addUser = function(i) {
-    if (i >= users.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= users.length) return next && next();
 
     User(users[i]).save()
       .then(function (user) {
@@ -102,10 +99,7 @@ module.exports.seedUsers = function(next) {
 module.exports.clearUsers = function(next) {
 
   var clearUser = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= users.length) return next && next();
 
     User.findOne(users[i].username)
       .then(function (user) {
@@ -121,10 +115,7 @@ module.exports.clearUsers = function(next) {
 module.exports.seedData = function(next) {
 
   var addRoadmap = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= maps.length) return next && next();
 
     maps[i].author = users[i]._id;
 
@@ -142,10 +133,7 @@ module.exports.seedData = function(next) {
 module.exports.clearData = function(next) {
 
   var clearRoadmap = function(i) {
-    if (i >= maps.length) {
-      if (next) next();
-      return;
-    }
+    if (i >= maps.length) return next && next();
 
     Roadmap.findOne(maps[i]._id)
       .then(function (map) {
