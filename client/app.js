@@ -33,8 +33,20 @@ angular.module('app', [
       }})
     .state('dashboard', {
       url: '/dashboard',
-      templateUrl: 'app/progress/dashboard.html',
-      controller: 'DashboardController'
+      views: {
+        'content': {
+          templateUrl: 'app/progress/dashboard.html',
+          controller: 'DashboardController'
+        },
+        'header': {
+          templateUrl: 'app/main/main.header.html',
+          controller: 'MainController'
+        },
+        'footer': {
+          templateUrl: 'app/main/main.footer.html',
+          controller: 'MainController'
+        }
+      }
     })
 
 });

@@ -13,3 +13,9 @@
 .dash-holder {
   margin: 20px;
 }
+#follow-box {
+  border: 1px solid black !important;
+  background-color: black !important;
+}
+
+body { background-color: black;}

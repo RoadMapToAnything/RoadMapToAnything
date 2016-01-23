@@ -4,6 +4,7 @@
   <title>Roadmap To Anything</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="app/styles.css" rel="stylesheet" type="text/css">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -15,7 +16,6 @@
 
 <div ui-view="header"></div>
 <div ui-view="content"></div>
-<div ui-view></div>
 <div ui-view="footer"></div>
 
   
@@ -23,7 +23,7 @@
   <div ui-view="signup"></div>
   <div ui-view="signin"></div>
   <a ui-sref="home">Click to go to main</a>
-
+  <a ui-sref="dashboard">Click to go to dashboard</a>
 <!-- When main is up put a main.footer and a main.header -->
   
 </body>
