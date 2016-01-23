@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
-    testData = require('../testData.js'),
+    testData = require('./testData.js'),
     User = require('../../server/api/users/userModel.js'),
     Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
     Node = require('../../server/api/nodes/nodeModel.js'),

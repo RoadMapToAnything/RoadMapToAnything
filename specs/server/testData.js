@@ -1,6 +1,6 @@
-var User = require('../server/api/users/userModel.js'),
-    Roadmap = require('../server/api/roadmaps/roadmapModel.js'),
-    Node = require('../server/api/nodes/nodeModel.js');
+var User = require('../../server/api/users/userModel.js'),
+    Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
+    Node = require('../../server/api/nodes/nodeModel.js');
 
 var users = [
   {
@@ -72,15 +72,15 @@ var nodes = [
 module.exports.seedUsers = function(done) {
   User(users[0]).save()
     .then(function (user) {
-      users[0] = user;
+      if (user) users[0] = user;
 
       User(users[1]).save()
         .then(function (user) {
-          users[1] = user;
+          if (user) users[1] = user;
 
           User(users[2]).save()
             .then(function (user) {
-              users[2] = user;
+              if (user) users[2] = user;
 
               if (done) done();
             });
@@ -92,17 +92,17 @@ module.exports.seedUsers = function(done) {
 module.exports.clearUsers = function(done) {
     User.findOne( {username: users[0].username} )
       .then(function (user) {
-        user.remove();
+        if (user) user.remove();
       });
 
     User.findOne( {username: users[1].username} )
       .then(function (user) {
-        user.remove();
+        if (user) user.remove();
       });
 
     User.findOne( {username: users[2].username} )
       .then(function (user) {
-        user.remove();
-        done();
+        if (user) user.remove();
+        if (done) done();
       });
 };
