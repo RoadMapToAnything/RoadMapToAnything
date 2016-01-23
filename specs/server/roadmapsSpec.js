@@ -176,10 +176,50 @@ describe('Roadmap Routes - /api/roadmaps', function() {
             });
           done();
         });
+    });
+  });
 
+      /* * * * * * * * * * * * * * * * * * * * * 
+       *   DELETE /api/roadmaps/:roadmapID     *
+       * * * * * * * * * * * * * * * * * * * * */
+
+  describe('DELETE /api/roadmaps/:roadmapID', function(){
+   
+    var testMapID;
+
+    before('Create test Roadmap', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(savedRoadmap){
+          testMapID = savedRoadmap._id;
+          done();
+        });
     });
 
+    after('Ensure test Roadmap is removed', function(done) {
+      Roadmap.find({title: 'TestMap'})
+        .remove(function(err, dbResults){
+          if (err) throw err;
+          done();
+        });
     });
+
+    it('Should delete the Roadmap specified by ID', function(done){
+     
+      request(server.app)
+        .delete('/api/roadmaps/'+testMapID)
+        .end(function(err, serverResponse){
+          if (err) throw err;
+
+          Roadmap.findById(testMapID)
+            .then(function(dbResults){
+              expect( dbResults ).to.equal( null );
+              done();
+            });
+        });
+    });
+  });
+
 
 
 });
