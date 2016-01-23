@@ -36,6 +36,11 @@ module.exports = {
       .catch(handleError(next));
   },
   deleteRoadmap : function (req, res, next) {
-    
+    var _id = req.params.roadmapID;
+    Roadmap.findByIdAndRemove(_id)
+      .then(function(dbResults){
+        res.json(dbResults);
+      })
+      .catch(handleError(next));
   }
 };
