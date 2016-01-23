@@ -32,7 +32,7 @@ module.exports = {
       });
   },
 
-  getOne: function(req, res, next) {
+  getUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
@@ -43,7 +43,7 @@ module.exports = {
       });
   },
 
-  getMany: function(req, res, next) {
+  getUsers: function(req, res, next) {
     var dbArgs = handleQuery(req.query);
 
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
@@ -56,7 +56,7 @@ module.exports = {
       });
   },
 
-  deleteOne: function(req, res, next) {
+  deleteUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401);

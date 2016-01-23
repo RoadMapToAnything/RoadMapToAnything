@@ -22,6 +22,7 @@ var expect = require('chai').expect,
 /* * * * * * * * * * * * * * * * * * * * * * * */
 
 describe('Query Strings', function() {
+  var users = testData.users;
 
   before(function(done) {
     testData.seedData(done);
@@ -46,9 +47,9 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body[0].username).to.equal('Alejandro');
-          expect(res.body[1].username).to.equal('Bob');
-          expect(res.body[2].username).to.equal('Susan');
+          expect(res.body[0].username).to.equal('alex<3hiphop');
+          expect(res.body[1].username).to.equal('bowieloverx950');
+          expect(res.body[2].username).to.equal('supercoder31337');
           done();
         });
 
@@ -63,9 +64,9 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body[0].username).to.equal('Bob');
-          expect(res.body[1].username).to.equal('Susan');
-          expect(res.body[2].username).to.equal('Alejandro');
+          expect(res.body[0].username).to.equal('bowieloverx950');
+          expect(res.body[1].username).to.equal('supercoder31337');
+          expect(res.body[2].username).to.equal('alex<3hiphop');
           done();
         });
 
@@ -80,9 +81,9 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body[0].username).to.equal('Susan');
-          expect(res.body[1].username).to.equal('Bob');
-          expect(res.body[2].username).to.equal('Alejandro');
+          expect(res.body[0].username).to.equal('supercoder31337');
+          expect(res.body[1].username).to.equal('bowieloverx950');
+          expect(res.body[2].username).to.equal('alex<3hiphop');
           done();
         });
 
@@ -131,12 +132,12 @@ describe('Query Strings', function() {
 
       request(server.app)
         .get(route.users)
-        .query({username: 'Bob'})
+        .query({username: 'bowieloverx950'})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
           expect(res.body).to.not.be.empty;          
-          expect(res.body[0].username).to.equal('Bob');
+          expect(res.body[0].username).to.equal('bowieloverx950');
           done();
         });
 
