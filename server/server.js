@@ -5,6 +5,7 @@ var express  = require('express'),
    
 var app      = express();
 var port     = process.env.PORT || 3000;
+if (process.env.NODE_ENV === 'test') port = 5000;
 
 var database = process.env.MONGOLAB_URI || 'mongodb://localhost/testdb';
 mongoose.connect(database);
