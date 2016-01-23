@@ -5,13 +5,28 @@ var expect = require('chai').expect,
     User = require('../../server/api/users/userModel.js'),
 
     server = require('../../server/server.js'),
-    route = '/api/users/';
+    route = '/api/users';
     
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * *        USERS ROUTES         * * * * */
+/* * * * *        /api/users           * * * * */
+/* * * * *        /api/signup          * * * * */
+/* * * * *        /api/login           * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * */
 
 
 describe('The users API', function() {
   var username = 'Bob';
   var password = 'c';
+
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *            AUTHENTICATION             *
+   * * * * * * * * * * * * * * * * * * * * */
 
   describe('Authentication', function() {
 
@@ -66,6 +81,11 @@ describe('The users API', function() {
 
   });
 
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *           GET /api/users              *
+   * * * * * * * * * * * * * * * * * * * * */
+
   describe('Fetching Users', function() {
 
     before(function(done) {
@@ -102,7 +122,7 @@ describe('The users API', function() {
     it('should retrieve a specifc user', function (done) {
 
       request(server.app)
-        .get(route + username)
+        .get(route + '/' + username)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
@@ -134,7 +154,7 @@ describe('The users API', function() {
     it('should delete a user', function (done) {
 
       request(server.app)
-        .delete(route + username)
+        .delete(route + '/' + username)
         .expect('Content-Type', /json/)
         .expect(201)
         .end(function (err, res) {
