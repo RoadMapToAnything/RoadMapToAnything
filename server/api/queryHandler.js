@@ -17,7 +17,7 @@ var paramHandler = {
 // Builds an array of arguments to pass into the Mongoose find() method.
 module.exports = function (query) {
   var filters = {};
-  var columns = null;
+  var fields = null;
   var params = {};
 
   for (var key in query) {
@@ -32,8 +32,12 @@ module.exports = function (query) {
     }
   }
 
-  // TODO: Handle columns.
+  // TODO: Handle fields.
 
 
-  return [filters, columns, params];
+  return {
+    filters: filters, 
+    fields: fields, 
+    params: params
+  };
 };
