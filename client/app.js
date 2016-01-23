@@ -1,7 +1,9 @@
 angular.module('app', [
   'ui.router',
   'app.main',
-  'app.auth'
+  'app.auth',
+  'app.dash',
+  'ngMaterial'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -28,7 +30,13 @@ angular.module('app', [
         'signin': {
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
+        },
+        'dash': {
+          url: '/dashboard',
+          templateUrl: 'app/progress/dashboard.js',
+          controller: 'DashboardController'
         }
       }
     })
+
 });
