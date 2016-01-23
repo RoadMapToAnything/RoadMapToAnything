@@ -46,7 +46,7 @@ module.exports = {
   getMany: function(req, res, next) {
     var dbArgs = handleQuery(req.query);
 
-    User.find(dbArgs[0], dbArgs[1], dbArgs[2])
+    User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .then(function (users) {
         if (!users) return res.sendStatus(401);
         res.status(200).json(users);

@@ -1,12 +1,13 @@
+// Parameters which may not be used in queries.
+var forbidden = {
+  'password': true,
+  '-password': true
+};
+
 // Object for handling different possible db parameters.
 var paramHandler = {
 
   sort: function (value) {
-    var forbidden = {
-      'password': true,
-      '-password': true
-    };
-
     if (forbidden[value]) return false;
     return ['sort', value];
   }
@@ -16,7 +17,7 @@ var paramHandler = {
 // Builds an array of arguments to pass into the Mongoose find() method.
 module.exports = function (query) {
   var filters = {};
-  var columns = null;
+  var fields = null;
   var params = {};
 
   for (var key in query) {
@@ -27,12 +28,16 @@ module.exports = function (query) {
 
     // Anything else is a filter parameter and passes straight through.
     } else {
-      filters[key] = query[key];
+      if (!forbidden[key]) filters[key] = query[key];
     }
   }
 
-  // TODO: Handle columns.
+  // TODO: Handle fields.
 
 
-  return [filters, columns, params];
+  return {
+    filters: filters, 
+    fields: fields, 
+    params: params
+  };
 };
