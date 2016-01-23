@@ -4,39 +4,39 @@ var expect = require('chai').expect,
     request = require('request'),
     url = 'http://localhost:3000/api/';
 
-describe('Query String Handler', function() {
+xdescribe('Query String Handler', function() {
 
   describe('Sort parameter', function() {
 
     before(function(done) {
       // Create three test users.
-      var signupUser = function(user, cb) {
-        request({
-          url: url + 'signup',
-          method: 'POST',
-          json: user
-        }, function(){ if(cb) cb(); });
-      };
-
-      signupUser({username: 'Bob', password: 'c'});
-      signupUser({username: 'Susan', password: 'a'});
-      signupUser({username: 'Alejandro', password: 'b'}, done);
-
+      User({username: 'Bob', password: 'c'}).save()
+        .then(function() {
+          User({username: 'Susan', password: 'a'}).save()
+            .then(function() {
+              User({username: 'Alejandro', password: 'b'}).save()
+                .then(function() {
+                  done();
+                });
+            });
+        });
     });
 
     after(function(done) {
       // Delete the test users.
-      var deleteUser = function(username, cb) {
-        request({
-          url: url + 'users/' + username,
-          method: 'DELETE'
-        }, function(){ if(cb) cb(); });
-      };
-
-      deleteUser('Bob');
-      deleteUser('Susan');
-      deleteUser('Alejandro', done);
-
+      User.findOne({username: 'Bob'})
+        .then(function (user) {
+          user.remove();
+        });
+      User.findOne({username: 'Susan'})
+        .then(function (user) {
+          user.remove();
+        });
+      User.findOne({username: 'Alejandro'})
+        .then(function (user) {
+          user.remove();
+          done();
+        });
     });
 
 
