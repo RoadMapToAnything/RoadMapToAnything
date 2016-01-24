@@ -17,6 +17,7 @@ angular.module('app.dash', [])
         } else {
           $scope.followedMapsResponseBody = body.roadmaps;
         }
+      }
     } else {
       request('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName ), function (err, res, body){
         if(err) {
@@ -26,7 +27,7 @@ angular.module('app.dash', [])
         } else {
           $scope.followedMapsResponseBody = body.roadmaps;
         }
+      };
     }
   };
-
 });
