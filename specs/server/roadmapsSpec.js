@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'; // disable morgan
+
 var request  = require('supertest'),
     expect   = require('chai').expect,
 
