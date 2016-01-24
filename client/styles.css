@@ -26,3 +26,10 @@ h5 {
     border-top: 1px solid #111;
     border-bottom: 1px solid #111;
 }
+
+/*I'm not sure why the text was almost all italic after installing Materialize
+  but this fixes it. If you want to put something in italics use the <em> tag - Gabe */
+
+i, p, h1, h2, h3, h4, h5, h6, th, td {
+  font-style: normal !important;
+}
