@@ -14,6 +14,14 @@ angular.module('app', [
           templateUrl: 'app/main/main.header.html',
           controller: 'MainController'
         },
+         'welcome': {
+          templateUrl: 'app/main/main.welcome.html',
+          controller: 'MainController'
+        },
+         'featured': {
+          templateUrl: 'app/main/main.welcome.html',
+          controller: 'MainController'
+        },
         'content': {
           templateUrl: 'app/main/main.content.html',
           controller: 'MainController',
@@ -48,5 +56,4 @@ angular.module('app', [
         }
       }
     })
-
 });
