@@ -11,15 +11,15 @@
             <th>Roadmap</th>
             <th>Progress Bar</th>
           </tr>
-          <div class="follow-map" ng-repeat="maps in dummyFollowed">
-            <tr>
-              <td>{{ map.completed }} /
-              {{ map.nodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
-              <td class="progress-bar"> | progress bar goes here | </td>  
-            </tr>
-          </div>
         </tbody>
+        <tbody class="follow-map" ng-repeat="map in dummyFollowed">
+          <tr>
+            <td>{{ map.completed }} /
+            {{ map.nodes }}</td>
+            <td class="truncate">{{ map.title }}</td>
+            <td class="progress-bar"> | progress bar goes here | </td>  
+          </tr>
+      </tbody>
       </table>
     </div>
   </div>
@@ -36,18 +36,17 @@
           <tr>
             <th>Nodes</th>
             <th>Roadmap</th>
-            <th>Progress</th>
+            <th>Progress Bar</th>
           </tr>
-          <div class="follow-map" ng-repeat="maps in dummyMyMaps">
-            <tr>
-              <td>{{ map.completed }} /
-              {{ map.nodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
-              <td class="progress-bar"> | progress bar goes here | </td>
-            </tr>
-          </div>
-
         </tbody>
+        <tbody class="follow-map" ng-repeat="map in dummyMyMaps">
+          <tr>
+            <td>{{ map.completed }} /
+            {{ map.nodes }}</td>
+            <td class="truncate">{{ map.title }}</td>
+            <td class="progress-bar"> | progress bar goes here | </td>  
+          </tr>
+      </tbody>
       </table>
     </div>
   </div>

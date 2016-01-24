@@ -1,6 +1,10 @@
 angular.module('app.dash', [])
 
 .controller('DashboardController', ['$scope','$http', function($scope,$http){
+  console.log("dash controller is working");
+
+  $scope.msg = "hello from dash controller"
+
   $scope.username = "";
 
   $scope.followedMapsResponseBody = {};
