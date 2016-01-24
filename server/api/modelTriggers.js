@@ -1,6 +1,10 @@
 // This file contains all pre and post triggers for db
 // interaction with our models. 
 
+var User = require('./users/userModel.js'),
+    Roadmap = require('./roadmaps/roadmapModel.js'),
+    Node = require('./nodes/nodeModel.js');
+
 /* * * * * * * * * * * * * * * * * * * * * 
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
