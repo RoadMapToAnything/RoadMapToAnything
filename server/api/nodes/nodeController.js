@@ -25,7 +25,13 @@ module.exports = {
   },
 
   updateNode : function (req, res, next) {
-
+    var _id = req.params.nodeID;
+    var updateCommand = req.body;
+    Node.findByIdAndUpdate(_id, updateCommand)
+      .then(function(dbResults){
+        res.json(dbResults);
+      })
+      .catch(handleError(next));
   },
 
   deleteNode : function (req, res, next) {
