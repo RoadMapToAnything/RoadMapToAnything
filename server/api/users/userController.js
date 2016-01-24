@@ -1,19 +1,19 @@
-var User = require('./userModel.js');
-var handleQuery = require('../queryHandler.js');
-//user controller methods
+var User = require('./userModel.js'),
+    handleError = require('../../util.js').handleError,
+    handleQuery = require('../queryHandler.js');
+
 
 module.exports = {
 
   createUser : function(req, res, next){
     var newUser = req.body;
+    console.log('creating new user with', req.body);
 
     User(newUser).save()
       .then(function(createdUserResults){ 
         res.status(201).json(createdUserResults);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
 
   login : function(req, res, next){
@@ -27,9 +27,7 @@ module.exports = {
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
         else res.status(200).json(validUser); // TODO: send back a token, not DB results
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
 
   getUsers: function(req, res, next) {
@@ -40,9 +38,7 @@ module.exports = {
         if (!users) return res.sendStatus(401);
         res.status(200).json(users);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
 
   getUserByName: function(req, res, next) {
@@ -51,39 +47,28 @@ module.exports = {
         if (!user) return res.sendStatus(401); 
         res.status(200).json(user);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
 
   updateUserByName: function(req, res, next) {
-    User.findOne({username: req.params.username})
+    User.findOneAndUpdate({username: req.params.username}, req.body)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
-
-        for (var key in req.body) {
-          user[key] = req.body[key];
-        }
-        user.save();
-        
         res.status(200).json(user);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   },
 
   deleteUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
       .then( function (user) {
         if (!user) return res.sendStatus(401);
+
         user.remove();
-        console.log('deleting user with', req.params);
+        console.log('deleted user with', req.params);
         res.status(201).json(user);
       })
-      .catch(function(err){
-        next(err);
-      });
+      .catch(handleError(next));
   }
 };
 

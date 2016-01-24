@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
     ObjectId = mongoose.Schema.ObjectId;
+    triggers = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({
   username : {type: String, required: true, unique: true},
@@ -11,12 +12,7 @@ var UserSchema = new mongoose.Schema({
   updated  : { type: Date}
 });
 
+
+triggers.User(UserSchema);
+
 module.exports = mongoose.model('User', UserSchema);
-
-UserSchema.pre('save', function(next) {
-  var now = Date.now();
-  this.updated = now;
-  if (!this.created) this.created = now;
-
-  next();
-});
