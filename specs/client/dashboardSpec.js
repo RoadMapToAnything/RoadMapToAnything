@@ -1,22 +1,6 @@
-// Karma handles declaring 'expect' and 'should' automatically.
-describe('Testing through the browser.', function() {
-
-  it('is should have a window and a document body', function() {
-    window.should.exist;
-    document.body.should.exist;
-  });
-
-  it('is expected to not be able to use require', function() {
-    expect(typeof require).to.equal('undefined');
-  });
-
-});
-
 describe('DashboardController', function () {
   var $scope, $rootScope, $location, createController, $httpBackend;
 
-  // using angular mocks, we can inject the injector
-  // to retrieve our dependencies
   beforeEach(module('app'));
   beforeEach(inject(function($injector) {
 
@@ -37,9 +21,40 @@ describe('DashboardController', function () {
 
     createController();
   }));
-
-  it('should have a test method on the $scope', function () {
-    expect($scope.test).to.be.a('function');
+//test followed maps
+  it('should have a getFollowedMaps function', function () {
+    expect($scope.getFollowed).to.be.a('function');
   });
 
+  it('should get followed map data', function (){
+    return $scope.getFollowedMaps()
+      .then(function(){
+        return Array.isArray($scope.followedMaps).should.be(true);
+      });
+  });
+
+  it('should get followed map data with the right properties', function () {
+    return $scope.getFollowedMaps()
+      .then(function(){
+        return $scope.followedMaps[0].title;
+      });
+  });
+//test maps user made
+  it('should have a getMyMaps function', function () {
+    expect($scope.getMyMaps).to.be.a('function');
+  });
+
+    it('should get followed map data', function (){
+    return $scope.getFollowedMaps()
+      .then(function(){
+        return Array.isArray($scope.followedMaps).should.be(true);
+      });
+  });
+
+  it('should get followed map data with the right properties', function () {
+    return $scope.getFollowedMaps()
+      .then(function(){
+        return typeof $scope.followedMaps[0].title === 'string';
+      });
+  });
 });
