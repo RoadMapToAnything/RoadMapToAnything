@@ -35,7 +35,11 @@ module.exports = function (apiRouter) {
     *      Node Routes
     */
 
-    apiRouter.get(   '/nodes/:nodeID', nodeController.createNode);
+    // Create a node
+    apiRouter.post('/roadmaps/:roadmapID/nodes', nodeController.createNode);
+    apiRouter.post(                    '/nodes', nodeController.createNode);
+
+    apiRouter.get(   '/nodes/:nodeID', nodeController.getNodeByID);
     apiRouter.put(   '/nodes/:nodeID', nodeController.updateNode);
     apiRouter.delete('/nodes/:nodeID', nodeController.deleteNode);
 

@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'; // disable morgan
+
 var request  = require('supertest'),
     expect   = require('chai').expect,
 
@@ -171,8 +173,8 @@ describe('Roadmap Routes - /api/roadmaps', function() {
           Roadmap.findById(testMapID)
             .then(function(dbResults){
               expect( dbResults.description ).to.equal( "Learn JavaScript" );
+              done();
             });
-          done();
         });
     });
   });
