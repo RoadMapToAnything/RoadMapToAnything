@@ -41,19 +41,12 @@
             <tr>
               <th>Nodes</th>
               <th>Roadmap</th>
-              <th>Progress Bar</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in dummyMyMaps">
             <tr>
-              <td>{{ map.completed }} /
-              {{ map.nodes }}</td>
+              <td>{{ map.nodes }}</td>
               <td class="truncate">{{ map.title }}</td>
-              <td class="progress-bar">
-                <div class="progress">
-                  <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
-                </div>
-              </td> 
             </tr>
         </tbody>
         </table>
