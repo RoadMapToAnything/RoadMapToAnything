@@ -4,32 +4,47 @@ var forbidden = {
   '-password': true
 };
 
+// DB Parameters which may be returned.
+var filters = {};
+var fields = null;
+var params = {};
+
 // Object for handling different possible db parameters.
 var paramHandler = {
 
   sort: function (value) {
-    if (forbidden[value]) return false;
-    return ['sort', value];
+    if (forbidden[value]) return;
+    params.sort = value;
   }
 
 };
 
+// Object for handling different possible db filters.
+var filterHandler = function (key, value) {
+  if (forbidden[key]) return;
+  var convert = {
+    '>': '$gt',
+    '<': '$lt'
+  };
+
+  var first = value.slice(0, 1);
+  if (convert[first]) {
+    first = convert[first];
+    value = {first: value.slice(1)};
+  }
+
+  filters[key] = value;
+};
+
 // Builds an array of arguments to pass into the Mongoose find() method.
 module.exports = function (query) {
-  var filters = {};
-  var fields = null;
-  var params = {};
 
   for (var key in query) {
     // Handle designated parameters first.
-    if (paramHandler[key]) {
-      var param = paramHandler[key](query[key]);
-      if (param) params[param[0]] = param[1];
+    if (paramHandler[key]) paramHandler[key](query[key]);
 
-    // Anything else is a filter parameter and passes straight through.
-    } else {
-      if (!forbidden[key]) filters[key] = query[key];
-    }
+    // Anything else is a filtering parameter.
+    else filterHandler(key, query[key]);
   }
 
   // TODO: Handle fields.
