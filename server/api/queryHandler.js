@@ -4,14 +4,14 @@ var forbidden = {
   '-password': true
 };
 
-// DB Parameters which may be returned.
-var filters = {};
-var fields = null;
-var params = {};
+// DB Parameters which may be returned, and must be accessed by helpers.
+var filters;
+var fields;
+var params;
 
 // Object for handling different possible db parameters.
 var paramHandler = {
-
+  
   sort: function (value) {
     if (forbidden[value]) return;
     params.sort = value;
@@ -26,11 +26,12 @@ var filterHandler = function (key, value) {
     '>': '$gt',
     '<': '$lt'
   };
-
   var first = value.slice(0, 1);
+  var end = value.slice(1);
+
   if (convert[first]) {
-    first = convert[first];
-    value = {first: value.slice(1)};
+    value = {};
+    value[convert[first]] = Number(end);
   }
 
   filters[key] = value;
@@ -38,7 +39,10 @@ var filterHandler = function (key, value) {
 
 // Builds an array of arguments to pass into the Mongoose find() method.
 module.exports = function (query) {
-
+  filters = {};
+  fields = null;
+  params = {};
+  console.log('QUERY:', query);
   for (var key in query) {
     // Handle designated parameters first.
     if (paramHandler[key]) paramHandler[key](query[key]);
@@ -48,8 +52,7 @@ module.exports = function (query) {
   }
 
   // TODO: Handle fields.
-
-
+  console.log('FILTERS:', filters);
   return {
     filters: filters, 
     fields: fields, 
