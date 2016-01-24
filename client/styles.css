@@ -23,7 +23,9 @@ h5 {
 
 /*body { background-color: white;}*/
 
-
+.tabs {
+  overflow-x: hidden;
+}
 #search {
     display: none;
     margin-bottom: 0px;

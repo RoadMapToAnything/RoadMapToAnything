@@ -3,9 +3,7 @@ angular.module('app', [
   'app.main',
   'app.auth',
   'app.dash',
-  'app.roadmaps',
-  'ngMaterial'
-  // 'ngMaterial'
+  'app.roadmaps'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
