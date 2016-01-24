@@ -21,37 +21,40 @@ describe('DashboardController', function () {
 
     createController();
   }));
+
+//skipping these tests until dashboard api calls decided on
+
 //test followed maps
-  it('should have a getFollowedMaps function', function () {
+  xit('should have a getFollowedMaps function', function () {
     expect($scope.getFollowed).to.be.a('function');
   });
 
-  it('should get followed map data', function (){
+  xit('should get followed map data', function (){
     return $scope.getFollowedMaps()
       .then(function(){
         return Array.isArray($scope.followedMaps).should.be(true);
       });
   });
 
-  it('should get followed map data with the right properties', function () {
+  xit('should get followed map data with the right properties', function () {
     return $scope.getFollowedMaps()
       .then(function(){
         return $scope.followedMaps[0].title;
       });
   });
 //test maps user made
-  it('should have a getMyMaps function', function () {
+  xit('should have a getMyMaps function', function () {
     expect($scope.getMyMaps).to.be.a('function');
   });
 
-    it('should get followed map data', function (){
+  xit('should get followed map data', function (){
     return $scope.getFollowedMaps()
       .then(function(){
         return Array.isArray($scope.followedMaps).should.be(true);
       });
   });
 
-  it('should get followed map data with the right properties', function () {
+  xit('should get followed map data with the right properties', function () {
     return $scope.getFollowedMaps()
       .then(function(){
         return typeof $scope.followedMaps[0].title === 'string';
