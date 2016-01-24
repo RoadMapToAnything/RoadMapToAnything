@@ -75,6 +75,7 @@ describe('Node Routes - /api/nodes', function() {
     });
   });
 
+
   /* * * * * * * * * * * * * * * * * * * * * 
   *    POST /roadmaps/:roadmapID/nodes     *
   * * * * * * * * * * * * * * * * * * * * */
@@ -112,10 +113,12 @@ describe('Node Routes - /api/nodes', function() {
     });
   });
 
+
   /* * * * * * * * * * * * * * * * * * * * * 
   *    GET /api/nodes/:nodeID              *
   * * * * * * * * * * * * * * * * * * * * */
-  describe('GET /api/roadmaps/:roadmapID', function(){
+
+  describe('GET /api/nodes/:nodeID', function(){
    
     var testNodeID;
 
@@ -155,9 +158,56 @@ describe('Node Routes - /api/nodes', function() {
     });
 
   });
+
+
   /* * * * * * * * * * * * * * * * * * * * * 
   *    PUT /api/nodes/:nodeID              *
   * * * * * * * * * * * * * * * * * * * * */
+
+  describe('GET /api/nodes/:nodeID', function(){
+   
+    var testNodeID;
+
+    before('Create test Roadmap and Node', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(savedRoadmap){
+          testNode.parentRoadmap = savedRoadmap._id;
+          return Node(testNode).save();
+        })
+        .then(function(savedNode){
+          testNodeID = savedNode._id;
+          done();
+        })
+        .catch(function(err){ throw err; })
+    });
+
+    after('Remove test Roadmap and Node', function(done) {
+      Node.findOneAndRemove({title: 'TestNode'})
+        .then(function(){ 
+          return Roadmap.findOneAndRemove({title: 'TestMap'})
+        })
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
+    });
+
+    it('Should respond with the Node specified by ID', function(done){
+      request(server.app)
+        .put('/api/nodes/'+testNodeID)
+        .send({description: 'Updated Description'})
+        .end(function(err, serverResponse){
+          if (err) throw err;
+
+          Node.findById(testNodeID)
+            .then(function(dbResults){
+              expect( dbResults.description ).to.equal( 'Updated Description' );
+              done();
+            });
+        });
+
+    });
+
+  });
 
   /* * * * * * * * * * * * * * * * * * * * * 
   *    DELETE /api/nodes/:nodeID           *
