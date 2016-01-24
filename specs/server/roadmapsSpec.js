@@ -173,8 +173,8 @@ describe('Roadmap Routes - /api/roadmaps', function() {
           Roadmap.findById(testMapID)
             .then(function(dbResults){
               expect( dbResults.description ).to.equal( "Learn JavaScript" );
+              done();
             });
-          done();
         });
     });
   });
