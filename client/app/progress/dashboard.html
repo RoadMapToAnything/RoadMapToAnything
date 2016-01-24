@@ -9,30 +9,14 @@
           <tr>
             <th>Nodes</th>
             <th>Roadmap</th>
-            <th>Progress</th>
+            <th>Progress Bar</th>
           </tr>
-          <div class="follow-map">
+          <div class="follow-map" ng-repeat="maps in dummyFollowed">
             <tr>
-        
-              <td>2/23</td>
-              <td class="truncate">The Legacy of Virginia Wolfe</td>
+              <td>{{ map.completed }} /
+              {{ map.nodes }}</td>
+              <td class="truncate">{{ map.title }}</td>
               <td class="progress-bar"> | progress bar goes here | </td>  
-            </tr>
-          </div>
-          <div class="follow-map">
-            <tr>
-        
-              <td>5/12</td>
-              <td class="truncate">How To Tell If Your Restaurant Idea Is Good</td>
-              <td class="progress-bar"> | progress bar goes here | </td>
-            </tr>
-          </div>
-          <div class="follow-map">
-            <tr>
-        </td>
-              <td>14/14</td>
-              <td class="truncate">Be A Champion Horseshoe Player</td>
-              <td class="progress-bar"> | progress bar goes here | </td>
             </tr>
           </div>
         </tbody>
@@ -54,30 +38,15 @@
             <th>Roadmap</th>
             <th>Progress</th>
           </tr>
-          <div class="follow-map">
+          <div class="follow-map" ng-repeat="maps in dummyMyMaps">
             <tr>
-        </td>
-              <td class="truncate">5</td>
-              <td >Learn To Make Paper With Old Jeans</td>
+              <td>{{ map.completed }} /
+              {{ map.nodes }}</td>
+              <td class="truncate">{{ map.title }}</td>
               <td class="progress-bar"> | progress bar goes here | </td>
             </tr>
           </div>
-          <div class="follow-map">
-            <tr>
-        
-              <td>20</td>
-              <td class="truncate">An Overview of Japanese Film</td>
-              <td class="progress-bar"> | progress bar goes here | </td>
-            </tr>
-          </div>
-          <div class="follow-map">
-            <tr>
-        </td>
-              <td>14</td>
-              <td class="truncate">Let's Learn Algebra</td>
-              <td class="progress-bar"> | progress bar goes here | </td>
-            </tr>
-          </div>
+
         </tbody>
       </table>
     </div>

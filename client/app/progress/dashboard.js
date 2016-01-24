@@ -7,18 +7,39 @@ angular.module('app.dash', [])
 
   $scope.myMapsResponseBody = {};
 
-  $scope.dummyFollowedMapsResponseBody = {
-    username: 'taylor',
-    followedMaps: [{
-
+  $scope.dummyFollowed = [{
+      _id: 01,
+      title: 'The Legacy of Virginia Wolfe',
+      nodes: 23,
+      completed: 2
     },{
-
+      _id: 02,
+      title: 'How To Tell If Your Restaurant Idea Is Good',
+      nodes: 12,
+      completed: 5
     },{
+      _id: 03,
+      title: 'Be A Champion Horseshoe Player',
+      nodes: 14,
+      completed: 14
+    }];
 
-    }]
-  };
-
-  $scope.dummyMyMapsResponseBody = {};
+    $scope.dummyMyMaps = [{
+      _id: 04,
+      title: 'Learn To Make Paper With Old Jeans',
+      nodes: 5,
+      completed: 2
+    },{
+      _id: 05,
+      title: 'An Overview of Japanese Film',
+      nodes: 20,
+      completed: 15
+    },{
+      _id: 06,
+      title: 'Let\'s Learn Algebra',
+      nodes: 15,
+      completed: 0
+    }];
 
   //getDashboardData();
 
@@ -39,7 +60,7 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('localhost:3000/#/api/users/' + $scope.userName )
           .then(function(response){
-            $scope.myMapsResponseBody = response.body.roadmaps;
+            $scope.myMaps = response.body.roadmaps;
             }, function(err){
               console.log("error with MyMaps request", err);
             });
@@ -50,7 +71,7 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('localhost:3000/#/api/users/' + $scope.userName )
           .then(function(response){
-            $scope.followedMapsResponseBody = response.body.roadmaps;
+            $scope.followed = response.body.roadmaps;
             }, function(err){
               console.log('error with followedMaps request', err);
             });
