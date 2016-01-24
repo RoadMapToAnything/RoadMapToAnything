@@ -39,7 +39,7 @@ module.exports = function (apiRouter) {
     apiRouter.post('/roadmaps/:roadmapID/nodes', nodeController.createNode);
     apiRouter.post(                    '/nodes', nodeController.createNode);
 
-    apiRouter.get(   '/nodes/:nodeID', nodeController.getNodes);
+    apiRouter.get(   '/nodes/:nodeID', nodeController.getNodeByID);
     apiRouter.put(   '/nodes/:nodeID', nodeController.updateNode);
     apiRouter.delete('/nodes/:nodeID', nodeController.deleteNode);
 

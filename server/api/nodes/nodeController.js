@@ -15,8 +15,13 @@ module.exports = {
       .catch(handleError(next));
   },
 
-  getNodes : function (req, res, next) {
-
+  getNodeByID : function (req, res, next) {
+    var _id = req.params.nodeID;
+    Node.findById(_id)
+      .then(function(dbResults){
+        res.json(dbResults);
+      })
+      .catch(handleError(next));
   },
 
   updateNode : function (req, res, next) {
