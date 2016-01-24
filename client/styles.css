@@ -17,5 +17,16 @@
   border: 1px solid black !important;
   background-color: black !important;
 }
+h5 {
+  text-align: absolute;
+}
 
-body { background-color: black;}
+/*body { background-color: white;}*/
+
+
+#search {
+    display: none;
+    margin-bottom: 0px;
+    border-top: 1px solid #111;
+    border-bottom: 1px solid #111;
+}
