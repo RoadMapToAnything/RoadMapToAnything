@@ -1,54 +1,60 @@
 <div class="container">
+  <div class="dash-tables">
 
-  <!--Maps I Follow-->
-  <div id="follow-box">
-    <div class="follow-title"><h5>Maps I Follow</h5></div>
-    <div class="follow-maps">
-      <table class="bordered striped highlight0+56+">
-        <tbody>
-          <tr>
-            <th>Nodes</th>
-            <th>Roadmap</th>
-            <th>Progress Bar</th>
-          </tr>
+    <!--Maps I Follow-->
+    <div id="follow-box">
+      <div class="follow-title"><h5>Maps I Follow</h5></div>
+      <div class="follow-maps">
+        <table class="bordered striped highlight0+56+">
+          <tbody>
+            <tr>
+              <th>Nodes</th>
+              <th>Roadmap</th>
+              <th>Progress Bar</th>
+            </tr>
+          </tbody>
+          <tbody class="follow-map" ng-repeat="map in dummyFollowed">
+            <tr>
+              <td>{{ map.completed }} /
+              {{ map.nodes }}</td>
+              <td class="truncate">{{ map.title }}</td>
+              <td class="progress-bar">
+                <div class="progress">
+                  <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
+                </div>
+              </td>  
+            </tr>
         </tbody>
-        <tbody class="follow-map" ng-repeat="map in dummyFollowed">
-          <tr>
-            <td>{{ map.completed }} /
-            {{ map.nodes }}</td>
-            <td class="truncate">{{ map.title }}</td>
-            <td class="progress-bar"> | progress bar goes here | </td>  
-          </tr>
-      </tbody>
-      </table>
+        </table>
+      </div>
     </div>
-  </div>
-  <!--Spacer-->
-  <div class="dash-spacer">&nbsp;</div>
-  <div class="dash-spacer">&nbsp;</div>
+    <!--Spacer-->
+    <div class="dash-spacer">&nbsp;</div>
+    <div class="dash-spacer">&nbsp;</div>
 
-  <!--Maps I Made-->
-  <div class="made-box">
-    <div class="made-title"><h5>Maps I Made</h5></div>
-    <div class="made-maps">
-      <table class="bordered striped highlight">
-        <tbody>
-          <tr>
-            <th>Nodes</th>
-            <th>Roadmap</th>
-            <th>Progress Bar</th>
-          </tr>
+    <!--Maps I Made-->
+    <div class="made-box">
+      <div class="made-title"><h5>Maps I Made</h5></div>
+      <div class="made-maps">
+        <table class="bordered striped highlight">
+          <tbody>
+            <tr>
+              <th>Nodes</th>
+              <th>Roadmap</th>
+              <th>Progress Bar</th>
+            </tr>
+          </tbody>
+          <tbody class="follow-map" ng-repeat="map in dummyMyMaps">
+            <tr>
+              <td>{{ map.completed }} /
+              {{ map.nodes }}</td>
+              <td class="truncate">{{ map.title }}</td>
+              <td class="progress-bar"> | progress bar goes here | </td>  
+            </tr>
         </tbody>
-        <tbody class="follow-map" ng-repeat="map in dummyMyMaps">
-          <tr>
-            <td>{{ map.completed }} /
-            {{ map.nodes }}</td>
-            <td class="truncate">{{ map.title }}</td>
-            <td class="progress-bar"> | progress bar goes here | </td>  
-          </tr>
-      </tbody>
-      </table>
+        </table>
+      </div>
     </div>
-  </div>
 
+  </div>
 </div>

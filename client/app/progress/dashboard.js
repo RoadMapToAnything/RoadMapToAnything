@@ -3,9 +3,7 @@ angular.module('app.dash', [])
 .controller('DashboardController', ['$scope','$http', function($scope,$http){
   console.log("dash controller is working");
 
-  $scope.msg = "hello from dash controller"
-
-  $scope.username = "";
+  $scope.username = '';
 
   $scope.followedMapsResponseBody = {};
 
@@ -45,10 +43,22 @@ angular.module('app.dash', [])
       completed: 0
     }];
 
+    addPercentCompleteAttr();
+
   //getDashboardData();
 
 
   // helper functions
+
+  function addPercentCompleteAttr (){
+    $scope.dummyFollowed.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
+    });
+
+    $scope.dummyMyMaps.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
+    });
+  }
 
   function getDashboardData (){
     angular.element(document).ready( function(){
