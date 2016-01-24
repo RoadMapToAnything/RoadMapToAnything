@@ -18,8 +18,6 @@ var request  = require('supertest'),
 
 describe('Node Routes - /api/nodes', function() {
   
-  var result;
-
   var testMap = { 
     title      : 'TestMap',
     description: 'Learn TDD',
@@ -32,7 +30,7 @@ describe('Node Routes - /api/nodes', function() {
     description  : 'Learn TDD',
     resourceType : 'link',
     resourceURL  : 'https://en.wikipedia.org/wiki/Test-driven_development',
-    parentRoadmap: ''
+    parentRoadmap: null
   };
 
 
@@ -59,7 +57,10 @@ describe('Node Routes - /api/nodes', function() {
         .then(function(){ 
           return Roadmap.findOneAndRemove({title: 'TestMap'})
         })
-        .then(function(){ done(); })
+        .then(function(){ 
+          delete testNode.parentRoadmap; // reset to original state
+          done(); 
+        })
         .catch(function(err){ throw err; })
     });
 
@@ -70,11 +71,7 @@ describe('Node Routes - /api/nodes', function() {
         .post('/api/nodes')
         .send(testNode)
         .expect(201)
-        .end(function(err, serverResponse){
-          if (err) throw err;
-          delete testNode.parentRoadmap; // reset to original state
-          done();
-        });
+        .end(done)
     });
   });
 
@@ -114,15 +111,50 @@ describe('Node Routes - /api/nodes', function() {
         .end(done);
     });
   });
-  /* * * * * * * * * * * * * * * * * * * * * 
-  *    GET /api/nodes/                     *
-  * * * * * * * * * * * * * * * * * * * * */
 
   /* * * * * * * * * * * * * * * * * * * * * 
   *    GET /api/nodes/:nodeID              *
   * * * * * * * * * * * * * * * * * * * * */
+  describe('GET /api/roadmaps/:roadmapID', function(){
+   
+    var testNodeID;
 
+    before('Create test Roadmap and Node', function(done) {
+      Roadmap(testMap)
+        .save()
+        .then(function(savedRoadmap){
+          testNode.parentRoadmap = savedRoadmap._id;
+          return Node(testNode).save();
+        })
+        .then(function(savedNode){
+          testNodeID = savedNode._id;
+          done();
+        })
+        .catch(function(err){ throw err; })
+    });
 
+    after('Remove test Roadmap and Node', function(done) {
+      Node.findOneAndRemove({title: 'TestNode'})
+        .then(function(){ 
+          return Roadmap.findOneAndRemove({title: 'TestMap'})
+        })
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; })
+    });
+
+    it('Should respond with the Node specified by ID', function(done){
+     
+      request(server.app)
+        .get('/api/nodes/'+testNodeID)
+        .end(function(err, serverResponse){
+          if (err) throw err;
+          expect( serverResponse.body._id ).to.equal( String(testNodeID) );
+          done();
+        });
+
+    });
+
+  });
   /* * * * * * * * * * * * * * * * * * * * * 
   *    PUT /api/nodes/:nodeID              *
   * * * * * * * * * * * * * * * * * * * * */
