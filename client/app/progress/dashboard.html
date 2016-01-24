@@ -49,7 +49,11 @@
               <td>{{ map.completed }} /
               {{ map.nodes }}</td>
               <td class="truncate">{{ map.title }}</td>
-              <td class="progress-bar"> | progress bar goes here | </td>  
+              <td class="progress-bar">
+                <div class="progress">
+                  <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
+                </div>
+              </td> 
             </tr>
         </tbody>
         </table>
