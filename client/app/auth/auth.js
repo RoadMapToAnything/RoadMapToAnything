@@ -10,12 +10,16 @@ angular.module('app.auth', [])
     $http.get('/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword )
     .then(
       //success callback
-      function(){
+      function(res){
         console.log('sent login credentials');
       },
       //error callback
-      function(err){
+      function(err, res){
+        console.log('res::::', res);
         console.log('error sending credentials', err);
+        if(res.statusCode === 401){
+          console.log('unauthorized credentials');
+        }
       }
       );
   };
