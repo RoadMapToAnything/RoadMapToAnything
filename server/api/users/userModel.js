@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-    ObjectId = mongoose.Schema.ObjectId;
+var mongoose = require('mongoose'),
+    ObjectId = mongoose.Schema.ObjectId,
     triggers = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({
@@ -8,6 +8,7 @@ var UserSchema = new mongoose.Schema({
   firstName: {type: String},
   lastName : {type: String},
   roadmaps : [ { type: ObjectId, ref: 'Roadmap'} ],
+  embarked : [ { type: ObjectId, ref: 'Roadmap'} ],
   created  : { type: Date},
   updated  : { type: Date}
 });

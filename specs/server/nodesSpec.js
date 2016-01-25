@@ -133,25 +133,30 @@ describe('Node Routes - /api/nodes', function() {
           testNodeID = savedNode._id;
           done();
         })
-        .catch(function(err){ throw err; })
+        .catch(function(err){ throw err; });
     });
 
     after('Remove test Roadmap and Node', function(done) {
       Node.findOneAndRemove({title: 'TestNode'})
         .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'})
+          return Roadmap.findOneAndRemove({title: 'TestMap'});
         })
         .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+        .catch(function(err){ throw err; });
     });
 
-    it('Should respond with the Node specified by ID', function(done){
+    it('Should respond with the Node specified by ID, with timestamps', function(done){
      
       request(server.app)
         .get('/api/nodes/'+testNodeID)
         .end(function(err, serverResponse){
           if (err) throw err;
           expect( serverResponse.body._id ).to.equal( String(testNodeID) );
+          expect( serverResponse.body ).to.have.property('created');
+          expect( serverResponse.body ).to.have.property('updated');
+
+          // Timestamps must be wrapped in order to ensure a consistent format.
+          expect( serverResponse.body.created ).to.equal( serverResponse.body.updated );
           done();
         });
 
@@ -191,20 +196,28 @@ describe('Node Routes - /api/nodes', function() {
         .catch(function(err){ throw err; })
     });
 
-    it('Should update specified field on Node with provided value', function(done){
-      request(server.app)
-        .put('/api/nodes/'+testNodeID)
-        .send({description: 'Updated Description'})
-        .end(function(err, serverResponse){
-          if (err) throw err;
+    it('Should update specified field on Node with provided value, with updated timestamps', function(done){
+      Node.findOne({_id: testNodeID})
+        .then(function (node) {
+          var preUpdateStamp = node.updated;
 
-          Node.findById(testNodeID)
-            .then(function(dbResults){
-              expect( dbResults.description ).to.equal( 'Updated Description' );
-              done();
+          request(server.app)
+            .put('/api/nodes/'+testNodeID)
+            .send({description: 'Updated Description'})
+            .end(function(err, serverResponse){
+              if (err) throw err;
+
+              Node.findById(testNodeID)
+                .then(function(dbResults){
+                  expect( dbResults.description ).to.equal( 'Updated Description' );
+                  expect( dbResults.created ).to.not.equal( dbResults.updated );
+
+                  // Timestamps must be wrapped in order to ensure a consistent format.
+                  expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
+                  done();
+                });
             });
         });
-
     });
 
   });

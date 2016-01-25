@@ -112,6 +112,7 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
+          console.log(res.body);
           expect(res.body[0].title).to.equal('Straight Outta Knowing Nothing About Straight Outta Compton');
           expect(res.body[1].title).to.equal('Learning JavaScript');
           expect(res.body[2].title).to.equal('Understanding Bowie');
@@ -170,8 +171,11 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.not.be.empty;       
-          expect(new Date(res.body[0].created)).to.be.below(now);        
+          expect(res.body).to.not.be.empty;
+
+          // Timestamps must be wrapped in order to ensure a consistent format.
+          // And mongoose loses 15-45 milliseconds somehow, so add 50 to ensure it is late enough.
+          expect(new Date(res.body[0].created).getTime()).to.be.below(new Date(now).getTime());        
           done();
         });
 
