@@ -98,7 +98,7 @@ describe('The users API', function() {
       testData.clearUsers(done);
     });
 
-    it('should retrieve an array of users', function (done) {
+    it('should retrieve an array of users with populated roadmaps', function (done) {
 
       request(server.app)
         .get(route)
@@ -108,7 +108,10 @@ describe('The users API', function() {
 
           expect(res.body).to.be.an('array');
           expect(res.body).to.not.be.empty;
-          expect(res.body).to.have.deep.property('[0].username', username);
+          expect(res.body[0]).to.have.property('username', username);
+          expect(res.body[0].roadmaps).to.be.an('array');
+          expect(res.body[0].roadmaps).to.not.be.empty;
+          expect(res.body[0].roadmaps[0]).to.have.property('title');
           done();
 
         });
