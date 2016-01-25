@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
+  <meta charset="utf-8">
   <title>Roadmap To Anything</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="styles.css" rel="stylesheet" type="text/css">  
+
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
- 
-
-
-<!-- TO REFACTOR -->
 
   <!--main page content-->
   <div ui-view="header"></div>
@@ -76,3 +74,19 @@
 
 
 </html>
+
+  <!--nav bar
+  <div class="navbar-fixed">
+    <nav class="amber lighten-1">
+      <div class="nav-wrapper container">  
+        <a href="#" class="brand-logo">Roadmap to Anything</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="search.html"><i class="material-icons">search</a></li>
+            <li><a ui-sref="dashboard">My Roadmaps</a></li>
+            <li><a href="app/auth/signup.html">Sign Up</a></li>
+            <li><a href="app/auth/signin.html">Log In</a></li>
+            <li><a href="/">Log Out</a></li>
+          </ul>
+      </div>
+    </nav>  
+  </div>  -->
