@@ -9,76 +9,70 @@
 </head>
 
 <body>
-  <!--nav bar-->
-  <div class="navbar-fixed">
-    <nav class="amber lighten-1">
-      <div class="nav-wrapper container">  
-        <a href="#" class="brand-logo">Roadmap to Anything</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="search.html"><i class="material-icons">search</i></a></li>
-            <li><a hsref="roadmaps">My Roadmaps</a></li>
-            <li><a href="app/auth/signup.html">Sign Up</a></li>
-            <li><a href="app/auth/signin.html">Log In</a></li>
-            <li><a href="/">Log Out</a></li>
-          </ul>
-      </div>
-    </nav>  
-  </div>  
+ 
+
+
+<!-- TO REFACTOR -->
+
   <!--main page content-->
+  <div ui-view="header"></div>
   <div class="container">
     <div ui-view="welcome"></div>
-    <div ui-view="header"></div>
     <div ui-view="content"></div>
     <!--     <div ui-view="footer"></div> -->
-  </div>
   <!--main page-->
-  <div class="container">
+  
   <!-- ui-sref takes you to a different state -->
-    <a ui-sref="home">Click to go to main</a>
-    <a ui-sref="dashboard">Click to go to dashboard</a>
+    
+    <button class="waves-effect waves-light btn center-align" ui-sref="roadmapTemplate">Click me to go to a template roadmap</button>
+
+
+    <!--  In the future this could be part of a view-->
+    <br><br>
+    <div class="row">
+      <div class="col s12">  
+        <ul class="tabs">
+         <li class="tab col s3"> <a ui-sref="signup">Click to go to signup</a> </li>
+         <li class="tab col s3"> <a ui-sref="signin">Click to go to signIn</a> </li>
+         <li class="tab col s3"> <a ui-sref="home">Click to go to main</a> </li>
+         <li class="tab col s3"> <a ui-sref="dashboard">Click to go to dashboard</a> </li>
+        </ul>
+      </div>
+    </div>
+    <br>
+
   </div>
 
-<!--footer-->
- <footer class="page-footer amber lighten-1">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s5">
-          <h5 class="white-text">Team Bio</h5>
-          <p class="grey-text text-lighten-4">TeamDescription</p>
-        </div>
-
-        <div class="col l2 s5">
-          <h5 class="white-text">About</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-          </ul>
-        </div>
-
-        <div class="col l3 s12">
-          <h5 class="white-text">FAQs</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!--footer copyright-->
-    <div class="footer-copyright">
-      <div class="container">
-      © 2016 Copyright Text
-      </div>
-    </div>
-  </footer>
+  <div ui-view="footer"></div>
+<!-- When main is up put a main.footer and a main.header -->
 </body>
 
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- A library to make connecting lines between elements -->
+<script src="non_bower_dependencies/jquery-connections/jquery.connections.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+
+
+
+
+
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+>>>>>>> Skeleton for RoadMap Template
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+ -->
+
 
 <script src="app.js"></script>
 <script src="app/auth/auth.js"></script>
 <script src="app/main/main.js"></script>
 <script src="app/progress/dashboard.js"></script>
-</html>
+<script src="app/roadmaps/roadmaps.js"></script>
 
+
+</html>

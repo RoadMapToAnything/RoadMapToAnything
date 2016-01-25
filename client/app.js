@@ -2,7 +2,8 @@ angular.module('app', [
   'ui.router',
   'app.main',
   'app.auth',
-  'app.dash'
+  'app.dash',
+  'app.roadmaps'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -38,7 +39,8 @@ angular.module('app', [
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
         }
-      }})
+      }
+    })
     .state('dashboard', {
       url: '/dashboard',
       views: {
@@ -56,4 +58,22 @@ angular.module('app', [
         }
       }
     })
+  .state('roadmapTemplate', {
+    url: '/roadmaps',
+    views: {
+      'content': {
+        templateUrl: 'app/roadmaps/roadmaps.content.html',
+        controller: 'RoadMapsController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.header.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
+  })
+
 });
