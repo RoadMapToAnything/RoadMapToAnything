@@ -9,6 +9,16 @@ angular.module('app.dash', [])
 
   $scope.myMapsResponseBody = {};
 
+  $scope.hideMyMaps = true;
+
+  $scope.showMyMaps = function(){
+      $scope.hideMyMaps = false;
+  };
+
+  $scope.showFollowed = function(){
+      $scope.hideMyMaps = true;
+  };
+
   $scope.dummyFollowed = [{
       _id: 01,
       title: 'The Legacy of Virginia Wolfe',

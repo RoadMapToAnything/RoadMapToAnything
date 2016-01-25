@@ -1,8 +1,13 @@
 <div class="container">
+  <div class="dash-buttons">
+    <a class="waves-effect waves-light btn" ng-click="showFollowed()">Maps I Follow</a>
+    <a class="waves-effect waves-light btn" ng-click="showMyMaps()">Maps I Made</a>
+  </div>
+
   <div class="dash-tables">
 
     <!--Maps I Follow-->
-    <div class="dash-table">
+    <div class="dash-table" ng-show="hideMyMaps">
       <div class="follow-title"><h5>Maps I Follow</h5></div>
       <div class="follow-maps">
         <table class="bordered striped highlight0+56+">
@@ -28,12 +33,9 @@
         </table>
       </div>
     </div>
-    <!--Spacer-->
-    <div class="dash-spacer">&nbsp;</div>
-    <div class="dash-spacer">&nbsp;</div>
 
     <!--Maps I Made-->
-    <div class="dash-table">
+    <div class="dash-table" ng-hide="hideMyMaps">
       <div class="made-title"><h5>Maps I Made</h5></div>
       <div class="made-maps">
         <table class="bordered striped highlight">
