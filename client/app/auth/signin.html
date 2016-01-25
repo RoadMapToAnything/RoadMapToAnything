@@ -1,5 +1,18 @@
 
-<h1>This is the signin view</h1>
-<h1>Insert Sign In Form Here</h1>
-<button>Click Me to Sign In</button>
-
+<h1>Sign In</h1>
+  <div class="row">
+    <form class="col s12" ng-submit="attemptLogin()">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="username" type="text" class="validate" ng-model="attemptedUsername">
+          <label for="first_name">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="password" type="password" class="validate" ng-model="attemptedPassword">
+          <label for="password">Password</label>
+        </div>
+      </div>
+    </form>
+  </div>
