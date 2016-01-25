@@ -14,7 +14,7 @@ module.exports = {
   },
 
   getRoadmaps : function (req, res, next) {
-    dbArgs = handleQuery(req.query);
+    var dbArgs = handleQuery(req.query);
 
     Roadmap.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .then(function(dbResults){
