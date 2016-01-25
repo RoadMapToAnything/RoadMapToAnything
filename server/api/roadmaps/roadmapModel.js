@@ -6,7 +6,8 @@ var RoadmapSchema = new mongoose.Schema({
     description: { type: String,   required: true },
     author     : { type: ObjectId, required: true, ref: 'User' },
     nodes      : [ { type: ObjectId, ref: 'Node'} ],
-    created    : { type: Date, default: Date.now}
+    created    : { type: Date },
+    updated    : { type: Date },
 });
 
 module.exports = mongoose.model('Roadmap', RoadmapSchema);
