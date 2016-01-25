@@ -122,7 +122,11 @@ module.exports.seedData = function(next) {
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
-        addRoadmap(i + 1);
+
+        User.findOneAndUpdate({_id: users[i]._id}, {roadmaps: map._id})
+        .then(function () {
+          addRoadmap(i + 1);
+        });
       });
   };
 
