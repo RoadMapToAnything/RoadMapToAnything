@@ -12,7 +12,7 @@ angular.module('app', [
       url: '/',
       views: {
         'header': {
-          templateUrl: 'app/main/main.header.html',
+          templateUrl: 'app/main/main.userheader.html',
           controller: 'MainController'
         },
          'welcome': {
