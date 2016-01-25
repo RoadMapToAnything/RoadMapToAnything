@@ -30,3 +30,10 @@ i, p, h1, h2, h3, h4, h5, h6, th, td {
 .dash-tables {
   margin-bottom: 40px;
 }
+
+.pressed {
+  background-color: #004d40;
+}
+.btn:hover {
+  background-color: #004d40 !important; 
+}

@@ -13,10 +13,14 @@ angular.module('app.dash', [])
 
   $scope.showMyMaps = function(){
       $scope.hideMyMaps = false;
+      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
   };
 
   $scope.showFollowed = function(){
       $scope.hideMyMaps = true;
+      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+      angular.element( '#followedBtn' ).addClass( 'pressed' );
   };
 
   $scope.dummyFollowed = [{
