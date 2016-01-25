@@ -12,12 +12,12 @@ angular.module('app.auth', [])
       //success callback
       function(res){
         console.log('sent login credentials');
+        console.log('res.data', res.data);
       },
       //error callback
-      function(err, res){
-        console.log('res::::', res);
-        console.log('error sending credentials', err);
-        if(res.statusCode === 401){
+      function(res){
+        console.log('res:', res);
+        if(res.status === 401){
           console.log('unauthorized credentials');
         }
       }
