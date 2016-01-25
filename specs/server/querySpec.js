@@ -127,7 +127,6 @@ describe('Query Strings', function() {
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Filter parameter', function() {
-    var now = Date.now();
 
     it('should filter users by name', function (done) {
 
@@ -163,6 +162,7 @@ describe('Query Strings', function() {
     });
 
     it('should find roadmaps older than now', function (done) {
+      var now = Date.now();
 
       request(server.app)
         .get(route.maps)
@@ -170,14 +170,15 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.not.be.empty;          
-          expect(res.body[0].created).to.less.than(now);        
+          expect(res.body).to.not.be.empty;       
+          expect(new Date(res.body[0].created)).to.be.below(now);        
           done();
         });
 
     });
 
     it('should find roadmaps newer than now', function (done) {
+      var now = Date.now();
 
       request(server.app)
         .get(route.maps)

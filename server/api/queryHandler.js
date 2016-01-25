@@ -31,7 +31,7 @@ var filterHandler = function (key, value) {
 
   if (convert[first]) {
     value = {};
-    value[convert[first]] = Number(end);
+    value[convert[first]] = end;
   }
 
   filters[key] = value;
@@ -42,7 +42,7 @@ module.exports = function (query) {
   filters = {};
   fields = null;
   params = {};
-  console.log('QUERY:', query);
+
   for (var key in query) {
     // Handle designated parameters first.
     if (paramHandler[key]) paramHandler[key](query[key]);
@@ -52,7 +52,7 @@ module.exports = function (query) {
   }
 
   // TODO: Handle fields.
-  console.log('FILTERS:', filters);
+
   return {
     filters: filters, 
     fields: fields, 
