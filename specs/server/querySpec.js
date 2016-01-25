@@ -126,7 +126,7 @@ describe('Query Strings', function() {
    *               FILTER                  *
    * * * * * * * * * * * * * * * * * * * * */
 
-   describe('Filter parameter', function() {
+  describe('Filter parameter', function() {
 
     it('should filter users by name', function (done) {
 
@@ -161,16 +161,32 @@ describe('Query Strings', function() {
 
     });
 
-    it('should filter roadmaps by title', function (done) {
+    it('should find roadmaps older than now', function (done) {
+      var now = Date.now();
 
       request(server.app)
         .get(route.maps)
-        .query({title: 'Learning JavaScript'})
+        .query({created: '<' + now})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.not.be.empty;          
-          expect(res.body[0].title).to.equal('Learning JavaScript');        
+          expect(res.body).to.not.be.empty;       
+          expect(new Date(res.body[0].created)).to.be.below(now);        
+          done();
+        });
+
+    });
+
+    it('should find roadmaps newer than now', function (done) {
+      var now = Date.now();
+
+      request(server.app)
+        .get(route.maps)
+        .query({created: '>' + now})
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.body).to.be.empty;       
           done();
         });
 
