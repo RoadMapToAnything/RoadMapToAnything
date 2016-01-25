@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 client/lib/
+non_bower_dependencies/
 
 # Build Folders
 build/
