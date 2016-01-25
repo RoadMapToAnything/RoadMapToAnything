@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-    ObjectId = mongoose.Schema.ObjectId;
+var mongoose = require('mongoose'),
+    ObjectId = mongoose.Schema.ObjectId,
     triggers = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({

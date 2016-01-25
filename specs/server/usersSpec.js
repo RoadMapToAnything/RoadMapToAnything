@@ -108,14 +108,14 @@ describe('The users API', function() {
 
           expect(res.body).to.be.an('array');
           expect(res.body).to.not.be.empty;
-          expect(res.body).to.have.deep.property('[0].username');
+          expect(res.body).to.have.deep.property('[0].username', username);
           done();
 
         });
 
     });
 
-    it('should retrieve a specific user with properties firstName and lastName', function (done) {
+    it('should retrieve a specific user with name properties, and timestamps', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -126,6 +126,11 @@ describe('The users API', function() {
           expect(res.body).to.have.property('username', username);
           expect(res.body).to.have.property('firstName', user.firstName);
           expect(res.body).to.have.property('lastName', user.lastName);
+          expect(res.body).to.have.property('created');
+          expect(res.body).to.have.property('updated');
+
+          // Timestamps must be wrapped in order to ensure a consistent format.
+          expect( new Date(res.body.created).getTime() ).to.equal( new Date(res.body.updated).getTime() );
           done();
 
         });
@@ -133,22 +138,30 @@ describe('The users API', function() {
     });
 
 
-    it('should update a specific user with new first name', function (done) {
+    it('should update a user with new first name and timestamps', function (done) {
+      User.findOne({username: username})
+        .then(function (user) {
+          var preUpdateStamp = user.updated;
 
-      request(server.app)
-        .put(route + '/' + username)
-        .send({firstName: 'Robert'})
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function (err, res) {
+          request(server.app)
+            .put(route + '/' + username)
+            .send({firstName: 'Robert'})
+            .expect('Content-Type', /json/)
+            .expect(201)
+            .end(function (err, res) {
 
-          expect(res.body).to.have.property('username', username);
-          User.findOne({username: username})
-            .then(function (user) {
+              expect(res.body).to.have.property('username', username);
+              User.findOne({username: username})
+                .then(function (user) {
 
-              expect(user).to.have.property('firstName', 'Robert');
-              expect(user.created).to.not.equal(user.updated);
-              done();
+                  expect(user).to.have.property('firstName', 'Robert');
+                  expect(user.created).to.not.equal(user.updated);
+
+                  // Timestamps must be wrapped in order to ensure a consistent format.
+                  expect( new Date(user.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
+                  done();
+                });
+
             });
 
         });
