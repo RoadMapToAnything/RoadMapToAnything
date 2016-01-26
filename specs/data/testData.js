@@ -122,6 +122,7 @@ var seedRoadmaps = function(next) {
 
     maps[i].author = users[maps[i].author]._id;
 
+
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
