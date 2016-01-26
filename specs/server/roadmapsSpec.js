@@ -56,47 +56,33 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   describe('GET /api/roadmaps', function(){
 
     before('Create test Roadmap', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              done();
-            });
+      request(server.app)
+        .get('/api/roadmaps')
+        .end(function(err, serverResponse){
+          if (err) throw err;
+          result = serverResponse.body;
+          done();
         });
     });
 
-    after('Remove test Roadmap', function(done) {
-      Roadmap.findOneAndRemove({title: 'TestMap'})
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+
+    it('Should respond with an array', function(){
+      expect(result).to.be.an('array');
     });
 
-    it('Should respond with an array', function(done){
-      expect( Array.isArray(result) ).to.equal(true);
-      done();
-    });
-
-    it('If Roadmaps exist, response array should contain Roadmaps', function(done){
+    it('should have roadmaps in its response array', function(){
       expect( result[0].hasOwnProperty('nodes') ).to.equal(true);
-      done();
     });
 
-    it('If no new Roadmaps exist, response array should be three', function(done){
-      Roadmap.findOneAndRemove({title: 'TestMap'})
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              expect( result.length ).to.equal(3);
-              done();
-            });
-        });
+    it('should have roadmaps populated with an author', function(){
+      expect(result[0]).to.have.property('author');
+      expect(result[0].author).to.have.property('username');
+    });
+
+    it('should have roadmaps populated with nodes', function(){
+      expect(result[0]).to.have.property('nodes');
+      expect(result[0].nodes).to.be.an('array');
+      expect(result[0].nodes[0]).to.have.property('title');
     });
 
   });
