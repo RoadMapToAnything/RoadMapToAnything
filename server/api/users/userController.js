@@ -54,13 +54,10 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
-    console.log('UPDATE USER:', req.params.username);
-    console.log('WITH BODY:', req.body);
     User.findOneAndUpdate({username: req.params.username}, req.body)
       .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
-        console.log('USER UPDATED:', user);
         res.status(200).json(user);
       })
       .catch(handleError(next));

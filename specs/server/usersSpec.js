@@ -167,8 +167,6 @@ describe('The users API', function() {
               User.findOne({username: username})
                 .then(function (user) {
 
-                  console.log('CHECKING USER:', user);
-
                   expect(user).to.have.property('firstName', 'Robert');
                   expect(user.created).to.not.equal(user.updated);
 
