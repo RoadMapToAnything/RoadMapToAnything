@@ -70,15 +70,15 @@ angular.module('app.dash', [])
 
   // helper functions
 
-  function addTotalNodesOfFollowedMaps (){
-    $scope.followed.forEach(function(map){
+  function addTotalNodesOfFollowedMaps (arr){
+    arr.forEach(function(map){
       console.log('followed totalNodes', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
   }
 
-  function addTotalNodesOfMyMaps (){
-    $scope.myMaps.forEach(function(map){
+  function addTotalNodesOfMyMaps (arr){
+    arr.forEach(function(map){
       console.log('myMaps totalNodes', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
@@ -109,7 +109,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.embarked);
             $scope.myMaps = response.data.data.embarked || [];
-            addTotalNodesOfMyMaps();
+            addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
             });
@@ -122,7 +122,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.roadmaps);
             $scope.followed = response.data.data.roadmaps || [];
-            addTotalNodesOfFollowedMaps();
+            addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);
             });
