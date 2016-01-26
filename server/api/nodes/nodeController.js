@@ -18,6 +18,7 @@ module.exports = {
   getNodeByID : function (req, res, next) {
     var _id = req.params.nodeID;
     Node.findById(_id)
+      .populate('parentRoadmap')
       .then(function(dbResults){
         res.json(dbResults);
       })
@@ -28,6 +29,7 @@ module.exports = {
     var _id = req.params.nodeID;
     var updateCommand = req.body;
     Node.findByIdAndUpdate(_id, updateCommand)
+      .populate('parentRoadmap')
       .then(function(dbResults){
         res.json(dbResults);
       })
@@ -37,6 +39,7 @@ module.exports = {
   deleteNode : function (req, res, next) {
     var _id = req.params.nodeID;
     Node.findOne({_id:_id})
+      .populate('parentRoadmap')
       .then(function(node){
         node.remove();
         res.json(node);
