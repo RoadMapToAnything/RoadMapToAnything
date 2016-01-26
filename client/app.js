@@ -33,11 +33,12 @@ angular.module('app', [
           controller: 'MainController'
         },
         'signup': {
-          templateUrl: 'app/auth/signup.html',
+          templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
         }
       }
     })
+    //state for sign-in
     .state('signin', {
       views: {
         'content': {
@@ -45,7 +46,7 @@ angular.module('app', [
           controller: 'AuthController'
         },
         'header': {
-          templateUrl: 'app/main/main.header.html',
+          templateUrl: 'app/main/main.registration.html',
           controller: 'MainController'
         },
         'footer': {
@@ -82,24 +83,6 @@ angular.module('app', [
       },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
-        controller: 'RoadMapsController'
-      },
-      'footer': {
-        templateUrl: 'app/main/main.footer.html',
-        controller: 'RoadMapsController'
-      }
-    }
-  })
-  //state for registration
-  .state('register', {
-    url: '/register',
-    views: {
-      'signup': {
-        templateUrl: 'app/auth/signup.html',
-        controller: 'AuthController' 
-      },
-      'header': {
-        templateUrl: 'app/main/main.registration.html',
         controller: 'RoadMapsController'
       },
       'footer': {
