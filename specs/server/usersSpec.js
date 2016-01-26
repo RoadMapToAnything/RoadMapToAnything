@@ -132,10 +132,7 @@ describe('The users API', function() {
           expect(res.body).to.have.property('created');
           expect(res.body).to.have.property('updated');
 
-          // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( new Date(res.body.created).getTime() ).to.equal( new Date(res.body.updated).getTime() );
           done();
-
         });
 
     });

@@ -34,7 +34,7 @@ module.exports = {
     var dbArgs = handleQuery(req.query);
 
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
-      .then(function (users) {
+      .populate('roadmaps embarked').then(function (users) {
         if (!users) return res.sendStatus(401);
         res.status(200).json(users);
       })
