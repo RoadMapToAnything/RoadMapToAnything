@@ -56,28 +56,36 @@ angular.module('app.auth', [])
       }
     );
   };
-<<<<<<< HEAD
-  
-=======
-=======
+
   $scope.test = function(){
     console.log('Auth controller is working');
   };
   $scope.test();
 
-  $scope.attemptLogin = function () {
-    $http.get('/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword )
+  $scope.attemptSignup = function () {
+    $scope.showUnauthMsg = false;
+    $http.post('/api/signup', {
+      firstName: $scope.attemptedFirstName,
+      lastName: $scope.attemptedLastName,
+      username: $scope.attemptedUsername,
+      password: $scope.attemptedPassword
+    })
     .then(
       //success callback
-      function(){
+      function(res){
         console.log('sent login credentials');
+        console.log('res.data', res.data);
+        res.redirect('/#/dashboard?username=' + res.body.username);
       },
       //error callback
-      function(err){
-        console.log('error sending credentials', err);
+      function(res){
+        console.log('res:', res);
+        if(res.status === 401){
+          console.log('unauthorized credentials');
+          $scope.showUnauthMsg = true;
+        }
       }
       );
   };
->>>>>>> add and style signin form
->>>>>>> add and style signin form
+
 }]);
