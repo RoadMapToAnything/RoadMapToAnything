@@ -25,8 +25,8 @@ describe('DashboardController', function () {
 //skipping these tests until dashboard api calls decided on
 
 //test followed maps
-  xit('should have a getFollowedMaps function', function () {
-    expect($scope.getFollowed).to.be.a('function');
+  it('should have a showMyMaps function', function () {
+    expect($scope.showMyMaps).to.be.a('function');
   });
 
   xit('should get followed map data', function (){
@@ -60,4 +60,9 @@ describe('DashboardController', function () {
         return typeof $scope.followedMaps[0].title === 'string';
       });
   });
+
+  it('should get hide the myMaps table', function () {
+    expect($scope.hideMyMaps).to.be.true;
+    });
+
 });
