@@ -23,6 +23,7 @@ module.exports = {
     };
 
     User.findOne(credentials)
+      .populate('roadmaps embarked')
       .then(function(validUser){
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
         else res.status(200).json(validUser); // TODO: send back a token, not DB results
@@ -34,6 +35,7 @@ module.exports = {
     var dbArgs = handleQuery(req.query);
 
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
+      .populate('roadmaps embarked')
       .then(function (users) {
         if (!users) return res.sendStatus(401);
         res.status(200).json(users);
@@ -43,6 +45,7 @@ module.exports = {
 
   getUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
+      .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
         res.status(200).json(user);
@@ -51,9 +54,13 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
+    console.log('UPDATE USER:', req.params.username);
+    console.log('WITH BODY:', req.body);
     User.findOneAndUpdate({username: req.params.username}, req.body)
+      .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
+        console.log('USER UPDATED:', user);
         res.status(200).json(user);
       })
       .catch(handleError(next));
@@ -61,6 +68,7 @@ module.exports = {
 
   deleteUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
+      .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401);
 

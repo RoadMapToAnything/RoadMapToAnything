@@ -24,7 +24,7 @@ var setUpdatedTimestamp = function (next) {
  * * * * * * * * * * * * * * * * * * * * */
 
 // All valid hooks are included here for reference.
-module.exports.setUserHooks = function(UserSchema, User) {
+module.exports.setUserHooks = function(UserSchema) {
   UserSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
   });
@@ -56,7 +56,7 @@ module.exports.setUserHooks = function(UserSchema, User) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
+module.exports.setRoadmapHooks = function(RoadmapSchema) {
   RoadmapSchema.pre('save', function(next) {
     // On creation of a Roadmap, push it's ID to the author's roadmaps array
     if (this.isNew) {
@@ -114,7 +114,7 @@ module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
  *                 NODE                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.setNodeHooks = function(NodeSchema, Node) {
+module.exports.setNodeHooks = function(NodeSchema) {
   NodeSchema.pre('save', function(next) {
     // On creation of a Node, push it's ID to the parent Roadmaps nodes array
     if (this.isNew) {

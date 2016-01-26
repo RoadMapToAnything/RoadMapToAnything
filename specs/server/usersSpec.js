@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
-    testData = require('./testData.js'),
     User = require('../../server/api/users/userModel.js'),
 
     server = require('../../server/server.js'),
@@ -21,26 +20,14 @@ var expect = require('chai').expect,
 
 
 describe('The users API', function() {
-  var user = testData.users[0];
-  var username = user.username;
-  var password = user.password;
-
-
+  
   /* * * * * * * * * * * * * * * * * * * * * 
    *            AUTHENTICATION             *
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Authentication', function() {
-
-    after(function (done) {
-
-      User.findOne({username: username})
-        .then(function (user) {
-          user.remove();
-          done();
-        });
-
-    });
+    var username = 'iAmATest';
+    var password = 'shhh';
 
     it('should create a new user', function (done) {
 
@@ -81,6 +68,28 @@ describe('The users API', function() {
 
     });
 
+    it('should delete a user', function (done) {
+
+      request(server.app)
+        .delete(route + '/' + username)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function (err, res) {
+
+          expect(res.body).to.have.property('username', username);
+
+          User.findOne({username: username})
+            .then(function (user) {
+
+              expect(user).to.be.null;
+              done();
+
+            });
+
+        });
+
+    });
+
   });
 
 
@@ -89,16 +98,16 @@ describe('The users API', function() {
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Fetching Users', function() {
-
-    before(function(done) {
-      testData.seedUsers(done);
-    });
+    var username = 'bowieloverx950';
 
     after(function(done) {
-      testData.clearUsers(done);
+      User.findOneAndUpdate({username: username}, {firstName: 'Bob'})
+        .then(function() {
+          done();
+        });
     });
 
-    it('should retrieve an array of users', function (done) {
+    it('should retrieve an array of users with populated roadmaps', function (done) {
 
       request(server.app)
         .get(route)
@@ -108,14 +117,17 @@ describe('The users API', function() {
 
           expect(res.body).to.be.an('array');
           expect(res.body).to.not.be.empty;
-          expect(res.body).to.have.deep.property('[0].username', username);
+          expect(res.body[0]).to.have.property('username', username);
+          expect(res.body[0].roadmaps).to.be.an('array');
+          expect(res.body[0].roadmaps).to.not.be.empty;
+          expect(res.body[0].roadmaps[0]).to.have.property('title');
           done();
 
         });
 
     });
 
-    it('should retrieve a specific user with name properties, and timestamps', function (done) {
+    it('should retrieve a specific user with name properties, timestamps, and populated roadmaps', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -124,15 +136,16 @@ describe('The users API', function() {
         .end(function (err, res) {
 
           expect(res.body).to.have.property('username', username);
-          expect(res.body).to.have.property('firstName', user.firstName);
-          expect(res.body).to.have.property('lastName', user.lastName);
+          expect(res.body).to.have.property('firstName', 'Bob');
+          expect(res.body).to.have.property('lastName', 'Johnson');
           expect(res.body).to.have.property('created');
           expect(res.body).to.have.property('updated');
+          expect(res.body).to.have.property('roadmaps');
+          expect(res.body.roadmaps).to.be.an('array');
+          expect(res.body.roadmaps).to.not.be.empty;
+          expect(res.body.roadmaps[0]).to.have.property('title');
 
-          // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( new Date(res.body.created).getTime() ).to.equal( new Date(res.body.updated).getTime() );
           done();
-
         });
 
     });
@@ -154,6 +167,8 @@ describe('The users API', function() {
               User.findOne({username: username})
                 .then(function (user) {
 
+                  console.log('CHECKING USER:', user);
+
                   expect(user).to.have.property('firstName', 'Robert');
                   expect(user.created).to.not.equal(user.updated);
 
@@ -161,28 +176,6 @@ describe('The users API', function() {
                   expect( new Date(user.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
                   done();
                 });
-
-            });
-
-        });
-
-    });
-
-    it('should delete a user', function (done) {
-
-      request(server.app)
-        .delete(route + '/' + username)
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function (err, res) {
-
-          expect(res.body).to.have.property('username', username);
-
-          User.findOne({username: username})
-            .then(function (user) {
-
-              expect(user).to.be.null;
-              done();
 
             });
 

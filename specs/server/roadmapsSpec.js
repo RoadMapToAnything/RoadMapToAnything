@@ -85,7 +85,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       done();
     });
 
-    it('If no Roadmaps exist, response array should be empty', function(done){
+    it('If no new Roadmaps exist, response array should be three', function(done){
       Roadmap.findOneAndRemove({title: 'TestMap'})
         .then(function(){
           request(server.app)
@@ -93,7 +93,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
             .end(function(err, serverResponse){
               if (err) throw err;
               result = serverResponse.body;
-              expect( result.length ).to.equal(0);
+              expect( result.length ).to.equal(3);
               done();
             });
         });

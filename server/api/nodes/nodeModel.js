@@ -12,7 +12,6 @@ var NodeSchema = new mongoose.Schema({
     updated      : { type: Date }
 });
 
-var Node = mongoose.model('Node', NodeSchema);
+hooks.setNodeHooks(NodeSchema);
 
-hooks.setNodeHooks(NodeSchema, Node);
-module.exports = Node;
+module.exports = mongoose.model('Node', NodeSchema);
