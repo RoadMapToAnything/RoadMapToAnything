@@ -22,12 +22,12 @@ describe('AuthController', function () {
     createController();
   }));
 
-  xit('should have an attemptLogin function', function () {
+  it('should have an attemptLogin function', function () {
     expect($scope.attemptLogin).to.be.a('function');
   });
 
 
-  xit('should get a 401 when credentials bad', function () {
+  it('should get a 401 when credentials bad', function () {
     $scope.attemptedUsername = 'noone-should-ever-pick-this-name';
     $scope.attemptedLogin = 'or-this-password!#$';
     return $scope.attemptLogin()
