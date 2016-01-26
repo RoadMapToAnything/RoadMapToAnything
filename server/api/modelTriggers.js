@@ -1,4 +1,4 @@
-// This file contains all pre and post triggers for db
+// This file contains all pre and post hooks for db
 // interaction with our models. 
 
 var setCreatedTimestamp = function (next) {
@@ -11,7 +11,7 @@ var setCreatedTimestamp = function (next) {
 };
 
 // This is a collector function which will trigger
-// on all versions of the update trigger.
+// on all versions of the update hook.
 var setUpdatedTimestamp = function (next) {
   this.update({},{ $set: { updated: Date.now() } });
 
@@ -23,7 +23,7 @@ var setUpdatedTimestamp = function (next) {
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-// All valid triggers are included here for reference.
+// All valid hooks are included here for reference.
 module.exports.setUserHooks = function(UserSchema, User) {
   UserSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
@@ -142,10 +142,6 @@ module.exports.setNodeHooks = function(NodeSchema, Node) {
     Roadmap.findByIdAndUpdate(parentRoadmapID, update)
       .exec(function(err){ if (err) throw err; });  
 
-    next();
-  });
-
-  NodeSchema.pre('validate', function(next) {
     next();
   });
 
