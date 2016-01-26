@@ -15,6 +15,7 @@ angular.module('app.auth', [])
       function(res){
         console.log('sent login credentials');
         console.log('res.data', res.data);
+        res.redirect('/#/dashboard?username=' + res.body.username);
       },
       //error callback
       function(res){
