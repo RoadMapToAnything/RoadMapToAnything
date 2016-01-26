@@ -9,7 +9,10 @@
   "scripts": {
     "start": "nodemon server/server.js",
     "postinstall": "bower install",
-    "test": "./node_modules/.bin/mocha --bail specs/*.js specs/server/**/*.js & karma start"
+    "test": "npm run reset & ./node_modules/.bin/mocha --bail specs/*.js specs/server/**/*.js & karma start",
+    "seed": "node specs/data/seed.js",
+    "clear": "node specs/data/clear.js",
+    "reset": "node specs/data/reset.js"
   },
   "repository": {
     "type": "git",

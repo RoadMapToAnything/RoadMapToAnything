@@ -1,6 +1,5 @@
 var express  = require('express'),
-    mongoose = require('mongoose'),
-    testData = require('./testData.js');
+    mongoose = require('mongoose');
 
     mongoose.Promise = require('bluebird');
    
@@ -14,15 +13,10 @@ mongoose.connect(database);
 require('./middleware.js')(app, express);
 require('./router.js'    )(app, express);
 
-// Will seed test data if first test user does not exist in DB.
-testData.seedData(function(){
-
-  app.listen(port, function(){ 
-    console.log('APP IS RUNNING ON', port);
-  });
-  
+app.listen(port, function(){ 
+  console.log('APP IS RUNNING ON', port);
 });
-
+  
 
 module.exports = {
   app: app  // used in server spec

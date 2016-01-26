@@ -1,6 +1,6 @@
-var User = require('./api/users/userModel.js'),
-    Roadmap = require('./api/roadmaps/roadmapModel.js'),
-    Node = require('./api/nodes/nodeModel.js');
+var User = require('../../server/api/users/userModel.js'),
+    Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
+    Node = require('../../server/api/nodes/nodeModel.js');
 
 var users = [
   {
