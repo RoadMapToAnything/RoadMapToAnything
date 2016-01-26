@@ -57,7 +57,7 @@ angular.module('app', [
     })
     //state for dashboard
     .state('dashboard', {
-      url: '/dashboard',
+      url: '/dashboard/:username',
       views: {
         'content': {
           templateUrl: 'app/progress/dashboard.html',
@@ -70,8 +70,8 @@ angular.module('app', [
         'footer': {
           templateUrl: 'app/main/main.footer.html',
           controller: 'MainController'
+          }
         }
-      }
     })
   //state for roadmap
   .state('roadmapTemplate', {

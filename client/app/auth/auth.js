@@ -20,7 +20,7 @@ angular.module('app.auth', [])
       function(res){
         console.log('sent login credentials');
         console.log('res.data', res.data);
-        $state.go('dashboard', {url: '/dashboard' + res.data.username});
+        $state.go('dashboard', {'username': $scope.attemptedUsername} );
       },
       //error callback
       function(res){

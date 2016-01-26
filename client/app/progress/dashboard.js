@@ -1,7 +1,9 @@
 angular.module('app.dash', [])
 
-.controller('DashboardController', ['$scope','$http', function($scope,$http){
+.controller('DashboardController', ['$scope','$http', '$stateParams', function($scope, $http, $stateParams){
   console.log("dash controller is working");
+
+  console.log('$stateParams', $stateParams);
 
   $scope.username = '';
 
@@ -84,11 +86,11 @@ angular.module('app.dash', [])
 
   function getMyMaps (){
       console.log('calling getMyMaps');
-
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('localhost:3000/#/api/users/' + $scope.userName )
           .then(function(response){
-            $scope.myMaps = response.body.roadmaps;
+            console.log('response.body.data', response.body.data);
+            $scope.myMaps = response.body.data.roadmaps;
             }, function(err){
               console.log("error with MyMaps request", err);
             });
@@ -99,7 +101,8 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('localhost:3000/#/api/users/' + $scope.userName )
           .then(function(response){
-            $scope.followed = response.body.roadmaps;
+            console.log('response.body.data', response.body.data);
+            $scope.followed = response.body.data.roadmaps;
             }, function(err){
               console.log('error with followedMaps request', err);
             });
