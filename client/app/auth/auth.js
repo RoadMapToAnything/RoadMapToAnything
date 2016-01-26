@@ -2,10 +2,10 @@ angular.module('app.auth', [])
 
 .controller('AuthController', ['$scope', '$http', function($scope, $http){
 
-  $scope.attemptedFirstName = "not yet set";
-  $scope.attemptedLastName = "not yet set";
-  $scope.attemptedUsername = "not yet set";
-  $scope.attemptedPassword = "not yet set";
+  $scope.attemptedFirstName = '';
+  $scope.attemptedLastName = '';
+  $scope.attemptedUsername = '';
+  $scope.attemptedPassword = '';
 
   $scope.showUnauthMsg = false;
 

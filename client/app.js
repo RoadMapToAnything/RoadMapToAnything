@@ -108,5 +108,5 @@ angular.module('app', [
         controller: 'RoadMapsController'
       }
     }
-  })
+  });
 });

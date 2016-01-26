@@ -28,11 +28,11 @@ describe('AuthController', function () {
 
 
   it('should have a username on the model', function () {
-    expect($scope.attemptedUsername).to.equal("not yet set");
+    expect($scope.attemptedUsername).to.equal("");
   });
 
   it('should have a password on the model', function () {
-    expect($scope.attemptedPassword).to.equal("not yet set");
+    expect($scope.attemptedPassword).to.equal("");
   });
   
   it('should not start out showing msg about bad credentials', function (){
