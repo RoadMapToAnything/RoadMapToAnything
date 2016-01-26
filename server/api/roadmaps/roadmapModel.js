@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    triggers = require('../modelTriggers.js');
+    hooks    = require('../modelTriggers.js');
 
 var RoadmapSchema = new mongoose.Schema({
     title      : { type: String,   required: true },
@@ -11,6 +11,7 @@ var RoadmapSchema = new mongoose.Schema({
     updated    : { type: Date },
 });
 
-triggers.Roadmap(RoadmapSchema);
+var Roadmap = mongoose.model('Roadmap', RoadmapSchema);
 
-module.exports = mongoose.model('Roadmap', RoadmapSchema);
+hooks.setRoadmapHooks(RoadmapSchema, Roadmap);
+module.exports = Roadmap;

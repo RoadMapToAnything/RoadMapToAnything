@@ -1,10 +1,5 @@
-// This file contains all pre and post triggers for db
+// This file contains all pre and post hooks for db
 // interaction with our models. 
-
-/* * * * * * * * * * * * * * * * * * * * * 
- *                 USER                  *
- * * * * * * * * * * * * * * * * * * * * */
-
 
 var setCreatedTimestamp = function (next) {
   var now = Date.now();
@@ -16,18 +11,22 @@ var setCreatedTimestamp = function (next) {
 };
 
 // This is a collector function which will trigger
-// on all versions of the update trigger.
+// on all versions of the update hook.
 var setUpdatedTimestamp = function (next) {
   this.update({},{ $set: { updated: Date.now() } });
 
   next();
 };
 
-// All valid triggers are included here for reference.
-module.exports.User = function(UserSchema) {
+
+/* * * * * * * * * * * * * * * * * * * * * 
+ *                 USER                  *
+ * * * * * * * * * * * * * * * * * * * * */
+
+// All valid hooks are included here for reference.
+module.exports.setUserHooks = function(UserSchema, User) {
   UserSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
-
   });
 
   UserSchema.pre('remove', function(next) {
@@ -57,16 +56,43 @@ module.exports.User = function(UserSchema) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.Roadmap = function(RoadmapSchema) {
+module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
   RoadmapSchema.pre('save', function(next) {
+    // On creation of a Roadmap, push it's ID to the author's roadmaps array
+    if (this.isNew) {
+      var User = require('./users/userModel.js');
+      var authorID = this.author;
+      var roadmapID = this._id;
+
+      var update = { $push:{ roadmaps: roadmapID } };
+
+      User.findByIdAndUpdate(authorID, update)
+        .exec(function(err){ if (err) throw err; });     
+    }
+
     setCreatedTimestamp.call(this, next);
   });
 
   RoadmapSchema.pre('remove', function(next) {
-    next();
-  });
+    // On deletion of a Roadmap, remove it's ID from the author's roadmaps array,
+    // and delete all associated nodes
+    console.log('remove roadmap');
+    var User = require('./users/userModel.js');
+    var Node = require('./nodes/nodeModel.js');
+    var authorID = this.author;
+    var roadmapID = this._id;
+    var nodes = this.nodes;
 
-  RoadmapSchema.pre('validate', function(next) {
+    var userUpdate = { $pull:{ roadmaps: roadmapID } };
+
+    User.findByIdAndUpdate(authorID, userUpdate)
+      .exec(function(err){ if (err) throw err; });  
+
+    nodes.forEach(function(nodeID){
+      Node.findByIdAndRemove(nodeID)
+        .exec(function(err){ if (err) throw err; });  
+    });
+
     next();
   });
 
@@ -88,17 +114,34 @@ module.exports.Roadmap = function(RoadmapSchema) {
  *                 NODE                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.Node = function(NodeSchema) {
-
+module.exports.setNodeHooks = function(NodeSchema, Node) {
   NodeSchema.pre('save', function(next) {
+    // On creation of a Node, push it's ID to the parent Roadmaps nodes array
+    if (this.isNew) {
+      var Roadmap = require('./roadmaps/roadmapModel.js');
+      var parentRoadmapID = this.parentRoadmap;
+      var newNodeID = this._id;
+
+      var update = { $push:{ nodes: newNodeID } };
+
+      Roadmap.findByIdAndUpdate(parentRoadmapID, update)
+        .exec(function(err){ if (err) throw err; });     
+    }
+
     setCreatedTimestamp.call(this, next);
   });
 
   NodeSchema.pre('remove', function(next) {
-    next();
-  });
+    // On deletion of a Node, remove it's ID from the parent Roadmaps nodes array
+    var Roadmap = require('./roadmaps/roadmapModel.js');
+    var parentRoadmapID = this.parentRoadmap;
+    var deletedNodeID = this._id;
 
-  NodeSchema.pre('validate', function(next) {
+    var update = { $pull:{ nodes: deletedNodeID } };
+
+    Roadmap.findByIdAndUpdate(parentRoadmapID, update)
+      .exec(function(err){ if (err) throw err; });  
+
     next();
   });
 
