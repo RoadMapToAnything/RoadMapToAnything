@@ -31,10 +31,6 @@ angular.module('app', [
         'footer': {
           templateUrl: 'app/main/main.footer.html',
           controller: 'MainController'
-        },
-        'signup': {
-          templateUrl: 'app/auth/signin.html',
-          controller: 'AuthController'
         }
       }
     })
@@ -43,6 +39,23 @@ angular.module('app', [
       views: {
         'content': {
           templateUrl: 'app/auth/signin.html',
+          controller: 'AuthController'
+        },
+        'header': {
+          templateUrl: 'app/main/main.header.html',
+          controller: 'MainController'
+        },
+        'footer': {
+          templateUrl: 'app/main/main.footer.html',
+          controller: 'MainController'
+        }
+      }
+    })
+    //state for sign-up
+    .state('signup', {
+      views: {
+        'content': {
+          templateUrl: 'app/auth/signup.html',
           controller: 'AuthController'
         },
         'header': {
