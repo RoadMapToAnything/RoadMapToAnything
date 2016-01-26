@@ -1,9 +1,37 @@
 
+<h1>Sign Up</h1>
+  <div class="row">
+    <form class="col s12" ng-submit="attemptSignup()">
+    
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="firstname" type="text" class="validate" ng-model="attemptedFirstName">
+          <label for="first_name">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="lastname" type="password" class="validate" ng-model="attemptedLastName">
+          <label for="last_name">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="username" type="text" class="validate" ng-model="attemptedUsername">
+          <label for="user_name">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="password" type="password" class="validate" ng-model="attemptedPassword">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <input type="submit" class="waves-effect waves-light btn"></a>
+        <br>
+        <p class="error-msg" ng-show="showUnauthMsg">Sorry, that username has been taken</p>
+      </div>
 
-
-<h1>This is the signup view</h1>
-
-<h1>Insert Sign Up Form Here</h1>
-
-<button ui-sref="auth">Click Me to Sign Up!</button>
-<!-- Ui sref to some other page most likely -->
+    </form>
+  </div>
