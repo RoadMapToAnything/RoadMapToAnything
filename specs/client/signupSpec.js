@@ -22,7 +22,7 @@ describe('AuthController', function () {
     createController();
   }));
 
-  it('should have an attemptSignup function', function () {
+  it('should have an attemptLogin function', function () {
     expect($scope.attemptSignup).to.be.a('function');
   });
 
