@@ -122,8 +122,12 @@ module.exports.seedData = function(next) {
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
+        console.log(map._id)
 
-        User.findOneAndUpdate({_id: users[i]._id}, {roadmaps: map._id})
+        User.findOneAndUpdate(
+          {_id: users[i]._id}, 
+          {$push: {roadmaps: map._id}}, 
+          {safe: true, upsert: true, new: true})
         .then(function () {
           addRoadmap(i + 1);
         });

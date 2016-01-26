@@ -91,11 +91,11 @@ describe('The users API', function() {
   describe('Fetching Users', function() {
 
     before(function(done) {
-      testData.seedUsers(done);
+      testData.seedData(done);
     });
 
     after(function(done) {
-      testData.clearUsers(done);
+      testData.clearData(done);
     });
 
     it('should retrieve an array of users with populated roadmaps', function (done) {
