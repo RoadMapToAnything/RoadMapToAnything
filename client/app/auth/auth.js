@@ -1,6 +1,6 @@
 angular.module('app.auth', [])
 
-.controller('AuthController', ['$scope', '$http', function($scope, $http){
+.controller('AuthController', ['$scope', '$http','$state', function($scope, $http, $state){
 
   $scope.attemptedFirstName = '';
   $scope.attemptedLastName = '';
@@ -20,7 +20,7 @@ angular.module('app.auth', [])
       function(res){
         console.log('sent login credentials');
         console.log('res.data', res.data);
-        res.redirect('/#/dashboard?username=' + res.body.username);
+        $state.go('dashboard', {url: '/dashboard' + res.data.username});
       },
       //error callback
       function(res){
@@ -44,18 +44,23 @@ angular.module('app.auth', [])
     .then(
       //success callback
       function(res){
-        console.log('sent login credentials');
+        console.log('sent signup credentials');
         console.log('res.data', res.data);
-        res.redirect('/#/dashboard?username=' + res.body.username);
+        $state.go('dashboard', {url: '/dashboard' + res.data.username});
       },
       //error callback
       function(res){
-        console.log('res:', res);
-        if(res.status === 401){
-          console.log('unauthorized credentials');
-          $scope.showUnauthMsg = true;
-        }
+        console.log('sent signup credentials');
+        console.log('res.data', res.data);
+        $state.go('dashboard', {url: '/dashboard' + res.data.username});
       }
+      // function(res){
+      //   console.log('res:', res);
+      //   if(res.status === 401){
+      //     console.log('invalid username');
+      //     $scope.showUnauthMsg = true;
+      //   }
+      // }
       );
   };
   
