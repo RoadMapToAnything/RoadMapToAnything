@@ -62,7 +62,7 @@ describe('Node Routes - /api/nodes', function() {
           delete testNode.parentRoadmap; // reset to original state
           done(); 
         })
-        .catch(function(err){ throw err; })
+        .catch(function(err){ throw err; });
     });
 
     it('Should respond with 201 when creating a new Node', function(done){
@@ -72,7 +72,7 @@ describe('Node Routes - /api/nodes', function() {
         .post('/api/nodes')
         .send(testNode)
         .expect(201)
-        .end(done)
+        .end(done);
     });
   });
 
@@ -150,14 +150,14 @@ describe('Node Routes - /api/nodes', function() {
      
       request(server.app)
         .get('/api/nodes/'+testNodeID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
-          expect( serverResponse.body._id ).to.equal( String(testNodeID) );
-          expect( serverResponse.body ).to.have.property('created');
-          expect( serverResponse.body ).to.have.property('updated');
+          expect( res.body.data._id ).to.equal( String(testNodeID) );
+          expect( res.body.data ).to.have.property('created');
+          expect( res.body.data ).to.have.property('updated');
 
           // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( serverResponse.body.created ).to.equal( serverResponse.body.updated );
+          expect( res.body.data.created ).to.equal( res.body.data.updated );
           done();
         });
 
@@ -186,8 +186,8 @@ describe('Node Routes - /api/nodes', function() {
         .get('/api/nodes/'+ seedNodeId)
         .end(function(err, res){
           if (err) throw err;
-          expect( res.body ).to.have.property('parentRoadmap');
-          expect( res.body.parentRoadmap ).to.have.property('title');
+          expect( res.body.data ).to.have.property('parentRoadmap');
+          expect( res.body.data.parentRoadmap ).to.have.property('title');
           done();
         });
 
@@ -235,7 +235,7 @@ describe('Node Routes - /api/nodes', function() {
           request(server.app)
             .put('/api/nodes/'+testNodeID)
             .send({description: 'Updated Description'})
-            .end(function(err, serverResponse){
+            .end(function(err, res){
               if (err) throw err;
 
               Node.findById(testNodeID)
@@ -288,7 +288,7 @@ describe('Node Routes - /api/nodes', function() {
     it('Should delete the Node specified by ID', function(done){
       request(server.app)
         .delete('/api/nodes/'+testNodeID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
 
           Node.findById(testNodeID)

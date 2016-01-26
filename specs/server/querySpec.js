@@ -46,7 +46,7 @@ describe('Query Strings', function() {
 
           // This construct will check to ensure the test data users
           // are sorted, even if there is other data in the db.
-          res.body.forEach(function (user) {
+          res.body.data.forEach(function (user) {
             for(var j = 0; j < testUsersSorted.length && i < testUsersSorted.length; j++) {
               if (user.username === testUsersSorted[i].username) {
                 i++;
@@ -72,7 +72,7 @@ describe('Query Strings', function() {
         .expect(200)
         .end(function (err, res) {
 
-          res.body.forEach(function (user) {
+          res.body.data.forEach(function (user) {
             for(var j = 0; j < test.users.length && i < test.users.length; j++) {
               if (user.username === test.users[i].username) {
                 i++;
@@ -101,7 +101,7 @@ describe('Query Strings', function() {
         .expect(200)
         .end(function (err, res) {
 
-          res.body.forEach(function (user) {
+          res.body.data.forEach(function (user) {
             for(var j = 0; j < testUsersSorted.length && i < testUsersSorted.length; j++) {
               if (user.username === testUsersSorted[i].username) {
                 i++;
@@ -129,7 +129,7 @@ describe('Query Strings', function() {
         .expect(200)
         .end(function (err, res) {
 
-          res.body.forEach(function (map) {
+          res.body.data.forEach(function (map) {
             for(var j = 0; j < testMapsSorted.length && i < testMapsSorted.length; j++) {
               if (map.title === testMapsSorted[i].title) {
                 i++;
@@ -153,7 +153,7 @@ describe('Query Strings', function() {
         .expect(200)
         .end(function (err, res) {
 
-          res.body.forEach(function (map) {
+          res.body.data.forEach(function (map) {
             for(var j = 0; j < test.maps.length && i >= 0; j++) {
               if (map.title === test.maps[i].title) {
                 i--;
@@ -184,8 +184,8 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.not.be.empty;          
-          expect(res.body[0].username).to.equal('bowieloverx950');
+          expect(res.body.data).to.not.be.empty;          
+          expect(res.body.data[0].username).to.equal('bowieloverx950');
           done();
         });
 
@@ -203,7 +203,7 @@ describe('Query Strings', function() {
           // With password hashing, this will be difficult to test,
           // but a response with many results indicates no filter
           // was done.
-          expect(res.body).to.not.have.length(1);          
+          expect(res.body.data).to.not.have.length(1);          
           done();
         });
 
@@ -218,11 +218,11 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.not.be.empty;
+          expect(res.body.data).to.not.be.empty;
 
           // Timestamps must be wrapped in order to ensure a consistent format.
           // And mongoose loses 15-45 milliseconds somehow, so add 50 to ensure it is late enough.
-          expect(new Date(res.body[0].created).getTime()).to.be.below(new Date(now).getTime());        
+          expect(new Date(res.body.data[0].created).getTime()).to.be.below(new Date(now).getTime());        
           done();
         });
 
@@ -237,7 +237,7 @@ describe('Query Strings', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          expect(res.body).to.be.empty;       
+          expect(res.body.data).to.be.empty;       
           done();
         });
 

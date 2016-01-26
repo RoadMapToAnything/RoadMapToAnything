@@ -40,7 +40,7 @@ describe('The users API', function() {
         .expect(201)
         .end(function (err, res) {
 
-          expect(res.body).to.have.property('username', username);
+          expect(res.body.data).to.have.property('username', username);
 
           User.findOne({username: username})
             .then(function (user) {
@@ -63,7 +63,7 @@ describe('The users API', function() {
         .expect(201)
         .end(function (err, res) {
 
-          expect(res.body).to.have.property('username', username);
+          expect(res.body.data).to.have.property('username', username);
           done();
 
         });
@@ -78,7 +78,7 @@ describe('The users API', function() {
         .expect(201)
         .end(function (err, res) {
 
-          expect(res.body).to.have.property('username', username);
+          expect(res.body.data).to.have.property('username', username);
 
           User.findOne({username: username})
             .then(function (user) {
@@ -117,12 +117,12 @@ describe('The users API', function() {
         .expect(200)
         .end(function (err, res) {
 
-          expect(res.body).to.be.an('array');
-          expect(res.body).to.not.be.empty;
-          expect(res.body[0]).to.have.property('username');
-          expect(res.body[0].roadmaps).to.be.an('array');
-          expect(res.body[0].roadmaps).to.not.be.empty;
-          expect(res.body[0].roadmaps[0]).to.have.property('title');
+          expect(res.body.data).to.be.an('array');
+          expect(res.body.data).to.not.be.empty;
+          expect(res.body.data[0]).to.have.property('username');
+          expect(res.body.data[0].roadmaps).to.be.an('array');
+          expect(res.body.data[0].roadmaps).to.not.be.empty;
+          expect(res.body.data[0].roadmaps[0]).to.have.property('title');
           done();
 
         });
@@ -137,15 +137,15 @@ describe('The users API', function() {
         .expect(200)
         .end(function (err, res) {
 
-          expect(res.body).to.have.property('username', username);
-          expect(res.body).to.have.property('firstName', testUser.firstName);
-          expect(res.body).to.have.property('lastName', testUser.lastName);
-          expect(res.body).to.have.property('created');
-          expect(res.body).to.have.property('updated');
-          expect(res.body).to.have.property('roadmaps');
-          expect(res.body.roadmaps).to.be.an('array');
-          expect(res.body.roadmaps).to.not.be.empty;
-          expect(res.body.roadmaps[0]).to.have.property('title');
+          expect(res.body.data).to.have.property('username', username);
+          expect(res.body.data).to.have.property('firstName', testUser.firstName);
+          expect(res.body.data).to.have.property('lastName', testUser.lastName);
+          expect(res.body.data).to.have.property('created');
+          expect(res.body.data).to.have.property('updated');
+          expect(res.body.data).to.have.property('roadmaps');
+          expect(res.body.data.roadmaps).to.be.an('array');
+          expect(res.body.data.roadmaps).to.not.be.empty;
+          expect(res.body.data.roadmaps[0]).to.have.property('title');
 
           done();
         });
@@ -165,7 +165,7 @@ describe('The users API', function() {
             .expect(201)
             .end(function (err, res) {
 
-              expect(res.body).to.have.property('username', username);
+              expect(res.body.data).to.have.property('username', username);
               User.findOne({username: username})
                 .then(function (user) {
 

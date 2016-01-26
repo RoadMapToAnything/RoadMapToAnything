@@ -17,7 +17,7 @@ var resolveCreation = function (req, res, next) {
   var newRoadmap = req.body;
   Roadmap(newRoadmap).save()
     .then(function(dbResults){
-      res.status(201).json(dbResults);
+      res.status(201).json({data: dbResults});
     })
     .catch(handleError(next));
 };
@@ -39,7 +39,7 @@ module.exports = {
     Roadmap.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -49,7 +49,7 @@ module.exports = {
     Roadmap.findById(_id)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -60,7 +60,7 @@ module.exports = {
     Roadmap.findByIdAndUpdate(_id, updateCommand)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -71,7 +71,7 @@ module.exports = {
       .populate('author nodes')
       .then(function(roadmap){
         if (roadmap) roadmap.remove();
-        res.json(roadmap);
+        res.json({data: roadmap});
       })
       .catch(handleError(next));
   }

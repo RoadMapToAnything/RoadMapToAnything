@@ -58,9 +58,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     before('Create test Roadmap', function(done) {
       request(server.app)
         .get('/api/roadmaps')
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
-          result = serverResponse.body;
+          result = res.body.data;
           done();
         });
     });
@@ -114,14 +114,14 @@ describe('Roadmap Routes - /api/roadmaps', function() {
      
       request(server.app)
         .get('/api/roadmaps/'+testMapID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
-          expect( serverResponse.body._id ).to.equal( String(testMapID) );
-          expect(serverResponse.body).to.have.property('created');
-          expect(serverResponse.body).to.have.property('updated');
+          expect( res.body.data._id ).to.equal( String(testMapID) );
+          expect(res.body.data).to.have.property('created');
+          expect(res.body.data).to.have.property('updated');
 
           // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( serverResponse.body.created ).to.equal( serverResponse.body.updated );
+          expect( res.body.data.created ).to.equal( res.body.data.updated );
           done();
 
         });
@@ -162,7 +162,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
           request(server.app)
             .put('/api/roadmaps/'+testMapID)
             .send({description: "Learn JavaScript"})
-            .end(function(err, serverResponse){
+            .end(function(err, res){
               if (err) throw err;
 
               Roadmap.findById(testMapID)
@@ -206,7 +206,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
      
       request(server.app)
         .delete('/api/roadmaps/'+testMapID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
 
           Roadmap.findById(testMapID)
