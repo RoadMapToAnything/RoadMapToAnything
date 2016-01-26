@@ -57,40 +57,4 @@ angular.module('app.auth', [])
     );
   };
 
-  $scope.test = function(){
-    console.log('Auth controller is working');
-  };
-  $scope.test();
-
-  $scope.attemptSignup = function () {
-    $scope.showUnauthMsg = false;
-    $http.post('/api/signup', {
-      firstName: $scope.attemptedFirstName,
-      lastName: $scope.attemptedLastName,
-      username: $scope.attemptedUsername,
-      password: $scope.attemptedPassword
-    })
-    .then(
-      //success callback
-      function(res){
-        console.log('sent signup credentials');
-        console.log('res.data', res.data);
-        $state.go('dashboard', {url: '/dashboard' + res.data.username});
-      },
-      //error callback
-      function(res){
-        console.log('sent signup credentials');
-        console.log('res.data', res.data);
-        $state.go('dashboard', {url: '/dashboard' + res.data.username});
-      }
-      // function(res){
-      //   console.log('res:', res);
-      //   if(res.status === 401){
-      //     console.log('invalid username');
-      //     $scope.showUnauthMsg = true;
-      //   }
-      // }
-      );
-  };
-
 }]);
