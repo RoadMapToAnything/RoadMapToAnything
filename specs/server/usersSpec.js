@@ -2,7 +2,9 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
+
     User = require('../../server/api/users/userModel.js'),
+    testUser = require('../data/testData.json').users[0],
 
     server = require('../../server/server.js'),
     route = '/api/users';
@@ -98,10 +100,10 @@ describe('The users API', function() {
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Fetching Users', function() {
-    var username = 'bowieloverx950';
+    var username = testUser.username;
 
     after(function(done) {
-      User.findOneAndUpdate({username: username}, {firstName: 'Bob'})
+      User.findOneAndUpdate({username: username}, {firstName: testUser.firstName})
         .then(function() {
           done();
         });
@@ -117,7 +119,7 @@ describe('The users API', function() {
 
           expect(res.body).to.be.an('array');
           expect(res.body).to.not.be.empty;
-          expect(res.body[0]).to.have.property('username', username);
+          expect(res.body[0]).to.have.property('username');
           expect(res.body[0].roadmaps).to.be.an('array');
           expect(res.body[0].roadmaps).to.not.be.empty;
           expect(res.body[0].roadmaps[0]).to.have.property('title');
@@ -136,8 +138,8 @@ describe('The users API', function() {
         .end(function (err, res) {
 
           expect(res.body).to.have.property('username', username);
-          expect(res.body).to.have.property('firstName', 'Bob');
-          expect(res.body).to.have.property('lastName', 'Johnson');
+          expect(res.body).to.have.property('firstName', testUser.firstName);
+          expect(res.body).to.have.property('lastName', testUser.lastName);
           expect(res.body).to.have.property('created');
           expect(res.body).to.have.property('updated');
           expect(res.body).to.have.property('roadmaps');

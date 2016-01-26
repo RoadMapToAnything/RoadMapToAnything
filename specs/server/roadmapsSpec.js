@@ -35,7 +35,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     after('Remove test Roadmap', function(done) {
       Roadmap.findOneAndRemove({title: 'TestMap'})
         .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+        .catch(function(err){ throw err; });
     });
 
     it('Should respond with 201 when creating a new Roadmap', function(done){
