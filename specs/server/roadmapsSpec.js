@@ -168,7 +168,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         .catch(function(err){ throw err; })
     });
 
-    xit('Should update specified field on Roadmap with provided value and update timestamp', function(done){
+    it('Should update specified field on Roadmap with provided value and update timestamp', function(done){
       Roadmap.findOne({_id: testMapID})
         .then(function (map) {
           var preUpdateStamp = map.updated;

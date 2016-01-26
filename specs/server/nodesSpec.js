@@ -196,7 +196,7 @@ describe('Node Routes - /api/nodes', function() {
         .catch(function(err){ throw err; })
     });
 
-    xit('Should update specified field on Node with provided value, with updated timestamps', function(done){
+    it('Should update specified field on Node with provided value, with updated timestamps', function(done){
       Node.findOne({_id: testNodeID})
         .then(function (node) {
           var preUpdateStamp = node.updated;

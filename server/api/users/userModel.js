@@ -13,7 +13,6 @@ var UserSchema = new mongoose.Schema({
   updated  : { type: Date}
 });
 
-var User = mongoose.model('User', UserSchema);
+hooks.setUserHooks(UserSchema);
 
-hooks.setUserHooks(UserSchema, User);
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

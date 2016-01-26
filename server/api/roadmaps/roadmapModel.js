@@ -11,7 +11,6 @@ var RoadmapSchema = new mongoose.Schema({
     updated    : { type: Date },
 });
 
-var Roadmap = mongoose.model('Roadmap', RoadmapSchema);
+hooks.setRoadmapHooks(RoadmapSchema);
 
-hooks.setRoadmapHooks(RoadmapSchema, Roadmap);
-module.exports = Roadmap;
+module.exports = mongoose.model('Roadmap', RoadmapSchema);

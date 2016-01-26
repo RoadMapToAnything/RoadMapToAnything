@@ -167,11 +167,13 @@ describe('The users API', function() {
               User.findOne({username: username})
                 .then(function (user) {
 
+                  console.log('CHECKING USER:', user);
+
                   expect(user).to.have.property('firstName', 'Robert');
                   expect(user.created).to.not.equal(user.updated);
 
                   // Timestamps must be wrapped in order to ensure a consistent format.
-                  // expect( new Date(user.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
+                  expect( new Date(user.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
                   done();
                 });
 
