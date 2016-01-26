@@ -50,18 +50,11 @@ angular.module('app.auth', [])
       },
       //error callback
       function(res){
-        console.log('sent signup credentials');
+        console.log('sent signup credentials, failed at server');
         console.log('res.data', res.data);
-        $state.go('dashboard', {url: '/dashboard' + res.data.username});
+        $scope.showUnauthMsg = true;
       }
-      // function(res){
-      //   console.log('res:', res);
-      //   if(res.status === 401){
-      //     console.log('invalid username');
-      //     $scope.showUnauthMsg = true;
-      //   }
-      // }
-      );
+    );
   };
   
 }]);
