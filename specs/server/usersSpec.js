@@ -120,16 +120,16 @@ describe('The users API', function() {
           expect(res.body.data).to.be.an('array');
           expect(res.body.data).to.not.be.empty;
           expect(res.body.data[0]).to.have.property('username');
-          expect(res.body.data[0].roadmaps).to.be.an('array');
-          expect(res.body.data[0].roadmaps).to.not.be.empty;
-          expect(res.body.data[0].roadmaps[0]).to.have.property('title');
+          expect(res.body.data[0].authoredRoadmaps).to.be.an('array');
+          expect(res.body.data[0].authoredRoadmaps).to.not.be.empty;
+          expect(res.body.data[0].authoredRoadmaps[0]).to.have.property('title');
           done();
 
         });
 
     });
 
-    it('should retrieve a specific user with name properties, timestamps, and populated roadmaps', function (done) {
+    it('should retrieve a specific user with name properties, timestamps, and populated authoredRoadmaps', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -142,10 +142,10 @@ describe('The users API', function() {
           expect(res.body.data).to.have.property('lastName', testUser.lastName);
           expect(res.body.data).to.have.property('created');
           expect(res.body.data).to.have.property('updated');
-          expect(res.body.data).to.have.property('roadmaps');
-          expect(res.body.data.roadmaps).to.be.an('array');
-          expect(res.body.data.roadmaps).to.not.be.empty;
-          expect(res.body.data.roadmaps[0]).to.have.property('title');
+          expect(res.body.data).to.have.property('authoredRoadmaps');
+          expect(res.body.data.authoredRoadmaps).to.be.an('array');
+          expect(res.body.data.authoredRoadmaps).to.not.be.empty;
+          expect(res.body.data.authoredRoadmaps[0]).to.have.property('title');
 
           done();
         });
