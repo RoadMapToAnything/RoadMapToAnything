@@ -18,7 +18,7 @@
               <th>Progress Bar</th>
             </tr>
           </tbody>
-          <tbody class="follow-map" ng-repeat="map in dummyFollowed">
+          <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
               <td>{{ map.completed }} /
               {{ map.nodes }}</td>
@@ -45,7 +45,7 @@
               <th>Roadmap</th>
             </tr>
           </tbody>
-          <tbody class="follow-map" ng-repeat="map in dummyMyMaps">
+          <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
               <td>{{ map.nodes }}</td>
               <td class="truncate">{{ map.title }}</td>
