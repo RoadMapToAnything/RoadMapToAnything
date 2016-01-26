@@ -118,7 +118,7 @@ describe('The users API', function() {
 
     });
 
-    it('should retrieve a specific user with name properties, and timestamps', function (done) {
+    it('should retrieve a specific user with name properties, timestamps, and populated roadmaps', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
@@ -131,6 +131,10 @@ describe('The users API', function() {
           expect(res.body).to.have.property('lastName', user.lastName);
           expect(res.body).to.have.property('created');
           expect(res.body).to.have.property('updated');
+          expect(res.body).to.have.property('roadmaps');
+          expect(res.body.roadmaps).to.be.an('array');
+          expect(res.body.roadmaps).to.not.be.empty;
+          expect(res.body.roadmaps[0]).to.have.property('title');
 
           done();
         });
