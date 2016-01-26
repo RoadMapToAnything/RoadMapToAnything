@@ -5,8 +5,10 @@ angular.module('app.auth', [])
     console.log('Auth controller is working');
   };
   $scope.test();
+  $scope.showUnauthMsg = false;
 
   $scope.attemptLogin = function () {
+    $scope.showUnauthMsg = false;
     $http.get('/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword )
     .then(
       //success callback
@@ -19,6 +21,7 @@ angular.module('app.auth', [])
         console.log('res:', res);
         if(res.status === 401){
           console.log('unauthorized credentials');
+          $scope.showUnauthMsg = true;
         }
       }
       );
