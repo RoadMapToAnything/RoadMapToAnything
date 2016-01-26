@@ -36,9 +36,10 @@ module.exports = {
 
   deleteNode : function (req, res, next) {
     var _id = req.params.nodeID;
-    Node.findByIdAndRemove(_id)
-      .then(function(dbResults){
-        res.json(dbResults);
+    Node.findOne({_id:_id})
+      .then(function(node){
+        node.remove();
+        res.json(node);
       })
       .catch(handleError(next));
   }
