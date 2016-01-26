@@ -62,6 +62,25 @@ module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
   });
 
   RoadmapSchema.pre('remove', function(next) {
+    // On deletion of a Roadmap, remove it's ID from the author's roadmaps array,
+    // and delete all associated nodes
+    console.log('remove roadmap');
+    var User = require('./users/userModel.js');
+    var Node = require('./nodes/nodeModel.js');
+    var authorID = this.author;
+    var roadmapID = this._id;
+    var nodes = this.nodes;
+
+    var userUpdate = { $pull:{ roadmaps: roadmapID } };
+
+    User.findByIdAndUpdate(authorID, userUpdate)
+      .exec(function(err){ if (err) throw err; });  
+
+    nodes.forEach(function(nodeID){
+      Node.findByIdAndRemove(nodeID)
+        .exec(function(err){ if (err) throw err; });  
+    });
+
     next();
   });
 
