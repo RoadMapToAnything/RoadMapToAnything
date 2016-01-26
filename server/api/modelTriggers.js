@@ -58,6 +58,18 @@ module.exports.setUserHooks = function(UserSchema, User) {
 
 module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
   RoadmapSchema.pre('save', function(next) {
+    // On creation of a Roadmap, push it's ID to the author's roadmaps array
+    if (this.isNew) {
+      var User = require('./users/userModel.js');
+      var authorID = this.author;
+      var roadmapID = this._id;
+
+      var update = { $push:{ roadmaps: roadmapID } };
+
+      User.findByIdAndUpdate(authorID, update)
+        .exec(function(err){ if (err) throw err; });     
+    }
+
     setCreatedTimestamp.call(this, next);
   });
 
