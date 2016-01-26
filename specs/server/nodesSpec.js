@@ -5,7 +5,8 @@ var request  = require('supertest'),
 
     server   = require('../../server/server.js'),
     Node     = require('../../server/api/nodes/nodeModel.js'),
-    Roadmap  = require('../../server/api/roadmaps/roadmapModel.js');
+    Roadmap  = require('../../server/api/roadmaps/roadmapModel.js'),
+    seedNode = require('../data/testData.json').nodes[0];
 
 
 
@@ -157,6 +158,36 @@ describe('Node Routes - /api/nodes', function() {
 
           // Timestamps must be wrapped in order to ensure a consistent format.
           expect( serverResponse.body.created ).to.equal( serverResponse.body.updated );
+          done();
+        });
+
+    });
+
+  });
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+  *           Check Population             *
+  * * * * * * * * * * * * * * * * * * * * */
+
+  describe('Check Node population', function(){
+    var seedNodeId;
+
+    before(function (done) {
+      Node.findOne({title: seedNode.title})
+        .then(function (node) {
+          seedNodeId = node._id;
+          done();
+        });
+    });
+
+    it('should have a populated parent roadmap', function(done) {
+
+      request(server.app)
+        .get('/api/nodes/'+ seedNodeId)
+        .end(function(err, res){
+          if (err) throw err;
+          expect( res.body ).to.have.property('parentRoadmap');
+          expect( res.body.parentRoadmap ).to.have.property('title');
           done();
         });
 
