@@ -1,11 +1,6 @@
 // This file contains all pre and post triggers for db
 // interaction with our models. 
 
-/* * * * * * * * * * * * * * * * * * * * * 
- *                 USER                  *
- * * * * * * * * * * * * * * * * * * * * */
-
-
 var setCreatedTimestamp = function (next) {
   var now = Date.now();
 
@@ -23,11 +18,15 @@ var setUpdatedTimestamp = function (next) {
   next();
 };
 
+
+/* * * * * * * * * * * * * * * * * * * * * 
+ *                 USER                  *
+ * * * * * * * * * * * * * * * * * * * * */
+
 // All valid triggers are included here for reference.
-module.exports.User = function(UserSchema) {
+module.exports.setUserHooks = function(UserSchema, User) {
   UserSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
-
   });
 
   UserSchema.pre('remove', function(next) {
@@ -57,16 +56,12 @@ module.exports.User = function(UserSchema) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.Roadmap = function(RoadmapSchema) {
+module.exports.setRoadmapHooks = function(RoadmapSchema, Roadmap) {
   RoadmapSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
   });
 
   RoadmapSchema.pre('remove', function(next) {
-    next();
-  });
-
-  RoadmapSchema.pre('validate', function(next) {
     next();
   });
 
@@ -88,13 +83,22 @@ module.exports.Roadmap = function(RoadmapSchema) {
  *                 NODE                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-module.exports.Node = function(NodeSchema) {
-
+module.exports.setNodeHooks = function(NodeSchema, Node) {
   NodeSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
   });
 
   NodeSchema.pre('remove', function(next) {
+    // On deletion of a Node, remove it's ID from the parent Roadmaps nodes array
+    var Roadmap = require('./roadmaps/roadmapModel.js');
+    var parentRoadmapID = this.parentRoadmap;
+    var deletedNodeID = this._id;
+
+    var update = { $pull:{ nodes: deletedNodeID } };
+
+    Roadmap.findByIdAndUpdate(parentRoadmapID, update)
+      .exec(function(err){ if (err) throw err; });  
+
     next();
   });
 
