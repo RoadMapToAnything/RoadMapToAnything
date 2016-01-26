@@ -107,7 +107,7 @@ describe('The users API', function() {
         });
     });
 
-    it('should retrieve an array of users with populated roadmaps', function (done) {
+    xit('should retrieve an array of users with populated roadmaps', function (done) {
 
       request(server.app)
         .get(route)
@@ -127,7 +127,7 @@ describe('The users API', function() {
 
     });
 
-    it('should retrieve a specific user with name properties, timestamps, and populated roadmaps', function (done) {
+    xit('should retrieve a specific user with name properties, timestamps, and populated roadmaps', function (done) {
 
       request(server.app)
         .get(route + '/' + username)
