@@ -11,9 +11,9 @@ angular.module('app.auth', [])
 
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
-    $http.get('/api/login', {
-      username: $scope.attemptedUsername,
-      password: $scope.attemptedPassword
+    $http({
+      url: '/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword,
+      method: 'GET'
     })
     .then(
       //success callback
@@ -30,7 +30,7 @@ angular.module('app.auth', [])
           $scope.showUnauthMsg = true;
         }
       }
-      );
+    );
   };
 
   $scope.attemptSignup = function () {
