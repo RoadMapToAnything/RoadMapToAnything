@@ -68,9 +68,9 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
-            console.log('followed response.data', response.data);
-            $scope.followed = response.data.data.authoredRoadmaps || [];
-            $scope.addTotalNodesOfFollowedMaps($scope.followed);
+              console.log('followed response.data', response.data);
+              $scope.followed = response.data.data.authoredRoadmaps || [];
+              $scope.addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);
             });
