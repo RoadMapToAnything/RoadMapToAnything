@@ -1,6 +1,6 @@
-var User = require('../../server/api/users/userModel.js'),
-    Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
-    Node = require('../../server/api/nodes/nodeModel.js');
+var User = require('./api/users/userModel.js'),
+    Roadmap = require('./api/roadmaps/roadmapModel.js'),
+    Node = require('./api/nodes/nodeModel.js');
 
 var users = [
   {
@@ -32,18 +32,21 @@ var maps = [
   {
     title      : 'Understanding Bowie',
     description: 'This roadmap will help you learn about David Bowie',
+    author     : 0, // This # will be replaced with the _id of users[#]
     nodes      : []
   },
 
   {
     title      : 'Learning JavaScript',
     description: '134rn 2 b 4n 1337 h4xx0rz',
+    author     : 1,
     nodes      : []
   },
 
   {
     title      : 'Straight Outta Knowing Nothing About Straight Outta Compton',
     description: 'Your hip hop history. Learn it.',
+    author     : 2,
     nodes      : []
   }
 ];
@@ -54,7 +57,7 @@ var nodes = [
     description  : 'Watch this classic. Absorb the Bowie.',
     resourceType : 'Music Video',
     resourceURL  : 'https://www.youtube.com/watch?v=v--IqqusnNQ',
-    parentRoadmap: []
+    parentRoadmap: 0 // This # will be replaced with the _id of maps[#]
   },
 
   {
@@ -62,7 +65,7 @@ var nodes = [
     description  : 'OMG 1f u c4nt h4x th15 w4t h0p d0 u h4v???',
     resourceType : 'Online Course',
     resourceURL  : 'https://www.codecademy.com/learn/javascript',
-    parentRoadmap: []
+    parentRoadmap: 1
   },
 
   {
@@ -70,7 +73,7 @@ var nodes = [
     description  : 'It\'s in the name. Watch it.',
     resourceType : 'Music Video',
     resourceURL  : 'https://www.youtube.com/watch?v=TMZi25Pq3T8',
-    parentRoadmap: []
+    parentRoadmap: 2
   }
 ];
 
@@ -80,7 +83,7 @@ module.exports.maps = maps;
 module.exports.nodes = nodes;
 
 
-module.exports.seedUsers = function(next) {
+var seedUsers = function(next) {
 
   var addUser = function(i) {
     if (i >= users.length) return next && next();
@@ -96,59 +99,105 @@ module.exports.seedUsers = function(next) {
 };
 
 
-module.exports.clearUsers = function(next) {
+var clearUsers = function(next) {
 
-  var clearUser = function(i) {
+  var removeUser = function(i) {
     if (i >= users.length) return next && next();
 
     User.findOne(users[i].username)
       .then(function (user) {
         if (user) user.remove();
-        clearUser(i + 1);
+        removeUser(i + 1);
       });
   };
 
-  clearUser(0);
+  removeUser(0);
 };
 
 
-module.exports.seedData = function(next) {
+var seedRoadmaps = function(next) {
 
   var addRoadmap = function(i) {
     if (i >= maps.length) return next && next();
 
-    maps[i].author = users[i]._id;
+    maps[i].author = users[maps[i].author]._id;
 
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
-        console.log(map._id)
-
-        User.findOneAndUpdate(
-          {_id: users[i]._id}, 
-          {$push: {roadmaps: map._id}}, 
-          {safe: true, upsert: true, new: true})
-        .then(function () {
-          addRoadmap(i + 1);
-        });
+        addRoadmap(i + 1);
       });
   };
 
-  module.exports.seedUsers(addRoadmap.bind(null, 0));
+  addRoadmap(0);
 };
 
 
-module.exports.clearData = function(next) {
+var clearRoadmaps = function(next) {
 
-  var clearRoadmap = function(i) {
+  var removeRoadmap = function(i) {
     if (i >= maps.length) return next && next();
 
     Roadmap.findOne(maps[i]._id)
       .then(function (map) {
         if (map) map.remove();
-        clearRoadmap(i + 1);
+        removeRoadmap(i + 1);
       });
   };
 
-  module.exports.clearUsers(clearRoadmap.bind(null, 0));
+  removeRoadmap(0);
+};
+
+
+var seedNodes = function(next) {
+
+  var addNode = function(i) {
+    if (i >= nodes.length) return next && next();
+
+    nodes[i].parentRoadmap = maps[nodes[i].parentRoadmap]._id;
+
+    Node(nodes[i]).save()
+      .then(function (node) {
+        if (node) nodes[i] = node;
+        addNode(i + 1);
+      });
+  };
+
+  addNode(0);
+};
+
+var clearNodes = function(next) {
+
+  var removeNode = function(i) {
+    if (i >= nodes.length) return next && next();
+
+    Node.findOne(nodes[i]._id)
+      .then(function (node) {
+        if (node) node.remove();
+        removeNode(i + 1);
+      });
+  };
+
+  removeNode(0);
+};
+
+module.exports.seedData = function(next) {
+  var log = function () {
+    console.log('Seeded DB with test data:');
+    console.log(users);
+    console.log(maps);
+    console.log(nodes);
+    if (next) next();
+  };
+
+  User.findOne({username: users[0].username})
+    .then(function (user) {
+      if (!user)
+        seedUsers( seedRoadmaps.bind( null, seedNodes.bind(null, log) ) );
+      else if (next) next();
+    });
+};
+
+module.exports.clearData = function(next) {
+  clearNodes( clearRoadmaps.bind( null, clearUsers.bind(null, next) ) );
 };
