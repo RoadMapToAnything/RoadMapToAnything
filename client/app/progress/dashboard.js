@@ -63,20 +63,34 @@ angular.module('app.dash', [])
       completed: 0
     }];
 
-    addPercentCompleteAttr();
+    $scope.followedTotalNodes = 0;
 
     getDashboardData();
 
 
   // helper functions
 
-  function addPercentCompleteAttr (){
-    $scope.dummyFollowed.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
+  function addTotalNodesOfFollowedMaps (){
+    $scope.followed.forEach(function(map){
+      console.log('followed totalNodes', map.nodes.length);
+      map.totalNodes = map.nodes.length;
+    });
+  }
+
+  function addTotalNodesOfMyMaps (){
+    $scope.myMaps.forEach(function(map){
+      console.log('myMaps totalNodes', map.nodes.length);
+      map.totalNodes = map.nodes.length;
+    });
+  }
+
+  function addCompletedNodes (){
+    $scope.followed.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
     });
 
     $scope.dummyMyMaps.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
     });
   }
 
@@ -95,6 +109,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.embarked);
             $scope.myMaps = response.data.data.embarked || [];
+            addTotalNodesOfMyMaps();
             }, function(err){
               console.log("error with MyMaps request", err);
             });
@@ -107,6 +122,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.roadmaps);
             $scope.followed = response.data.data.roadmaps || [];
+            addTotalNodesOfFollowedMaps();
             }, function(err){
               console.log('error with followedMaps request', err);
             });

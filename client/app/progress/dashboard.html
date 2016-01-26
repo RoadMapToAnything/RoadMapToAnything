@@ -20,8 +20,8 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
-              <td>{{ map.completed }} /
-              {{ map.nodes }}</td>
+              <td><!--{{ map.completed }} /    add when we know completed nodes-->
+              {{ map.totalNodes }}</td>
               <td class="truncate">{{ map.title }}</td>
               <td class="progress-bar">
                 <div class="progress">
@@ -47,7 +47,7 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
-              <td>{{ map.nodes }}</td>
+              <td>{{ map.totalNodes }}</td>
               <td class="truncate">{{ map.title }}</td>
             </tr>
         </tbody>
