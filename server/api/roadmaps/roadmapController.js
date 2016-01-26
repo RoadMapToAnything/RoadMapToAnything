@@ -17,6 +17,7 @@ module.exports = {
     var dbArgs = handleQuery(req.query);
 
     Roadmap.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
+      .populate('author nodes')
       .then(function(dbResults){
         res.json(dbResults);
       })
@@ -26,6 +27,7 @@ module.exports = {
   getRoadmapByID : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findById(_id)
+      .populate('author nodes')
       .then(function(dbResults){
         res.json(dbResults);
       })
@@ -36,6 +38,7 @@ module.exports = {
     var _id = req.params.roadmapID;
     var updateCommand = req.body;
     Roadmap.findByIdAndUpdate(_id, updateCommand)
+      .populate('author nodes')
       .then(function(dbResults){
         res.json(dbResults);
       })
@@ -45,6 +48,7 @@ module.exports = {
   deleteRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findOne({_id:_id})
+      .populate('author nodes')
       .then(function(roadmap){
         if (roadmap) roadmap.remove();
         res.json(roadmap);
