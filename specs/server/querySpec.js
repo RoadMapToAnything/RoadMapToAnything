@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'test'; // disable morgan
 
 var expect = require('chai').expect,
     request = require('supertest'),
-    testData = require('./testData.js'),
     User = require('../../server/api/users/userModel.js'),
     Roadmap = require('../../server/api/roadmaps/roadmapModel.js'),
     Node = require('../../server/api/nodes/nodeModel.js'),
@@ -22,23 +21,14 @@ var expect = require('chai').expect,
 /* * * * * * * * * * * * * * * * * * * * * * * */
 
 describe('Query Strings', function() {
-  var users = testData.users;
 
-  before(function(done) {
-    testData.seedData(done);
-  });
-
-  after(function(done) {
-    testData.clearData(done);
-  });
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *                 SORT                  *
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Sort parameter', function() {
-
-
+    
     it('should sort users by username', function (done) {
 
       request(server.app)
