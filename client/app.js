@@ -8,11 +8,12 @@ angular.module('app', [
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
   $stateProvider
+    //state for the main home page that signed-in and non-signed in users see
     .state('home', {
       url: '/',
       views: {
         'header': {
-          templateUrl: 'app/main/main.userheader.html',
+          templateUrl: 'app/main/main.header.html',
           controller: 'MainController'
         },
          'welcome': {
@@ -53,6 +54,7 @@ angular.module('app', [
         }
       }
     })
+    //state for dashboard
     .state('dashboard', {
       url: '/dashboard',
       views: {
@@ -61,7 +63,7 @@ angular.module('app', [
           controller: 'DashboardController'
         },
         'header': {
-          templateUrl: 'app/main/main.header.html',
+          templateUrl: 'app/main/main.userheader.html',
           controller: 'MainController'
         },
         'footer': {
@@ -70,6 +72,7 @@ angular.module('app', [
         }
       }
     })
+  //state for roadmap
   .state('roadmapTemplate', {
     url: '/roadmaps',
     views: {
@@ -78,7 +81,7 @@ angular.module('app', [
         controller: 'RoadMapsController'
       },
       'header': {
-        templateUrl: 'app/main/main.header.html',
+        templateUrl: 'app/main/main.userheader.html',
         controller: 'RoadMapsController'
       },
       'footer': {
@@ -87,5 +90,40 @@ angular.module('app', [
       }
     }
   })
-
+  //state for registration
+  .state('register', {
+    url: '/register',
+    views: {
+      'signup': {
+        templateUrl: 'app/auth/signup.html',
+        controller: 'AuthController' 
+      },
+      'header': {
+        templateUrl: 'app/main/main.registration.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
+  })
+  //sample state
+  .state('example', {
+    url: '/example',
+    views: {
+      'signup': {
+        templateUrl: 'app/auth/signup.html',
+        controller: 'AuthController' 
+      },
+      'header': {
+        templateUrl: 'app/main/main.userheader.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
+  })
 });
