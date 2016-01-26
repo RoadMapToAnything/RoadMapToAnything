@@ -35,7 +35,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     after('Remove test Roadmap', function(done) {
       Roadmap.findOneAndRemove({title: 'TestMap'})
         .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+        .catch(function(err){ throw err; });
     });
 
     it('Should respond with 201 when creating a new Roadmap', function(done){
@@ -56,47 +56,33 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   describe('GET /api/roadmaps', function(){
 
     before('Create test Roadmap', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              done();
-            });
+      request(server.app)
+        .get('/api/roadmaps')
+        .end(function(err, res){
+          if (err) throw err;
+          result = res.body.data;
+          done();
         });
     });
 
-    after('Remove test Roadmap', function(done) {
-      Roadmap.findOneAndRemove({title: 'TestMap'})
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+
+    it('Should respond with an array', function(){
+      expect(result).to.be.an('array');
     });
 
-    it('Should respond with an array', function(done){
-      expect( Array.isArray(result) ).to.equal(true);
-      done();
-    });
-
-    it('If Roadmaps exist, response array should contain Roadmaps', function(done){
+    it('should have roadmaps in its response array', function(){
       expect( result[0].hasOwnProperty('nodes') ).to.equal(true);
-      done();
     });
 
-    it('If no new Roadmaps exist, response array should be three', function(done){
-      Roadmap.findOneAndRemove({title: 'TestMap'})
-        .then(function(){
-          request(server.app)
-            .get('/api/roadmaps')
-            .end(function(err, serverResponse){
-              if (err) throw err;
-              result = serverResponse.body;
-              expect( result.length ).to.equal(3);
-              done();
-            });
-        });
+    it('should have roadmaps populated with an author', function(){
+      expect(result[0]).to.have.property('author');
+      expect(result[0].author).to.have.property('username');
+    });
+
+    it('should have roadmaps populated with nodes', function(){
+      expect(result[0]).to.have.property('nodes');
+      expect(result[0].nodes).to.be.an('array');
+      expect(result[0].nodes[0]).to.have.property('title');
     });
 
   });
@@ -128,14 +114,14 @@ describe('Roadmap Routes - /api/roadmaps', function() {
      
       request(server.app)
         .get('/api/roadmaps/'+testMapID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
-          expect( serverResponse.body._id ).to.equal( String(testMapID) );
-          expect(serverResponse.body).to.have.property('created');
-          expect(serverResponse.body).to.have.property('updated');
+          expect( res.body.data._id ).to.equal( String(testMapID) );
+          expect(res.body.data).to.have.property('created');
+          expect(res.body.data).to.have.property('updated');
 
           // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( serverResponse.body.created ).to.equal( serverResponse.body.updated );
+          expect( res.body.data.created ).to.equal( res.body.data.updated );
           done();
 
         });
@@ -176,7 +162,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
           request(server.app)
             .put('/api/roadmaps/'+testMapID)
             .send({description: "Learn JavaScript"})
-            .end(function(err, serverResponse){
+            .end(function(err, res){
               if (err) throw err;
 
               Roadmap.findById(testMapID)
@@ -220,7 +206,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
      
       request(server.app)
         .delete('/api/roadmaps/'+testMapID)
-        .end(function(err, serverResponse){
+        .end(function(err, res){
           if (err) throw err;
 
           Roadmap.findById(testMapID)

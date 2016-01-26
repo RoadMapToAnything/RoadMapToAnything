@@ -10,7 +10,7 @@ module.exports = {
     newNode.parentRoadmap = newNode.parentRoadmap || req.params.roadmapID;
     Node(newNode).save()
       .then(function(dbResults){
-        res.status(201).json(dbResults);
+        res.status(201).json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -20,7 +20,7 @@ module.exports = {
     Node.findById(_id)
       .populate('parentRoadmap')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -31,7 +31,7 @@ module.exports = {
     Node.findByIdAndUpdate(_id, updateCommand)
       .populate('parentRoadmap')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -42,7 +42,7 @@ module.exports = {
       .populate('parentRoadmap')
       .then(function(node){
         node.remove();
-        res.json(node);
+        res.json({data: node});
       })
       .catch(handleError(next));
   }

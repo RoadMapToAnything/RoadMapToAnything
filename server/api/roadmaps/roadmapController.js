@@ -1,16 +1,36 @@
 var Roadmap = require('./roadmapModel.js'),
+    User = require('../users/userModel.js'),
+    ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js');
+
+var findId = function (req, res, next) {
+  User.findOne(req.body.author)
+    .then(function (user) {
+      req.body.author = user._id;
+      resolveCreation(req, res, next);
+    })
+    .catch(handleError(next));
+};
+
+var resolveCreation = function (req, res, next) {
+  var newRoadmap = req.body;
+  Roadmap(newRoadmap).save()
+    .then(function(dbResults){
+      res.status(201).json({data: dbResults});
+    })
+    .catch(handleError(next));
+};
 
 module.exports = {
 
   createRoadmap : function (req, res, next) {
-    var newRoadmap = req.body;
-    Roadmap(newRoadmap).save()
-      .then(function(dbResults){
-        res.status(201).json(dbResults);
-      })
-      .catch(handleError(next));
+    var author = req.body.author.toString();
+
+    if (author.length !== 24 || new ObjectId(author) !== author)
+      findId(req, res, next);
+    else
+      resolveCreation(req, res, next);
   },
 
   getRoadmaps : function (req, res, next) {
@@ -19,7 +39,7 @@ module.exports = {
     Roadmap.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -29,7 +49,7 @@ module.exports = {
     Roadmap.findById(_id)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -40,7 +60,7 @@ module.exports = {
     Roadmap.findByIdAndUpdate(_id, updateCommand)
       .populate('author nodes')
       .then(function(dbResults){
-        res.json(dbResults);
+        res.json({data: dbResults});
       })
       .catch(handleError(next));
   },
@@ -51,7 +71,7 @@ module.exports = {
       .populate('author nodes')
       .then(function(roadmap){
         if (roadmap) roadmap.remove();
-        res.json(roadmap);
+        res.json({data: roadmap});
       })
       .catch(handleError(next));
   }

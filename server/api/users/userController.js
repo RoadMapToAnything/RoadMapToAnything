@@ -11,7 +11,7 @@ module.exports = {
 
     User(newUser).save()
       .then(function(createdUserResults){ 
-        res.status(201).json(createdUserResults);
+        res.status(201).json({data: createdUserResults});
       })
       .catch(handleError(next));
   },
@@ -26,7 +26,7 @@ module.exports = {
       .populate('roadmaps embarked')
       .then(function(validUser){
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
-        else res.status(200).json(validUser); // TODO: send back a token, not DB results
+        else res.status(200).json({data: validUser}); // TODO: send back a token, not DB results
       })
       .catch(handleError(next));
   },
@@ -38,7 +38,7 @@ module.exports = {
       .populate('roadmaps embarked')
       .then(function (users) {
         if (!users) return res.sendStatus(401);
-        res.status(200).json(users);
+        res.status(200).json({data: users});
       })
       .catch(handleError(next));
   },
@@ -48,20 +48,17 @@ module.exports = {
       .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
-        res.status(200).json(user);
+        res.status(200).json({data: user});
       })
       .catch(handleError(next));
   },
 
   updateUserByName: function(req, res, next) {
-    console.log('UPDATE USER:', req.params.username);
-    console.log('WITH BODY:', req.body);
     User.findOneAndUpdate({username: req.params.username}, req.body)
       .populate('roadmaps embarked')
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
-        console.log('USER UPDATED:', user);
-        res.status(200).json(user);
+        res.status(200).json({data: user});
       })
       .catch(handleError(next));
   },
@@ -74,7 +71,7 @@ module.exports = {
 
         user.remove();
         console.log('deleted user with', req.params);
-        res.status(201).json(user);
+        res.status(201).json({data: user});
       })
       .catch(handleError(next));
   }

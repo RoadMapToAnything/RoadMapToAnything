@@ -1,13 +1,15 @@
 var express  = require('express'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    CONF = require('../_config.json');
 
-    mongoose.Promise = require('bluebird');
-   
+mongoose.Promise = require('bluebird');
+
+
 var app      = express();
-var port     = process.env.PORT || 3000;
-if (process.env.NODE_ENV === 'test') port = 5000;
+var port     = process.env.PORT || CONF.PORT.LOCAL;
+if (process.env.NODE_ENV === 'test') port = CONF.PORT.TEST;
 
-var database = process.env.MONGOLAB_URI || 'mongodb://localhost/roadmapToAnything';
+var database = process.env.MONGOLAB_URI || CONF.DB_URI;
 mongoose.connect(database);
 
 require('./middleware.js')(app, express);

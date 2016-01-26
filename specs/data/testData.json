@@ -1,0 +1,68 @@
+{
+  "users": [
+    {
+      "username" : "bowieloverx950",
+      "password" : "c",
+      "firstName": "Bob",
+      "lastName" : "Johnson"
+    },
+
+    {
+      "username" : "supercoder31337", 
+      "password" : "a",
+      "firstName": "Susan",
+      "lastName" : "Kozlowski"
+    },
+
+    {
+      "username" : "alex<3hiphop", 
+      "password" : "b",
+      "firstName": "Alejandro",
+      "lastName" : "Bautista"
+    }
+  ],
+  "maps": [
+    {
+      "title"      : "Understanding Bowie",
+      "description": "This roadmap will help you learn about David Bowie",
+      "author"     : 0 
+    },
+
+    {
+      "title"      : "Learning JavaScript",
+      "description": "134rn 2 b 4n 1337 h4xx0rz",
+      "author"     : 1
+    },
+
+    {
+      "title"      : "Straight Outta Knowing Nothing About Straight Outta Compton",
+      "description": "Your hip hop history. Learn it.",
+      "author"     : 2
+    }
+  ],
+  "nodes": [
+    {
+      "title"        : "Watch Life On Mars?",
+      "description"  : "Watch this classic. Absorb the Bowie.",
+      "resourceType" : "Music Video",
+      "resourceURL"  : "https://www.youtube.com/watch?v=v--IqqusnNQ",
+      "parentRoadmap": 0
+    },
+
+    {
+      "title"        : "Take Codecademy's Intro Course",
+      "description"  : "OMG 1f u c4nt h4x th15 w4t h0p d0 u h4v???",
+      "resourceType" : "Online Course",
+      "resourceURL"  : "https://www.codecademy.com/learn/javascript",
+      "parentRoadmap": 1
+    },
+
+    {
+      "title"        : "Watch Straight Outta Compton",
+      "description"  : "It's in the name. Watch it.",
+      "resourceType" : "Music Video",
+      "resourceURL"  : "https://www.youtube.com/watch?v=TMZi25Pq3T8",
+      "parentRoadmap": 2
+    }
+  ]
+}
