@@ -1,15 +1,18 @@
 angular.module('app.auth', [])
 
 .controller('AuthController', ['$scope', '$http', function($scope, $http){
-  $scope.test = function(){
-    console.log('Auth controller is working');
-  };
-  $scope.test();
+
+  $scope.attemptedUsername = "not yet set";
+  $scope.attemptedPassword = "not yet set";
+
   $scope.showUnauthMsg = false;
 
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
-    $http.get('/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword )
+    $http.get('/api/login', {
+      username: $scope.attemptedUsername,
+      password: $scope.attemptedPassword
+    })
     .then(
       //success callback
       function(res){

@@ -27,21 +27,16 @@ describe('AuthController', function () {
   });
 
 
-  it('should get a 401 when credentials bad', function () {
-    $scope.attemptedUsername = 'noone-should-ever-pick-this-name';
-    $scope.attemptedLogin = 'or-this-password!#$';
-    return $scope.attemptLogin()
-      .then(function(response){
-        expect(response.status).to.be.equal.to(401);
-      });
+  it('should have a username on the model', function () {
+    expect($scope.attemptedUsername).to.equal("not yet set");
   });
 
-  xit('should get a 200 when credentials good', function () {
-    $scope.attemptedUsername = 'a';
-    $scope.attemptedLogin = 'a';
-    return $scope.attemptLogin()
-      .then(function(response){
-        expect(response.status).to.be.equal.to(200);
-      });
+  it('should have a password on the model', function () {
+    expect($scope.attemptedPassword).to.equal("not yet set");
   });
+  
+  it('should not start out showing msg about bad credentials', function (){
+    expect($scope.showUnauthMsg).to.be.false;
+  });
+
 });
