@@ -44,9 +44,10 @@ module.exports = {
 
   deleteRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
-    Roadmap.findByIdAndRemove(_id)
-      .then(function(dbResults){
-        res.json(dbResults);
+    Roadmap.findOne({_id:_id})
+      .then(function(roadmap){
+        if (roadmap) roadmap.remove();
+        res.json(roadmap);
       })
       .catch(handleError(next));
   }
