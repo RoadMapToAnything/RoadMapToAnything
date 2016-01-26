@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    triggers = require('../modelTriggers.js');
+    hooks    = require('../modelTriggers.js');
 
 var NodeSchema = new mongoose.Schema({
     title        : { type: String,   required: true },
@@ -12,6 +12,7 @@ var NodeSchema = new mongoose.Schema({
     updated      : { type: Date }
 });
 
-triggers.Node(NodeSchema);
+var Node = mongoose.model('Node', NodeSchema);
 
-module.exports = mongoose.model('Node', NodeSchema);
+hooks.setNodeHooks(NodeSchema, Node);
+module.exports = Node;

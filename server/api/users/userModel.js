@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    triggers = require('../modelTriggers.js');
+    hooks    = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({
   username : {type: String, required: true, unique: true},
@@ -13,7 +13,7 @@ var UserSchema = new mongoose.Schema({
   updated  : { type: Date}
 });
 
+var User = mongoose.model('User', UserSchema);
 
-triggers.User(UserSchema);
-
-module.exports = mongoose.model('User', UserSchema);
+hooks.setUserHooks(UserSchema, User);
+module.exports = User;
