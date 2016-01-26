@@ -4,27 +4,24 @@
   <meta charset="utf-8">
   <title>Roadmap To Anything</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-
-  <link href="styles.css" rel="stylesheet" type="text/css">
-  
+  <link href="styles.css" rel="stylesheet" type="text/css">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
-
   <!--main page content-->
   <div ui-view="header"></div>
   <div class="container">
     <div ui-view="welcome"></div>
     <div ui-view="content"></div>
+    <div ui-view="signup"></div>
     <!--     <div ui-view="footer"></div> -->
   <!--main page-->
   
   <!-- ui-sref takes you to a different state -->
     
     <button class="waves-effect waves-light btn center-align" ui-sref="roadmapTemplate">Click me to go to a template roadmap</button>
-
-
+    
     <!--  In the future this could be part of a view-->
     <br><br>
     <div class="row">
@@ -40,11 +37,10 @@
     <br>
 
   </div>
-
   <div ui-view="footer"></div>
 <!-- When main is up put a main.footer and a main.header -->
-</body>
 
+</body>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <!-- A library to make connecting lines between elements -->
@@ -55,16 +51,11 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
 
-
-
-
-
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
 >>>>>>> Skeleton for RoadMap Template
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
  -->
-
 
 <script src="app.js"></script>
 <script src="app/auth/auth.js"></script>
@@ -72,21 +63,4 @@
 <script src="app/progress/dashboard.js"></script>
 <script src="app/roadmaps/roadmaps.js"></script>
 
-
 </html>
-
-  <!--nav bar
-  <div class="navbar-fixed">
-    <nav class="amber lighten-1">
-      <div class="nav-wrapper container">  
-        <a href="#" class="brand-logo">Roadmap to Anything</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="search.html"><i class="material-icons">search</a></li>
-            <li><a ui-sref="dashboard">My Roadmaps</a></li>
-            <li><a href="app/auth/signup.html">Sign Up</a></li>
-            <li><a href="app/auth/signin.html">Log In</a></li>
-            <li><a href="/">Log Out</a></li>
-          </ul>
-      </div>
-    </nav>  
-  </div>  -->
