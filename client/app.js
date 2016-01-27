@@ -121,5 +121,9 @@ angular.module('app', [
         controller: 'RoadMapsController'
       }
     }
+  })
+  .state('browse', { //maybe rename as explore?
+    url: '/browse',
+    templateUrl: 'app/browse/browse.html'
   });
 });

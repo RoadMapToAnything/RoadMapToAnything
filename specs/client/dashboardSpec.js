@@ -22,7 +22,6 @@ describe('DashboardController', function () {
     createController();
   }));
 
-//skipping these tests until dashboard api calls decided on
 
 //test followed maps
   it('should have functions for getting myMaps data', function () {
