@@ -1,0 +1,47 @@
+<script>
+  $(document).ready(function() {
+      $('select').material_select();
+  });
+</script>
+<div class="row">
+  <form class="col s12">
+    <div class="row">
+      <div class="input-field col s8">
+        <input id="node_title" type="text" class="validate">
+        <label for="node_title">Title</label>
+      </div>
+      <div class="input-field col s4">
+        <select>
+          <option value="" disabled selected>What sort of data is it?</option>
+          <option value="post">Blog Post</option>
+          <option value="class">Class</option>
+          <option value="video">Video</option>
+          <option value="music">Music</option>
+        </select>
+        <label>Node Type</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="node_description" type="text" class="validate">
+        <label for="node_description">Description</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="node_url" type="url" class="validate">
+        <label for="node_url">URL</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="node_image_url" type="url" class="validate">
+        <label for="node_image_url">Image URL</label>
+      </div>
+    </div>
+    <div class="row">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Add another Node
+        </button>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Save Roadmap
+        </button>
+    </div>
+  </form>
+</div>
