@@ -36,7 +36,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       .get('/api/login?username='+username+'&password='+password)
       .end(function(err, serverResponse){
         if (err) throw err;
-        authToken = serverResponse.body.authToken;
+        authToken = serverResponse.body.data.authToken;
         done();
       });
 
@@ -228,7 +228,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         .set('Authorization', 'Basic ' + encodedAuthHeader)
         .end(function(err, serverResponse){
           if (err) throw err;
-          
+
           Roadmap.findById(testMapID)
             .then(function(dbResults){
               expect( dbResults ).to.equal( null );

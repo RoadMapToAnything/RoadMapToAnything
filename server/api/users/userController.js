@@ -33,7 +33,7 @@ module.exports = {
         else {
           bcrypt.hash(validUser.password, null, null, function(err, hashedPassword){
             var encodedHash = new Buffer(hashedPassword, 'ascii').toString('base64');
-            res.status(200).json({username: validUser.username, authToken: encodedHash });
+            res.status(200).json({data: {username: validUser.username, authToken: encodedHash} });
           });
         }
       })
