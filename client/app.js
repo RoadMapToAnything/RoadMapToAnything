@@ -142,6 +142,24 @@ angular.module('app', [
     }
   })
   //sample state
+  .state('nodeCreationForm', {
+    url: '/node-creation',
+    views: {
+      'content': {
+        templateUrl: 'app/roadmaps/node.creation.html',
+        controller: 'RoadMapsController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.userheader.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
+  })
+  //sample state
   .state('example', {
     url: '/example',
     views: {
