@@ -23,8 +23,8 @@ var setUpdatedTimestamp = function (next) {
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-// Changes all direct array modifcation to Users to a '$push'.
-var pushArraysProperly = function (UserSchema, next) {
+// Changes all direct array modifcation to Users to a '$addToSet'.
+var setifyArrayUpdate = function (UserSchema, next) {
   var update = this._update;
   var arrayNames = [];
   
@@ -36,11 +36,11 @@ var pushArraysProperly = function (UserSchema, next) {
   }
 
   // Check to see if any of those arrays are being directly updated,
-  // and if so, push them instead.
+  // and if so, add them to the set instead.
   arrayNames.forEach(function (name) {
     if (update[name]) {
-      update.$push = update.$push || {};
-      update.$push[name] = update[name];
+      update.$addToSet = update.$addToSet || {};
+      update.$addToSet[name] = update[name];
       delete update[name];
     }
   });
@@ -55,8 +55,8 @@ var handleCompletedRoadmaps = function (next) {
   var query = this;
   var completed;
 
-  if (query._update.$push) {
-    completed = query._update.$push['completedRoadmaps'];
+  if (query._update.$addToSet) {
+    completed = query._update.$addToSet['completedRoadmaps'];
   }
 
   if(completed) { 
@@ -85,7 +85,7 @@ module.exports.setUserHooks = function(UserSchema) {
 
   UserSchema.pre('update', function(next) {
     var query = this;
-    pushArraysProperly.call(query, UserSchema, function() {
+    setifyArrayUpdate.call(query, UserSchema, function() {
       handleCompletedRoadmaps.call(query, function() {
         setUpdatedTimestamp.call(query, next);
       });
@@ -94,7 +94,7 @@ module.exports.setUserHooks = function(UserSchema) {
 
   UserSchema.pre('findOneAndUpdate', function(next) {
     var query = this;
-    pushArraysProperly.call(query, UserSchema, function() {
+    setifyArrayUpdate.call(query, UserSchema, function() {
       handleCompletedRoadmaps.call(query, function() {
         setUpdatedTimestamp.call(query, next);
       });
@@ -103,7 +103,7 @@ module.exports.setUserHooks = function(UserSchema) {
 
   UserSchema.pre('findByIdAndUpdate', function(next) {
     var query = this;
-    pushArraysProperly.call(query, UserSchema, function() {
+    setifyArrayUpdate.call(query, UserSchema, function() {
       handleCompletedRoadmaps.call(query, function() {
         setUpdatedTimestamp.call(query, next);
       });
