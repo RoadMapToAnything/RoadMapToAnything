@@ -4,4 +4,6 @@ angular.module('app.main', [])
     console.log('Main controller is working');
   };
   $scope.test();
+
+  
 });

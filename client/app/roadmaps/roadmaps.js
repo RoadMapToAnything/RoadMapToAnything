@@ -2,45 +2,77 @@ angular.module('app.roadmaps', [])
 // Roadmaps have a title, description, author, nodes array, all nodes: , created time
   //
 .controller('RoadMapsController', function($scope,$http){
-  var roadMapUrl = 'testString';
+  // Changes everytime you reseed database
+  var roadMapUrl = '56a80c832e630ea85e4b457f';
   $scope.currentRoadMapData = {};
-  // Get Data
-  $scope.encapsulate = function(){  
-    $http({
-      method: 'GET',
-      url: roadMapUrl
-    }).then(function(response){
-      $scope.currentRoadMapData = response.data;
-    }, function(err){
-      if (err) return err;
-    });
-  }
-  $scope.renderedNodes = [{nodeDescription: 'Test Description of what Node is about', nodeTitle: 'This node is the best node'}, 
-    {nodeDescription: 'Test Description of what Node is about', nodeTitle: 'This node is the worst node' }];
+  $scope.renderedNodes = [];
+  
   $scope.renderNodes = function(){
-
+    var title = $scope.currentRoadMapData.title || 'test title';
+    var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];    
+    // add an index to nodes to make ng-clicking easier.
+    nodes.map(function(node,index){
+      node.index = index;
+    })
+    $scope.renderedNodes = nodes;
+    $scope.roadMapTitle = title;
+    // User Logged in Data in the future
+    $scope.renderCurrentNode();
   };
 
   // Render Title
   // Assumes title links and description properties from get method
-  $scope.renderTitleAndLinks = function(){
-    var title = $scope.currentRoadMapData.title || 'test title';
-    var links = $scope.currentRoadMapData.links || ['testlink1', 'testlink2'];
-    var description = $scope.currentRoadMapData.longDescription || 'Test Description of what Node is about';
-    console.log(title);
-    console.log(links)
+  $scope.renderCurrentNode = function(){
+    // For now lets make $scope.loggedIn be false, if logged in we can change it to true later.
+    $scope.loggedin = false;
+    if($scope.loggedIn) {
+      // Get node index
+      // set currentNode into node at that index;
+    } else {
+      var links = $scope.renderedNodes[0].resourceURL;
+      var description = $scope.renderedNodes[0].description;
+      var title = $scope.renderedNodes[0].title;
+    }
+    
     $scope.currentTitle = title;
-    $scope.currentLinks = links;
-    $scope.currentNodeLongDescription = description;
-  }
-  $scope.renderTitleAndLinks();
+    $scope.currentLinks = [links];
+    $scope.currentNodeDescription = description;
 
-  $scope.selectNode = function() {
-    alert('clicked node once we get data will fill in')
-    // select clicked node as current
-    // $scope.currentTitle = this.title;
-    // $scope.currentLinks = this.links;
+    $scope.connectLines();
+
+
+    // var links = $scope.currentRoadMapData.nodes.resourceURL || ['testlink1', 'testlink2'];
+    // //gets you the description of a particular node
+    // var description = $scope.currentRoadMapData.nodes.description || 'Test Description of what Node is about';
   }
+
+  $scope.selectNode = function(index) {
+
+    var links = $scope.renderedNodes[index].resourceURL;
+    var description = $scope.renderedNodes[index].description;
+    var title = $scope.renderedNodes[index].title;
+
+    $scope.currentTitle = title;
+    $scope.currentLinks = [links];
+    $scope.currentNodeDescription = description;
+  }
+
+  // The roadMap URL is just for testing purposes and gets you a specific roadmap
+  // We can just use /api/roadmaps to get every node
+  $scope.getRoadMap = function(cb){  
+    return $http({
+      method: 'GET',
+      url: '/api/roadmaps/' + roadMapUrl
+    }).then(function(response){
+      console.log(response.data)
+      $scope.currentRoadMapData = response.data;
+      cb()
+    }, function(err){
+      if (err) return err;
+    });
+  }
+
+
 
 
   $scope.connectLines = function(){
@@ -51,10 +83,10 @@ angular.module('app.roadmaps', [])
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);
   }
-  $scope.asyncConnectLines();
   
   // $scope.connectLines();
-    
+  $scope.getRoadMap($scope.renderNodes);
+
 
 
 });
