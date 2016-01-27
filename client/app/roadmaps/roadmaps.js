@@ -14,6 +14,8 @@ angular.module('app.roadmaps', [])
     nodes.map(function(node,index){
       node.index = index;
     })
+
+
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
     // User Logged in Data in the future
@@ -64,8 +66,7 @@ angular.module('app.roadmaps', [])
       method: 'GET',
       url: '/api/roadmaps/' + roadMapUrl
     }).then(function(response){
-      console.log(response.data)
-      $scope.currentRoadMapData = response.data;
+      $scope.currentRoadMapData = response.data.data;
       cb()
     }, function(err){
       if (err) return err;
@@ -86,7 +87,6 @@ angular.module('app.roadmaps', [])
   
   // $scope.connectLines();
   $scope.getRoadMap($scope.renderNodes);
-
 
 
 });
