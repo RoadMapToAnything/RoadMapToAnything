@@ -45,7 +45,21 @@ angular.module('app.browse', [])
   }
 
   $scope.addMapToEmbarked = function (mapID) {
-    console.log('embarking on map id:', mapID);
+    // if( !$stateParams.username ){
+    //   alert('you must be logged in to do that');
+    // } else {
+      $http({
+        method: 'PUT',
+        url: '/api/users/supercoder31337',// + $stateParams.username,
+        data: {
+          'inProgress.roadmaps': mapID
+         }
+      })
+        .then(function(response){
+          console.log('status', response.status);
+          console.log('response.body', response.body);
+        });
+    //}
   }
   
   $scope.getMapData();
