@@ -30,9 +30,22 @@ describe('DashboardController', function () {
     expect($scope.getMyMaps).to.be.a('function');
   });
 
+<<<<<<< HEAD
   it('should have functions for getting myMaps data', function () {
     expect($scope.showFollowed).to.be.a('function');
     expect($scope.getFollowedMaps).to.be.a('function');
+=======
+  it('should calculate total nodes for followed (embarked) maps', function (){
+    var testMaps = [{nodes:[1,2]}];
+    $scope.addTotalNodesOfFollowedMaps(testMaps);
+    expect(testMaps[0].totalNodes).to.equal(2);
+  });
+
+  it('should calculate total nodes for user-created maps', function (){
+    var testMaps = [{nodes:[1,2,3]}];
+    $scope.addTotalNodesOfMyMaps(testMaps);
+    expect(testMaps[0].totalNodes).to.equal(3);
+>>>>>>> test functions for totalNodes
   });
 
   it('should calculate total nodes for followed (embarked) maps', function (){
