@@ -58,6 +58,14 @@
     },
 
     {
+      "title": "Learn about Higher Order Functions",
+      "description": "Watch this classic. Functions within Functions. Soon you too will become a function",
+      "resourceType": "Educational Video",
+      "resourceURL": "https://www.youtube.com/watch?v=BMUiFMZr7vk&ab_channel=funfunfunction",
+      "parentRoadmap": 1 // This # will be replaced with the _id of maps[#]
+    },
+
+    {
       "title"        : "Watch Straight Outta Compton",
       "description"  : "It's in the name. Watch it.",
       "resourceType" : "Music Video",
