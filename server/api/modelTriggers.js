@@ -23,7 +23,8 @@ var setUpdatedTimestamp = function (next) {
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-var preUserUpdate = function (UserSchema, next) {
+// Changes all direct array modifcation to Users to a '$push'.
+var pushArraysProperly = function (UserSchema, next) {
   var update = this._update;
   var arrayNames = [];
   
@@ -38,8 +39,8 @@ var preUserUpdate = function (UserSchema, next) {
   // and if so, push them instead.
   arrayNames.forEach(function (name) {
     if (update[name]) {
-      update['$push'] = update['$push'] || {};
-      update['$push'][name] = update[name];
+      update.$push = update.$push || {};
+      update.$push[name] = update[name];
       delete update[name];
     }
   });
@@ -47,8 +48,22 @@ var preUserUpdate = function (UserSchema, next) {
   next();
 };
 
+// If a completedRoadmap is being pushed, 
+// removes that roadmap and child nodes from inProgress.
+var handleCompletedRoadmaps = function (next) {
+  var completed;
 
-// All valid hooks are included here for reference.
+  if (this._update.$push) {
+    completed = this._update.$push['completedRoadmaps'];
+  }
+
+  if(completed) { 
+    this.update({}, { $pull:{ 'inProgress.roadmaps': completed } });
+  }
+
+  next();
+};
+
 module.exports.setUserHooks = function(UserSchema) {
   UserSchema.pre('save', function(next) {
     setCreatedTimestamp.call(this, next);
@@ -61,22 +76,28 @@ module.exports.setUserHooks = function(UserSchema) {
 
   UserSchema.pre('update', function(next) {
     var query = this;
-    preUserUpdate.call(query, UserSchema, function() {
-      setUpdatedTimestamp.call(query, next);
+    pushArraysProperly.call(query, UserSchema, function() {
+      handleCompletedRoadmaps.call(query, function() {
+        setUpdatedTimestamp.call(query, next);
+      });
     });
   });
 
   UserSchema.pre('findOneAndUpdate', function(next) {
     var query = this;
-    preUserUpdate.call(query, UserSchema, function() {
-      setUpdatedTimestamp.call(query, next);
+    pushArraysProperly.call(query, UserSchema, function() {
+      handleCompletedRoadmaps.call(query, function() {
+        setUpdatedTimestamp.call(query, next);
+      });
     });
   });
 
   UserSchema.pre('findByIdAndUpdate', function(next) {
     var query = this;
-    preUserUpdate.call(query, UserSchema, function() {
-      setUpdatedTimestamp.call(query, next);
+    pushArraysProperly.call(query, UserSchema, function() {
+      handleCompletedRoadmaps.call(query, function() {
+        setUpdatedTimestamp.call(query, next);
+      });
     });
   });
 
