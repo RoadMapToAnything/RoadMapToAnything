@@ -54,7 +54,7 @@ angular.module('app.dash', [])
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
               console.log('myMaps response.data', response.data);
-              $scope.myMaps = response.data.data.inProgress.roadmaps || [];
+              $scope.myMaps = response.data.data.authoredRoadmaps || [];
               $scope.addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
@@ -67,7 +67,7 @@ angular.module('app.dash', [])
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
               console.log('followed response.data', response.data);
-              $scope.followed = response.data.data.authoredRoadmaps || [];
+              $scope.followed = response.data.data.inProgress.roadmaps || [];
               $scope.addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);

@@ -50,7 +50,7 @@ angular.module('app.browse', [])
     // } else {
       $http({
         method: 'PUT',
-        url: '/api/users/supercoder31337',// + $stateParams.username,
+        url: '/api/users/bowieloverx950',// + $stateParams.username,
         data: {
           'inProgress.roadmaps': mapID
          }
