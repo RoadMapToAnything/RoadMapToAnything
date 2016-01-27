@@ -23,6 +23,26 @@ var setUpdatedTimestamp = function (next) {
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
 
+var preUserUpdate = function (next) {
+  var update = this._update;
+  var arrayNames = [
+    'inProgress.roadmaps',
+    'inProgress.nodes',
+    'completedRoadmaps'
+  ];
+  
+  arrayNames.forEach(function (name) {
+    if (update[name]) {
+      update['$push'] = update['$push'] || {};
+      update['$push'][name] = update[name];
+      delete update[name];
+    }
+  });
+
+  next();
+};
+
+
 // All valid hooks are included here for reference.
 module.exports.setUserHooks = function(UserSchema) {
   UserSchema.pre('save', function(next) {
@@ -35,15 +55,24 @@ module.exports.setUserHooks = function(UserSchema) {
   });
 
   UserSchema.pre('update', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    preUserUpdate.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 
   UserSchema.pre('findOneAndUpdate', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    preUserUpdate.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 
   UserSchema.pre('findByIdAndUpdate', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    preUserUpdate.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 
 };
