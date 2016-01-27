@@ -28,6 +28,14 @@ describe('DashboardController', function () {
   it('should have functions for getting myMaps data', function () {
     expect($scope.showMyMaps).to.be.a('function');
     expect($scope.getMyMaps).to.be.a('function');
+<<<<<<< HEAD
+=======
+  });
+
+  it('should have functions for getting myMaps data', function () {
+    expect($scope.showFollowed).to.be.a('function');
+    expect($scope.getFollowedMaps).to.be.a('function');
+>>>>>>> add test for render functions
   });
 
 <<<<<<< HEAD
@@ -48,6 +56,7 @@ describe('DashboardController', function () {
 >>>>>>> test functions for totalNodes
   });
 
+<<<<<<< HEAD
   it('should calculate total nodes for followed (embarked) maps', function (){
     var testMaps = [{nodes:[1,2]}];
     $scope.addTotalNodesOfFollowedMaps(testMaps);
@@ -60,6 +69,8 @@ describe('DashboardController', function () {
     expect(testMaps[0].totalNodes).to.equal(3);
   });
 
+=======
+>>>>>>> add test for render functions
   it('should get hide the myMaps table', function () {
     expect($scope.hideMyMaps).to.be.true;
     });
