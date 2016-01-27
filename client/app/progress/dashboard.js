@@ -43,15 +43,16 @@ angular.module('app.dash', [])
   };
 
   $scope.getMyMaps = function (){
-    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-    $http.get('/api/users/' + localStorage.getItem('user.username') )
-      .then(function(response){
-          console.log('Got author maps:', response.data);
-          $scope.myMaps = response.data.data.authoredRoadmaps || [];
-          $scope.addTotalNodesOfMyMaps($scope.myMaps);
-        }, function(err){
-          console.log('Failed to get authored roadmaps:', err);
-        });
+      console.log('calling getMyMaps');
+  //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
+        $http.get('/api/users/' + localStorage.getItem('user.username') )
+          .then(function(response){
+                console.log('myMaps response.data', response.data);
+                $scope.myMaps = response.data.data.authoredRoadmaps || [];
+                $scope.addTotalNodesOfMyMaps($scope.myMaps);
+            }, function(err){
+              console.log("error with MyMaps request", err);
+            });
     };
 
   $scope.getFollowedMaps = function (){
