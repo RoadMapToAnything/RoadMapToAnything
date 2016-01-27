@@ -124,7 +124,7 @@ angular.module('app', [
     }
   })
   .state('browse', { //maybe rename as explore?
-    url: '/browse',
+    url: '/browse/:username',
     views: {
       'content': {
         templateUrl: 'app/browse/browse.html',

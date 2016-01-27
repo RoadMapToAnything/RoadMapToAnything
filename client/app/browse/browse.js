@@ -4,6 +4,8 @@ angular.module('app.browse', [])
   $scope.mapData = [];
 
   $scope.showSigninMsg = false;
+
+  $scope.inputUsername = "";
   
   // this fn should be refactored to a factory -- a variattion is used by dashboard
   $scope.addTotalNodesOfMaps = function (arr){
@@ -32,7 +34,7 @@ angular.module('app.browse', [])
   };
 
   $scope.goToDash = function () {
-    if( !$stateParams.username ){
+    if( $scope.inputUsername  === "" ){
       $scope.showSigninMsg = true;
       $timeout(function(){
         $scope.showSigninMsg = false;
@@ -40,7 +42,7 @@ angular.module('app.browse', [])
         
       
     } else {
-      $state.go('dashboard', {url: '/dashboard' + $stateParams.username});
+      $state.go('dashboard', {url: '/dashboard' + $scope.inputUsername});
     }
   }
 
@@ -50,7 +52,7 @@ angular.module('app.browse', [])
     // } else {
       $http({
         method: 'PUT',
-        url: '/api/users/bowieloverx950',// + $stateParams.username,
+        url: '/api/users/' + $scope.inputUsername, 
         data: {
           'inProgress.roadmaps': mapID
          }
@@ -58,6 +60,12 @@ angular.module('app.browse', [])
         .then(function(response){
           console.log('status', response.status);
           console.log('response.body', response.body);
+        }, 
+        function(response){
+          $scope.showSigninMsg = true;
+          $timeout(function(){
+            $scope.showSigninMsg = false;
+          }, 5000)
         });
     //}
   }
