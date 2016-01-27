@@ -1,11 +1,9 @@
 angular.module('app.browse', [])
 
-.controller('BrowseController', ['$scope', '$http', '$state', '$stateParams', '$timeout', function($scope, $http, $state, $stateParams, $timeout){
+.controller('BrowseController', ['$scope', '$http', '$state', '$timeout', function($scope, $http, $state, $timeout){
   $scope.mapData = [];
 
   $scope.showSigninMsg = false;
-
-  $scope.inputUsername = "";
   
   // this fn should be refactored to a factory -- a variattion is used by dashboard
   $scope.addTotalNodesOfMaps = function (arr){
@@ -34,16 +32,7 @@ angular.module('app.browse', [])
   };
 
   $scope.goToDash = function () {
-    if( $scope.inputUsername  === "" ){
-      $scope.showSigninMsg = true;
-      $timeout(function(){
-        $scope.showSigninMsg = false;
-      }, 5000)
-        
-      
-    } else {
-      $state.go('dashboard', {url: '/dashboard' + $scope.inputUsername});
-    }
+      $state.go('dashboard');
   }
 
   $scope.addMapToEmbarked = function (mapID) {
@@ -52,7 +41,7 @@ angular.module('app.browse', [])
     // } else {
       $http({
         method: 'PUT',
-        url: '/api/users/' + $scope.inputUsername, 
+        url: '/api/users/' + localStorage.getItem('currentUser'), 
         data: {
           'inProgress.roadmaps': mapID
          }

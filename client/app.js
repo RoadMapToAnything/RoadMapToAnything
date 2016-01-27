@@ -71,7 +71,7 @@ angular.module('app', [
     })
     //state for dashboard
     .state('dashboard', {
-      url: '/dashboard/:username',
+      url: '/dashboard',
       views: {
         'content': {
           templateUrl: 'app/progress/dashboard.html',
@@ -141,7 +141,7 @@ angular.module('app', [
     }
   })
   .state('browse', { //maybe rename as explore?
-    url: '/browse/:username',
+    url: '/browse',
     views: {
       'content': {
         templateUrl: 'app/browse/browse.html',
