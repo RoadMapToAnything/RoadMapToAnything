@@ -4,6 +4,25 @@ var User = require('./userModel.js'),
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
+var pushArrays = function (body) {
+  var arrayNames = [
+    'inProgress.roadmaps',
+    'inProgress.nodes',
+    'completedRoadmaps'
+  ];
+  console.log('LOOKING FOR ARRAYS:', body)
+  arrayNames.forEach(function (name) {
+    if (body[name]) {
+      console.log('ARRAY FOUND:', name);
+      body['$push'] = body['$push'] || {};
+      body['$push'][name] = body[name];
+      delete body[name];
+    }
+  });
+  console.log('BODY MODIFIED:', body);
+  return body;
+};
+
 module.exports = {
 
   createUser : function(req, res, next){
@@ -55,6 +74,7 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
+    req.body = pushArrays(req.body);
     User.findOneAndUpdate({username: req.params.username}, req.body)
       .deepPopulate(populateFields)
       .then( function (user) {
