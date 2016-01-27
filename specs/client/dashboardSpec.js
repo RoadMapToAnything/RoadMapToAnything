@@ -25,8 +25,14 @@ describe('DashboardController', function () {
 //skipping these tests until dashboard api calls decided on
 
 //test followed maps
-  it('should have a showMyMaps function', function () {
+  it('should have functions for getting myMaps data', function () {
     expect($scope.showMyMaps).to.be.a('function');
+    expect($scope.getMyMaps).to.be.a('function');
+  });
+
+  it('should have functions for getting myMaps data', function () {
+    expect($scope.showFollowed).to.be.a('function');
+    expect($scope.getFollowedMaps).to.be.a('function');
   });
 
   it('should calculate total nodes for followed (embarked) maps', function (){
@@ -39,31 +45,6 @@ describe('DashboardController', function () {
     var testMaps = [{nodes:[1,2,3]}];
     $scope.addTotalNodesOfMyMaps(testMaps);
     expect(testMaps[0].totalNodes).to.equal(3);
-  });
-
-  xit('should get followed map data with the right properties', function () {
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return $scope.followedMaps[0].title;
-      });
-  });
-//test maps user made
-  xit('should have a getMyMaps function', function () {
-    expect($scope.getMyMaps).to.be.a('function');
-  });
-
-  xit('should get followed map data', function (){
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return Array.isArray($scope.followedMaps).should.be(true);
-      });
-  });
-
-  xit('should get followed map data with the right properties', function () {
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return typeof $scope.followedMaps[0].title === 'string';
-      });
   });
 
   it('should get hide the myMaps table', function () {

@@ -19,7 +19,7 @@ angular.module('app.dash', [])
 
   $scope.followedTotalNodes = 0;
 
-    getDashboardData();
+
 
 
   // helper functions
@@ -50,25 +50,7 @@ angular.module('app.dash', [])
     });
   }
 
-  function addCompletedNodes (){
-    $scope.followed.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
-    });
-
-    $scope.dummyMyMaps.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
-    });
-  }
-
-  function getDashboardData (){
-    angular.element(document).ready( function(){
-        getMyMaps();
-        getFollowedMaps();
-      });
-  }
-
-
-  function getMyMaps (){
+  $scope.getMyMaps = function (){
       console.log('calling getMyMaps');
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('/api/users/' + $stateParams.username )
@@ -81,7 +63,7 @@ angular.module('app.dash', [])
             });
     }
 
-  function getFollowedMaps (){
+  $scope.getFollowedMaps = function (){
       console.log('calling getFollowedMaps');
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('/api/users/' + $stateParams.username )
@@ -93,6 +75,28 @@ angular.module('app.dash', [])
               console.log('error with followedMaps request', err);
             });
     }
+
+
+  $scope.addCompletedNodes = function(){
+    $scope.followed.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+    });
+
+    $scope.dummyMyMaps.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+    });
+  }
+
+  $scope.getDashboardData = function(){
+    angular.element(document).ready( function(){
+        $scope.getMyMaps();
+        $scope.getFollowedMaps();
+      });
+  }
+
+//make ajax calls to get table data
+  $scope.getDashboardData();
+
 }]);
 
 
