@@ -19,6 +19,7 @@ angular.module('app.roadmaps', [])
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
     // User Logged in Data in the future
+    // some variable that holds that the user is logged in
     $scope.renderCurrentNode();
   };
 
@@ -87,6 +88,22 @@ angular.module('app.roadmaps', [])
   
   // $scope.connectLines();
   $scope.getRoadMap($scope.renderNodes);
+
+// This is for the roadMap Creation Form
+
+$scope.createRoadMap = function(data){
+  data.author = data.author || 'testAuthor';
+ return $http({
+      method: 'POST',
+      url: '/api/roadmaps',
+      data: data
+    }).then(function(response){
+      console.log(response)
+    }, function(err){
+      if (err) return err;
+    });
+}
+
 
 
 });

@@ -17,7 +17,7 @@
   </div>
   <div class="col s9 center-block">
     <div class="valign-wrapper">
-      <h5 class="valign">Title of the RoadMap Itself</h5>
+      <h5 class="valign" ng-bind="roadMapTitle">Title of the RoadMap Itself</h5>
     </div>
   </div>
 </div>
@@ -33,7 +33,7 @@
       <br><br>
       <!-- Odd nodes, first node is even -->
 
-        <p ng-click="selectNode()"> This is the node itself </p>  
+        <p ng-click="selectNode(node.index)"> This is the node itself </p>  
         <br><br>
       </div>
       <div class="row">
