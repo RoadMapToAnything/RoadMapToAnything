@@ -54,7 +54,7 @@ angular.module('app.dash', [])
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
               console.log('myMaps response.data', response.data);
-              $scope.myMaps = response.data.data.inProgress || [];
+              $scope.myMaps = response.data.data.inProgress.roadmaps || [];
               $scope.addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
