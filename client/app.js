@@ -4,7 +4,8 @@ angular.module('app', [
   'app.auth',
   'app.dash',
   'app.roadmaps',
-  'app.browse'
+  'app.browse',
+  'app.node.creation'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -111,6 +112,24 @@ angular.module('app', [
       'content': {
         templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
         controller: 'RoadMapsController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.userheader.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
+  })
+  //state for a Node Creation Form
+  .state('nodeCreationForm', {
+    url: '/node-creation',
+    views: {
+      'content': {
+        templateUrl: 'app/roadmaps/node.creation.html',
+        controller: 'NodeCreationController'
       },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
