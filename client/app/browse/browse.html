@@ -1,27 +1,21 @@
 <div class="container">
 
   <!--Roadmaps Table-->
-  <div class="browse-table" ng-show="hideMyMaps">
-    <div class="follow-title"><h5>Maps I Follow</h5></div>
+  <div class="browse-table">
+    <div class="map-title"><h5>Roadmaps</h5></div>
     <div class="follow-maps">
       <table class="bordered striped highlight0+56+">
         <tbody>
           <tr>
             <th>Nodes</th>
             <th>Roadmap</th>
-            <th>Progress Bar</th>
           </tr>
         </tbody>
-        <tbody class="follow-map" ng-repeat="map in followed">
+        <tbody class="browse-map" ng-repeat="map in mapData">
           <tr>
-            <td><!--{{ map.completed }} /    add when we know completed nodes-->
+            <td>
             {{ map.totalNodes }}</td>
-            <td class="truncate">{{ map.title }}</td>
-            <td class="progress-bar">
-              <div class="progress">
-                <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
-              </div>
-            </td>  
+            <td class="truncate">{{ map.title }}</td> <!--Link title with embark()-->
           </tr>
       </tbody>
       </table>
