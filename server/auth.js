@@ -1,53 +1,32 @@
 var getAuthHeader = require('basic-auth'),
     bcrypt = require('bcrypt-nodejs'),
+    handleError = require('./util.js').handleError,
     User = require('./api/users/userModel.js');
 
-
-
-var name = 'bren';
-var pass = 'pass';
-bcrypt.hash(name+pass, null, null, function(err, hash){
-  console.log(hash);
-  bcrypt.compare('brenpass', hash, function(err, isValid){
-    console.log(isValid);
-  })
-});
-
-function findInDB(user, response, next) {
-  var result = false;
-  User.findOne({
-      username: user['name'],
-      password: user['pass']
-    },
-    function(error, data) {
-      if (error) {
-        console.log(error);
-        response.statusCode = 401;
-        response.end('Unauthorized');
-      } else {
-        if (!data) {
-          console.log('Unknown user');
-          response.statusCode = 401;
-          response.end('Unauthorized');
+var findInDB = function (user, res, next) {
+  User.findOne({ username: user.name })
+    .then(function(dbResults){
+        if (!dbResults) {
+          res.status(401).end('Unauthorized'); // No such username exists
         } else {
-          console.log(data.username + ' authenticated successfully ');
-          next();
+          var decodedHash = new Buffer(user.pass, 'base64').toString('ascii');
+          bcrypt.compare(dbResults.password, decodedHash, function(err, isValid){
+            if (isValid) next(); // Authentication successful
+            else res.status(401).end('Unauthorized'); // Invalid credentials
+          });
         }
-      }
-    });
-  }
+      })
+    .catch(function(err){ console.log('Authentication Error', err);});
+};
 
 module.exports = {
-  authenticate : function(request, response, next) {
-    var user = getAuthHeader(request);
-    console.log('Authenticating: ', user);
+  authenticate : function(req, res, next) {
+    var user = getAuthHeader(req); // Parse information in Authorization header
     if (user === undefined) {
-      console.log('User information is not available in the request ');
-      response.statusCode = 401;
-      response.setHeader('WWW-Authenticate', 'Basic');
-      response.end('Unauthorized');
+      res.setHeader('WWW-Authenticate', 'Basic');
+      res.status(401).end('Unauthorized');
     } else {
-      findInDB(user, response, next);
+      findInDB(user, res, next);
     }
   }
 };
