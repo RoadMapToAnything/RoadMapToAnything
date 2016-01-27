@@ -38,8 +38,5 @@ describe('MainController', function () {
     createController();
   }));
 
-  it('should have a test method on the $scope', function () {
-    expect($scope.test).to.be.a('function');
-  });
 
 });
