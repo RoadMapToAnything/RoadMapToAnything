@@ -28,7 +28,7 @@ module.exports = {
   updateNode : function (req, res, next) {
     var _id = req.params.nodeID;
     var updateCommand = req.body;
-    Node.findByIdAndUpdate(_id, updateCommand)
+    Node.findByIdAndUpdate(_id, updateCommand, {new: true})
       .populate('parentRoadmap')
       .then(function(dbResults){
         res.json({data: dbResults});

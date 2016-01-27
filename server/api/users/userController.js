@@ -55,7 +55,7 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
-    User.findOneAndUpdate({username: req.params.username}, req.body)
+    User.findOneAndUpdate({username: req.params.username}, req.body, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 

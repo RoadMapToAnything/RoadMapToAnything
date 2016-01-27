@@ -57,7 +57,7 @@ module.exports = {
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     var updateCommand = req.body;
-    Roadmap.findByIdAndUpdate(_id, updateCommand)
+    Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
       .populate('author nodes')
       .then(function(dbResults){
         res.json({data: dbResults});
