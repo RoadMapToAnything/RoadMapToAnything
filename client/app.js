@@ -104,6 +104,23 @@ angular.module('app', [
         controller: 'RoadMapsController'
       }
     }
+  }).
+  state('roadmapCreationForm',{
+    url: '/roadmapCreationForm',
+    views: {
+      'content': {
+        templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
+        controller: 'RoadMapsController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.userheader.html',
+        controller: 'RoadMapsController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'RoadMapsController'
+      }
+    }
   })
   //sample state
   .state('example', {
