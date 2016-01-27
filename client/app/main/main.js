@@ -1,9 +1,10 @@
 angular.module('app.main', [])
-.controller('MainController', function($scope){
-  $scope.test = function(){
-    console.log('Main controller is working');
-  };
-  $scope.test();
-
+.controller('MainController', [ '$scope', '$state', function($scope, $state){
   
-});
+  $scope.logout = function () {
+    localStorage.removeItem('currentUser');
+    console.log('logged out');
+    $state.go('home');
+  }
+  
+}]);

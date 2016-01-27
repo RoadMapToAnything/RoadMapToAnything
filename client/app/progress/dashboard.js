@@ -1,8 +1,6 @@
 angular.module('app.dash', [])
 
-.controller('DashboardController', ['$scope','$http', '$stateParams', function($scope, $http, $stateParams){
-
-  console.log('$stateParams', $stateParams);
+.controller('DashboardController', ['$scope','$http', function($scope, $http){
 
   $scope.username = '';
 
@@ -51,7 +49,7 @@ angular.module('app.dash', [])
   $scope.getMyMaps = function (){
       console.log('calling getMyMaps');
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('/api/users/' + $stateParams.username )
+        $http.get('/api/users/' + localStorage.getItem('currentUser') )
           .then(function(response){
               console.log('myMaps response.data', response.data);
               $scope.myMaps = response.data.data.authoredRoadmaps || [];
@@ -64,7 +62,7 @@ angular.module('app.dash', [])
   $scope.getFollowedMaps = function (){
       console.log('calling getFollowedMaps');
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('/api/users/' + $stateParams.username )
+        $http.get('/api/users/' + localStorage.getItem('currentUser') )
           .then(function(response){
               console.log('followed response.data', response.data);
               $scope.followed = response.data.data.inProgress.roadmaps || [];
