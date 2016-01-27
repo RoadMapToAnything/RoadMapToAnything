@@ -93,12 +93,14 @@ angular.module('app.roadmaps', [])
 
 $scope.createRoadMap = function(data){
   data.author = data.author || 'testAuthor';
+  idForLocalStorage = data.id || 'testid';
  return $http({
       method: 'POST',
       url: '/api/roadmaps',
       data: data
     }).then(function(response){
       console.log(response)
+      localStorage.setItem('roadmapId', idForLocalStorage)
     }, function(err){
       if (err) return err;
     });
