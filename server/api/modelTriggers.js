@@ -1,6 +1,7 @@
 // This file contains all pre and post hooks for db
 // interaction with our models. 
 
+// Triggers for all db models when created.
 var setCreatedTimestamp = function (next) {
   var now = Date.now();
 
@@ -10,8 +11,7 @@ var setCreatedTimestamp = function (next) {
   next();
 };
 
-// This is a collector function which will trigger
-// on all versions of the update hook.
+// Triggers for all db models when updated.
 var setUpdatedTimestamp = function (next) {
   this.update({},{ $set: { updated: Date.now() } });
 
@@ -30,10 +30,7 @@ module.exports.setUserHooks = function(UserSchema) {
   });
 
   UserSchema.pre('remove', function(next) {
-    next();
-  });
-
-  UserSchema.pre('validate', function(next) {
+    // TODO: Decide how roadmaps behave when their author is removed.
     next();
   });
 
@@ -64,7 +61,7 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
       var authorID = this.author;
       var roadmapID = this._id;
 
-      var update = { $push:{ roadmaps: roadmapID } };
+      var update = { $push:{ authoredRoadmaps: roadmapID } };
 
       User.findByIdAndUpdate(authorID, update)
         .exec(function(err){ if (err) throw err; });     
@@ -83,7 +80,7 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
     var roadmapID = this._id;
     var nodes = this.nodes;
 
-    var userUpdate = { $pull:{ roadmaps: roadmapID } };
+    var userUpdate = { $pull:{ authoredRoadmaps: roadmapID } };
 
     User.findByIdAndUpdate(authorID, userUpdate)
       .exec(function(err){ if (err) throw err; });  
