@@ -1,7 +1,6 @@
 angular.module('app.dash', [])
 
 .controller('DashboardController', ['$scope','$http', '$stateParams', function($scope, $http, $stateParams){
-  console.log("dash controller is working");
 
   console.log('$stateParams', $stateParams);
 
@@ -34,6 +33,7 @@ angular.module('app.dash', [])
   };
 
   $scope.addTotalNodesOfFollowedMaps = function (arr){
+    console.log('followed arr', Array.isArray(arr));
     arr.forEach(function(map){
       console.log('followed totalNodes', map.nodes.length);
       map.totalNodes = map.nodes.length;
@@ -41,6 +41,7 @@ angular.module('app.dash', [])
   };
 
   $scope.addTotalNodesOfMyMaps = function (arr){
+    console.log('myMaps arr', Array.isArray(arr));
     arr.forEach(function(map){
       console.log('totalNodes for myMaps', map.nodes.length);
       map.totalNodes = map.nodes.length;
