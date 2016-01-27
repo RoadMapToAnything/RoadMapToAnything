@@ -4,7 +4,8 @@ angular.module('app', [
   'app.auth',
   'app.dash',
   'app.roadmaps',
-  'app.browse'
+  'app.browse',
+  'app.node.creation'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -105,13 +106,13 @@ angular.module('app', [
       }
     }
   })
-  //sample state
+  //state for a Node Creation Form
   .state('nodeCreationForm', {
     url: '/node-creation',
     views: {
       'content': {
         templateUrl: 'app/roadmaps/node.creation.html',
-        controller: 'RoadMapsController'
+        controller: 'NodeCreationController'
       },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
