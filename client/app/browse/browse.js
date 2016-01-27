@@ -1,7 +1,9 @@
 angular.module('app.browse', [])
 
-.controller('BrowseController', ['$scope', '$http','$state', function($scope, $http, $state){
+.controller('BrowseController', ['$scope', '$http', '$state', '$stateParams', '$timeout', function($scope, $http, $state, $stateParams, $timeout){
   $scope.mapData = [];
+
+  $scope.showSigninMsg = false;
   
   // this fn should be refactored to a factory -- a variattion is used by dashboard
   $scope.addTotalNodesOfMaps = function (arr){
@@ -31,7 +33,12 @@ angular.module('app.browse', [])
 
   $scope.goToDash = function () {
     if( !$stateParams.username ){
-      $state.go('signin');
+      $scope.showSigninMsg = true;
+      $timeout(function(){
+        $scope.showSigninMsg = false;
+      }, 5000)
+        
+      
     } else {
       $state.go('dashboard', {url: '/dashboard' + $stateParams.username});
     }
