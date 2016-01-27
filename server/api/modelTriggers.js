@@ -23,14 +23,19 @@ var setUpdatedTimestamp = function (next) {
  *                 USER                  *
  * * * * * * * * * * * * * * * * * * * * */
 
-var preUserUpdate = function (next) {
+var preUserUpdate = function (UserSchema, next) {
   var update = this._update;
-  var arrayNames = [
-    'inProgress.roadmaps',
-    'inProgress.nodes',
-    'completedRoadmaps'
-  ];
+  var arrayNames = [];
   
+  // Gather the names of all arrays in the User Schema.
+  for (var key in UserSchema.paths) {
+    if(UserSchema.paths[key].instance === 'Array') {
+      arrayNames.push(UserSchema.paths[key].path);
+    }
+  }
+
+  // Check to see if any of those arrays are being directly updated,
+  // and if so, push them instead.
   arrayNames.forEach(function (name) {
     if (update[name]) {
       update['$push'] = update['$push'] || {};
@@ -56,21 +61,21 @@ module.exports.setUserHooks = function(UserSchema) {
 
   UserSchema.pre('update', function(next) {
     var query = this;
-    preUserUpdate.call(query, function() {
+    preUserUpdate.call(query, UserSchema, function() {
       setUpdatedTimestamp.call(query, next);
     });
   });
 
   UserSchema.pre('findOneAndUpdate', function(next) {
     var query = this;
-    preUserUpdate.call(query, function() {
+    preUserUpdate.call(query, UserSchema, function() {
       setUpdatedTimestamp.call(query, next);
     });
   });
 
   UserSchema.pre('findByIdAndUpdate', function(next) {
     var query = this;
-    preUserUpdate.call(query, function() {
+    preUserUpdate.call(query, UserSchema, function() {
       setUpdatedTimestamp.call(query, next);
     });
   });
