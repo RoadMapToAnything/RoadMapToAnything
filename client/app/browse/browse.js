@@ -18,7 +18,7 @@ angular.module('app.browse', [])
       .then(
         //success callback
         function(response){
-          console.log('followed response.data', response.data);
+          console.log('getMaps response.data', response.data);
           $scope.mapData = response.data.data || [];
           $scope.addTotalNodesOfMaps($scope.mapData);
         },
