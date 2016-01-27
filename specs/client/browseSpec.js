@@ -31,9 +31,13 @@ describe('DashboardController', function () {
   });
 
   it('should have a function to populate browse page', function (){
-    expect($scope.getMaps).to.be.a('function');
+    expect($scope.populateMapData).to.be.a('function');
   });
-  
+
+  it('should have a function to embark on a map', function (){
+    expect($scope.embark).to.be.a('function');
+  });
+
 
 
 
