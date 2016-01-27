@@ -25,11 +25,11 @@ module.exports = function (apiRouter) {
   /*
    *      Roadmap Routes
    */
-   apiRouter.post(  '/roadmaps',            roadmapController.createRoadmap  );
-   apiRouter.get(   '/roadmaps',            roadmapController.getRoadmaps    );
-   apiRouter.get(   '/roadmaps/:roadmapID', roadmapController.getRoadmapByID );
-   apiRouter.put(   '/roadmaps/:roadmapID', roadmapController.updateRoadmap  );
-   apiRouter.delete('/roadmaps/:roadmapID', roadmapController.deleteRoadmap  );
+   apiRouter.post(  '/roadmaps',                  roadmapController.createRoadmap  );
+   apiRouter.get(   '/roadmaps',                  roadmapController.getRoadmaps    );
+   apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
+   apiRouter.put(   '/roadmaps/:roadmapID',       roadmapController.updateRoadmap  );
+   apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
 
    /*
