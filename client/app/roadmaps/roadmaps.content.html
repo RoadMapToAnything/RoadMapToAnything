@@ -6,18 +6,18 @@
       <!-- We will two way databind to make sure that renderTitle always gives us the clicked node -->
         <span class="card-title">Links</span>
         <ol>
-          <li ng-repeat="link in currentLinks">{{link}}</li>  
+          <li ng-repeat="link in currentLinks">{{link}}</li>          
         </ol>
       </div>
       <div class="card-action white-text">
-        <span class="card-title" ng-bind="roadMapTitle">Title of Node</span>
+        <span class="card-title" ng-bind="currentTitle">Title of Node</span>
         <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
       </div>
     </div>
   </div>
   <div class="col s9 center-block">
     <div class="valign-wrapper">
-      <h5 class="valign" ng-bind="roadMapTitle">Title of the RoadMap Itself</h5>
+      <h5 class="valign">Title of the RoadMap Itself</h5>
     </div>
   </div>
 </div>
@@ -33,20 +33,20 @@
       <br><br>
       <!-- Odd nodes, first node is even -->
 
-        <p ng-click="selectNode(node.index)"> This is the node itself </p>  
+        <p ng-click="selectNode()"> This is the node itself </p>  
         <br><br>
       </div>
       <div class="row">
       <!-- quickDescription needs to be a little bit above -->
         <div class="col offset-s1 s8 card blue-grey darken-1 quickDescription" ng-if="$even">
           <div class="card-content white-text">
-            <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
+            <span class="card-title" ng-bind="node.nodeDescription">Quick Description of what this node is about</span>
           </div>
         </div> 
           <!--  In a later version lets make this go right-->
         <div class="col offset-s1 s8 card blue-grey darken-1 quickDescriptionOdd" ng-if="$odd">
           <div class="card-content white-text">
-            <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
+            <span class="card-title" ng-bind="node.nodeDescription">Quick Description of what this node is about</span>
           </div>
         </div> 
 
