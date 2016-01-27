@@ -2,6 +2,7 @@ var User = require('./userModel.js'),
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js');
 
+var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
 module.exports = {
 
@@ -23,7 +24,7 @@ module.exports = {
     };
 
     User.findOne(credentials)
-      .populate('authoredRoadmaps inProgress.roadmaps inProgress.nodes completedRoadmaps')
+      .populate(populateFields)
       .then(function(validUser){
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
         else res.status(200).json({data: validUser}); // TODO: send back a token, not DB results
@@ -35,7 +36,7 @@ module.exports = {
     var dbArgs = handleQuery(req.query);
 
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
-      .populate('authoredRoadmaps inProgress.roadmaps inProgress.nodes completedRoadmaps')
+      .deepPopulate(populateFields)
       .then(function (users) {
         if (!users) return res.sendStatus(401);
         res.status(200).json({data: users});
@@ -45,7 +46,7 @@ module.exports = {
 
   getUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
-      .populate('authoredRoadmaps inProgress.roadmaps inProgress.nodes completedRoadmaps')
+      .populate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
         res.status(200).json({data: user});
@@ -55,7 +56,7 @@ module.exports = {
 
   updateUserByName: function(req, res, next) {
     User.findOneAndUpdate({username: req.params.username}, req.body)
-      .populate('authoredRoadmaps inProgress.roadmaps inProgress.nodes completedRoadmaps')
+      .populate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
         res.status(200).json({data: user});
@@ -65,7 +66,7 @@ module.exports = {
 
   deleteUserByName: function(req, res, next) {
     User.findOne({username: req.params.username})
-      .populate('authoredRoadmaps inProgress.roadmaps inProgress.nodes completedRoadmaps')
+      .populate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401);
 

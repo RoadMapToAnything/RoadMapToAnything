@@ -116,7 +116,7 @@ describe('The users API', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-
+          console.log(res.body.data[0].completedRoadmaps);
           expect(res.body.data).to.be.an('array');
           expect(res.body.data).to.not.be.empty;
           expect(res.body.data[0]).to.have.property('username');

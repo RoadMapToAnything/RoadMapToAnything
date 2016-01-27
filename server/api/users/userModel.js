@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
+    deepPopulate = require('mongoose-deep-populate')(mongoose);
+
     hooks    = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({
@@ -18,6 +20,8 @@ var UserSchema = new mongoose.Schema({
   created           : { type: Date },
   updated           : { type: Date } 
 });
+
+UserSchema.plugin(deepPopulate);
 
 hooks.setUserHooks(UserSchema);
 
