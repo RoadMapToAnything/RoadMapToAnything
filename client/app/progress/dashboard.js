@@ -55,8 +55,8 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
-            console.log('response.data', response.data.data.embarked);
-            $scope.myMaps = response.data.data.embarked || [];
+            console.log('myMaps response.data', response.data);
+            $scope.myMaps = response.data.data.inProgress || [];
             $scope.addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
@@ -68,8 +68,8 @@ angular.module('app.dash', [])
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
         $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
-            console.log('response.data', response.data.data.roadmaps);
-            $scope.followed = response.data.data.roadmaps || [];
+            console.log('followed response.data', response.data);
+            $scope.followed = response.data.data.authoredRoadmaps || [];
             $scope.addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);
