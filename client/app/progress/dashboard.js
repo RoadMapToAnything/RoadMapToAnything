@@ -17,6 +17,13 @@ angular.module('app.dash', [])
 
   $scope.myMaps = [];
 
+  $scope.followedTotalNodes = 0;
+
+    getDashboardData();
+
+
+  // helper functions
+
   $scope.showMyMaps = function(){
       $scope.hideMyMaps = false;
       angular.element( '#myMapsBtn' ).addClass( 'pressed' );
@@ -29,57 +36,16 @@ angular.module('app.dash', [])
       angular.element( '#followedBtn' ).addClass( 'pressed' );
   };
 
-  $scope.dummyFollowed = [{
-      _id: 01,
-      title: 'The Legacy of Virginia Wolfe',
-      nodes: 23,
-      completed: 2
-    },{
-      _id: 02,
-      title: 'How To Tell If Your Restaurant Idea Is Good',
-      nodes: 12,
-      completed: 5
-    },{
-      _id: 03,
-      title: 'Be A Champion Horseshoe Player',
-      nodes: 14,
-      completed: 14
-    }];
-
-    $scope.dummyMyMaps = [{
-      _id: 04,
-      title: 'Learn To Make Paper With Old Jeans',
-      nodes: 5,
-      completed: 2
-    },{
-      _id: 05,
-      title: 'An Overview of Japanese Film',
-      nodes: 20,
-      completed: 15
-    },{
-      _id: 06,
-      title: 'Let\'s Learn Algebra',
-      nodes: 15,
-      completed: 0
-    }];
-
-    $scope.followedTotalNodes = 0;
-
-    getDashboardData();
-
-
-  // helper functions
-
-  function addTotalNodesOfFollowedMaps (arr){
+  $scope.addTotalNodesOfFollowedMaps = function (arr){
     arr.forEach(function(map){
       console.log('followed totalNodes', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
   }
 
-  function addTotalNodesOfMyMaps (arr){
+  $scope.addTotalNodesOfMyMaps = function (arr){
     arr.forEach(function(map){
-      console.log('myMaps totalNodes', map.nodes.length);
+      console.log('totalNodes for myMaps', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
   }
@@ -109,7 +75,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.embarked);
             $scope.myMaps = response.data.data.embarked || [];
-            addTotalNodesOfMyMaps($scope.myMaps);
+            $scope.addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
             });
@@ -122,7 +88,7 @@ angular.module('app.dash', [])
           .then(function(response){
             console.log('response.data', response.data.data.roadmaps);
             $scope.followed = response.data.data.roadmaps || [];
-            addTotalNodesOfFollowedMaps($scope.followed);
+            $scope.addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);
             });
