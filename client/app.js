@@ -3,7 +3,8 @@ angular.module('app', [
   'app.main',
   'app.auth',
   'app.dash',
-  'app.roadmaps'
+  'app.roadmaps',
+  'app.browse'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
@@ -119,6 +120,23 @@ angular.module('app', [
       'footer': {
         templateUrl: 'app/main/main.footer.html',
         controller: 'RoadMapsController'
+      }
+    }
+  })
+  .state('browse', { //maybe rename as explore?
+    url: '/browse/:username',
+    views: {
+      'content': {
+        templateUrl: 'app/browse/browse.html',
+        controller: 'BrowseController'
+      },
+      'header': {
+        templateUrl: 'app/main/main.userheader.html',
+        controller: 'MainController'
+      },
+      'footer': {
+        templateUrl: 'app/main/main.footer.html',
+        controller: 'MainController'
       }
     }
   });

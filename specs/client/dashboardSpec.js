@@ -22,7 +22,6 @@ describe('DashboardController', function () {
     createController();
   }));
 
-//skipping these tests until dashboard api calls decided on
 
 //test followed maps
   it('should have functions for getting myMaps data', function () {
@@ -30,7 +29,7 @@ describe('DashboardController', function () {
     expect($scope.getMyMaps).to.be.a('function');
   });
 
-  it('should have functions for getting myMaps data', function () {
+  it('should have functions for getting followedMaps data', function () {
     expect($scope.showFollowed).to.be.a('function');
     expect($scope.getFollowedMaps).to.be.a('function');
   });

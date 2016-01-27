@@ -56,5 +56,5 @@ angular.module('app.auth', [])
       }
     );
   };
-  
+
 }]);

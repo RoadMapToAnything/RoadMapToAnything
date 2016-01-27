@@ -26,3 +26,11 @@ h5 {
 .btn:hover {
   background-color: #004d40 !important; 
 }
+
+/* Browse Page */
+.browse-table {
+  margin: 50px;
+}
+.browse-box {
+  margin-top: 30px;
+}
