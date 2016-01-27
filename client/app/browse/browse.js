@@ -27,8 +27,20 @@ angular.module('app.browse', [])
           console.log('error with getMapData request', err);
         }
       );
-    };
+  };
 
+  $scope.goToDash = function () {
+    if( !$stateParams.username ){
+      $state.go('signin');
+    } else {
+      $state.go('dashboard', {url: '/dashboard' + $stateParams.username});
+    }
+  }
+
+  $scope.addMapToEmbarked = function (mapID) {
+    console.log('embarking on map id:', mapID);
+  }
+  
   $scope.getMapData();
 
 }]);

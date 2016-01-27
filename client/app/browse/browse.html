@@ -1,5 +1,5 @@
 <div class="container">
-
+  <a ng-click="goToDash()" class="waves-effect waves-light btn">Go To My Maps</a>
   <!--Roadmaps Table-->
   <div class="browse-table">
     <div class="map-title"><h5>Roadmaps</h5></div>
@@ -9,13 +9,15 @@
           <tr>
             <th>Nodes</th>
             <th>Roadmap</th>
+            <th>Add To My Maps</th>
           </tr>
         </tbody>
         <tbody class="browse-map" ng-repeat="map in mapData">
           <tr>
             <td>
             {{ map.totalNodes }}</td>
-            <td class="truncate">{{ map.title }}</td> <!--Link title with embark()-->
+            <td class="truncate"><a ng-click="addMapToEmbarked( map._id )">{{ map.title }}</a></td>
+            <td><a class="waves-effect waves-light btn">Add!</a></td>
           </tr>
       </tbody>
       </table>
