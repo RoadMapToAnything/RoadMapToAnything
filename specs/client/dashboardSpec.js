@@ -25,39 +25,30 @@ describe('DashboardController', function () {
 //skipping these tests until dashboard api calls decided on
 
 //test followed maps
-  xit('should have a getFollowedMaps function', function () {
-    expect($scope.getFollowed).to.be.a('function');
-  });
-
-  xit('should get followed map data', function (){
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return Array.isArray($scope.followedMaps).should.be(true);
-      });
-  });
-
-  xit('should get followed map data with the right properties', function () {
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return $scope.followedMaps[0].title;
-      });
-  });
-//test maps user made
-  xit('should have a getMyMaps function', function () {
+  it('should have functions for getting myMaps data', function () {
+    expect($scope.showMyMaps).to.be.a('function');
     expect($scope.getMyMaps).to.be.a('function');
   });
 
-  xit('should get followed map data', function (){
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return Array.isArray($scope.followedMaps).should.be(true);
-      });
+  it('should have functions for getting myMaps data', function () {
+    expect($scope.showFollowed).to.be.a('function');
+    expect($scope.getFollowedMaps).to.be.a('function');
   });
 
-  xit('should get followed map data with the right properties', function () {
-    return $scope.getFollowedMaps()
-      .then(function(){
-        return typeof $scope.followedMaps[0].title === 'string';
-      });
+  it('should calculate total nodes for followed (embarked) maps', function (){
+    var testMaps = [{nodes:[1,2]}];
+    $scope.addTotalNodesOfFollowedMaps(testMaps);
+    expect(testMaps[0].totalNodes).to.equal(2);
   });
+
+  it('should calculate total nodes for user-created maps', function (){
+    var testMaps = [{nodes:[1,2,3]}];
+    $scope.addTotalNodesOfMyMaps(testMaps);
+    expect(testMaps[0].totalNodes).to.equal(3);
+  });
+
+  it('should get hide the myMaps table', function () {
+    expect($scope.hideMyMaps).to.be.true;
+    });
+
 });

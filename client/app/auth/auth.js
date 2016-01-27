@@ -1,24 +1,26 @@
 angular.module('app.auth', [])
 
-.controller('AuthController', ['$scope', '$http', function($scope, $http){
+.controller('AuthController', ['$scope', '$http','$state', function($scope, $http, $state){
 
-  $scope.attemptedUsername = "not yet set";
-  $scope.attemptedPassword = "not yet set";
+  $scope.attemptedFirstName = '';
+  $scope.attemptedLastName = '';
+  $scope.attemptedUsername = '';
+  $scope.attemptedPassword = '';
 
   $scope.showUnauthMsg = false;
 
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
-    $http.get('/api/login', {
-      username: $scope.attemptedUsername,
-      password: $scope.attemptedPassword
+    $http({
+      url: '/api/login?username=' + $scope.attemptedUsername + '&password=' + $scope.attemptedPassword,
+      method: 'GET'
     })
     .then(
       //success callback
       function(res){
         console.log('sent login credentials');
         console.log('res.data', res.data);
-        res.redirect('/#/dashboard?username=' + res.body.username);
+        $state.go('dashboard', {'username': $scope.attemptedUsername} );
       },
       //error callback
       function(res){
@@ -28,6 +30,31 @@ angular.module('app.auth', [])
           $scope.showUnauthMsg = true;
         }
       }
-      );
+    );
   };
+
+  $scope.attemptSignup = function () {
+    $scope.showUnauthMsg = false;
+    $http.post('/api/signup', {
+      firstName: $scope.attemptedFirstName,
+      lastName: $scope.attemptedLastName,
+      username: $scope.attemptedUsername,
+      password: $scope.attemptedPassword
+    })
+    .then(
+      //success callback
+      function(res){
+        console.log('sent signup credentials');
+        console.log('res.data', res.data);
+        $state.go('dashboard', {url: '/dashboard' + res.data.username});
+      },
+      //error callback
+      function(res){
+        console.log('sent signup credentials, failed at server');
+        console.log('res.data', res.data);
+        $scope.showUnauthMsg = true;
+      }
+    );
+  };
+  
 }]);

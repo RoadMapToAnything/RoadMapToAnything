@@ -21,7 +21,7 @@ h5 {
 }
 
 .pressed {
-  background-color: #004d40;
+  background-color: #004d40 !important;
 }
 .btn:hover {
   background-color: #004d40 !important; 

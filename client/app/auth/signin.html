@@ -2,17 +2,17 @@
 <h1>Sign In</h1>
   <div class="row">
     <form class="col s12" ng-submit="attemptLogin()">
-    
+
       <div class="row">
         <div class="input-field col s6">
           <input id="username" type="text" class="validate" ng-model="attemptedUsername">
-          <label for="first_name">Username</label>
+          <label for="user_name" required>Username</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s6">
           <input id="password" type="password" class="validate" ng-model="attemptedPassword">
-          <label for="password">Password</label>
+          <label for="password" required>Password</label>
         </div>
       </div>
       <div class="row">

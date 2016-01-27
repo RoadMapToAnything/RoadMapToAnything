@@ -22,10 +22,17 @@ describe('AuthController', function () {
     createController();
   }));
 
-  it('should have an attemptLogin function', function () {
-    expect($scope.attemptLogin).to.be.a('function');
+  it('should have an attemptSignup function', function () {
+    expect($scope.attemptSignup).to.be.a('function');
   });
 
+  it('should have a username on the model', function () {
+    expect($scope.attemptedFirstName).to.equal("");
+  });
+
+  it('should have a password on the model', function () {
+    expect($scope.attemptedLastName).to.equal("");
+  });
 
   it('should have a username on the model', function () {
     expect($scope.attemptedUsername).to.equal("");

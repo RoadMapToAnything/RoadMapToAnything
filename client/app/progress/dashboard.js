@@ -1,7 +1,9 @@
 angular.module('app.dash', [])
 
-.controller('DashboardController', ['$scope','$http', function($scope,$http){
+.controller('DashboardController', ['$scope','$http', '$stateParams', function($scope, $http, $stateParams){
   console.log("dash controller is working");
+
+  console.log('$stateParams', $stateParams);
 
   $scope.username = '';
 
@@ -10,6 +12,17 @@ angular.module('app.dash', [])
   $scope.myMapsResponseBody = {};
 
   $scope.hideMyMaps = true;
+
+  $scope.followed = [];
+
+  $scope.myMaps = [];
+
+  $scope.followedTotalNodes = 0;
+
+
+
+
+  // helper functions
 
   $scope.showMyMaps = function(){
       $scope.hideMyMaps = false;
@@ -23,87 +36,67 @@ angular.module('app.dash', [])
       angular.element( '#followedBtn' ).addClass( 'pressed' );
   };
 
-  $scope.dummyFollowed = [{
-      _id: 01,
-      title: 'The Legacy of Virginia Wolfe',
-      nodes: 23,
-      completed: 2
-    },{
-      _id: 02,
-      title: 'How To Tell If Your Restaurant Idea Is Good',
-      nodes: 12,
-      completed: 5
-    },{
-      _id: 03,
-      title: 'Be A Champion Horseshoe Player',
-      nodes: 14,
-      completed: 14
-    }];
-
-    $scope.dummyMyMaps = [{
-      _id: 04,
-      title: 'Learn To Make Paper With Old Jeans',
-      nodes: 5,
-      completed: 2
-    },{
-      _id: 05,
-      title: 'An Overview of Japanese Film',
-      nodes: 20,
-      completed: 15
-    },{
-      _id: 06,
-      title: 'Let\'s Learn Algebra',
-      nodes: 15,
-      completed: 0
-    }];
-
-    addPercentCompleteAttr();
-
-  //getDashboardData();
-
-
-  // helper functions
-
-  function addPercentCompleteAttr (){
-    $scope.dummyFollowed.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
-    });
-
-    $scope.dummyMyMaps.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.nodes) * 100);
+  $scope.addTotalNodesOfFollowedMaps = function (arr){
+    arr.forEach(function(map){
+      console.log('followed totalNodes', map.nodes.length);
+      map.totalNodes = map.nodes.length;
     });
   }
 
-  function getDashboardData (){
-    angular.element(document).ready( function(){
-        getMyMaps();
-        getFollowedMaps();
-      });
+  $scope.addTotalNodesOfMyMaps = function (arr){
+    arr.forEach(function(map){
+      console.log('totalNodes for myMaps', map.nodes.length);
+      map.totalNodes = map.nodes.length;
+    });
   }
 
-
-  function getMyMaps (){
+  $scope.getMyMaps = function (){
       console.log('calling getMyMaps');
-
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('localhost:3000/#/api/users/' + $scope.userName )
+        $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
-            $scope.myMaps = response.body.roadmaps;
+            console.log('myMaps response.data', response.data);
+            $scope.myMaps = response.data.data.inProgress || [];
+            $scope.addTotalNodesOfMyMaps($scope.myMaps);
             }, function(err){
               console.log("error with MyMaps request", err);
             });
     }
 
-  function getFollowedMaps (){
+  $scope.getFollowedMaps = function (){
       console.log('calling getFollowedMaps');
   //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('localhost:3000/#/api/users/' + $scope.userName )
+        $http.get('/api/users/' + $stateParams.username )
           .then(function(response){
-            $scope.followed = response.body.roadmaps;
+            console.log('followed response.data', response.data);
+            $scope.followed = response.data.data.authoredRoadmaps || [];
+            $scope.addTotalNodesOfFollowedMaps($scope.followed);
             }, function(err){
               console.log('error with followedMaps request', err);
             });
     }
+
+
+  $scope.addCompletedNodes = function(){
+    $scope.followed.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+    });
+
+    $scope.dummyMyMaps.forEach(function(map){
+      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+    });
+  }
+
+  $scope.getDashboardData = function(){
+    angular.element(document).ready( function(){
+        $scope.getMyMaps();
+        $scope.getFollowedMaps();
+      });
+  }
+
+//make ajax calls to get table data
+  $scope.getDashboardData();
+
 }]);
 
 

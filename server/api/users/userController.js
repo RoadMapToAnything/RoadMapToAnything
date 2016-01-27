@@ -18,6 +18,9 @@ module.exports = {
   },
 
   login : function(req, res, next){
+    console.log('req.body', req.body);
+    console.log('username',req.query.username);
+    console.log('username',req.query.password);
     var credentials = {
       username: req.query.username,
       password: req.query.password,
