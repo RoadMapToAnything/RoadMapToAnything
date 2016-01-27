@@ -23,16 +23,17 @@ describe('DashboardController', function () {
     createController();
   }));
 
-  it('should have the search param in the url query', function (){
+  xit('should have the search param in the url query', function (){
     expect(typeof $stateParams.search).to.be(false);
   });
-  it('should have the filter param in the url query', function (){
+  xit('should have the filter param in the url query', function (){
     expect(typeof $stateParams.filter).to.be.a('string');
   });
 
   it('should have a function to populate browse page', function (){
-    expect($scope.getFilteredMaps).to.be.a('function');
-  })
+    expect($scope.getMaps).to.be.a('function');
+  });
+  
 
 
 
