@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test'; // disable morgan
+// process.env.NODE_ENV = 'test'; // disable morgan
 
 var request  = require('supertest'),
     expect   = require('chai').expect,
@@ -18,6 +18,11 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   
   var result;
 
+  var username = 'supercoder31337';
+  var password = 'a';
+
+  var authToken;
+
   var testMap = { 
     title      : 'TestMap',
     description: 'Learn TDD',
@@ -25,6 +30,18 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     nodes      : []
   };
 
+  before('Get user token for Authorization header', function(done) {
+
+    request(server.app)
+      .get('/api/login?username='+username+'&password='+password)
+      .end(function(err, serverResponse){
+        if (err) throw err;
+        authToken = serverResponse.body.authToken;
+        done();
+      });
+
+
+  });
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *      POST /api/roadmaps/              *
@@ -204,9 +221,12 @@ describe('Roadmap Routes - /api/roadmaps', function() {
 
     it('Should delete the Roadmap specified by ID', function(done){
      
+      var encodedAuthHeader = new Buffer(username+':'+authToken, 'ascii').toString('base64');
+
       request(server.app)
         .delete('/api/roadmaps/'+testMapID)
-        .end(function(err, res){
+        .set('Authorization', 'Basic ' + encodedAuthHeader)
+        .end(function(err, serverResponse){
           if (err) throw err;
 
           Roadmap.findById(testMapID)
