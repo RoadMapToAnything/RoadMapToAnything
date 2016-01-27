@@ -51,17 +51,26 @@ var pushArraysProperly = function (UserSchema, next) {
 // If a completedRoadmap is being pushed, 
 // removes that roadmap and child nodes from inProgress.
 var handleCompletedRoadmaps = function (next) {
+  var Node = require('./nodes/nodeModel.js');
+  var query = this;
   var completed;
 
-  if (this._update.$push) {
-    completed = this._update.$push['completedRoadmaps'];
+  if (query._update.$push) {
+    completed = query._update.$push['completedRoadmaps'];
   }
 
   if(completed) { 
-    this.update({}, { $pull:{ 'inProgress.roadmaps': completed } });
+    query.update({}, { $pull:{ 'inProgress.roadmaps': completed } });
+    Node.find({parentRoadmap: completed})
+      .then(function (nodes) {
+        nodes.forEach(function (node) {
+          query.update({}, { $pull:{ 'inProgress.nodes': node._id } });
+        });
+        next();
+      });
+  } else {
+    next();
   }
-
-  next();
 };
 
 module.exports.setUserHooks = function(UserSchema) {
