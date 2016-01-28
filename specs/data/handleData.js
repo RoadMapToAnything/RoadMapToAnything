@@ -45,9 +45,6 @@ var seedRoadmaps = function(next) {
   var addRoadmap = function(i) {
     if (i >= maps.length) return next && next();
 
-    maps[i].author = users[maps[i].author]._id;
-
-
     Roadmap(maps[i]).save()
       .then(function (map) {
         if (map) maps[i] = map;
@@ -79,8 +76,6 @@ var seedNodes = function(next) {
 
   var addNode = function(i) {
     if (i >= nodes.length) return next && next();
-
-    nodes[i].parentRoadmap = maps[nodes[i].parentRoadmap]._id;
 
     Node(nodes[i]).save()
       .then(function (node) {

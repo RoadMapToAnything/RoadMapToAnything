@@ -1,76 +1,93 @@
 {
   "users": [
     {
+      "_id"      : "000000000000000000000001",
       "username" : "bowieloverx950",
       "password" : "c",
       "firstName": "Bob",
-      "lastName" : "Johnson"
+      "lastName" : "Johnson",
+      "imageUrl" : "http://www.telegraph.co.uk/content/dam/music/2016/01/12/bowieeeee-large_trans++pJliwavx4coWFCaEkEsb3kvxIt-lGGWCWqwLa_RXJU8.jpg"
     },
 
     {
+      "_id"      : "000000000000000000000002",
       "username" : "supercoder31337", 
       "password" : "a",
       "firstName": "Susan",
-      "lastName" : "Kozlowski"
+      "lastName" : "Kozlowski",
+      "imageUrl" : "https://s-media-cache-ak0.pinimg.com/736x/fa/45/b6/fa45b63f610451689f252c77b53c3077.jpg"
     },
 
     {
+      "_id"      : "000000000000000000000003",
       "username" : "alex<3hiphop", 
       "password" : "b",
       "firstName": "Alejandro",
-      "lastName" : "Bautista"
+      "lastName" : "Bautista",
+      "imageUrl" : "http://thesource.com/wp-content/uploads/2016/01/120229-mos-def.png"
     }
   ],
   "maps": [
     {
+      "_id"        : "000000000000000000000010",
       "title"      : "Understanding Bowie",
       "description": "This roadmap will help you learn about David Bowie",
-      "author"     : 0 
+      "author"     : "000000000000000000000001" 
     },
 
     {
+      "_id"        : "000000000000000000000020",
       "title"      : "Learning JavaScript",
       "description": "134rn 2 b 4n 1337 h4xx0rz",
-      "author"     : 1
+      "author"     : "000000000000000000000002"
     },
 
     {
+      "_id"        : "000000000000000000000030",
       "title"      : "Straight Outta Knowing Nothing About Straight Outta Compton",
       "description": "Your hip hop history. Learn it.",
-      "author"     : 2
+      "author"     : "000000000000000000000003"
     }
   ],
   "nodes": [
     {
+      "_id"          : "000000000000000000000100",
       "title"        : "Watch Life On Mars?",
       "description"  : "Watch this classic. Absorb the Bowie.",
       "resourceType" : "Music Video",
       "resourceURL"  : "https://www.youtube.com/watch?v=v--IqqusnNQ",
-      "parentRoadmap": 0
+      "imageUrl"     : "https://charlottetriebl.files.wordpress.com/2016/01/lifeonmars.gif",
+      "parentRoadmap": "000000000000000000000010"
     },
 
     {
+      "_id"          : "000000000000000000000200",
       "title"        : "Take Codecademy's Intro Course",
       "description"  : "OMG 1f u c4nt h4x th15 w4t h0p d0 u h4v???",
       "resourceType" : "Online Course",
       "resourceURL"  : "https://www.codecademy.com/learn/javascript",
-      "parentRoadmap": 1
+      "imageUrl"     : "http://blogs-images.forbes.com/larrymagid/files/2014/11/code111111111111.jpg",
+      "parentRoadmap": "000000000000000000000020"
     },
 
     {
-      "title": "Learn about Higher Order Functions",
-      "description": "Watch this classic. Functions within Functions. Soon you too will become a function",
-      "resourceType": "Educational Video",
-      "resourceURL": "https://www.youtube.com/watch?v=BMUiFMZr7vk&ab_channel=funfunfunction",
-      "parentRoadmap": 1
+      "_id"          : "000000000000000000000300",
+      "title"        : "Learn about Higher Order Functions",
+      "description"  : "Watch this classic. Functions within Functions. Soon you too will become a function",
+      "resourceType" : "Educational Video",
+      "resourceURL"  : "https://www.youtube.com/watch?v=BMUiFMZr7vk&ab_channel=funfunfunction",
+      "imageUrl"     : "http://yannesposito.com/Scratch/img/blog/Higher-order-function-in-zsh/main.jpg",
+      "parentRoadmap": "000000000000000000000020"
     },
 
     {
+      "_id"          : "000000000000000000000400",
       "title"        : "Watch Straight Outta Compton",
       "description"  : "It's in the name. Watch it.",
       "resourceType" : "Music Video",
       "resourceURL"  : "https://www.youtube.com/watch?v=TMZi25Pq3T8",
-      "parentRoadmap": 2
+      "imageUrl"     : "http://media2.fdncms.com/chicago/imager/u/original/18699438/straight_outta_compton.jpg",
+      "parentRoadmap": "000000000000000000000030"
     }
   ]
 }
