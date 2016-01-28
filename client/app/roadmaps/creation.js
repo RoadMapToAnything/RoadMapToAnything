@@ -1,27 +1,67 @@
 angular.module('app.creation', [])
 
 .controller('CreationController', function($scope,$http){
+  localStorage.removeItem('user.currentRoadMap');
 
   // This is for the roadMap Creation Form
-  $scope.nodeBuilder = false;
-  $scope.checkTruth = function(){
-    return $scope.nodeBuilder;
-  }
+  // $scope.nodeBuilder = false;
+  // $scope.checkTruth = function(){
+  //   return $scope.nodeBuilder;
+  // };
 
-  var buildNode = function() {
-    var parent = localStorage.getItem('roadmapId') || '56a93ffb4e8f0b80594acbb5';
+  var buildRoadmap = function() {
+    author = localStorage.getItem('user.username') || 'bowieloverx950';
+    console.log('roadmapTitle', $scope.roadmapTitle);
+    console.log('roadmapDescription', $scope.roadmapDescription);
 
     return {
-      title: $scope.nodeTitle,
-      description: $scope.nodeDescription,
-      resourceType: $scope.nodeType,
-      resourceURL: $scope.nodeUrl,
-      imageUrl: $scope.nodeImageUrl,
-      parentRoadmap: parent
+      title: $scope.roadmapTitle,
+      description: $scope.roadmapDescription,
+      author: author
     };
   };
 
-  var postNode = function (node) {
+  var postRoadmap = function(roadmap) {
+
+   return $http({
+      method: 'POST',
+      url: '/api/roadmaps',
+      data: roadmap
+    }).then(function (res) {
+      console.log('Roadmap created:', res.data.data);
+      localStorage.setItem('user.currentRoadMap', response.data.data._id);
+      // $scope.nodeBuilder = true;
+    }, function(err){
+      if (err) return err;
+    });
+  };
+
+  $scope.test = function() {
+    console.log('HELLO', $scope.roadmapTitle, '!!!');
+  };
+
+  var buildNode = function() {
+    var parent = localStorage.getItem('user.currentRoadMap');
+
+    if (!parent) {
+      postRoadmap(buildRoadmap())
+      .then(function (err) {
+        if (err) return console.log(err);
+        buildNode();
+      });
+    } else {
+      return {
+        title: $scope.nodeTitle,
+        description: $scope.nodeDescription,
+        resourceType: $scope.nodeType,
+        resourceURL: $scope.nodeUrl,
+        imageUrl: $scope.nodeImageUrl,
+        parentRoadmap: parent
+      };
+    }
+  };
+
+  var postNode = function(node) {
     return $http({
       method: 'POST',
       url: '/api/nodes',
@@ -40,24 +80,5 @@ angular.module('app.creation', [])
   $scope.submitAndFinish = function() {
     postNode(buildNode());
   };
-
-  $scope.createRoadMap = function(data){
-    data.author = localStorage.getItem('currentUser') || 'testAuthor';
-    
-   return $http({
-        method: 'POST',
-        url: '/api/roadmaps',
-        data: data
-      }).then(function(response){
-        console.log(response.data.data)
-        localStorage.setItem('roadmapId', response.data.data.id)
-        $scope.nodeBuilder = true;
-        console.log($scope.nodeBuilder)
-      }, function(err){
-        if (err) return err;
-      });
-  }
-
-
 
 });

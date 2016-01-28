@@ -1,10 +1,32 @@
+<!-- This code is necessary to make the dropdown work. -->
+<!-- TODO: Find it a centralized home. -->
 <script>
   $(document).ready(function() {
       $('select').material_select();
   });
 </script>
 
-<h4>Add a node</h4>
+<!-- Roadmap Form -->
+<h3>Create A Roadmap</h3>
+<div class="row">
+  <form class="col s12">
+    <div class="row">
+      <div class="input-field col s8">
+        <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle">
+        <label for="roadmap_title">Give it a title</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription">
+        <label for="roadmap_description">Tell us about it</label>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Node Form -->
+<h4 ng-click="test()">Add a node</h4>
 <div class="row">
   <form class="col s12" name="nodeForm">
     <div class="row">
