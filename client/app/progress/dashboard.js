@@ -97,9 +97,16 @@ angular.module('app.dash', [])
   }
   
   $scope.deleteMap = function(mapID){
+    var user = localStorage.getItem('user.username');
+    var token = localStorage.getItem('user.authToken');
+    console.log('token', token);
+    var encodedAuthHeader = btoa(user + ':' + token);
     $http({
       method: 'DELETE',
-      url: '/api/roadmaps/' + mapID
+      url: '/api/roadmaps/' + mapID,
+      headers: {
+        'Authorization': 'Basic ' + encodedAuthHeader
+      }
     })
       .then(
         //success
@@ -111,7 +118,7 @@ angular.module('app.dash', [])
         function(response){
           console.log('failed to delete');
           console.log('status', response.status);
-          console.log('response body', response.body);
+          console.log('response', response);
         })
   }
 //make ajax calls to get table data

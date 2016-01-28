@@ -21,7 +21,7 @@ angular.module('app.auth', [])
         console.log('sent login credentials');
         console.log('res.data', res.data);
         localStorage.setItem('user.username', $scope.attemptedUsername);
-        localStorage.setItem('user.authToken', res.authToken);
+        localStorage.setItem('user.authToken', res.data.data.authToken);
         $state.go('dashboard');
       },
       //error callback
