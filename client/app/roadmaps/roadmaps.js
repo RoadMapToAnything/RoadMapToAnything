@@ -3,7 +3,7 @@ angular.module('app.roadmaps', [])
   //
 .controller('RoadMapsController', function($scope,$http){
   // Changes everytime you reseed database
-  var roadMapUrl = '56a80c832e630ea85e4b457f';
+  var roadmapId = localStorage.getItem('roadmapId') || '56a975b3d4c025716aa9900d';
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
   
@@ -20,6 +20,7 @@ angular.module('app.roadmaps', [])
     $scope.roadMapTitle = title;
     // User Logged in Data in the future
     // some variable that holds that the user is logged in
+    $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
   };
 
@@ -58,23 +59,52 @@ angular.module('app.roadmaps', [])
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
-  }
+    $scope.currentNode = $scope.renderedNodes[index];
+  };
 
   // The roadMap URL is just for testing purposes and gets you a specific roadmap
   // We can just use /api/roadmaps to get every node
   $scope.getRoadMap = function(cb){  
     return $http({
       method: 'GET',
-      url: '/api/roadmaps/' + roadMapUrl
+      url: '/api/roadmaps/' + roadmapId
     }).then(function(response){
       $scope.currentRoadMapData = response.data.data;
       cb()
     }, function(err){
       if (err) return err;
     });
-  }
+  };
+
+  // Submits a node to the user's inProgress.nodes array.
+  $scope.submitCompletedNode = function() {
+    var username = localStorage.getItem('username') || 'bowieloverx950';
+    var nodeId = $scope.currentNode._id;
+
+    $http({
+      method: 'PUT',
+      url: '/api/users/' + username,
+      data: {'inProgress.nodes': nodeId}
+    })
+    .then(function (res) {
+      console.log('Node added to inProgress.nodes:', res.data.data.inProgress.nodes);
+    });
+  };
 
 
+  // Submits a roadmap to the user's completedRoadmaps array.
+  $scope.submitCompletedRoadmap = function() {
+    var username = localStorage.getItem('username') || 'bowieloverx950';
+
+    $http({
+      method: 'PUT',
+      url: '/api/users/' + username,
+      data: {completedRoadmaps: roadmapId}
+    })
+    .then(function (res) {
+      console.log('Roadmap added to completedRoadmaps:', res.data.data.completedRoadmaps);
+    });
+  };
 
 
   $scope.connectLines = function(){
@@ -84,7 +114,7 @@ angular.module('app.roadmaps', [])
   // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);
-  }
+  };
   
   // $scope.connectLines();
   $scope.getRoadMap($scope.renderNodes);
@@ -104,7 +134,7 @@ $scope.createRoadMap = function(data){
     }, function(err){
       if (err) return err;
     });
-}
+};
 
 
 
