@@ -114,7 +114,7 @@ angular.module('app.roadmaps', [])
   // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);
-  }
+  };
   
   // $scope.connectLines();
   $scope.getRoadMap($scope.renderNodes);
