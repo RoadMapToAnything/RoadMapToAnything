@@ -1,41 +1,18 @@
-<h1>Create a RoadMap</h1>
-
-<!--  button that sends a post request to create a new roadmap -->
-<!--  empty data then the form fields will populate in a put request -->
-<!--  Create empty roadmap, add title, add description -->
-<!-- Node Creation and gets id of roadmap to node creation form -->
-<!-- Make sure it holds this variable after reload
-  Either URL or LocalStorage
-  LocalStorage.set(roadmapId: whatever)
-  LocalStorage.delete(roadmapId: once we are done)
- -->
+<h3>Create A Roadmap</h3>
 
   <div class="row">
-    <form class="col s12" ng-submit="createRoadMap(newRoadMap)">
+    <form class="col s12">
       <div class="row">
-        <div class="input-field col s6">
-          <input type="text" ng-model="newRoadMap.title">
-          <label for="user_name" title>What's the Title of your RoadMap</label>
+        <div class="input-field col s8">
+          <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle">
+          <label for="roadmap_title">Give it a title</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s6">
-          <input type="text" ng-model="newRoadMap.description">
-          <label for="user_name" title>What is your RoadMap About?</label>
+        <div class="input-field col s12">
+          <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription">
+          <label for="roadmap_description">Tell us about it</label>
         </div>
       </div>
-      <div class="row">
-        <input type="submit" class="waves-effect waves-light btn"></a>
-        <br>
-      </div>
-
     </form>
   </div>
-
-
-<!-- 
-RoadMaps need nodes
-They need Titles
-They need Descriptions
-They need authors
- -->
