@@ -2,13 +2,25 @@ angular.module('app.roadmaps', [])
 // Roadmaps have a title, description, author, nodes array, all nodes: , created time
   //
 .controller('RoadMapsController', function($scope,$http){
-  // Changes everytime you reseed database
-
-  var roadmapId = localStorage.getItem('user.currentRoadMap') || '56a975b3d4c025716aa9900d';
+  var roadmapId = localStorage.getItem('user.currentRoadMap') || '000000000000000000000010';
 
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
+
+  // Fetch data for the current roadmap from the server.
+  $scope.getRoadMap = function(){  
+    return $http({
+      method: 'GET',
+      url: '/api/roadmaps/' + roadmapId
+    })
+    .then(function (res){
+      $scope.currentRoadMapData = res.data.data;
+    }, function(err){
+      if (err) return console.log(err);
+    });
+  };
   
+  // Renders the nodes for the current roadmap to the page.
   $scope.renderNodes = function(){
     var title = $scope.currentRoadMapData.title || 'test title';
     var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];    
@@ -25,6 +37,9 @@ angular.module('app.roadmaps', [])
     $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
   };
+
+  $scope.getRoadMap()
+  .then($scope.renderNodes);
 
   // Render Title
   // Assumes title links and description properties from get method
@@ -62,20 +77,6 @@ angular.module('app.roadmaps', [])
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
     $scope.currentNode = $scope.renderedNodes[index];
-  };
-
-  // The roadMap URL is just for testing purposes and gets you a specific roadmap
-  // We can just use /api/roadmaps to get every node
-  $scope.getRoadMap = function(cb){  
-    return $http({
-      method: 'GET',
-      url: '/api/roadmaps/' + roadmapId
-    }).then(function(response){
-      $scope.currentRoadMapData = response.data.data;
-      cb()
-    }, function(err){
-      if (err) return err;
-    });
   };
 
   // Submits a node to the user's inProgress.nodes array.
@@ -118,8 +119,7 @@ angular.module('app.roadmaps', [])
     setTimeout($scope.connectLines,0);
   };
   
-  // $scope.connectLines();
-  $scope.getRoadMap($scope.renderNodes);
+  
 
 // This is for the roadMap Creation Form
 
