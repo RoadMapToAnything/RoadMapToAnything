@@ -15,34 +15,6 @@
 
   <body>
 
-  <!--main page content-->
-  <div ui-view="header"></div>
-  <div class="container">
-  <div ui-view="welcome"></div>
-  <div ui-view="browse"></div>
-  <div ui-view="content"></div>
-  <div ui-view="signup"></div>
-  <!--main page-->
-  
-  <!-- ui-sref takes you to a different state -->
-    <div class="center-align">
-    <button class="waves-effect waves-light btn center-align" ui-sref="roadmapTemplate">Click me to go to a template roadmap</button>
-    </div>
-
-    <!--  In the future this could be part of a view-->
-    <br><br>
-    <div class="row">
-      <div class="col s12">  
-        <ul class="tabs">
-         <li class="tab col s3"> <a ui-sref="signup">Click to go to signup</a> </li>
-         <li class="tab col s3"> <a ui-sref="signin">Click to go to signIn</a> </li>
-         <li class="tab col s3"> <a ui-sref="home">Click to go to main</a> </li>
-         <li class="tab col s3"> <a ui-sref="dashboard">Click to go to dashboard</a> </li>
-        </ul>
-      </div>
-    </div>
-    <br>
-
     <div ui-view="header"></div>
 
     <!--Main Page Content-->
