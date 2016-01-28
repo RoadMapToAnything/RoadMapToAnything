@@ -2,6 +2,12 @@ angular.module('app.node.creation', [])
 
 .controller('NodeCreationController', function($scope,$http){
 
+  // This is for the roadMap Creation Form
+  $scope.nodeBuilder = false;
+  $scope.checkTruth = function(){
+    return $scope.nodeBuilder;
+  }
+
   var buildNode = function() {
     var parent = localStorage.getItem('roadmapId') || '56a93ffb4e8f0b80594acbb5';
 
@@ -34,6 +40,23 @@ angular.module('app.node.creation', [])
   $scope.submitAndFinish = function() {
     postNode(buildNode());
   };
+
+  $scope.createRoadMap = function(data){
+    data.author = localStorage.getItem('currentUser') || 'testAuthor';
+    
+   return $http({
+        method: 'POST',
+        url: '/api/roadmaps',
+        data: data
+      }).then(function(response){
+        console.log(response.data.data)
+        localStorage.setItem('roadmapId', response.data.data.id)
+        $scope.nodeBuilder = true;
+        console.log($scope.nodeBuilder)
+      }, function(err){
+        if (err) return err;
+      });
+  }
 
 
 

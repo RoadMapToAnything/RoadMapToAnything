@@ -116,45 +116,34 @@ angular.module('app', [
         controller: 'RoadMapsController'
       }
     }
-  }).
-  state('roadmapCreationForm',{
-    auth: true,
-    url: '/roadmapCreationForm',
-    views: {
-      'content': {
-        templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
-        controller: 'RoadMapsController'
-      },
-      'header': {
-        templateUrl: 'app/main/main.userheader.html',
-        controller: 'RoadMapsController'
-      },
-      'footer': {
-        templateUrl: 'app/main/main.footer.html',
-        controller: 'RoadMapsController'
-      }
-    }
   })
-  //state for a Node Creation Form
-  .state('nodeCreationForm', {
+  .state('roadmapCreation', {
     auth: true,
-    url: '/node-creation',
+    url: '/roadmapCreation',
     views: {
       'content': {
-        templateUrl: 'app/roadmaps/node.creation.html',
+        templateUrl: 'app/roadmaps/roadmaps.creationFormMaster.html',
+        controller: 'NodeCreationController'
+      },
+      //To get nested subviews the pattern is desiredViewName@stateName
+      'roadmapCreator@roadmapCreation': {
+        templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
         controller: 'NodeCreationController'
       },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
-        controller: 'RoadMapsController'
+        controller: 'NodeCreationController'
       },
       'footer': {
         templateUrl: 'app/main/main.footer.html',
         controller: 'RoadMapsController'
+      },
+      'nodeCreator@roadmapCreation': {
+        templateUrl: 'app/roadmaps/node.creation.html',
+        controller: 'NodeCreationController'
       }
     }
   })
-  //sample state
   .state('example', {
     url: '/example',
     views: {
