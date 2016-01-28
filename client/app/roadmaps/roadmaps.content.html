@@ -21,16 +21,20 @@
             <h5 ng-bind="currentTitle">Title of Node</h5>
             <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
           </div>
+          <div class="row">
+            <button class="btn waves-effect waves-light col s6 offset-s3 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">Node Done
+            </button>
+          </div>
         </div>
       </div>
-      <div class="row"></div>
-        <button class="btn waves-effect waves-light col s6 offset-s3 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">I Did Ths!
-        </button>
-      <div class="row"></div>
-        <br>
+
+      <br>
+      
+      <div class="row">
         <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="submitCompletedRoadmap()">
-        Roadmap Complete!
+        Map Done
         </a>
+      </div>
     </div>
   </div>
   <!-- end of size 4 -->
