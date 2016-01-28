@@ -14,7 +14,8 @@
             <li ng-repeat="link in currentLinks">{{link}}</li>  
           </span>
           <br>
-          <div class="divider"></div>
+          <div class="divider">
+          </div>
           <div class="card-action gray-text">
             <br>
             <h5 ng-bind="currentTitle">Title of Node</h5>
@@ -22,8 +23,14 @@
           </div>
         </div>
       </div>
-        <button class="btn waves-effect waves-light col s12 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">I Did Ths!
+      <div class="row"></div>
+        <button class="btn waves-effect waves-light col s6 offset-s3 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">I Did Ths!
         </button>
+      <div class="row"></div>
+        <br>
+        <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="submitCompletedRoadmap()">
+        Roadmap Complete!
+        </a>
     </div>
   </div>
   <!-- end of size 4 -->
@@ -64,11 +71,6 @@
   </div>
   <!-- end of size 8 -->
 </div>
-<div class="row">
-    <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="submitCompletedRoadmap()">
-    Roadmap Complete!
-  </a>
-</div> 
 
 <!-- ALTERNATE BOOTSTRAP EXAMPLE 
 

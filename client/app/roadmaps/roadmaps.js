@@ -3,7 +3,7 @@ angular.module('app.roadmaps', [])
   //
 .controller('RoadMapsController', function($scope,$http){
   var roadmapId = localStorage.getItem('user.currentRoadMap') || '000000000000000000000010';
-
+  
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
 
