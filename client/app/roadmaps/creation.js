@@ -1,6 +1,6 @@
-angular.module('app.node.creation', [])
+angular.module('app.creation', [])
 
-.controller('NodeCreationController', function($scope,$http){
+.controller('CreationController', function($scope,$http){
 
   // This is for the roadMap Creation Form
   $scope.nodeBuilder = false;
