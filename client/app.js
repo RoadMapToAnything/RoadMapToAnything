@@ -35,9 +35,9 @@ angular.module('app', [
           templateUrl: 'app/main/main.welcome.html',
           controller: 'MainController'
         },
-        'content': {
-          templateUrl: 'app/main/main.content.html',
-          controller: 'MainController',
+        'browse': {
+          templateUrl: 'app/browse/browse.html',
+          controller: 'BrowseController',
         },
         'footer': {
           templateUrl: 'app/main/main.footer.html',
