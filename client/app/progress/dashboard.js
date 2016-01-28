@@ -96,7 +96,7 @@ angular.module('app.dash', [])
     $state.go('roadmapTemplate');
   }
   
-  $scope.deleteMap = function(mapID){
+  $scope.deleteMapIMade = function(mapID){
     var user = localStorage.getItem('user.username');
     var token = localStorage.getItem('user.authToken');
     console.log('token', token);
@@ -112,8 +112,32 @@ angular.module('app.dash', [])
         //success
         function(response){
           console.log('deleted');
+          $scope.getMyMaps();
+        },
+        function(response){
+          console.log('failed to delete');
           console.log('status', response.status);
-          console.log('response body', response.body);
+          console.log('response', response);
+        })
+  }
+
+  $scope.deleteFollowedMap = function(mapID){
+    var user = localStorage.getItem('user.username');
+    var token = localStorage.getItem('user.authToken');
+    console.log('token', token);
+    var encodedAuthHeader = btoa(user + ':' + token);
+    $http({
+      method: 'DELETE',
+      url: '/api/roadmaps/' + mapID,
+      headers: {
+        'Authorization': 'Basic ' + encodedAuthHeader
+      }
+    })
+      .then(
+        //success
+        function(response){
+          console.log('deleted');
+          $scope.getFollowedMaps();
         },
         function(response){
           console.log('failed to delete');
