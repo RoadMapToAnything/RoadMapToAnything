@@ -118,7 +118,7 @@ angular.module('app', [
     }
   })
   .state('roadmapCreation', {
-    auth: true,
+    
     url: '/roadmapCreation',
     views: {
       'content': {

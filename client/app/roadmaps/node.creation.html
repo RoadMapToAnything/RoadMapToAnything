@@ -1,0 +1,49 @@
+<script>
+  $(document).ready(function() {
+      $('select').material_select();
+  });
+</script>
+
+<h1>Create Nodes!</h1>
+<div class="row">
+  <form class="col s12" name="nodeForm">
+    <div class="row">
+      <div class="input-field col s8">
+        <input id="node_title" type="text" class="validate" ng-model="nodeTitle">
+        <label for="node_title">Title</label>
+      </div>
+      <div class="input-field col s4">
+        <select ng-model="nodeType">
+          <option value="" disabled selected>What sort of data is it?</option>
+          <option value="Blog Post">Blog Post</option>
+          <option value="Class">Class</option>
+          <option value="Video">Video</option>
+          <option value="Music">Music</option>
+        </select>
+        <label>Node Type</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="node_description" type="text" class="validate" ng-model="nodeDescription">
+        <label for="node_description">Description</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="node_url" type="url" class="validate" ng-model="nodeUrl">
+        <label for="node_url">URL</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="node_image_url" type="url" class="validate" ng-model="nodeImageUrl">
+        <label for="node_image_url">Image URL</label>
+      </div>
+    </div>
+    <div class="row">
+        <a ui-sref="nodeCreationForm"><button class="btn waves-effect waves-light" type="submit" onclick="reset()" ng-click="submitAndRefresh()" name="action">Add another Node
+        </button></a>
+        <a ui-sref="roadmapTemplate"><button class="btn waves-effect waves-light" type="submit" ng-click="submitAndFinish()" name="action">Save Roadmap
+        </button></a>
+    </div>
+  </form>
+</div>
