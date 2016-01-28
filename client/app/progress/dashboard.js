@@ -95,7 +95,25 @@ angular.module('app.dash', [])
     localStorage.setItem('currentRoadMap', mapID);
     $state.go('roadmapTemplate');
   }
-
+  
+  $scope.deleteMap = function(mapID){
+    $http({
+      method: 'DELETE',
+      url: '/api/roadmaps/' + mapID
+    })
+      .then(
+        //success
+        function(response){
+          console.log('deleted');
+          console.log('status', response.status);
+          console.log('response body', response.body);
+        },
+        function(response){
+          console.log('failed to delete');
+          console.log('status', response.status);
+          console.log('response body', response.body);
+        })
+  }
 //make ajax calls to get table data
   $scope.getDashboardData();
 

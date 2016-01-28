@@ -43,12 +43,16 @@
             <tr>
               <th>Nodes</th>
               <th>Roadmap</th>
+              <th>Delete</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
               <td>{{ map.totalNodes }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
+              <td>
+              <a ng-click="deleteMap( map._id )">Delete</a>
+              </td>
             </tr>
         </tbody>
         </table>
