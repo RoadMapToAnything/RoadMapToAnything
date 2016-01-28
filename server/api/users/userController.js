@@ -1,6 +1,7 @@
 var User = require('./userModel.js'),
     handleError = require('../../util.js').handleError,
-    handleQuery = require('../queryHandler.js');
+    handleQuery = require('../queryHandler.js'),
+    bcrypt = require('bcrypt-nodejs');
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
@@ -27,10 +28,14 @@ module.exports = {
     };
 
     User.findOne(credentials)
-      .deepPopulate(populateFields)
       .then(function(validUser){
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
-        else res.status(200).json({data: validUser}); // TODO: send back a token, not DB results
+        else {
+          bcrypt.hash(validUser.password, null, null, function(err, hashedPassword){
+            var encodedHash = new Buffer(hashedPassword, 'ascii').toString('base64');
+            res.status(200).json({data: {username: validUser.username, authToken: encodedHash} });
+          });
+        }
       })
       .catch(handleError(next));
   },
