@@ -3,7 +3,7 @@ angular.module('app.roadmaps', [])
   //
 .controller('RoadMapsController', function($scope,$http){
   // Changes everytime you reseed database
-  var roadMapUrl = '56a96b500f6f82026845dc32';
+  var roadmapId = localStorage.getItem('roadmapId') || '56a975b3d4c025716aa9900d';
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
   
@@ -67,7 +67,7 @@ angular.module('app.roadmaps', [])
   $scope.getRoadMap = function(cb){  
     return $http({
       method: 'GET',
-      url: '/api/roadmaps/' + roadMapUrl
+      url: '/api/roadmaps/' + roadmapId
     }).then(function(response){
       $scope.currentRoadMapData = response.data.data;
       cb()
@@ -76,16 +76,33 @@ angular.module('app.roadmaps', [])
     });
   };
 
+  // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
     var username = localStorage.getItem('username') || 'bowieloverx950';
-    var nodeId = $scope.currentNode._id || '56a96b500f6f82026845dc36';
+    var nodeId = $scope.currentNode._id;
+
     $http({
       method: 'PUT',
       url: '/api/users/' + username,
       data: {'inProgress.nodes': nodeId}
     })
     .then(function (res) {
-      console.log('Marked node as completed:', res.data.data);
+      console.log('Node added to inProgress.nodes:', res.data.data.inProgress.nodes);
+    });
+  };
+
+
+  // Submits a roadmap to the user's completedRoadmaps array.
+  $scope.submitCompletedRoadmap = function() {
+    var username = localStorage.getItem('username') || 'bowieloverx950';
+
+    $http({
+      method: 'PUT',
+      url: '/api/users/' + username,
+      data: {completedRoadmaps: roadmapId}
+    })
+    .then(function (res) {
+      console.log('Roadmap added to completedRoadmaps:', res.data.data.completedRoadmaps);
     });
   };
 
