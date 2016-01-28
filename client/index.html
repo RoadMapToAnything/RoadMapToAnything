@@ -1,71 +1,49 @@
 <!DOCTYPE html>
 <html ng-app="app">
-<head>
-  <meta charset="utf-8">
-  <title>Roadmap To Anything</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  <!--more css libraries bootstrap-->
-  <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-   -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css">
-  <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
-    -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Roadmap To Anything</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link href="styles.css" rel="stylesheet" type="text/css"> 
 
-  <link href="styles.css" rel="stylesheet" type="text/css">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
 
-  <!--main page content-->
-  <div ui-view="header"></div>
-  <div class="container">
-  <div ui-view="welcome"></div>
-  <div ui-view="browse"></div>
-   <div ui-view="content"></div>
-  <div ui-view="signup"></div>
-  <!--main page-->
-  
-  <!-- ui-sref takes you to a different state -->
-    <div class="center-align">
-    <button class="waves-effect waves-light btn center-align" ui-sref="roadmapTemplate">Click me to go to a template roadmap</button>
+  <body>
+
+    <div ui-view="header"></div>
+
+    <!--Main Page Content-->
+    <div class="container">
+      <div ui-view="welcome"></div>
+      <div ui-view="browse"></div>
+      <div ui-view="content"></div>
+      <div ui-view="signup"></div>
     </div>
 
-    <!--  In the future this could be part of a view-->
-    <br><br>
-    <div class="row">
-      <div class="col s12">  
-        <ul class="tabs">
-         <li class="tab col s3"> <a ui-sref="signup">Click to go to signup</a> </li>
-         <li class="tab col s3"> <a ui-sref="signin">Click to go to signIn</a> </li>
-         <li class="tab col s3"> <a ui-sref="home">Click to go to main</a> </li>
-         <li class="tab col s3"> <a ui-sref="dashboard">Click to go to dashboard</a> </li>
-        </ul>
-      </div>
-    </div>
-    <br>
+    <div ui-view="footer"></div>
 
-  </div>
-  <div ui-view="footer"></div>
-<!-- When main is up put a main.footer and a main.header -->
-</body>
+  </body>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<!-- A library to make connecting lines between elements -->
-<script src="non_bower_dependencies/jquery-connections/jquery.connections.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-<script src="lib/angular/angular.js"></script>
-<script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <!-- Dependencies -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!-- A library to make connecting lines between elements -->
+  <script src="non_bower_dependencies/jquery-connections/jquery.connections.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-
-<script src="app.js"></script>
-<script src="app/auth/auth.js"></script>
-<script src="app/browse/browse.js"></script>
-<script src="app/main/main.js"></script>
-<script src="app/progress/dashboard.js"></script>
-<script src="app/roadmaps/roadmaps.js"></script>
-<script src="app/roadmaps/node.creation.js"></script>
+  <!-- App Scripts -->
+  <script src="app.js"></script>
+  <script src="app/auth/auth.js"></script>
+  <script src="app/browse/browse.js"></script>
+  <script src="app/main/main.js"></script>
+  <script src="app/progress/dashboard.js"></script>
+  <script src="app/roadmaps/roadmaps.js"></script>
+  <script src="app/roadmaps/node.creation.js"></script>
 </html>
