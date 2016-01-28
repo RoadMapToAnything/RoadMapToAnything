@@ -36,9 +36,6 @@ angular.module('app.browse', [])
   }
 
   $scope.addMapToEmbarked = function (mapID) {
-    // if( !$stateParams.username ){
-    //   alert('you must be logged in to do that');
-    // } else {
       $http({
         method: 'PUT',
         url: '/api/users/' + localStorage.getItem('currentUser'), 
@@ -56,7 +53,11 @@ angular.module('app.browse', [])
             $scope.showSigninMsg = false;
           }, 5000)
         });
-    //}
+  }
+
+  $scope.goToMap = function (mapID){
+    localStorage.setItem('currentRoadMap', mapID);
+    $state.go('roadmapTemplate');
   }
   
   $scope.getMapData();
