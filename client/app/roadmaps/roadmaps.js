@@ -3,7 +3,9 @@ angular.module('app.roadmaps', [])
   //
 .controller('RoadMapsController', function($scope,$http){
   // Changes everytime you reseed database
+
   var roadmapId = localStorage.getItem('user.currentRoadMap') || '56a975b3d4c025716aa9900d';
+
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
   
