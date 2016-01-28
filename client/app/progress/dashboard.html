@@ -22,7 +22,7 @@
             <tr>
               <td><!--{{ map.completed }} /    add when we know completed nodes-->
               {{ map.totalNodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
               <td class="progress-bar">
                 <div class="progress">
                   <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
@@ -48,7 +48,7 @@
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
               <td>{{ map.totalNodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
             </tr>
         </tbody>
         </table>

@@ -1,6 +1,6 @@
 angular.module('app.dash', [])
 
-.controller('DashboardController', ['$scope','$http', function($scope, $http){
+.controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
 
   $scope.username = '';
 
@@ -89,6 +89,12 @@ angular.module('app.dash', [])
         $scope.getFollowedMaps();
       });
   };
+
+  $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
+    console.log('go to map', mapID);
+    localStorage.setItem('currentRoadMap', mapID);
+    $state.go('roadmapTemplate');
+  }
 
 //make ajax calls to get table data
   $scope.getDashboardData();
