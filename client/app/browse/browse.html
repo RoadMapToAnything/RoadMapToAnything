@@ -22,7 +22,8 @@
             <tr>
               <td>
               {{ map.totalNodes }}</td>
-              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">
+                <span class="mousetoHand">{{ map.title }}</span></td>
               <td><a ng-click="addMapToEmbarked( map._id )" class="waves-effect waves-light btn">Add!</a></td>
             </tr>
         </tbody>

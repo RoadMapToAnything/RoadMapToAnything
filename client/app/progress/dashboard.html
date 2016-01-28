@@ -21,15 +21,20 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
-              <td><!--{{ map.completed }} /    add when we know completed nodes-->
+              <td>{{ map.nodesCompleted }} /
               {{ map.totalNodes }}</td>
-              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">
+                <span class="mousetoHand">{{ map.title }}</span>
+              </td>
               <td class="progress-bar">
                 <div class="progress">
                   <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
                 </div>
               </td>
-              <td><a ng-click="deleteFollowedMap( map._id )">Delete</a></td>
+              <td>
+                <a ng-click="deleteFollowedMap( map._id )">
+                <span class="mousetoHand">Delete</span></a>
+              </td>
             </tr>
         </tbody>
         </table>
@@ -51,9 +56,11 @@
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
               <td>{{ map.totalNodes }}</td>
-              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">
+                <span class="mousetoHand">{{ map.title }}</span>
+              </td>
               <td>
-              <a ng-click="deleteMapIMade( map._id )">Delete</a>
+                <a ng-click="deleteMapIMade( map._id )"><span class="mousetoHand">Delete</span></a>
               </td>
             </tr>
         </tbody>

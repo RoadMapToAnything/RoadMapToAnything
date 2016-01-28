@@ -67,20 +67,48 @@ angular.module('app.dash', [])
               console.log('followed response.data', response.data);
               $scope.followed = response.data.data.inProgress.roadmaps || [];
               $scope.addTotalNodesOfFollowedMaps($scope.followed);
+              $scope.addCompletedNodes(response.data.data.inProgress)
             }, function(err){
               console.log('error with followedMaps request', err);
             });
     };
 
 
-  $scope.addCompletedNodes = function(){
+  $scope.addCompletedNodes = function(inProgressObj){
     $scope.followed.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+      map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
+      map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
     });
 
-    $scope.dummyMyMaps.forEach(function(map){
-      map.percentComplete = Math.floor((map.completed / map.totalNodes) * 100);
+    $scope.myMaps.forEach(function(map){
+      map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
+      map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
     });
+  };
+
+  $scope.calcCompletedNodes = function(followedData, mapID){
+    var count = 0;
+    var roadmapNodeIDs = [];
+    console.log('followedData', followedData);
+    console.log('mapID');
+    //iterate through the map's nodes and get array of IDs
+    followedData.roadmaps.forEach(function(map){
+      if(map._id === mapID){
+        map.nodes.forEach(function(node){
+          roadmapNodeIDs.push(node._id);
+        });
+      }
+    });
+
+    //check those node IDs against the inProgess node IDs
+      //iterate count when there's a match
+    followedData.nodes.forEach(function(node){
+      if(roadmapNodeIDs.indexOf(node._id) !== -1){
+        count++;
+      }
+    });
+
+    return count;
   };
 
   $scope.getDashboardData = function(){

@@ -5,10 +5,14 @@
   overflow-x: hidden;
 }
 #search {
-    display: none;
-    margin-bottom: 0px;
-    border-top: 1px solid #111;
-    border-bottom: 1px solid #111;
+  display: none;
+  margin-bottom: 0px;
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+.mousetoHand {
+  cursor:pointer;
+  text-decoration:none;
 }
 
 /* Dashboard */
