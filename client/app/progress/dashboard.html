@@ -21,7 +21,7 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
-              <td><!--{{ map.completed }} /    add when we know completed nodes-->
+              <td>{{ map.nodesCompleted }} /
               {{ map.totalNodes }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
               <td class="progress-bar">
