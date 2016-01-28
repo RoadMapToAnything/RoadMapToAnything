@@ -3,9 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Roadmap To Anything</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link href="styles.css" rel="stylesheet" type="text/css"> 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    <link href="styles.css" rel="stylesheet" type="text/css">  
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
@@ -13,9 +17,10 @@
 
     <div ui-view="header"></div>
 
-    <!--main page content-->
+    <!--Main Page Content-->
     <div class="container">
       <div ui-view="welcome"></div>
+      <div ui-view="browse"></div>
       <div ui-view="content"></div>
       <div ui-view="signup"></div>
     </div>
@@ -24,6 +29,7 @@
 
   </body>
 
+  <!-- Dependencies -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <!-- A library to make connecting lines between elements -->
   <script src="non_bower_dependencies/jquery-connections/jquery.connections.js"></script>
@@ -32,6 +38,7 @@
   <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
 
+  <!-- App Scripts -->
   <script src="app.js"></script>
   <script src="app/auth/auth.js"></script>
   <script src="app/browse/browse.js"></script>
