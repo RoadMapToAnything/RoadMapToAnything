@@ -11,8 +11,7 @@ angular.module('app.creation', [])
 
   var buildRoadmap = function() {
     author = localStorage.getItem('user.username') || 'bowieloverx950';
-    console.log('roadmapTitle', $scope.roadmapTitle);
-    console.log('roadmapDescription', $scope.roadmapDescription);
+    console.log('BUILD ROADMAP W/ AUTHOR', author);
 
     return {
       title: $scope.roadmapTitle,
@@ -22,6 +21,7 @@ angular.module('app.creation', [])
   };
 
   var postRoadmap = function(roadmap) {
+    console.log('POSTING ROADMAP', roadmap);
 
    return $http({
       method: 'POST',
@@ -29,39 +29,29 @@ angular.module('app.creation', [])
       data: roadmap
     }).then(function (res) {
       console.log('Roadmap created:', res.data.data);
-      localStorage.setItem('user.currentRoadMap', response.data.data._id);
+      localStorage.setItem('user.currentRoadMap', res.data.data._id);
       // $scope.nodeBuilder = true;
     }, function(err){
       if (err) return err;
     });
   };
 
-  $scope.test = function() {
-    console.log('HELLO', $scope.roadmapTitle, '!!!');
-  };
-
   var buildNode = function() {
     var parent = localStorage.getItem('user.currentRoadMap');
+    console.log('BUILD NODE W/ PARENT', parent);
 
-    if (!parent) {
-      postRoadmap(buildRoadmap())
-      .then(function (err) {
-        if (err) return console.log(err);
-        buildNode();
-      });
-    } else {
-      return {
-        title: $scope.nodeTitle,
-        description: $scope.nodeDescription,
-        resourceType: $scope.nodeType,
-        resourceURL: $scope.nodeUrl,
-        imageUrl: $scope.nodeImageUrl,
-        parentRoadmap: parent
-      };
-    }
+    return {
+      title: $scope.nodeTitle,
+      description: $scope.nodeDescription,
+      resourceType: $scope.nodeType,
+      resourceURL: $scope.nodeUrl,
+      imageUrl: $scope.nodeImageUrl,
+      parentRoadmap: parent
+    };
   };
 
   var postNode = function(node) {
+    console.log('POSTING NODE', node);
     return $http({
       method: 'POST',
       url: '/api/nodes',
@@ -74,11 +64,21 @@ angular.module('app.creation', [])
 
   $scope.submitAndRefresh = function() {
     Materialize.updateTextFields();
-    postNode(buildNode());
+    $scope.submitNode();
   };
 
-  $scope.submitAndFinish = function() {
-    postNode(buildNode());
+  $scope.submitNode = function() {
+    if (!localStorage.getItem('user.currentRoadMap')) {
+
+      postRoadmap(buildRoadmap())
+      .then(function (err) {
+        if (err) return console.log(err);
+        postNode(buildNode());
+      });
+
+    } else {
+      postNode(buildNode());
+    }
   };
 
 });
