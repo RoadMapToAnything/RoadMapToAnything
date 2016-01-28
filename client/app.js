@@ -9,7 +9,7 @@ angular.module('app', [
   ])
 .run( function($rootScope, $state){
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    if( !localStorage.getItem('user.username') && toState.name !== 'signin' ){
+    if( !localStorage.getItem('user.username') && toState.auth === true ){
       event.preventDefault();
       alert('please log in first');
       $state.go('signin');
@@ -81,6 +81,7 @@ angular.module('app', [
     })
     //state for dashboard
     .state('dashboard', {
+      auth: true,
       url: '/dashboard',
       views: {
         'content': {
@@ -99,6 +100,7 @@ angular.module('app', [
     })
   //state for roadmap
   .state('roadmapTemplate', {
+    auth: true,
     url: '/roadmaps',
     views: {
       'content': {
@@ -116,6 +118,7 @@ angular.module('app', [
     }
   }).
   state('roadmapCreationForm',{
+    auth: true,
     url: '/roadmapCreationForm',
     views: {
       'content': {
@@ -134,6 +137,7 @@ angular.module('app', [
   })
   //state for a Node Creation Form
   .state('nodeCreationForm', {
+    auth: true,
     url: '/node-creation',
     views: {
       'content': {
