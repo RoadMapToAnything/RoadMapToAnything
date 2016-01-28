@@ -3,7 +3,7 @@ angular.module('app.roadmaps', [])
   //
 .controller('RoadMapsController', function($scope,$http){
   // Changes everytime you reseed database
-  var roadMapUrl = '56a80c832e630ea85e4b457f';
+  var roadMapUrl = '56a96b500f6f82026845dc32';
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
   
@@ -20,6 +20,7 @@ angular.module('app.roadmaps', [])
     $scope.roadMapTitle = title;
     // User Logged in Data in the future
     // some variable that holds that the user is logged in
+    $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
   };
 
@@ -58,7 +59,8 @@ angular.module('app.roadmaps', [])
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
-  }
+    $scope.currentNode = $scope.renderedNodes[index];
+  };
 
   // The roadMap URL is just for testing purposes and gets you a specific roadmap
   // We can just use /api/roadmaps to get every node
@@ -72,9 +74,20 @@ angular.module('app.roadmaps', [])
     }, function(err){
       if (err) return err;
     });
-  }
+  };
 
-
+  $scope.submitCompletedNode = function() {
+    var username = localStorage.getItem('username') || 'bowieloverx950';
+    var nodeId = $scope.currentNode._id || '56a96b500f6f82026845dc36';
+    $http({
+      method: 'PUT',
+      url: '/api/users/' + username,
+      data: {'inProgress.nodes': nodeId}
+    })
+    .then(function (res) {
+      console.log('Marked node as completed:', res.data.data);
+    });
+  };
 
 
   $scope.connectLines = function(){
@@ -104,7 +117,7 @@ $scope.createRoadMap = function(data){
     }, function(err){
       if (err) return err;
     });
-}
+};
 
 
 
