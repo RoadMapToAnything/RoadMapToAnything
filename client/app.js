@@ -122,18 +122,18 @@ angular.module('app', [
     url: '/roadmapCreation',
     views: {
       'content': {
-        templateUrl: 'app/roadmaps/roadmaps.creationFormMaster.html',
+        templateUrl: 'app/roadmaps/roadmaps.creation.html',
         controller: 'CreationController'
       },
       //To get nested subviews the pattern is desiredViewName@stateName
-      'roadmapCreator@roadmapCreation': {
-        templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
-        controller: 'CreationController'
-      },
-      'nodeCreator@roadmapCreation': {
-        templateUrl: 'app/roadmaps/node.creation.html',
-        controller: 'CreationController'
-      },
+      // 'roadmapCreator@roadmapCreation': {
+      //   templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
+      //   controller: 'CreationController'
+      // },
+      // 'nodeCreator@roadmapCreation': {
+      //   templateUrl: 'app/roadmaps/node.creation.html',
+      //   controller: 'CreationController'
+      // },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
         controller: 'MainController'
