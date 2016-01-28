@@ -38,7 +38,7 @@ angular.module('app.browse', [])
   $scope.addMapToEmbarked = function (mapID) {
       $http({
         method: 'PUT',
-        url: '/api/users/' + localStorage.getItem('currentUser'), 
+        url: '/api/users/' + localStorage.getItem('user.username'), 
         data: {
           'inProgress.roadmaps': mapID
          }
