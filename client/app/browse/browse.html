@@ -2,6 +2,9 @@
   <div class="browse-box">
     <a ng-click="goToDash()" class="waves-effect waves-light btn browseBtn">Go To My Maps</a>
   </div>
+  <div class='search'>
+    <label>Search: <input ng-model="searchText"></label>
+  </div>
   <div ng-show="showSigninMsg">You must be signed in first</div>
   <!--Roadmaps Table-->
   <div class="browse-table">
@@ -15,11 +18,11 @@
               <th>Add To My Maps</th>
             </tr>
           </tbody>
-          <tbody class="browse-map" ng-repeat="map in mapData">
+          <tbody class="browse-map" ng-repeat="map in mapData | filter: searchText">
             <tr>
               <td>
               {{ map.totalNodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
               <td><a ng-click="addMapToEmbarked( map._id )" class="waves-effect waves-light btn">Add!</a></td>
             </tr>
         </tbody>

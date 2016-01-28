@@ -7,6 +7,15 @@ angular.module('app', [
   'app.browse',
   'app.node.creation'
   ])
+.run( function($rootScope, $state){
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+    if( !localStorage.getItem('user.username') && toState.name !== 'signin' ){
+      event.preventDefault();
+      alert('please log in first');
+      $state.go('signin');
+    }
+  });
+})
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
   $stateProvider

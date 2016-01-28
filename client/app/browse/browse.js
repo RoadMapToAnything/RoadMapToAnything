@@ -36,12 +36,9 @@ angular.module('app.browse', [])
   }
 
   $scope.addMapToEmbarked = function (mapID) {
-    // if( !$stateParams.username ){
-    //   alert('you must be logged in to do that');
-    // } else {
       $http({
         method: 'PUT',
-        url: '/api/users/' + localStorage.getItem('currentUser'), 
+        url: '/api/users/' + localStorage.getItem('user.username'), 
         data: {
           'inProgress.roadmaps': mapID
          }
@@ -56,7 +53,11 @@ angular.module('app.browse', [])
             $scope.showSigninMsg = false;
           }, 5000)
         });
-    //}
+  }
+
+  $scope.goToMap = function (mapID){  //refactor to factory, dash also uses
+    localStorage.setItem('user.currentRoadMap', mapID);
+    $state.go('roadmapTemplate');
   }
   
   $scope.getMapData();

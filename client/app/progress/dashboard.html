@@ -16,18 +16,20 @@
               <th>Nodes</th>
               <th>Roadmap</th>
               <th>Progress Bar</th>
+              <th>Delete</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
               <td><!--{{ map.completed }} /    add when we know completed nodes-->
               {{ map.totalNodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
               <td class="progress-bar">
                 <div class="progress">
                   <div class="determinate" ng-style="{'width': map.percentComplete + '%'}"></div>
                 </div>
-              </td>  
+              </td>
+              <td><a ng-click="deleteFollowedMap( map._id )">Delete</a></td>
             </tr>
         </tbody>
         </table>
@@ -43,12 +45,16 @@
             <tr>
               <th>Nodes</th>
               <th>Roadmap</th>
+              <th>Delete</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
               <td>{{ map.totalNodes }}</td>
-              <td class="truncate">{{ map.title }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">{{ map.title }}</td>
+              <td>
+              <a ng-click="deleteMapIMade( map._id )">Delete</a>
+              </td>
             </tr>
         </tbody>
         </table>
