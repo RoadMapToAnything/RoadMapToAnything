@@ -3,7 +3,8 @@ angular.module('app.main', [])
   
   $scope.logout = function () {
     localStorage.removeItem('user.username');
-    localStorage.removeItem('currentRoadMap');
+    localStorage.removeItem('user.currentRoadMap');
+    localStorage.removeItem('user.authToken');
     console.log('logged out');
     $state.go('home');
   }
