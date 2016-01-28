@@ -5,7 +5,7 @@ angular.module('app', [
   'app.dash',
   'app.roadmaps',
   'app.browse',
-  'app.node.creation'
+  'app.creation'
   ])
 .run( function($rootScope, $state){
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -118,30 +118,30 @@ angular.module('app', [
     }
   })
   .state('roadmapCreation', {
-    
+    auth: true,
     url: '/roadmapCreation',
     views: {
       'content': {
-        templateUrl: 'app/roadmaps/roadmaps.creationFormMaster.html',
-        controller: 'NodeCreationController'
+        templateUrl: 'app/roadmaps/roadmaps.creation.html',
+        controller: 'CreationController'
       },
       //To get nested subviews the pattern is desiredViewName@stateName
-      'roadmapCreator@roadmapCreation': {
-        templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
-        controller: 'NodeCreationController'
-      },
+      // 'roadmapCreator@roadmapCreation': {
+      //   templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
+      //   controller: 'CreationController'
+      // },
+      // 'nodeCreator@roadmapCreation': {
+      //   templateUrl: 'app/roadmaps/node.creation.html',
+      //   controller: 'CreationController'
+      // },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
-        controller: 'NodeCreationController'
+        controller: 'MainController'
       },
       'footer': {
         templateUrl: 'app/main/main.footer.html',
-        controller: 'RoadMapsController'
+        controller: 'MainController'
       },
-      'nodeCreator@roadmapCreation': {
-        templateUrl: 'app/roadmaps/node.creation.html',
-        controller: 'NodeCreationController'
-      }
     }
   })
   .state('example', {
