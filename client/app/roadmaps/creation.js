@@ -1,15 +1,38 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope,$http){
+.controller('CreationController', function($scope, $http){
 
-  // This is for the roadMap Creation Form
-  $scope.nodeBuilder = false;
-  $scope.checkTruth = function(){
-    return $scope.nodeBuilder;
-  }
+  // As user will be building a brand new roadmap, the currently  
+  // active one is removed from local storage.
+  localStorage.removeItem('user.currentRoadMap');
+
+  var buildRoadmap = function() {
+    author = localStorage.getItem('user.username') || 'bowieloverx950';
+
+    return {
+      title: $scope.roadmapTitle,
+      description: $scope.roadmapDescription,
+      author: author
+    };
+  };
+
+  var postRoadmap = function(roadmap) {
+
+   return $http({
+      method: 'POST',
+      url: '/api/roadmaps',
+      data: roadmap
+    }).then(function (res) {
+      localStorage.setItem('user.currentRoadMap', res.data.data._id);
+      console.log('Roadmap created:', res.data.data);
+    }, function(err){
+      if (err) return err;
+    });
+
+  };
 
   var buildNode = function() {
-    var parent = localStorage.getItem('roadmapId') || '56a93ffb4e8f0b80594acbb5';
+    var parent = localStorage.getItem('user.currentRoadMap');
 
     return {
       title: $scope.nodeTitle,
@@ -21,7 +44,8 @@ angular.module('app.creation', [])
     };
   };
 
-  var postNode = function (node) {
+  var postNode = function(node) {
+
     return $http({
       method: 'POST',
       url: '/api/nodes',
@@ -30,34 +54,26 @@ angular.module('app.creation', [])
     .then(function (res) {
       console.log('Node created:', res.data.data);
     });
+
   };
 
   $scope.submitAndRefresh = function() {
     Materialize.updateTextFields();
-    postNode(buildNode());
+    $scope.submitNode();
   };
 
-  $scope.submitAndFinish = function() {
-    postNode(buildNode());
-  };
+  $scope.submitNode = function() {
+    if (!localStorage.getItem('user.currentRoadMap')) {
 
-  $scope.createRoadMap = function(data){
-    data.author = localStorage.getItem('currentUser') || 'testAuthor';
-    
-   return $http({
-        method: 'POST',
-        url: '/api/roadmaps',
-        data: data
-      }).then(function(response){
-        console.log(response.data.data)
-        localStorage.setItem('roadmapId', response.data.data.id)
-        $scope.nodeBuilder = true;
-        console.log($scope.nodeBuilder)
-      }, function(err){
-        if (err) return err;
+      postRoadmap(buildRoadmap())
+      .then(function (err) {
+        if (err) return console.log(err);
+        postNode(buildNode());
       });
-  }
 
-
+    } else {
+      postNode(buildNode());
+    }
+  };
 
 });
