@@ -24,7 +24,7 @@ angular.module('app', [
       url: '/',
       views: {
         'header': {
-          templateUrl: 'app/main/main.header.html',
+          templateUrl: 'app/main/main.userheader.html',
           controller: 'MainController'
         },
          'welcome': {
@@ -53,7 +53,7 @@ angular.module('app', [
           controller: 'AuthController'
         },
         'header': {
-          templateUrl: 'app/main/main.header.html',
+          templateUrl: 'app/main/main.userheader.html',
           controller: 'MainController'
         },
         'footer': {
@@ -70,7 +70,7 @@ angular.module('app', [
           controller: 'AuthController'
         },
         'header': {
-          templateUrl: 'app/main/main.registration.html',
+          templateUrl: 'app/main/main.userheader.html',
           controller: 'MainController'
         },
         'footer': {
@@ -109,7 +109,7 @@ angular.module('app', [
       },
       'header': {
         templateUrl: 'app/main/main.userheader.html',
-        controller: 'RoadMapsController'
+        controller: 'MainController'
       },
       'footer': {
         templateUrl: 'app/main/main.footer.html',

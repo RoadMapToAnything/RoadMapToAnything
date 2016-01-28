@@ -9,4 +9,12 @@ angular.module('app.main', [])
     $state.go('home');
   }
   
+  $scope.isLoggedIn = function () {
+    return !!localStorage.getItem('user.username');
+  }
+
+  $scope.getUsername = function () {
+    return localStorage.getItem('user.username');
+  }
+
 }]);
