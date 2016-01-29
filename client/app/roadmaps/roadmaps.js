@@ -113,9 +113,9 @@ angular.module('app.roadmaps', [])
 
 
   $scope.connectLines = function(){
-      console.log($('.endPointForConnection'));
-      $('.endPointForConnection').connections();
+    $('.endPointForConnection').connections();
   };
+
   // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);
@@ -124,7 +124,6 @@ angular.module('app.roadmaps', [])
   
 
 // This is for the roadMap Creation Form
-
 $scope.createRoadMap = function(data){
   data.author = localStorage.getItem('user.username') || 'testAuthor';
   
@@ -133,7 +132,6 @@ $scope.createRoadMap = function(data){
       url: '/api/roadmaps',
       data: data
     }).then(function(response){
-      console.log(response.data.data)
       localStorage.setItem('roadmap.id', response.data.data._id);
     }, function(err){
       if (err) return err;
