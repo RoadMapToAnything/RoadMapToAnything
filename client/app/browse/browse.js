@@ -60,7 +60,7 @@ angular.module('app.browse', [])
   }
 
   $scope.goToMap = function (mapID){  //refactor to factory, dash also uses
-    localStorage.setItem('user.currentRoadMap', mapID);
+    localStorage.setItem('roadmap.id', mapID);
     $state.go('roadmapTemplate');
   }
   
