@@ -1,7 +1,7 @@
 angular.module('app.common', [])
 
 .factory('API', ['$http', function($http){
-  var api = {};
+  var API = {};
 
   var encodeAuthHeader = function() {
     var user = localStorage.getItem('user.username');
@@ -34,23 +34,21 @@ angular.module('app.common', [])
    *                 USERS                 *
    * * * * * * * * * * * * * * * * * * * * */
 
-  api.getUsers = function() {
+  API.getUsers = function() {
 
     return $http.get('/api/users')
     .then(standardResponse)
     .catch(standardError);
   };
 
-  api.getUserByUsername = function(username) {
+  API.getUserByUsername = function(username) {
 
     return $http.get('/api/users/' + username)
     .then(standardResponse)
     .catch(standardError);
   };
 
-  api.getUser = api.getUserByUsername;
-
-  api.updateUser = function(user) {
+  API.updateUser = function(user) {
 
     return $http({
       method: 'PUT',
@@ -62,7 +60,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.deleteUserByUsername = function(username) {
+  API.deleteUserByUsername = function(username) {
 
     return $http({
       method: 'PUT',
@@ -73,33 +71,26 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.deleteUser = api.deleteUserByUsername;
-
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *               ROADMAPS                *
    * * * * * * * * * * * * * * * * * * * * */
 
-  api.getRoadmaps = function() {
+  API.getRoadmaps = function() {
 
     return $http.get('/api/roadmaps')
     .then(standardResponse)
     .catch(standardError);
   };
 
-  api.getMaps = api.getRoadmaps;
-
-  api.getRoadmapById = function(id) {
+  API.getRoadmapById = function(id) {
 
     return $http.get('/api/roadmaps/' + id)
     .then(standardResponse)
     .catch(standardError);
   };
 
-  api.getRoadmap = api.getRoadmapById;
-  api.getMap = api.getRoadmapById;
-
-  api.createRoadmap = function(roadmap) {
+  API.createRoadmap = function(roadmap) {
 
    return $http({
       method: 'POST',
@@ -111,9 +102,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.createMap = api.createRoadmap;
-
-  api.updateRoadmap = function(roadmap) {
+  API.updateRoadmap = function(roadmap) {
 
     return $http({
       method: 'PUT',
@@ -125,7 +114,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.deleteRoadmapById = function(id) {
+  API.deleteRoadmapById = function(id) {
 
     return $http({
       method: 'DELETE',
@@ -136,11 +125,71 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.deleteRoadmap = api.deleteRoadmapById;
-  api.deleteMap = api.deleteRoadmapById;
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *                 NODES                 *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  API.getNodeById = function(id) {
+
+    return $http.get('/api/nodes/' + id)
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  API.createNode = function(node) {
+
+   return $http({
+      method: 'POST',
+      url: '/api/nodes',
+      data: node,
+      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
+    })
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  API.updateNode = function(node) {
+
+    return $http({
+      method: 'PUT',
+      url: '/api/nodes/' + node._id || node.id,
+      data: node,
+      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
+    })
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  API.deleteNodeById = function(id) {
+
+    return $http({
+      method: 'DELETE',
+      url: '/api/nodes/' + id,
+      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
+    })
+    .then(standardResponse)
+    .catch(standardError);
+  };
 
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *               ALIASES                 *
+   * * * * * * * * * * * * * * * * * * * * */
 
-  return api;
+  API.getUser = API.getUserByUsername;
+  API.deleteUser = API.deleteUserByUsername;
+
+  API.getMaps = API.getRoadmaps;
+  API.getRoadmap = API.getRoadmapById;
+  API.getMap = API.getRoadmapById;
+  API.createMap = API.createRoadmap;
+  API.deleteRoadmap = API.deleteRoadmapById;
+  API.deleteMap = API.deleteRoadmapById;
+
+  API.getNode = API.getNodeById;
+  API.deleteNode = API.deleteNodeById; 
+
+  return API;
 
 }]);
