@@ -12,6 +12,10 @@ angular.module('app.browse', [])
     });
   };
 
+  $scope.isLoggedIn = function () {
+    return !!localStorage.getItem('user.username');
+  };
+
   $scope.getMapData = function () {
     $http({
       method: 'GET',
