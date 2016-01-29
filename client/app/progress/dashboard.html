@@ -68,5 +68,32 @@
       </div>
     </div>
 
+    <!--Maps I Completed-->
+    <div class="dash-table" ng-hide="hideMyMaps">
+      <div class="made-title"><h5>Maps I Made</h5></div>
+      <div class="made-maps">
+        <table class="bordered striped highlight">
+          <tbody>
+            <tr>
+              <th>Nodes</th>
+              <th>Roadmap</th>
+              <th>Delete</th>
+            </tr>
+          </tbody>
+          <tbody class="follow-map" ng-repeat="map in completedMaps">
+            <tr>
+              <td>{{ map.totalNodes }}</td>
+              <td class="truncate" ng-click="goToMap( map._id )">
+                <span class="mousetoHand">{{ map.title }}</span>
+              </td>
+              <td>
+                <a ng-click="deleteMapIMade( map._id )"><span class="mousetoHand">Delete</span></a>
+              </td>
+            </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>

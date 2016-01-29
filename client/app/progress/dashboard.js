@@ -30,44 +30,32 @@ angular.module('app.dash', [])
       angular.element( '#followedBtn' ).addClass( 'pressed' );
   };
 
-  $scope.addTotalNodesOfFollowedMaps = function (arr){
+  $scope.addTotalNodesOfMaps = function (arr){
     arr.forEach(function(map){
       map.totalNodes = map.nodes.length;
     });
   };
 
-  $scope.addTotalNodesOfMyMaps = function (arr){
-    arr.forEach(function(map){
-      map.totalNodes = map.nodes.length;
-    });
-  };
-
-  $scope.getMyMaps = function (){
-      console.log('calling getMyMaps');
-  //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('/api/users/' + localStorage.getItem('user.username') )
-          .then(function(response){
-                console.log('myMaps response.data', response.data);
-                $scope.myMaps = response.data.data.authoredRoadmaps || [];
-                $scope.addTotalNodesOfMyMaps($scope.myMaps);
-            }, function(err){
-              console.log("error with MyMaps request", err);
-            });
-    };
-
-  $scope.getFollowedMaps = function (){
-    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
+  $scope.getDashData = function(){
     $http.get('/api/users/' + localStorage.getItem('user.username') )
-      .then(function(response){
-          console.log('Got followed maps', response.data);
-          $scope.followed = response.data.data.inProgress.roadmaps || [];
-          $scope.addTotalNodesOfFollowedMaps($scope.followed);
-          $scope.addCompletedNodes(response.data.data.inProgress);
-        }, function(err){
-          console.log('Failed to get followed maps', err);
-        });
-    };
+    .then( 
+      // on success
+      function( response ) {
+        $scope.myMaps = response.data.data.authoredRoadmaps || [];
+        $scope.followed = response.data.data.inProgress.roadmaps || [];
+        $scope.completed = response.data.data.completedRoadmaps || [];
 
+        $scope.addTotalNodesOfMaps($scope.myMaps);
+        $scope.addTotalNodesOfMaps($scope.followed);
+        $scope.addTotalNodesOfMaps($scope.completed);
+
+        $scope.addCompletedNodes(response.data.data.inProgress)
+    }, // on failure
+      function( response ){
+        console.log("error with dashData request", err);
+      }
+    );
+  }
 
   $scope.addCompletedNodes = function(inProgressObj){
     $scope.followed.forEach(function(map){
@@ -93,9 +81,7 @@ angular.module('app.dash', [])
         });
       }
     });
-
     //check those node IDs against the inProgess node IDs
-      //iterate count when there's a match
     followedData.nodes.forEach(function(node){
       if(roadmapNodeIDs.indexOf(node._id) !== -1){
         count++;
@@ -105,15 +91,8 @@ angular.module('app.dash', [])
     return count;
   };
 
-  $scope.getDashboardData = function(){
-    angular.element(document).ready( function(){
-        $scope.getMyMaps();
-        $scope.getFollowedMaps();
-      });
-  };
-
   $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
-    localStorage.setItem('roadmap.id', mapID);
+    localStorage.setItem('user.currentRoadMap', mapID);
     $state.go('roadmapTemplate');
   };
   
@@ -163,8 +142,8 @@ angular.module('app.dash', [])
         })
   };
 
-  //make ajax calls to get table data
-  $scope.getDashboardData();
+// make ajax calls to get table data
+  $scope.getDashData();
 
 }]);
 
