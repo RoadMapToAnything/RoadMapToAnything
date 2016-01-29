@@ -7,14 +7,14 @@ angular.module('app.main', [])
     localStorage.removeItem('user.authToken');
     console.log('logged out');
     $state.go('home');
-  }
+  };
   
   $scope.isLoggedIn = function () {
     return !!localStorage.getItem('user.username');
-  }
+  };
 
   $scope.getUsername = function () {
     return localStorage.getItem('user.username');
-  }
+  };
 
 }]);
