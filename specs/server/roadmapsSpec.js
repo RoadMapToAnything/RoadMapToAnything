@@ -21,7 +21,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   var username = 'supercoder31337';
   var password = 'a';
 
-  var authToken;
+  var encodedAuthHeader;
 
   var testMap = { 
     title      : 'TestMap',
@@ -36,7 +36,8 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       .get('/api/login?username='+username+'&password='+password)
       .end(function(err, serverResponse){
         if (err) throw err;
-        authToken = serverResponse.body.data.authToken;
+        var authToken = serverResponse.body.data.authToken;
+        encodedAuthHeader = new Buffer(username+':'+authToken, 'ascii').toString('base64');
         done();
       });
 
@@ -49,19 +50,40 @@ describe('Roadmap Routes - /api/roadmaps', function() {
 
   describe('POST /api/roadmaps', function(){
 
-    after('Remove test Roadmap', function(done) {
+    afterEach('Remove test Roadmap', function(done) {
       Roadmap.findOneAndRemove({title: 'TestMap'})
         .then(function(){ done(); })
         .catch(function(err){ throw err; });
     });
 
+    it('Should respond with 401 when no Authorization header provided', function(done){
+      request(server.app)
+        .post('/api/roadmaps')
+        .send(testMap)
+        .expect(401)
+        .end(done);
+    });
+
     it('Should respond with 201 when creating a new Roadmap', function(done){
       request(server.app)
         .post('/api/roadmaps')
+        .set('Authorization', 'Basic ' + encodedAuthHeader)
         .send(testMap)
         .expect(201)
         .end(done);
     });
+
+    it('Should not use author provided in the POST request (should use name in Authorization header)', function(done){
+      request(server.app)
+        .post('/api/roadmaps')
+        .set('Authorization', 'Basic ' + encodedAuthHeader)
+        .send(testMap)
+        .end(function(err, res){
+          expect(res.body.data.author).to.not.equal('56a04c964c984dbc4f2544d7');
+          done();
+        });
+    });
+
   });
 
 
@@ -81,7 +103,6 @@ describe('Roadmap Routes - /api/roadmaps', function() {
           done();
         });
     });
-
 
     it('Should respond with an array', function(){
       expect(result).to.be.an('array');
@@ -219,9 +240,15 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         .catch(function(err){ throw err; })
     });
 
+    it('Should respond with 401 when no Authorization header is provided', function(done){
+
+      request(server.app)
+        .delete('/api/roadmaps/'+testMapID)
+        .expect(401)
+        .end(done);
+    });
+
     it('Should delete the Roadmap specified by ID', function(done){
-     
-      var encodedAuthHeader = new Buffer(username+':'+authToken, 'ascii').toString('base64');
 
       request(server.app)
         .delete('/api/roadmaps/'+testMapID)
@@ -236,6 +263,9 @@ describe('Roadmap Routes - /api/roadmaps', function() {
             });
         });
     });
+
+
+
   });
 
 

@@ -17,11 +17,17 @@ angular.module('app.creation', [])
   };
 
   var postRoadmap = function(roadmap) {
+    var user = localStorage.getItem('user.username');
+    var token = localStorage.getItem('user.authToken');
+    var encodedAuthHeader = btoa(user + ':' + token);
 
    return $http({
       method: 'POST',
       url: '/api/roadmaps',
-      data: roadmap
+      data: roadmap,
+      headers: {
+        'Authorization': 'Basic ' + encodedAuthHeader
+      }
     }).then(function (res) {
       localStorage.setItem('user.currentRoadMap', res.data.data._id);
       console.log('Roadmap created:', res.data.data);

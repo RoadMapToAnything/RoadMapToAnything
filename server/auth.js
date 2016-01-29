@@ -22,7 +22,6 @@ var findInDB = function (user, res, next) {
 module.exports = {
   authenticate : function(req, res, next) {
     var user = getAuthHeader(req); // Parse information in Authorization header
-    console.log('user', user);
     if (user === undefined) {
       res.setHeader('WWW-Authenticate', 'Basic');
       res.status(401).end('Unauthorized');
