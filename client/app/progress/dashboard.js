@@ -1,33 +1,41 @@
 angular.module('app.dash', [])
 
 .controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
-
-  $scope.username = '';
-
-  $scope.followedMapsResponseBody = {};
-
-  $scope.myMapsResponseBody = {};
-
-  $scope.hideMyMaps = true;
-
   $scope.followed = [];
-
   $scope.myMaps = [];
+  $scope.completed = [];
 
-  $scope.followedTotalNodes = 0;
+  $scope.showFollowed = true;
+  $scope.showMyMaps = false;
+  $scope.showCompleted = false;
 
-  // helper functions
+  //helper functions
 
-  $scope.showMyMaps = function(){
-      $scope.hideMyMaps = false;
-      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
-      angular.element( '#followedBtn' ).removeClass( 'pressed' );
-  };
-
-  $scope.showFollowed = function(){
-      $scope.hideMyMaps = true;
+  $scope.changeToFollowed = function(){
+      $scope.showFollowed = true;
+      $scope.showMyMaps = false;
+      $scope.showCompleted = false;
       angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
       angular.element( '#followedBtn' ).addClass( 'pressed' );
+      angular.element( '#completedBtn' ).removeClass( 'pressed' );
+  };
+
+  $scope.changeToMyMaps = function(){
+      $scope.showFollowed = false;
+      $scope.showMyMaps = true;
+      $scope.showCompleted = false;
+      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
+      angular.element( '#completedBtn' ).removeClass( 'pressed' );
+  };
+
+  $scope.changeToCompleted = function(){
+      $scope.showFollowed = false;
+      $scope.showMyMaps = false;
+      $scope.showCompleted = true;
+      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
+      angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
   $scope.addTotalNodesOfMaps = function (arr){
@@ -55,7 +63,7 @@ angular.module('app.dash', [])
         console.log("error with dashData request", err);
       }
     );
-  }
+  };
 
   $scope.addCompletedNodes = function(inProgressObj){
     $scope.followed.forEach(function(map){
@@ -114,8 +122,10 @@ angular.module('app.dash', [])
           console.log('Roadmap deleted:', mapID);
           $scope.getMyMaps();
         },
-        function(err){
-          console.log('Failed to delete roadmap', err);
+        function(response){
+          console.log('failed to delete');
+          console.log('status', response.status);
+          console.log('response', response);
         });
   };
 
@@ -138,8 +148,10 @@ angular.module('app.dash', [])
           $scope.getFollowedMaps();
         },
         function(response){
-          console.log('Failed to delete roadmap', err);
-        })
+          console.log('failed to delete');
+          console.log('status', response.status);
+          console.log('response', response);
+        });
   };
 
 // make ajax calls to get table data

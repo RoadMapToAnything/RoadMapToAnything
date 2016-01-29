@@ -1,13 +1,14 @@
 <div class="container">
   <div class="dash-buttons">
-    <a id="followedBtn" class="btn pressed" ng-click="showFollowed()">Maps I Follow</a>
-    <a id="myMapsBtn" class="btn" ng-click="showMyMaps()">Maps I Made</a>
+    <a id="followedBtn" class="btn pressed" ng-click="changeToFollowed()">Maps I Follow</a>
+    <a id="myMapsBtn" class="btn" ng-click="changeToMyMaps()">Maps I Made</a>
+   <a id="myMapsBtn" class="btn" ng-click="changeToCompleted()">Maps I Completed</a>
   </div>
 
   <div class="dash-tables">
 
     <!--Maps I Follow-->
-    <div class="dash-table" ng-show="hideMyMaps">
+    <div class="dash-table" ng-show="showFollowed">
       <div class="follow-title"><h5>Maps I Follow</h5></div>
       <div class="follow-maps">
         <table class="bordered striped highlight0+56+">
@@ -42,7 +43,7 @@
     </div>
 
     <!--Maps I Made-->
-    <div class="dash-table" ng-hide="hideMyMaps">
+    <div class="dash-table" ng-show="showMyMaps">
       <div class="made-title"><h5>Maps I Made</h5></div>
       <div class="made-maps">
         <table class="bordered striped highlight">
@@ -68,9 +69,9 @@
       </div>
     </div>
 
-    <!--Maps I Completed-->
-    <div class="dash-table" ng-hide="hideMyMaps">
-      <div class="made-title"><h5>Maps I Made</h5></div>
+        <!--Maps I Completed-->
+    <div class="dash-table" ng-show="showCompleted">
+      <div class="made-title"><h5>Maps I Completed</h5></div>
       <div class="made-maps">
         <table class="bordered striped highlight">
           <tbody>
@@ -80,7 +81,7 @@
               <th>Delete</th>
             </tr>
           </tbody>
-          <tbody class="follow-map" ng-repeat="map in completedMaps">
+          <tbody class="follow-map" ng-repeat="map in completed">
             <tr>
               <td>{{ map.totalNodes }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">
