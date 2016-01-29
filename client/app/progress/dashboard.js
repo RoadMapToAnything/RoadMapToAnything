@@ -52,7 +52,7 @@ angular.module('app.dash', [])
         $scope.myMaps = response.data.data.authoredRoadmaps || [];
         $scope.followed = response.data.data.inProgress.roadmaps || [];
         $scope.completed = response.data.data.completedRoadmaps || [];
-
+        console.log($scope.followed);
         $scope.addTotalNodesOfMaps($scope.myMaps);
         $scope.addTotalNodesOfMaps($scope.followed);
         $scope.addTotalNodesOfMaps($scope.completed);
@@ -71,18 +71,14 @@ angular.module('app.dash', [])
       map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
     });
 
-    $scope.myMaps.forEach(function(map){
-      map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
-      map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
-    });
   };
 
-  $scope.calcCompletedNodes = function(followedData, mapID){
+  $scope.calcCompletedNodes = function(inProgressObj, mapID){
     var count = 0;
     var roadmapNodeIDs = [];
 
     //iterate through the map's nodes and get array of IDs
-    followedData.roadmaps.forEach(function(map){
+    inProgressObj.roadmaps.forEach(function(map){
       if(map._id === mapID){
         map.nodes.forEach(function(node){
           roadmapNodeIDs.push(node._id);
@@ -90,7 +86,7 @@ angular.module('app.dash', [])
       }
     });
     //check those node IDs against the inProgess node IDs
-    followedData.nodes.forEach(function(node){
+    inProgressObj.nodes.forEach(function(node){
       if(roadmapNodeIDs.indexOf(node._id) !== -1){
         count++;
       }
