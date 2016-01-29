@@ -1,6 +1,6 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http){
+.controller('CreationController', function($scope, $http, $state){
 
   // As user will be building a brand new roadmap, the currently  
   // active one is removed from local storage.
@@ -51,8 +51,18 @@ angular.module('app.creation', [])
   };
 
   $scope.submitAndRefresh = function() {
-    Materialize.updateTextFields();
-    $scope.submitNode();
+    $scope.submitNode()
+    .then(function() {
+      Materialize.updateTextFields();
+    })
+    
+  };
+
+  $scope.submitAndExit = function() {
+    $scope.submitNode()
+    .then(function() {
+      $state.go('roadmapTemplate');
+    });
     
   };
 
@@ -62,11 +72,11 @@ angular.module('app.creation', [])
       postRoadmap(buildRoadmap())
       .then(function (err) {
         if (err) return console.log(err);
-        postNode(buildNode());
+        return postNode(buildNode());
       });
 
     } else {
-      postNode(buildNode());
+      return postNode(buildNode());
     }
   };
 
