@@ -1,6 +1,10 @@
 /*h5 {
   text-align: absolute;
 }*/
+a:hover {
+  cursor: pointer;
+}
+
 .tabs {
   overflow-x: hidden;
 }
