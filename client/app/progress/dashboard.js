@@ -31,46 +31,40 @@ angular.module('app.dash', [])
   };
 
   $scope.addTotalNodesOfFollowedMaps = function (arr){
-    console.log('followed arr', Array.isArray(arr));
     arr.forEach(function(map){
-      console.log('followed totalNodes', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
   };
 
   $scope.addTotalNodesOfMyMaps = function (arr){
-    console.log('myMaps arr', Array.isArray(arr));
     arr.forEach(function(map){
-      console.log('totalNodes for myMaps', map.nodes.length);
       map.totalNodes = map.nodes.length;
     });
   };
 
   $scope.getMyMaps = function (){
-      console.log('calling getMyMaps');
-  //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('/api/users/' + localStorage.getItem('user.username') )
-          .then(function(response){
-              console.log('myMaps response.data', response.data);
-              $scope.myMaps = response.data.data.authoredRoadmaps || [];
-              $scope.addTotalNodesOfMyMaps($scope.myMaps);
-            }, function(err){
-              console.log("error with MyMaps request", err);
-            });
+    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
+    $http.get('/api/users/' + localStorage.getItem('user.username') )
+      .then(function(response){
+          console.log('Got author maps:', response.data);
+          $scope.myMaps = response.data.data.authoredRoadmaps || [];
+          $scope.addTotalNodesOfMyMaps($scope.myMaps);
+        }, function(err){
+          console.log('Failed to get authored roadmaps:', err);
+        });
     };
 
   $scope.getFollowedMaps = function (){
-      console.log('calling getFollowedMaps');
-  //    $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-        $http.get('/api/users/' + localStorage.getItem('user.username') )
-          .then(function(response){
-              console.log('followed response.data', response.data);
-              $scope.followed = response.data.data.inProgress.roadmaps || [];
-              $scope.addTotalNodesOfFollowedMaps($scope.followed);
-              $scope.addCompletedNodes(response.data.data.inProgress)
-            }, function(err){
-              console.log('error with followedMaps request', err);
-            });
+    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
+    $http.get('/api/users/' + localStorage.getItem('user.username') )
+      .then(function(response){
+          console.log('Got followed maps', response.data);
+          $scope.followed = response.data.data.inProgress.roadmaps || [];
+          $scope.addTotalNodesOfFollowedMaps($scope.followed);
+          $scope.addCompletedNodes(response.data.data.inProgress);
+        }, function(err){
+          console.log('Failed to get followed maps', err);
+        });
     };
 
 
@@ -89,8 +83,7 @@ angular.module('app.dash', [])
   $scope.calcCompletedNodes = function(followedData, mapID){
     var count = 0;
     var roadmapNodeIDs = [];
-    console.log('followedData', followedData);
-    console.log('mapID');
+
     //iterate through the map's nodes and get array of IDs
     followedData.roadmaps.forEach(function(map){
       if(map._id === mapID){
@@ -119,16 +112,15 @@ angular.module('app.dash', [])
   };
 
   $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
-    console.log('go to map', mapID);
-    localStorage.setItem('user.currentRoadMap', mapID);
+    localStorage.setItem('roadmap.id', mapID);
     $state.go('roadmapTemplate');
-  }
+  };
   
   $scope.deleteMapIMade = function(mapID){
     var user = localStorage.getItem('user.username');
     var token = localStorage.getItem('user.authToken');
-    console.log('token', token);
     var encodedAuthHeader = btoa(user + ':' + token);
+
     $http({
       method: 'DELETE',
       url: '/api/roadmaps/' + mapID,
@@ -139,21 +131,19 @@ angular.module('app.dash', [])
       .then(
         //success
         function(response){
-          console.log('deleted');
+          console.log('Roadmap deleted:', mapID);
           $scope.getMyMaps();
         },
-        function(response){
-          console.log('failed to delete');
-          console.log('status', response.status);
-          console.log('response', response);
-        })
-  }
+        function(err){
+          console.log('Failed to delete roadmap', err);
+        });
+  };
 
   $scope.deleteFollowedMap = function(mapID){
     var user = localStorage.getItem('user.username');
     var token = localStorage.getItem('user.authToken');
-    console.log('token', token);
     var encodedAuthHeader = btoa(user + ':' + token);
+
     $http({
       method: 'DELETE',
       url: '/api/roadmaps/' + mapID,
@@ -164,16 +154,15 @@ angular.module('app.dash', [])
       .then(
         //success
         function(response){
-          console.log('deleted');
+          console.log('Roadmap deleted:', mapID);
           $scope.getFollowedMaps();
         },
         function(response){
-          console.log('failed to delete');
-          console.log('status', response.status);
-          console.log('response', response);
+          console.log('Failed to delete roadmap', err);
         })
-  }
-//make ajax calls to get table data
+  };
+
+  //make ajax calls to get table data
   $scope.getDashboardData();
 
 }]);

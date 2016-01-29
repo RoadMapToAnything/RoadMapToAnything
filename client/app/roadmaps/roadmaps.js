@@ -2,7 +2,7 @@ angular.module('app.roadmaps', [])
 // Roadmaps have a title, description, author, nodes array, all nodes: , created time
   //
 .controller('RoadMapsController', function($scope,$http){
-  var roadmapId = localStorage.getItem('user.currentRoadMap') || '000000000000000000000010';
+  var roadmapId = localStorage.getItem('roadmap.id') || '000000000000000000000010';
   
 
 
@@ -83,7 +83,7 @@ angular.module('app.roadmaps', [])
 
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
-    var username = localStorage.getItem('username') || 'bowieloverx950';
+    var username = localStorage.getItem('user.username') || 'bowieloverx950';
     var nodeId = $scope.currentNode._id;
 
     $http({
@@ -99,7 +99,7 @@ angular.module('app.roadmaps', [])
 
   // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
-    var username = localStorage.getItem('username') || 'bowieloverx950';
+    var username = localStorage.getItem('user.username') || 'bowieloverx950';
 
     $http({
       method: 'PUT',
@@ -113,9 +113,9 @@ angular.module('app.roadmaps', [])
 
 
   $scope.connectLines = function(){
-      console.log($('.endPointForConnection'));
-      $('.endPointForConnection').connections();
+    $('.endPointForConnection').connections();
   };
+
   // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);
@@ -124,17 +124,15 @@ angular.module('app.roadmaps', [])
   
 
 // This is for the roadMap Creation Form
-
 $scope.createRoadMap = function(data){
-  data.author = localStorage.getItem('currentUser') || 'testAuthor';
+  data.author = localStorage.getItem('user.username') || 'testAuthor';
   
  return $http({
       method: 'POST',
       url: '/api/roadmaps',
       data: data
     }).then(function(response){
-      console.log(response.data.data)
-      localStorage.setItem('roadmapId', response.data.data.id)
+      localStorage.setItem('roadmap.id', response.data.data._id);
     }, function(err){
       if (err) return err;
     });

@@ -11,7 +11,7 @@
       <div class="col s12">
         <div class="card-panel hoverable teal lighten-5">
           <span class="gray-text"><b><h4>Links</h4></b>
-            <li ng-repeat="link in currentLinks">{{link}}</li>  
+            <a ng-repeat="link in currentLinks" href="{{link}}">{{link}}</a>  
           </span>
           <br>
           <div class="divider">

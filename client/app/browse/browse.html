@@ -1,6 +1,6 @@
 <div class="container">
   <div class="browse-box">
-    <a ng-click="goToDash()" class="waves-effect waves-light btn browseBtn">Go To My Maps</a>
+    <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn browseBtn">Go To My Maps</a>
   </div>
   <div class='search'>
     <label>Search: <input ng-model="searchText"></label>

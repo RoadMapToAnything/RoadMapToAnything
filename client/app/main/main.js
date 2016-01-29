@@ -2,19 +2,20 @@ angular.module('app.main', [])
 .controller('MainController', [ '$scope', '$state', function($scope, $state){
   
   $scope.logout = function () {
+    var username = localStorage.getItem('user.username');
     localStorage.removeItem('user.username');
-    localStorage.removeItem('user.currentRoadMap');
+    localStorage.removeItem('roadmap.id');
     localStorage.removeItem('user.authToken');
-    console.log('logged out');
+    console.log(username, 'successfully logged out.');
     $state.go('home');
-  }
+  };
   
   $scope.isLoggedIn = function () {
     return !!localStorage.getItem('user.username');
-  }
+  };
 
   $scope.getUsername = function () {
     return localStorage.getItem('user.username');
-  }
+  };
 
 }]);

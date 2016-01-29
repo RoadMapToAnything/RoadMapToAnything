@@ -12,6 +12,10 @@ angular.module('app.browse', [])
     });
   };
 
+  $scope.isLoggedIn = function () {
+    return !!localStorage.getItem('user.username');
+  };
+
   $scope.getMapData = function () {
     $http({
       method: 'GET',
@@ -20,13 +24,13 @@ angular.module('app.browse', [])
       .then(
         //success callback
         function(response){
-          console.log('getMaps response.data', response.data);
+          console.log('Got sorted roadmaps:', response.data);
           $scope.mapData = response.data.data || [];
           $scope.addTotalNodesOfMaps($scope.mapData);
         },
         //failure callback
         function(err){
-          console.log('error with getMapData request', err);
+          console.log('Failed to get roadmaps:', err);
         }
       );
   };
@@ -43,9 +47,8 @@ angular.module('app.browse', [])
           'inProgress.roadmaps': mapID
          }
       })
-        .then(function(response){
-          console.log('status', response.status);
-          console.log('response.body', response.body);
+        .then(function (res){
+          console.log('Roadmap added to embarked:', res.data.data.inProgress.roadmaps);
         }, 
         function(response){
           $scope.showSigninMsg = true;
@@ -56,7 +59,7 @@ angular.module('app.browse', [])
   }
 
   $scope.goToMap = function (mapID){  //refactor to factory, dash also uses
-    localStorage.setItem('user.currentRoadMap', mapID);
+    localStorage.setItem('roadmap.id', mapID);
     $state.go('roadmapTemplate');
   }
   

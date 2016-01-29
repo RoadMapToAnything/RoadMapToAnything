@@ -1,6 +1,40 @@
-/*h5 {
-  text-align: absolute;
-}*/
+/****** LINKS ******/
+a:hover {
+  cursor: pointer;
+}
+
+
+/****** FOOTER ******/
+.ng-scope footer.page-footer {
+  padding-top: 0;
+}
+
+.page-footer h5 {
+  margin: 0;
+}
+
+footer.page-footer .footer-brand {
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
+}
+
+.page-footer .row {
+  margin: 0;
+}
+
+footer.page-footer div.footer-copyright {
+  height: 20px;
+  line-height: 20px;
+}
+/****** END FOOTER ******/
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> f6870752c25db0c4f8289345e7f9f855422db5ba
 .tabs {
   overflow-x: hidden;
 }
@@ -39,4 +73,7 @@
   margin-top: 30px;
 }
 
-/*roadmap*/
+/****** ROADMAPS ******/
+.card-panel {
+  word-wrap: break-word;
+}

@@ -1,10 +1,10 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http){
+.controller('CreationController', function($scope, $http, $state){
 
   // As user will be building a brand new roadmap, the currently  
   // active one is removed from local storage.
-  localStorage.removeItem('user.currentRoadMap');
+  localStorage.removeItem('roadmap.id');
 
   var buildRoadmap = function() {
     author = localStorage.getItem('user.username') || 'bowieloverx950';
@@ -29,7 +29,7 @@ angular.module('app.creation', [])
         'Authorization': 'Basic ' + encodedAuthHeader
       }
     }).then(function (res) {
-      localStorage.setItem('user.currentRoadMap', res.data.data._id);
+      localStorage.setItem('roadmap.id', res.data.data._id);
       console.log('Roadmap created:', res.data.data);
     }, function(err){
       if (err) return err;
@@ -38,7 +38,7 @@ angular.module('app.creation', [])
   };
 
   var buildNode = function() {
-    var parent = localStorage.getItem('user.currentRoadMap');
+    var parent = localStorage.getItem('roadmap.id');
 
     return {
       title: $scope.nodeTitle,
@@ -52,11 +52,7 @@ angular.module('app.creation', [])
 
   var postNode = function(node) {
 
-    return $http({
-      method: 'POST',
-      url: '/api/nodes',
-      data: node
-    })
+    return $http.post('/api/nodes', node)
     .then(function (res) {
       console.log('Node created:', res.data.data);
     });
@@ -64,21 +60,32 @@ angular.module('app.creation', [])
   };
 
   $scope.submitAndRefresh = function() {
-    Materialize.updateTextFields();
-    $scope.submitNode();
+    $scope.submitNode()
+    .then(function() {
+      Materialize.updateTextFields();
+    })
+    
+  };
+
+  $scope.submitAndExit = function() {
+    $scope.submitNode()
+    .then(function() {
+      $state.go('roadmapTemplate');
+    });
+    
   };
 
   $scope.submitNode = function() {
-    if (!localStorage.getItem('user.currentRoadMap')) {
+    if (!localStorage.getItem('roadmap.id')) {
 
       postRoadmap(buildRoadmap())
       .then(function (err) {
         if (err) return console.log(err);
-        postNode(buildNode());
+        return postNode(buildNode());
       });
 
     } else {
-      postNode(buildNode());
+      return postNode(buildNode());
     }
   };
 
