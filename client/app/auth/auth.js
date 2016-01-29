@@ -47,7 +47,7 @@ angular.module('app.auth', [])
       //success callback
       function(res){
         console.log('signup success');
-        localStorage.setItem('currentUser', $scope.attemptedUsername);
+        localStorage.setItem('user.username', $scope.attemptedUsername);
         $state.go('dashboard');
       },
       //error callback
