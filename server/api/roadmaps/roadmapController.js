@@ -5,7 +5,7 @@ var Roadmap = require('./roadmapModel.js'),
     handleQuery = require('../queryHandler.js');
 
 var findId = function (req, res, next) {
-  User.findOne(req.body.author)
+  User.findOne({username: req.body.author})
     .then(function (user) {
       req.body.author = user._id;
       resolveCreation(req, res, next);
@@ -15,6 +15,7 @@ var findId = function (req, res, next) {
 
 var resolveCreation = function (req, res, next) {
   var newRoadmap = req.body;
+
   Roadmap(newRoadmap).save()
     .then(function(dbResults){
       res.status(201).json({data: dbResults});
