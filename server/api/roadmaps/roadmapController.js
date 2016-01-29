@@ -2,35 +2,25 @@ var Roadmap = require('./roadmapModel.js'),
     User = require('../users/userModel.js'),
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
-    handleQuery = require('../queryHandler.js');
+    handleQuery = require('../queryHandler.js'),
+    getAuthHeader = require('basic-auth');
 
-var findId = function (req, res, next) {
-  User.findOne(req.body.author)
-    .then(function (user) {
-      req.body.author = user._id;
-      resolveCreation(req, res, next);
-    })
-    .catch(handleError(next));
-};
-
-var resolveCreation = function (req, res, next) {
-  var newRoadmap = req.body;
-  Roadmap(newRoadmap).save()
-    .then(function(dbResults){
-      res.status(201).json({data: dbResults});
-    })
-    .catch(handleError(next));
-};
 
 module.exports = {
 
   createRoadmap : function (req, res, next) {
-    var author = req.body.author.toString();
+    var author = getAuthHeader(req).name;
+    var newRoadmap = req.body;
 
-    if (author.length !== 24 || new ObjectId(author) !== author)
-      findId(req, res, next);
-    else
-      resolveCreation(req, res, next);
+    User.findOne({username: author})
+      .then(function (user) {
+        newRoadmap.author = user._id;
+        return Roadmap(newRoadmap).save();
+      })
+      .then(function(dbResults){
+        res.status(201).json({data: dbResults});
+      })
+      .catch(handleError(next));
   },
 
   getRoadmaps : function (req, res, next) {
