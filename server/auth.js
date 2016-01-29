@@ -26,6 +26,7 @@ module.exports = {
       res.setHeader('WWW-Authenticate', 'Basic');
       res.status(401).end('Unauthorized');
     } else {
+      console.log('Looking for', user, 'in DB');
       findInDB(user, res, next);
     }
   }

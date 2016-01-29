@@ -1,6 +1,6 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http, $state){
+.controller('CreationController', function($scope, $http, $state, API){
 
   // As user will be building a brand new roadmap, the currently  
   // active one is removed from local storage.
@@ -11,30 +11,15 @@ angular.module('app.creation', [])
 
     return {
       title: $scope.roadmapTitle,
-      description: $scope.roadmapDescription,
-      author: author
+      description: $scope.roadmapDescription
     };
   };
 
   var postRoadmap = function(roadmap) {
-    var user = localStorage.getItem('user.username');
-    var token = localStorage.getItem('user.authToken');
-    var encodedAuthHeader = btoa(user + ':' + token);
-
-   return $http({
-      method: 'POST',
-      url: '/api/roadmaps',
-      data: roadmap,
-      headers: {
-        'Authorization': 'Basic ' + encodedAuthHeader
-      }
-    }).then(function (res) {
-      localStorage.setItem('roadmap.id', res.data.data._id);
-      console.log('Roadmap created:', res.data.data);
-    }, function(err){
-      if (err) return err;
+    return API.saveRoadmap(roadmap)
+    .then(function (roadmap) {
+      localStorage.setItem('roadmap.id', roadmap._id);
     });
-
   };
 
   var buildNode = function() {
