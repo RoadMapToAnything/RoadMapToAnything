@@ -69,4 +69,7 @@ footer.page-footer div.footer-copyright {
   margin-top: 30px;
 }
 
-/*roadmap*/
+/****** ROADMAPS ******/
+.card-panel {
+  word-wrap: break-word;
+}
