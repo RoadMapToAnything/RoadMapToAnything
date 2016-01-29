@@ -23,11 +23,15 @@ angular.module('app', [
     .state('home', {
       url: '/',
       views: {
+        'content': {
+          templateUrl: 'app/main/main.html',
+          controller: 'MainController'
+        },
         'header': {
           templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
-         'welcome': {
+         'welcome@home': {
           templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
@@ -35,7 +39,7 @@ angular.module('app', [
           templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
-        'browse': {
+        'browse@home': {
           templateUrl: 'app/browse/browse.html',
           controller: 'BrowseController',
         },
@@ -46,82 +50,52 @@ angular.module('app', [
       }
     })
     //state for sign-in
-    .state('signin', {
+    .state('home.signin', {
+      url: 'signin',
       views: {
-        'content': {
+        'content@': {
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
-        },
-        'header': {
-          templateUrl: 'app/main/header.html',
-          controller: 'MainController'
-        },
-        'footer': {
-          templateUrl: 'app/main/footer.html',
-          controller: 'MainController'
         }
       }
     })
     //state for sign-up
-    .state('signup', {
+    .state('home.signup', {
+      url: 'signup',
       views: {
-        'content': {
+        'content@': {
           templateUrl: 'app/auth/signup.html',
           controller: 'AuthController'
-        },
-        'header': {
-          templateUrl: 'app/main/header.html',
-          controller: 'MainController'
-        },
-        'footer': {
-          templateUrl: 'app/main/footer.html',
-          controller: 'MainController'
         }
       }
     })
     //state for dashboard
-    .state('dashboard', {
+    .state('home.dashboard', {
       auth: true,
-      url: '/dashboard',
+      url: 'dashboard',
       views: {
-        'content': {
+        'content@': {
           templateUrl: 'app/dashboard/dashboard.html',
           controller: 'DashboardController'
-        },
-        'header': {
-          templateUrl: 'app/main/header.html',
-          controller: 'MainController'
-        },
-        'footer': {
-          templateUrl: 'app/main/footer.html',
-          controller: 'MainController'
-          }
         }
+      }
     })
   //state for roadmap
-  .state('roadmapTemplate', {
+  .state('home.roadmapTemplate', {
     auth: true,
     url: '/roadmaps',
     views: {
-      'content': {
+      'content@': {
         templateUrl: 'app/roadmaps/content.html',
-        controller: 'RoadMapsController'
-      },
-      'header': {
-        templateUrl: 'app/main/header.html',
-        controller: 'MainController'
-      },
-      'footer': {
-        templateUrl: 'app/main/footer.html',
         controller: 'RoadMapsController'
       }
     }
   })
-  .state('roadmapCreation', {
+  .state('home.roadmapCreation', {
     auth: true,
-    url: '/roadmapCreation',
+    url: 'roadmapCreation',
     views: {
-      'content': {
+      'content@': {
         templateUrl: 'app/roadmaps/creation.html',
         controller: 'CreationController'
       },
@@ -134,47 +108,14 @@ angular.module('app', [
       //   templateUrl: 'app/roadmaps/node.creation.html',
       //   controller: 'CreationController'
       // },
-      'header': {
-        templateUrl: 'app/main/header.html',
-        controller: 'MainController'
-      },
-      'footer': {
-        templateUrl: 'app/main/footer.html',
-        controller: 'MainController'
-      },
     }
   })
-  .state('example', {
-    url: '/example',
+  .state('home.browse', { //maybe rename as explore?
+    url: 'browse',
     views: {
-      'signup': {
-        templateUrl: 'app/auth/signup.html',
-        controller: 'AuthController' 
-      },
-      'header': {
-        templateUrl: 'app/main/header.html',
-        controller: 'RoadMapsController'
-      },
-      'footer': {
-        templateUrl: 'app/main/footer.html',
-        controller: 'RoadMapsController'
-      }
-    }
-  })
-  .state('browse', { //maybe rename as explore?
-    url: '/browse',
-    views: {
-      'content': {
+      'content@': {
         templateUrl: 'app/browse/browse.html',
         controller: 'BrowseController'
-      },
-      'header': {
-        templateUrl: 'app/main/header.html',
-        controller: 'MainController'
-      },
-      'footer': {
-        templateUrl: 'app/main/footer.html',
-        controller: 'MainController'
       }
     }
   });
