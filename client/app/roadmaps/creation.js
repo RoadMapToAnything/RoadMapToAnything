@@ -4,7 +4,7 @@ angular.module('app.creation', [])
 
   // As user will be building a brand new roadmap, the currently  
   // active one is removed from local storage.
-  localStorage.removeItem('user.currentRoadMap');
+  localStorage.removeItem('roadmap.id');
 
   var buildRoadmap = function() {
     author = localStorage.getItem('user.username') || 'bowieloverx950';
@@ -20,7 +20,7 @@ angular.module('app.creation', [])
 
    return $http.post('/api/roadmaps', roadmap)
    .then(function (res) {
-      localStorage.setItem('user.currentRoadMap', res.data.data._id);
+      localStorage.setItem('roadmap.id', res.data.data._id);
       console.log('Roadmap created:', res.data.data);
     }, function(err){
       if (err) return err;
@@ -29,7 +29,7 @@ angular.module('app.creation', [])
   };
 
   var buildNode = function() {
-    var parent = localStorage.getItem('user.currentRoadMap');
+    var parent = localStorage.getItem('roadmap.id');
 
     return {
       title: $scope.nodeTitle,
@@ -67,7 +67,7 @@ angular.module('app.creation', [])
   };
 
   $scope.submitNode = function() {
-    if (!localStorage.getItem('user.currentRoadMap')) {
+    if (!localStorage.getItem('roadmap.id')) {
 
       postRoadmap(buildRoadmap())
       .then(function (err) {
