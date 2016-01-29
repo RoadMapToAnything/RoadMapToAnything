@@ -1,32 +1,38 @@
-<!-- This is a header for logged in users  -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+<!-- Materialize needs these scripts. -->
+<!-- TODO: Find a centralized home -->
+<script type="text/javascript">
+  $( document ).ready(function(){ 
+    $(".dropdown-button").dropdown();
+    $(".button-collapse").sideNav();
+  });
+</script>
+
 <!--nav bar-->
 <div class="navbar-fixed">
   <nav class="amber lighten-1">
     <div class="nav-wrapper container">  
       <a href="#" class="brand-logo">Roadmap to Anything</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <!-- Need to make a dropdown search -->
-          <li><a href="search.html"><i class="mdi-action-search"></i></a></li>
-          <li><a ui-sref="browse">Browse</a></li>
-          <li><a ng-show="!isLoggedIn()" ui-sref="signin">Sign in</a></li>
-          <li><a ng-show="isLoggedIn()" class="dropdown-button" href="#!" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
-            <ul id="dropdown" class="dropdown-content collection">
-              <li><a ui-sref="dashboard">Dashboard</a></li>
-              <li><a ui-sref="roadmapCreation">Create Roadmap</a></li>
-              
-              <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
-            </ul> 
-        </ul>
+      <a href="#" data-activates="collapsed-options" class="button-collapse right"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <!-- Need to make a dropdown search -->
+        <li><i class="mdi-action-search"></i></li>
+        <li><a ui-sref="browse">Browse</a></li>
+        <li><a ng-show="!isLoggedIn()" ui-sref="signin">Sign in</a></li>
+        <li><a ng-show="isLoggedIn()" class="dropdown-button" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+          <ul id="dropdown" class="dropdown-content collection">
+            <li><a ui-sref="dashboard">Dashboard</a></li>
+            <li><a ui-sref="roadmapCreation">Create Roadmap</a></li>
+            <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
+          </ul> 
+      </ul>
+      <ul class="side-nav" id="collapsed-options">
+        <li><a ng-show="!isLoggedIn()" ui-sref="signin">Sign in</a></li>
+        <li><a ui-sref="browse">Browse</a></li>
+        <li ng-show="isLoggedIn()"><a ui-sref="dashboard">Dashboard</a></li>
+        <li ng-show="isLoggedIn()"><a ui-sref="roadmapCreation">Create Roadmap</a></li>
+        <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
+      </ul>
     </div>
   </nav> 
-</div>  
-
-<!-- script for dropdown menu -->
-<script type="text/javascript">
-  $( document ).ready(function(){ 
-    $(".dropdown-button").dropdown();
-    console.log('Dropdown working');
-  });
-</script>
+</div>
 
