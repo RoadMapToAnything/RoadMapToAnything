@@ -1,72 +1,69 @@
 angular.module('app.dash', [])
 
 .controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
-
-  $scope.username = '';
-
-  $scope.followedMapsResponseBody = {};
-
-  $scope.myMapsResponseBody = {};
-
-  $scope.hideMyMaps = true;
-
   $scope.followed = [];
-
   $scope.myMaps = [];
+  $scope.completed = [];
 
-  $scope.followedTotalNodes = 0;
+  $scope.showFollowed = true;
+  $scope.showMyMaps = false;
+  $scope.showCompleted = false;
 
-  // helper functions
+  //helper functions
 
-  $scope.showMyMaps = function(){
-      $scope.hideMyMaps = false;
-      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
-      angular.element( '#followedBtn' ).removeClass( 'pressed' );
-  };
-
-  $scope.showFollowed = function(){
-      $scope.hideMyMaps = true;
+  $scope.changeToFollowed = function(){
+      $scope.showFollowed = true;
+      $scope.showMyMaps = false;
+      $scope.showCompleted = false;
       angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
       angular.element( '#followedBtn' ).addClass( 'pressed' );
+      angular.element( '#completedBtn' ).removeClass( 'pressed' );
   };
 
-  $scope.addTotalNodesOfFollowedMaps = function (arr){
+  $scope.changeToMyMaps = function(){
+      $scope.showFollowed = false;
+      $scope.showMyMaps = true;
+      $scope.showCompleted = false;
+      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
+      angular.element( '#completedBtn' ).removeClass( 'pressed' );
+  };
+
+  $scope.changeToCompleted = function(){
+      $scope.showFollowed = false;
+      $scope.showMyMaps = false;
+      $scope.showCompleted = true;
+      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
+      angular.element( '#completedBtn' ).addClass( 'pressed' );
+  };
+
+  $scope.addTotalNodesOfMaps = function (arr){
     arr.forEach(function(map){
       map.totalNodes = map.nodes.length;
     });
   };
 
-  $scope.addTotalNodesOfMyMaps = function (arr){
-    arr.forEach(function(map){
-      map.totalNodes = map.nodes.length;
-    });
+  $scope.getDashData = function(){
+    $http.get('/api/users/' + localStorage.getItem('user.username') )
+    .then( 
+      // on success
+      function( response ) {
+        $scope.myMaps = response.data.data.authoredRoadmaps || [];
+        $scope.followed = response.data.data.inProgress.roadmaps || [];
+        $scope.completed = response.data.data.completedRoadmaps || [];
+        console.log($scope.followed);
+        $scope.addTotalNodesOfMaps($scope.myMaps);
+        $scope.addTotalNodesOfMaps($scope.followed);
+        $scope.addTotalNodesOfMaps($scope.completed);
+
+        $scope.addCompletedNodes(response.data.data.inProgress)
+    }, // on failure
+      function( response ){
+        console.log("error with dashData request", err);
+      }
+    );
   };
-
-  $scope.getMyMaps = function (){
-    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-    $http.get('/api/users/' + localStorage.getItem('user.username') )
-      .then(function(response){
-          console.log('Got author maps:', response.data);
-          $scope.myMaps = response.data.data.authoredRoadmaps || [];
-          $scope.addTotalNodesOfMyMaps($scope.myMaps);
-        }, function(err){
-          console.log('Failed to get authored roadmaps:', err);
-        });
-    };
-
-  $scope.getFollowedMaps = function (){
-    // $http.get('http://roadmaptoanything.herokuapp.com/#/api/users/' + $scope.userName )
-    $http.get('/api/users/' + localStorage.getItem('user.username') )
-      .then(function(response){
-          console.log('Got followed maps', response.data);
-          $scope.followed = response.data.data.inProgress.roadmaps || [];
-          $scope.addTotalNodesOfFollowedMaps($scope.followed);
-          $scope.addCompletedNodes(response.data.data.inProgress);
-        }, function(err){
-          console.log('Failed to get followed maps', err);
-        });
-    };
-
 
   $scope.addCompletedNodes = function(inProgressObj){
     $scope.followed.forEach(function(map){
@@ -74,28 +71,22 @@ angular.module('app.dash', [])
       map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
     });
 
-    $scope.myMaps.forEach(function(map){
-      map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
-      map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
-    });
   };
 
-  $scope.calcCompletedNodes = function(followedData, mapID){
+  $scope.calcCompletedNodes = function(inProgressObj, mapID){
     var count = 0;
     var roadmapNodeIDs = [];
 
     //iterate through the map's nodes and get array of IDs
-    followedData.roadmaps.forEach(function(map){
+    inProgressObj.roadmaps.forEach(function(map){
       if(map._id === mapID){
         map.nodes.forEach(function(node){
           roadmapNodeIDs.push(node._id);
         });
       }
     });
-
     //check those node IDs against the inProgess node IDs
-      //iterate count when there's a match
-    followedData.nodes.forEach(function(node){
+    inProgressObj.nodes.forEach(function(node){
       if(roadmapNodeIDs.indexOf(node._id) !== -1){
         count++;
       }
@@ -104,15 +95,8 @@ angular.module('app.dash', [])
     return count;
   };
 
-  $scope.getDashboardData = function(){
-    angular.element(document).ready( function(){
-        $scope.getMyMaps();
-        $scope.getFollowedMaps();
-      });
-  };
-
   $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
-    localStorage.setItem('roadmap.id', mapID);
+    localStorage.setItem('user.currentRoadMap', mapID);
     $state.go('roadmapTemplate');
   };
   
@@ -134,8 +118,10 @@ angular.module('app.dash', [])
           console.log('Roadmap deleted:', mapID);
           $scope.getMyMaps();
         },
-        function(err){
-          console.log('Failed to delete roadmap', err);
+        function(response){
+          console.log('failed to delete');
+          console.log('status', response.status);
+          console.log('response', response);
         });
   };
 
@@ -158,12 +144,14 @@ angular.module('app.dash', [])
           $scope.getFollowedMaps();
         },
         function(response){
-          console.log('Failed to delete roadmap', err);
-        })
+          console.log('failed to delete');
+          console.log('status', response.status);
+          console.log('response', response);
+        });
   };
 
-  //make ajax calls to get table data
-  $scope.getDashboardData();
+// make ajax calls to get table data
+  $scope.getDashData();
 
 }]);
 
