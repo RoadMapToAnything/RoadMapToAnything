@@ -24,15 +24,15 @@ angular.module('app', [
       url: '/',
       views: {
         'header': {
-          templateUrl: 'app/main/main.userheader.html',
+          templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
          'welcome': {
-          templateUrl: 'app/main/main.welcome.html',
+          templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
          'featured': {
-          templateUrl: 'app/main/main.welcome.html',
+          templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
         'browse': {
@@ -40,7 +40,7 @@ angular.module('app', [
           controller: 'BrowseController',
         },
         'footer': {
-          templateUrl: 'app/main/main.footer.html',
+          templateUrl: 'app/main/footer.html',
           controller: 'MainController'
         }
       }
@@ -53,11 +53,11 @@ angular.module('app', [
           controller: 'AuthController'
         },
         'header': {
-          templateUrl: 'app/main/main.userheader.html',
+          templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
         'footer': {
-          templateUrl: 'app/main/main.footer.html',
+          templateUrl: 'app/main/footer.html',
           controller: 'MainController'
         }
       }
@@ -70,11 +70,11 @@ angular.module('app', [
           controller: 'AuthController'
         },
         'header': {
-          templateUrl: 'app/main/main.userheader.html',
+          templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
         'footer': {
-          templateUrl: 'app/main/main.footer.html',
+          templateUrl: 'app/main/footer.html',
           controller: 'MainController'
         }
       }
@@ -85,15 +85,15 @@ angular.module('app', [
       url: '/dashboard',
       views: {
         'content': {
-          templateUrl: 'app/progress/dashboard.html',
+          templateUrl: 'app/dashboard/dashboard.html',
           controller: 'DashboardController'
         },
         'header': {
-          templateUrl: 'app/main/main.userheader.html',
+          templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
         'footer': {
-          templateUrl: 'app/main/main.footer.html',
+          templateUrl: 'app/main/footer.html',
           controller: 'MainController'
           }
         }
@@ -104,15 +104,15 @@ angular.module('app', [
     url: '/roadmaps',
     views: {
       'content': {
-        templateUrl: 'app/roadmaps/roadmaps.content.html',
+        templateUrl: 'app/roadmaps/content.html',
         controller: 'RoadMapsController'
       },
       'header': {
-        templateUrl: 'app/main/main.userheader.html',
+        templateUrl: 'app/main/header.html',
         controller: 'MainController'
       },
       'footer': {
-        templateUrl: 'app/main/main.footer.html',
+        templateUrl: 'app/main/footer.html',
         controller: 'RoadMapsController'
       }
     }
@@ -122,7 +122,7 @@ angular.module('app', [
     url: '/roadmapCreation',
     views: {
       'content': {
-        templateUrl: 'app/roadmaps/roadmaps.creation.html',
+        templateUrl: 'app/roadmaps/creation.html',
         controller: 'CreationController'
       },
       //To get nested subviews the pattern is desiredViewName@stateName
@@ -135,11 +135,11 @@ angular.module('app', [
       //   controller: 'CreationController'
       // },
       'header': {
-        templateUrl: 'app/main/main.userheader.html',
+        templateUrl: 'app/main/header.html',
         controller: 'MainController'
       },
       'footer': {
-        templateUrl: 'app/main/main.footer.html',
+        templateUrl: 'app/main/footer.html',
         controller: 'MainController'
       },
     }
@@ -152,11 +152,11 @@ angular.module('app', [
         controller: 'AuthController' 
       },
       'header': {
-        templateUrl: 'app/main/main.userheader.html',
+        templateUrl: 'app/main/header.html',
         controller: 'RoadMapsController'
       },
       'footer': {
-        templateUrl: 'app/main/main.footer.html',
+        templateUrl: 'app/main/footer.html',
         controller: 'RoadMapsController'
       }
     }
@@ -169,11 +169,11 @@ angular.module('app', [
         controller: 'BrowseController'
       },
       'header': {
-        templateUrl: 'app/main/main.userheader.html',
+        templateUrl: 'app/main/header.html',
         controller: 'MainController'
       },
       'footer': {
-        templateUrl: 'app/main/main.footer.html',
+        templateUrl: 'app/main/footer.html',
         controller: 'MainController'
       }
     }
