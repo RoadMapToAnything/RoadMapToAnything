@@ -52,11 +52,7 @@ angular.module('app.creation', [])
 
   var postNode = function(node) {
 
-    return $http({
-      method: 'POST',
-      url: '/api/nodes',
-      data: node
-    })
+    return $http.post('/api/nodes', node)
     .then(function (res) {
       console.log('Node created:', res.data.data);
     });
@@ -66,6 +62,7 @@ angular.module('app.creation', [])
   $scope.submitAndRefresh = function() {
     Materialize.updateTextFields();
     $scope.submitNode();
+    
   };
 
   $scope.submitNode = function() {
