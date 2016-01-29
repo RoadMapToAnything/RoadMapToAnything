@@ -25,7 +25,7 @@ module.exports = function (apiRouter) {
   /*
    *      Roadmap Routes
    */
-   apiRouter.post(  '/roadmaps',                  roadmapController.createRoadmap  );
+   apiRouter.post(  '/roadmaps',            auth, roadmapController.createRoadmap  );
    apiRouter.get(   '/roadmaps',                  roadmapController.getRoadmaps    );
    apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
    apiRouter.put(   '/roadmaps/:roadmapID',       roadmapController.updateRoadmap  );
