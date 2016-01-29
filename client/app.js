@@ -23,11 +23,15 @@ angular.module('app', [
     .state('home', {
       url: '/',
       views: {
+        'content': {
+          templateUrl: 'app/main/main.html',
+          controller: 'MainController'
+        },
         'header': {
           templateUrl: 'app/main/header.html',
           controller: 'MainController'
         },
-         'welcome': {
+         'welcome@home': {
           templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
@@ -35,7 +39,7 @@ angular.module('app', [
           templateUrl: 'app/main/welcome.html',
           controller: 'MainController'
         },
-        'browse': {
+        'browse@home': {
           templateUrl: 'app/browse/browse.html',
           controller: 'BrowseController',
         },
@@ -46,36 +50,22 @@ angular.module('app', [
       }
     })
     //state for sign-in
-    .state('signin', {
+    .state('home.signin', {
+      url: 'signin',
       views: {
-        'content': {
+        'content@': {
           templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
-        },
-        'header': {
-          templateUrl: 'app/main/header.html',
-          controller: 'MainController'
-        },
-        'footer': {
-          templateUrl: 'app/main/footer.html',
-          controller: 'MainController'
         }
       }
     })
     //state for sign-up
-    .state('signup', {
+    .state('home.signup', {
+      url: 'signup',
       views: {
-        'content': {
+        'content@': {
           templateUrl: 'app/auth/signup.html',
           controller: 'AuthController'
-        },
-        'header': {
-          templateUrl: 'app/main/header.html',
-          controller: 'MainController'
-        },
-        'footer': {
-          templateUrl: 'app/main/footer.html',
-          controller: 'MainController'
         }
       }
     })
