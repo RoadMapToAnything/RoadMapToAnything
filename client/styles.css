@@ -3,7 +3,6 @@ a:hover {
   cursor: pointer;
 }
 
-
 /****** FOOTER ******/
 .ng-scope footer.page-footer {
   padding-top: 0;
@@ -30,6 +29,7 @@ footer.page-footer div.footer-copyright {
   line-height: 20px;
 }
 /****** END FOOTER ******/
+
 
 .tabs {
   overflow-x: hidden;
