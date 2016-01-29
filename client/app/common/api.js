@@ -62,24 +62,44 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  api.deleteUser = function(username) {
+  api.deleteUserByUsername = function(username) {
 
     return $http({
       method: 'PUT',
       url: '/api/users/' + user.username,
-      data: user,
       headers: { Authorization: 'Basic ' + encodeAuthHeader() }
     })
     .then(standardResponse)
     .catch(standardError);
   };
 
+  api.deleteUser = api.deleteUserByUsername;
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *               ROADMAPS                *
    * * * * * * * * * * * * * * * * * * * * */
 
-  api.saveRoadmap = function(roadmap) {
+  api.getRoadmaps = function() {
+
+    return $http.get('/api/roadmaps')
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  api.getMaps = api.getRoadmaps;
+
+  api.getRoadmapById = function(id) {
+
+    return $http.get('/api/roadmaps/' + id)
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  api.getRoadmap = api.getRoadmapById;
+  api.getMap = api.getRoadmapById;
+
+  api.createRoadmap = function(roadmap) {
 
    return $http({
       method: 'POST',
@@ -90,6 +110,35 @@ angular.module('app.common', [])
     .then(standardResponse)
     .catch(standardError);
   };
+
+  api.createMap = api.createRoadmap;
+
+  api.updateRoadmap = function(roadmap) {
+
+    return $http({
+      method: 'PUT',
+      url: '/api/roadmaps/' + roadmap._id || roadmap.id,
+      data: roadmap,
+      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
+    })
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  api.deleteRoadmapById = function(id) {
+
+    return $http({
+      method: 'DELETE',
+      url: '/api/roadmaps/' + id,
+      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
+    })
+    .then(standardResponse)
+    .catch(standardError);
+  };
+
+  api.deleteRoadmap = api.deleteRoadmapById;
+  api.deleteMap = api.deleteRoadmapById;
+
 
 
   return api;
