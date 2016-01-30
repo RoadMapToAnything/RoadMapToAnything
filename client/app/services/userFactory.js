@@ -12,6 +12,46 @@ angular.module('services.user', ['services.server'])
     return res.data.data;
   };
 
+  var calcProgress = function(inProgress, id) {
+    var maps = inProgress.roadmaps;
+    var nodes = inProgress.nodes;
+    var nodeCounts = {};
+    var results = [];
+
+    // If looking at one roadmap, narrow maps array to that.
+    if (id) {
+      for (var i; i < maps.length; i++) {
+        if (maps[i]._id === id) {
+          maps = [maps[i]];
+          break;
+        }
+      }
+    }
+
+    nodes.forEach(function (node) {
+      nodeCounts[node.parentRoadmap] = nodeCounts[node.parentRoadmap] + 1 || 1;
+    });
+
+    maps.forEach(function (map) {
+      var completed = nodeCounts[map._id] || 0;
+      var total = map.nodes.length;
+
+      results.push({
+        completed: completed,
+        total: total,
+        percent: Math.floor(completed / total * 100)
+      });
+    });
+
+    // If looking at one roadmap, return just that result, otherwise an array
+    return id ? results[0] : results;
+  };
+
+
+  User.getData = function() {
+    return Server.getUser(localStorage.getItem('user.username'));
+  };
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *                 AUTH                  *
@@ -68,6 +108,27 @@ angular.module('services.user', ['services.server'])
 
   User.completeRoadmapById = function(id) {
     return Server.updateUser({ 'completedRoadmaps': id });
+  };
+
+  // Accepts one or two possible parameters:
+  //  id: returns progress for a single roadmap, otherwise returns all
+  //  user: passing a user object allows serverless synchronus functionality
+  User.getRoadmapProgress = function() {
+    var id, user;
+    for (var i = 0; i < arguments.length; i++) {
+      if (arguments[i] instanceof String) id = arguments[i];
+      if (arguments[i] instanceof Object) user = arguments[i];
+    }
+
+    if (!user) {
+      return User.getData()
+      .then(function (user) {
+        return calcProgress(user.inProgress, id);
+      });
+    } else {
+      return calcProgress(user.inProgress, id);
+    }
+
   };
 
 
