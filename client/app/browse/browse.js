@@ -1,6 +1,6 @@
-angular.module('browse.ctrl', [])
+angular.module('browse.ctrl', ['services.user'])
 
-.controller('BrowseController', ['$scope', '$http', '$state', '$timeout', function($scope, $http, $state, $timeout){
+.controller('BrowseController', ['$scope', '$http', '$state', '$timeout', 'User', function($scope, $http, $state, $timeout, User){
   $scope.mapData = [];
 
   $scope.showSigninMsg = false;
@@ -12,9 +12,7 @@ angular.module('browse.ctrl', [])
     });
   };
 
-  $scope.isLoggedIn = function () {
-    return !!localStorage.getItem('user.username');
-  };
+  $scope.isLoggedIn = User.isLoggedIn;
 
   $scope.getMapData = function () {
     $http({

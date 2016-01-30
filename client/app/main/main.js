@@ -1,18 +1,12 @@
-angular.module('main.ctrl', [])
-.controller('MainController', [ '$scope', '$state', function($scope, $state){
+angular.module('main.ctrl', ['services.user'])
+.controller('MainController', [ '$scope', '$state', 'User', function($scope, $state, User){
   
   $scope.logout = function () {
-    var username = localStorage.getItem('user.username');
-    localStorage.removeItem('user.username');
-    localStorage.removeItem('roadmap.id');
-    localStorage.removeItem('user.authToken');
-    console.log(username, 'successfully logged out.');
+    User.logout();
     $state.go('home');
   };
   
-  $scope.isLoggedIn = function () {
-    return !!localStorage.getItem('user.username');
-  };
+  $scope.isLoggedIn = User.isLoggedIn;
 
   $scope.getUsername = function () {
     return localStorage.getItem('user.username');

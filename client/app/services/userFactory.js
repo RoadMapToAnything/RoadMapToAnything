@@ -34,9 +34,18 @@ angular.module('services.user', [])
     });
   };
 
+  User.logout = function() {
+    var username = localStorage.getItem('user.username');
+    localStorage.removeItem('user.username');
+    localStorage.removeItem('user.authToken');
+    console.log(username, 'successfully logged out.');
+  };
+
   User.isLoggedIn = function() {
     return !!localStorage.getItem('user.authToken');
   };
+
+
 
 
   return User;
