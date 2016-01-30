@@ -4,6 +4,10 @@ angular.module('services.user', ['services.server'])
 
   var User = {};
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *           HELPER FUNCTIONS            *
+   * * * * * * * * * * * * * * * * * * * * */
+
   // Standard response after for auth actions
   var authResponse = function (res, message) {
     console.log(res.data.data.username, message);
@@ -12,13 +16,15 @@ angular.module('services.user', ['services.server'])
     return res.data.data;
   };
 
+
+  // Calculates user's progress toward completing one or many roadmaps
   var calcProgress = function(inProgress, id) {
     var maps = inProgress.roadmaps;
     var nodes = inProgress.nodes;
     var nodeCounts = {};
     var results = [];
 
-    // If looking at one roadmap, narrow maps array to that.
+    // If looking at one roadmap, narrow maps array to that
     if (id) {
       for (var i; i < maps.length; i++) {
         if (maps[i]._id === id) {
@@ -37,6 +43,8 @@ angular.module('services.user', ['services.server'])
       var total = map.nodes.length;
 
       results.push({
+        id: map._id,
+        _id: map._id,
         completed: completed,
         total: total,
         percent: Math.floor(completed / total * 100)
@@ -47,6 +55,10 @@ angular.module('services.user', ['services.server'])
     return id ? results[0] : results;
   };
 
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *                BASIC                  *
+   * * * * * * * * * * * * * * * * * * * * */
 
   User.getData = function() {
     return Server.getUser(localStorage.getItem('user.username'));
@@ -116,19 +128,20 @@ angular.module('services.user', ['services.server'])
   User.getRoadmapProgress = function() {
     var id, user;
     for (var i = 0; i < arguments.length; i++) {
-      if (arguments[i] instanceof String) id = arguments[i];
-      if (arguments[i] instanceof Object) user = arguments[i];
+      if (typeof arguments[i] === 'string') id = arguments[i];
+      if (typeof arguments[i] === 'object') user = arguments[i];
     }
 
+    // If no user provided, user is fetched, and a promise is returned
     if (!user) {
       return User.getData()
       .then(function (user) {
         return calcProgress(user.inProgress, id);
       });
+
     } else {
       return calcProgress(user.inProgress, id);
     }
-
   };
 
 
@@ -138,12 +151,17 @@ angular.module('services.user', ['services.server'])
 
   User.followRoadmap = User.followRoadmapById;
   User.followMap = User.followRoadmapById;
+  User.follow = User.followRoadmapById;
   User.unfollowRoadmap = User.unfollowRoadmapById;
   User.unfollowMap = User.unfollowRoadmapById;
+  User.unfollow = User.unfollowRoadmapById;
 
   User.completeNode = User.completeNodeById;
   User.completeRoadmap = User.completeRoadmapById;
   User.completeMap = User.completeRoadmapById;
+
+  User.getMapProgress = User.getRoadmapProgress;
+  User.getProgress = User.getRoadmapProgress;
 
 
   return User;

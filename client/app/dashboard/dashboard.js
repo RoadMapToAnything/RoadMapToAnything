@@ -1,6 +1,6 @@
-angular.module('dash.ctrl', [])
+angular.module('dash.ctrl', ['services.user'])
 
-.controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
+.controller('DashboardController', ['$scope','$http', '$state', 'User', function($scope, $http, $state, User){
   $scope.followed = [];
   $scope.myMaps = [];
   $scope.completed = [];
@@ -52,12 +52,11 @@ angular.module('dash.ctrl', [])
         $scope.myMaps = response.data.data.authoredRoadmaps || [];
         $scope.followed = response.data.data.inProgress.roadmaps || [];
         $scope.completed = response.data.data.completedRoadmaps || [];
-        console.log($scope.followed);
         $scope.addTotalNodesOfMaps($scope.myMaps);
         $scope.addTotalNodesOfMaps($scope.followed);
         $scope.addTotalNodesOfMaps($scope.completed);
 
-        $scope.addCompletedNodes(response.data.data.inProgress)
+        $scope.addCompletedNodes(response.data.data.inProgress);
     }, // on failure
       function( response ){
         console.log("error with dashData request", err);

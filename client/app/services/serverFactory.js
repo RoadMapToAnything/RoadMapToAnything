@@ -61,6 +61,7 @@ angular.module('services.server', [])
   };
 
   Server.updateUser = function(user) {
+    user.username = localStorage.getItem('user.username');
 
     return $http({
       method: 'PUT',
