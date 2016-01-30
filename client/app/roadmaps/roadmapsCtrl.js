@@ -1,7 +1,6 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
 
-  
-.controller('RoadMapsController', ['$scope', '$stateParams', 'RoadMapsFactory', 'Server', 'User', function ($scope, $stateParams, RoadMapsFactory, Server, User){
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', function($scope, $http, $stateParams, RoadMapsFactory, Server, User){  
   angular.extend($scope, RoadMapsFactory);
 
   var roadmapId = $stateParams.roadmapID;
