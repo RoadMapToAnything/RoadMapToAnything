@@ -2,13 +2,14 @@ var User = require('./userModel.js'),
     Promise = require('bluebird'),
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
-    bcrypt = require('bcrypt-nodejs'),
-    hash = Promise.promisify( require('bcrypt-nodejs').hash );
+    bcrypt = require('bcrypt-nodejs');
+
+bcrypt.hash = Promise.promisify(bcrypt.hash); // Promise.promisifyAll did not work
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
 var hashPassword = function (user) {
-  return [ user, hash(user.password, null, null) ];
+  return [ user, bcrypt.hash(user.password, null, null) ];
 };
 
 var generateAuthToken = function (user, hashedPassword) {
