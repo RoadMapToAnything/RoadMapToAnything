@@ -13,6 +13,10 @@ angular.module('services.user', [])
   };
 
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *                 AUTH                  *
+   * * * * * * * * * * * * * * * * * * * * */
+
   User.login = function(username, password) {
     return $http({
       method: 'GET',
@@ -46,6 +50,39 @@ angular.module('services.user', [])
   };
 
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *               PROGRESS                *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  User.followRoadmapById = function(id) {
+
+  };
+
+  User.unfollowRoadmapById = function(id) {
+    
+  };
+
+  User.completeNodeById = function(id) {
+    
+  };
+
+  User.completeRoadmapById = function(id) {
+    
+  };
+
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *               ALIASES                 *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  User.followRoadmap = User.followRoadmapById;
+  User.followMap = User.followRoadmapById;
+  User.unfollowRoadmap = User.unfollowRoadmapById;
+  User.unfollowMap = User.unfollowRoadmapById;
+
+  User.completeNode = User.completeNodeById;
+  User.completeRoadmap = User.completeRoadmapById;
+  User.completeMap = User.completeRoadmapById;
 
 
   return User;
