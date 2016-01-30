@@ -6,6 +6,7 @@ angular.module('app', [
   'roadmaps.ctrl',
   'browse.ctrl',
   'creation.ctrl'
+
   ])
 .run( function($rootScope, $state){
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){

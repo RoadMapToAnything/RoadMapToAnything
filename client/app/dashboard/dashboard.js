@@ -1,6 +1,19 @@
 angular.module('dash.ctrl', ['services.user'])
 
+<<<<<<< HEAD
 .controller('DashboardController', ['$scope','$http', '$state', 'User', function($scope, $http, $state, User){
+=======
+.controller('DashboardController', ['$scope','$http', '$state','DashboardFactory' , function($scope, $http, $state, DashboardFactory){
+  
+  DashboardFactory.getDashData()
+    .then( function (dashData){
+      $scope.followed = dashData.followed;
+      $scope.myMaps = dashData.myMaps;
+      $scope.completed = dashData.completed;
+    });
+  
+
+>>>>>>> refactory controller methods to factory
   $scope.followed = [];
   $scope.myMaps = [];
   $scope.completed = [];
@@ -9,7 +22,8 @@ angular.module('dash.ctrl', ['services.user'])
   $scope.showMyMaps = false;
   $scope.showCompleted = false;
 
-  //helper functions
+  $scope.deleteMap = DashboardFactory.deleteMap;
+  $scope.goToMap = DashboardFactory.goToMap;
 
   $scope.changeToFollowed = function(){
     $scope.showFollowed = true;
@@ -38,6 +52,7 @@ angular.module('dash.ctrl', ['services.user'])
     angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
+<<<<<<< HEAD
   User.getData()
   .then(function (user) {
     $scope.user = user;
@@ -166,6 +181,7 @@ angular.module('dash.ctrl', ['services.user'])
 // make ajax calls to get table data
   // $scope.getDashData();
 
+=======
+>>>>>>> refactory controller methods to factory
 }]);
-
 
