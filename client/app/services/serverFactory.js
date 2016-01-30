@@ -89,11 +89,17 @@ angular.module('services.server', [])
    *               ROADMAPS                *
    * * * * * * * * * * * * * * * * * * * * */
 
-  Server.getRoadmaps = function() {
-
-    return $http.get('/api/roadmaps')
-    .then(standardResponse)
-    .catch(standardError);
+  Server.getRoadmaps = function(optionalSortQuery) {
+    if (optionalSortQuery){
+      return $http.get('/api/roadmaps' + optionalSortQuery)
+      .then(standardResponse)
+      .catch(standardError);  
+    } else {
+      return $http.get('/api/roadmaps')
+      .then(standardResponse)
+      .catch(standardError);  
+    }
+    
   };
 
   Server.getRoadmapById = function(id) {
