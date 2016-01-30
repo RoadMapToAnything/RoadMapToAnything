@@ -41,6 +41,7 @@ describe('The users API', function() {
         .end(function (err, res) {
 
           expect(res.body.data).to.have.property('username', username);
+          expect(res.body.data).to.have.property('authToken');
 
           User.findOne({username: username})
             .then(function (user) {
@@ -64,6 +65,7 @@ describe('The users API', function() {
         .end(function (err, res) {
 
           expect(res.body.data).to.have.property('username', username);
+          expect(res.body.data).to.have.property('authToken');
           done();
 
         });

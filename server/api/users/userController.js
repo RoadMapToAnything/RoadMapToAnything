@@ -5,11 +5,15 @@ var User = require('./userModel.js'),
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
+var generateAuthToken = function () {
+  
+};
+
+
 module.exports = {
 
   createUser : function(req, res, next){
     var newUser = req.body;
-    console.log('creating new user with', req.body);
 
     User(newUser).save()
       .then(function(createdUserResults){ 
