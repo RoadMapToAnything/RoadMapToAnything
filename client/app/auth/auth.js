@@ -1,6 +1,6 @@
 angular.module('auth.ctrl', ['services.user'])
 
-.controller('AuthController', ['$scope','$state', 'User' function($scope, $state, User){
+.controller('AuthController', ['$scope','$state', 'User', function($scope, $state, User){
 
   $scope.attemptedFirstName = '';
   $scope.attemptedLastName = '';
