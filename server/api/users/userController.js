@@ -1,14 +1,23 @@
 var User = require('./userModel.js'),
+    Promise = require('bluebird'),
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
-    bcrypt = require('bcrypt-nodejs');
+    bcrypt = require('bcrypt-nodejs'),
+    hash = Promise.promisify( require('bcrypt-nodejs').hash );
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
-var generateAuthToken = function () {
-  
+var hashPassword = function (user) {
+  return [ user, hash(user.password, null, null) ];
 };
 
+var generateAuthToken = function (user, hashedPassword) {
+  var encodedHash = new Buffer(hashedPassword, 'ascii').toString('base64');
+  return {
+    username: user.username,
+    authToken: encodedHash
+  };
+};
 
 module.exports = {
 
@@ -16,16 +25,15 @@ module.exports = {
     var newUser = req.body;
 
     User(newUser).save()
-      .then(function(createdUserResults){ 
-        res.status(201).json({data: createdUserResults});
+      .then( hashPassword )
+      .spread( generateAuthToken )
+      .then(function(results){
+        res.status(201).json({data: results});
       })
       .catch(handleError(next));
   },
 
   login : function(req, res, next){
-    console.log('req.body', req.body);
-    console.log('username',req.query.username);
-    console.log('username',req.query.password);
     var credentials = {
       username: req.query.username,
       password: req.query.password,
@@ -34,12 +42,11 @@ module.exports = {
     User.findOne(credentials)
       .then(function(validUser){
         if (!validUser) res.sendStatus(401);  // unauthorized: invalid credentials
-        else {
-          bcrypt.hash(validUser.password, null, null, function(err, hashedPassword){
-            var encodedHash = new Buffer(hashedPassword, 'ascii').toString('base64');
-            res.status(200).json({data: {username: validUser.username, authToken: encodedHash} });
-          });
-        }
+        else return hashPassword(validUser);
+      })
+      .spread(generateAuthToken)
+      .then(function(results){
+        res.status(200).json({data: results});
       })
       .catch(handleError(next));
   },
