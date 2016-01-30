@@ -1,7 +1,7 @@
 angular.module('app.common', [])
 
-.factory('API', ['$http', function($http){
-  var API = {};
+.factory('Server', ['$http', function($http){
+  var Server = {};
 
   var encodeAuthHeader = function() {
     var user = localStorage.getItem('user.username');
@@ -10,23 +10,35 @@ angular.module('app.common', [])
   };
 
   var standardResponse = function(res) {
-    var nameKeys = ['title', 'username'];
-    var name;
-
-    // Grab the name of the item affected from response
-    nameKeys.forEach(function (key) {
-      if (res.data.data[key]) name = res.data.data[key];
-    });
-
-    console.log(res.status, '-', 
-      res.config.method, 'successful for', 
-      name, ':', res.data.data);
+    console.log( '(' + res.status + ') ' + 
+      res.config.method + ' successful for ' + 
+      parseName(res) + ': ', res.data.data );
 
     return res.data.data;
   };
 
   var standardError = function(err) {
-    console.log(err);
+    console.log( '(' + err.status + ') ' +
+      err.config.method + ' failed for ' +
+      parseName(err) + ': ', err.data );
+  };
+
+  // Parses a name to be logged by responses and errors
+  var parseName = function(res) {
+    var nameKeys = ['title', 'username'];
+    var name;
+
+    // Grab the name of the item affected from response
+    if (res.data.data) {
+      nameKeys.forEach(function (key) {
+        if (res.data.data[key]) name = res.data.data[key];
+      });
+    }
+
+    // If name cannot be pulled from response, pull from url
+    if (!name) name = res.config.url.split('/')[2];
+
+    return name;
   };
 
 
@@ -34,21 +46,21 @@ angular.module('app.common', [])
    *                 USERS                 *
    * * * * * * * * * * * * * * * * * * * * */
 
-  API.getUsers = function() {
+  Server.getUsers = function() {
 
     return $http.get('/api/users')
     .then(standardResponse)
     .catch(standardError);
   };
 
-  API.getUserByUsername = function(username) {
+  Server.getUserByUsername = function(username) {
 
     return $http.get('/api/users/' + username)
     .then(standardResponse)
     .catch(standardError);
   };
 
-  API.updateUser = function(user) {
+  Server.updateUser = function(user) {
 
     return $http({
       method: 'PUT',
@@ -60,11 +72,11 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  API.deleteUserByUsername = function(username) {
+  Server.deleteUserByUsername = function(username) {
 
     return $http({
       method: 'PUT',
-      url: '/api/users/' + user.username,
+      url: '/api/users/' + username,
       headers: { Authorization: 'Basic ' + encodeAuthHeader() }
     })
     .then(standardResponse)
@@ -76,21 +88,21 @@ angular.module('app.common', [])
    *               ROADMAPS                *
    * * * * * * * * * * * * * * * * * * * * */
 
-  API.getRoadmaps = function() {
+  Server.getRoadmaps = function() {
 
     return $http.get('/api/roadmaps')
     .then(standardResponse)
     .catch(standardError);
   };
 
-  API.getRoadmapById = function(id) {
+  Server.getRoadmapById = function(id) {
 
     return $http.get('/api/roadmaps/' + id)
     .then(standardResponse)
     .catch(standardError);
   };
 
-  API.createRoadmap = function(roadmap) {
+  Server.createRoadmap = function(roadmap) {
 
    return $http({
       method: 'POST',
@@ -102,7 +114,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  API.updateRoadmap = function(roadmap) {
+  Server.updateRoadmap = function(roadmap) {
 
     return $http({
       method: 'PUT',
@@ -114,7 +126,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  API.deleteRoadmapById = function(id) {
+  Server.deleteRoadmapById = function(id) {
 
     return $http({
       method: 'DELETE',
@@ -130,14 +142,14 @@ angular.module('app.common', [])
    *                 NODES                 *
    * * * * * * * * * * * * * * * * * * * * */
 
-  API.getNodeById = function(id) {
+  Server.getNodeById = function(id) {
 
     return $http.get('/api/nodes/' + id)
     .then(standardResponse)
     .catch(standardError);
   };
 
-  API.createNode = function(node) {
+  Server.createNode = function(node) {
 
    return $http({
       method: 'POST',
@@ -149,7 +161,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  API.updateNode = function(node) {
+  Server.updateNode = function(node) {
 
     return $http({
       method: 'PUT',
@@ -161,7 +173,7 @@ angular.module('app.common', [])
     .catch(standardError);
   };
 
-  API.deleteNodeById = function(id) {
+  Server.deleteNodeById = function(id) {
 
     return $http({
       method: 'DELETE',
@@ -177,19 +189,20 @@ angular.module('app.common', [])
    *               ALIASES                 *
    * * * * * * * * * * * * * * * * * * * * */
 
-  API.getUser = API.getUserByUsername;
-  API.deleteUser = API.deleteUserByUsername;
+  Server.getUser = Server.getUserByUsername;
+  Server.deleteUser = Server.deleteUserByUsername;
 
-  API.getMaps = API.getRoadmaps;
-  API.getRoadmap = API.getRoadmapById;
-  API.getMap = API.getRoadmapById;
-  API.createMap = API.createRoadmap;
-  API.deleteRoadmap = API.deleteRoadmapById;
-  API.deleteMap = API.deleteRoadmapById;
+  Server.getMaps = Server.getRoadmaps;
+  Server.getRoadmap = Server.getRoadmapById;
+  Server.getMap = Server.getRoadmapById;
+  Server.createMap = Server.createRoadmap;
+  Server.updateMap = Server.updateRoadmap;
+  Server.deleteRoadmap = Server.deleteRoadmapById;
+  Server.deleteMap = Server.deleteRoadmapById;
 
-  API.getNode = API.getNodeById;
-  API.deleteNode = API.deleteNodeById; 
+  Server.getNode = Server.getNodeById;
+  Server.deleteNode = Server.deleteNodeById; 
 
-  return API;
+  return Server;
 
 }]);

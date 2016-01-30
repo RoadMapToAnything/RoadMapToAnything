@@ -1,6 +1,6 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http, $state, API){
+.controller('CreationController', function($scope, $http, $state, Server){
 
   // As user will be building a brand new roadmap, the currently  
   // active one is removed from local storage.
@@ -16,7 +16,7 @@ angular.module('app.creation', [])
   };
 
   var postRoadmap = function(roadmap) {
-    return API.saveRoadmap(roadmap)
+    return Server.createRoadmap(roadmap)
     .then(function (roadmap) {
       localStorage.setItem('roadmap.id', roadmap._id);
     });
