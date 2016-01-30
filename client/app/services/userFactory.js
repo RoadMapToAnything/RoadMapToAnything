@@ -34,6 +34,10 @@ angular.module('services.user', [])
     });
   };
 
+  User.isLoggedIn = function() {
+    return !!localStorage.getItem('user.authToken');
+  };
+
 
   return User;
 
