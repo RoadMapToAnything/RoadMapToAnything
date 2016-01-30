@@ -62,7 +62,6 @@ angular.module('dash.ctrl', ['services.user'])
 
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
-  };
   
   $scope.updateLocalDataAfterDelete = function (arr, id) {
     return arr.filter(function(map) {
