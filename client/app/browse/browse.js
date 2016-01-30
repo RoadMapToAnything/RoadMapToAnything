@@ -19,7 +19,10 @@ angular.module('browse.ctrl', ['services.user', 'services.server', 'services.bro
 
   $scope.goToDash = function () {
       $state.go('dashboard');
-  }
+
+  $scope.goToMap = function (mapID){
+    $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
+  };
   
   
 
