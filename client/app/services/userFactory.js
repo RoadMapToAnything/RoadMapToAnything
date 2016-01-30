@@ -26,11 +26,8 @@ angular.module('services.user', ['services.server'])
 
     // If looking at one roadmap, narrow maps array to that
     if (id) {
-      for (var i; i < maps.length; i++) {
-        if (maps[i]._id === id) {
-          maps = [maps[i]];
-          break;
-        }
+      for (var i = 0; i < maps.length; i++) {
+        if (maps[i]._id === id) maps = [maps[i]];
       }
     }
 

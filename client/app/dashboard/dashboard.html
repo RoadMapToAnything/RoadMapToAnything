@@ -23,7 +23,7 @@
           <tbody class="follow-map" ng-repeat="map in followed">
             <tr>
               <td>{{ map.nodesCompleted }} /
-              {{ map.totalNodes }}</td>
+              {{ map.nodes.length }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">
                 <span class="mousetoHand">{{ map.title }}</span>
               </td>
@@ -56,7 +56,7 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in myMaps">
             <tr>
-              <td>{{ map.totalNodes }}</td>
+              <td>{{ map.nodes.length }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">
                 <span class="mousetoHand">{{ map.title }}</span>
               </td>
@@ -83,7 +83,7 @@
           </tbody>
           <tbody class="follow-map" ng-repeat="map in completed">
             <tr>
-              <td>{{ map.totalNodes }}</td>
+              <td>{{ map.nodes.length }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">
                 <span class="mousetoHand">{{ map.title }}</span>
               </td>
