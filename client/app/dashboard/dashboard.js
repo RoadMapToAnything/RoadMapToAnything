@@ -1,6 +1,6 @@
-angular.module('dash.ctrl', [])
+angular.module('dash.ctrl', ['services.user'])
 
-.controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
+.controller('DashboardController', ['$scope','$http', '$state', 'User', function($scope, $http, $state, User){
   $scope.followed = [];
   $scope.myMaps = [];
   $scope.completed = [];
@@ -12,91 +12,104 @@ angular.module('dash.ctrl', [])
   //helper functions
 
   $scope.changeToFollowed = function(){
-      $scope.showFollowed = true;
-      $scope.showMyMaps = false;
-      $scope.showCompleted = false;
-      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
-      angular.element( '#followedBtn' ).addClass( 'pressed' );
-      angular.element( '#completedBtn' ).removeClass( 'pressed' );
+    $scope.showFollowed = true;
+    $scope.showMyMaps = false;
+    $scope.showCompleted = false;
+    angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+    angular.element( '#followedBtn' ).addClass( 'pressed' );
+    angular.element( '#completedBtn' ).removeClass( 'pressed' );
   };
 
   $scope.changeToMyMaps = function(){
-      $scope.showFollowed = false;
-      $scope.showMyMaps = true;
-      $scope.showCompleted = false;
-      angular.element( '#myMapsBtn' ).addClass( 'pressed' );
-      angular.element( '#followedBtn' ).removeClass( 'pressed' );
-      angular.element( '#completedBtn' ).removeClass( 'pressed' );
+    $scope.showFollowed = false;
+    $scope.showMyMaps = true;
+    $scope.showCompleted = false;
+    angular.element( '#myMapsBtn' ).addClass( 'pressed' );
+    angular.element( '#followedBtn' ).removeClass( 'pressed' );
+    angular.element( '#completedBtn' ).removeClass( 'pressed' );
   };
 
   $scope.changeToCompleted = function(){
-      $scope.showFollowed = false;
-      $scope.showMyMaps = false;
-      $scope.showCompleted = true;
-      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
-      angular.element( '#followedBtn' ).removeClass( 'pressed' );
-      angular.element( '#completedBtn' ).addClass( 'pressed' );
+    $scope.showFollowed = false;
+    $scope.showMyMaps = false;
+    $scope.showCompleted = true;
+    angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+    angular.element( '#followedBtn' ).removeClass( 'pressed' );
+    angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
-  $scope.addTotalNodesOfMaps = function (arr){
-    arr.forEach(function(map){
-      map.totalNodes = map.nodes.length;
+  User.getData()
+  .then(function (user) {
+    $scope.user = user;
+    $scope.myMaps = user.authoredRoadmaps;
+    $scope.followed = user.inProgress.roadmaps;
+    $scope.completed = user.completedRoadmaps;
+
+    $scope.followed.forEach(function (map){
+      var progress = User.getProgress(user, map._id);
+      map.nodesCompleted = progress.completed;
+      map.percentComplete = progress.percent;
     });
-  };
+  });
 
-  $scope.getDashData = function(){
-    $http.get('/api/users/' + localStorage.getItem('user.username') )
-    .then( 
-      // on success
-      function( response ) {
-        $scope.myMaps = response.data.data.authoredRoadmaps || [];
-        $scope.followed = response.data.data.inProgress.roadmaps || [];
-        $scope.completed = response.data.data.completedRoadmaps || [];
-        console.log($scope.followed);
-        $scope.addTotalNodesOfMaps($scope.myMaps);
-        $scope.addTotalNodesOfMaps($scope.followed);
-        $scope.addTotalNodesOfMaps($scope.completed);
+  // $scope.addTotalNodesOfMaps = function (arr){
+  //   arr.forEach(function(map){
+  //     map.totalNodes = map.nodes.length;
+  //   });
+  // };
 
-        $scope.addCompletedNodes(response.data.data.inProgress)
-    }, // on failure
-      function( response ){
-        console.log("error with dashData request", err);
-      }
-    );
-  };
+  // $scope.getDashData = function(){
+  //   $http.get('/api/users/' + localStorage.getItem('user.username') )
+  //   .then( 
+  //     // on success
+  //     function( response ) {
+  //       $scope.myMaps = response.data.data.authoredRoadmaps || [];
+  //       $scope.followed = response.data.data.inProgress.roadmaps || [];
+  //       $scope.completed = response.data.data.completedRoadmaps || [];
+  //       $scope.addTotalNodesOfMaps($scope.myMaps);
+  //       $scope.addTotalNodesOfMaps($scope.followed);
+  //       $scope.addTotalNodesOfMaps($scope.completed);
 
-  $scope.addCompletedNodes = function(inProgressObj){
-    $scope.followed.forEach(function(map){
-      map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
-      map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
-    });
+  //       $scope.addCompletedNodes(response.data.data.inProgress);
+  //   }, // on failure
+  //     function( err ){
+  //       console.log("error with dashData request", err);
+  //     }
+  //   );
+  // };
 
-  };
+  // $scope.addCompletedNodes = function(inProgressObj){
+  //   $scope.followed.forEach(function(map){
+  //     map.nodesCompleted = $scope.calcCompletedNodes( inProgressObj, map._id );
+  //     map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
+  //   });
 
-  $scope.calcCompletedNodes = function(inProgressObj, mapID){
-    var count = 0;
-    var roadmapNodeIDs = [];
+  // };
 
-    //iterate through the map's nodes and get array of IDs
-    inProgressObj.roadmaps.forEach(function(map){
-      if(map._id === mapID){
-        map.nodes.forEach(function(node){
-          roadmapNodeIDs.push(node._id);
-        });
-      }
-    });
-    //check those node IDs against the inProgess node IDs
-    inProgressObj.nodes.forEach(function(node){
-      if(roadmapNodeIDs.indexOf(node._id) !== -1){
-        count++;
-      }
-    });
+  // $scope.calcCompletedNodes = function(inProgressObj, mapID){
+  //   var count = 0;
+  //   var roadmapNodeIDs = [];
 
-    return count;
-  };
+  //   //iterate through the map's nodes and get array of IDs
+  //   inProgressObj.roadmaps.forEach(function(map){
+  //     if(map._id === mapID){
+  //       map.nodes.forEach(function(node){
+  //         roadmapNodeIDs.push(node._id);
+  //       });
+  //     }
+  //   });
+  //   //check those node IDs against the inProgess node IDs
+  //   inProgressObj.nodes.forEach(function(node){
+  //     if(roadmapNodeIDs.indexOf(node._id) !== -1){
+  //       count++;
+  //     }
+  //   });
+
+  //   return count;
+  // };
 
   $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
-    localStorage.setItem('user.currentRoadMap', mapID);
+    localStorage.setItem('roadmap.id', mapID);
     $state.go('roadmapTemplate');
   };
   
@@ -151,7 +164,7 @@ angular.module('dash.ctrl', [])
   };
 
 // make ajax calls to get table data
-  $scope.getDashData();
+  // $scope.getDashData();
 
 }]);
 
