@@ -1,92 +1,56 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http, $state){
+.controller('CreationController', ['$scope', '$state', 'Server', function($scope, $state, Server){
 
-  // As user will be building a brand new roadmap, the currently  
-  // active one is removed from local storage.
+  // As user will be building a brand new roadmap, so the   
+  // currently active one must be  removed from local storage
   localStorage.removeItem('roadmap.id');
 
-  var buildRoadmap = function() {
-    author = localStorage.getItem('user.username') || 'bowieloverx950';
-
-    return {
+  var createRoadmap = function() {
+    return Server.createRoadmap({
       title: $scope.roadmapTitle,
-      description: $scope.roadmapDescription,
-      author: author
-    };
-  };
-
-  var postRoadmap = function(roadmap) {
-    var user = localStorage.getItem('user.username');
-    var token = localStorage.getItem('user.authToken');
-    var encodedAuthHeader = btoa(user + ':' + token);
-
-   return $http({
-      method: 'POST',
-      url: '/api/roadmaps',
-      data: roadmap,
-      headers: {
-        'Authorization': 'Basic ' + encodedAuthHeader
-      }
-    }).then(function (res) {
-      localStorage.setItem('roadmap.id', res.data.data._id);
-      console.log('Roadmap created:', res.data.data);
-    }, function(err){
-      if (err) return err;
+      description: $scope.roadmapDescription
+    })
+    .then(function (roadmap) {
+      localStorage.setItem('roadmap.id', roadmap._id);
     });
-
   };
 
-  var buildNode = function() {
+  var createNode = function() {
     var parent = localStorage.getItem('roadmap.id');
 
-    return {
+    return Server.createNode({
       title: $scope.nodeTitle,
       description: $scope.nodeDescription,
       resourceType: $scope.nodeType,
       resourceURL: $scope.nodeUrl,
       imageUrl: $scope.nodeImageUrl,
       parentRoadmap: parent
-    };
-  };
-
-  var postNode = function(node) {
-
-    return $http.post('/api/nodes', node)
-    .then(function (res) {
-      console.log('Node created:', res.data.data);
     });
-
   };
 
-  $scope.submitAndRefresh = function() {
-    $scope.submitNode()
-    .then(function() {
-      Materialize.updateTextFields();
-    })
-    
-  };
-
-  $scope.submitAndExit = function() {
-    $scope.submitNode()
-    .then(function() {
-      $state.go('roadmapTemplate');
-    });
-    
-  };
-
-  $scope.submitNode = function() {
+  // Creates the roadmap before the node if necessary
+  var checkThenCreate = function() {
     if (!localStorage.getItem('roadmap.id')) {
-
-      postRoadmap(buildRoadmap())
-      .then(function (err) {
-        if (err) return console.log(err);
-        return postNode(buildNode());
+      return createRoadmap().then(function() {
+        return createNode();
       });
 
     } else {
-      return postNode(buildNode());
+      return createNode();
     }
   };
 
-});
+  $scope.submitAndRefresh = function() {
+    checkThenCreate().then(function() {
+      Materialize.updateTextFields();
+    });
+  };
+
+  $scope.submitAndExit = function() {
+    checkThenCreate().then(function() {
+      $state.go('roadmapTemplate');
+    });
+  };
+
+}]);

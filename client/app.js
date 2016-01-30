@@ -5,7 +5,8 @@ angular.module('app', [
   'app.dash',
   'app.roadmaps',
   'app.browse',
-  'app.creation'
+  'app.creation',
+  'app.common'
   ])
 .run( function($rootScope, $state){
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
