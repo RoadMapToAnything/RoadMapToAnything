@@ -1,4 +1,4 @@
-var app = angular.module('app.services', [])
+angular.module('app.dash')
   .factory('DashboardFactory',['$http','$state', function($http, $state){
   return {
 
@@ -36,32 +36,33 @@ var app = angular.module('app.services', [])
 
       function addCompletedNodes (inProgressObj, dashData){
         dashData.followed.forEach(function(map){
-          map.nodesCompleted = this.calcCompletedNodes( inProgressObj, map._id );
+          map.nodesCompleted = calcCompletedNodes( inProgressObj, map._id );
           map.percentComplete = Math.floor(( map.nodesCompleted / map.totalNodes ) * 100);
         });
       };
-    },
 
-    calcCompletedNodes : function(inProgressObj, mapID){
-      var count = 0;
-      var roadmapNodeIDs = [];
+      // to be added to User factory:
+      function calcCompletedNodes (inProgressObj, mapID){
+        var count = 0;
+        var roadmapNodeIDs = [];
 
-      // get array of IDs for the nodes attached to a map in progress
-      inProgressObj.roadmaps.forEach(function(map){
-        if(map._id === mapID){
-          map.nodes.forEach(function(node){
-            roadmapNodeIDs.push(node._id);
-          });
-        }
-      });
-      // check those IDs against the inProgess node IDs
-      inProgressObj.nodes.forEach(function(node){
-        if(roadmapNodeIDs.indexOf(node._id) !== -1){
-          count++;
-        }
-      });
+        // get array of IDs for the nodes attached to a map in progress
+        inProgressObj.roadmaps.forEach(function(map){
+          if(map._id === mapID){
+            map.nodes.forEach(function(node){
+              roadmapNodeIDs.push(node._id);
+            });
+          }
+        });
+        // check those IDs against the inProgess node IDs
+        inProgressObj.nodes.forEach(function(node){
+          if(roadmapNodeIDs.indexOf(node._id) !== -1){
+            count++;
+          }
+        });
 
-      return count;
+        return count;
+      };
     },
 
     goToMap : function (mapID){
