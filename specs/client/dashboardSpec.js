@@ -1,4 +1,4 @@
-describe('DashboardController', function () {
+xdescribe('DashboardController', function () {
   var $scope, $rootScope, createController;
 
   beforeEach(module('app'));
