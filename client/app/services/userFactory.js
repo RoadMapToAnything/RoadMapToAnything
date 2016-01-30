@@ -1,6 +1,6 @@
-angular.module('services.user', [])
+angular.module('services.user', ['services.server'])
 
-.factory('User', ['$http', function($http){
+.factory('User', ['$http', 'Server', function($http, Server){
 
   var User = {};
 
@@ -55,19 +55,19 @@ angular.module('services.user', [])
    * * * * * * * * * * * * * * * * * * * * */
 
   User.followRoadmapById = function(id) {
-
+    return Server.updateUser({ 'inProgress.roadmaps': id });
   };
 
   User.unfollowRoadmapById = function(id) {
-    
+    // TODO: Enable unfollowing roadmaps.
   };
 
   User.completeNodeById = function(id) {
-    
+    return Server.updateUser({ 'inProgress.nodes': id });
   };
 
   User.completeRoadmapById = function(id) {
-    
+    return Server.updateUser({ 'completedRoadmaps': id });
   };
 
 
