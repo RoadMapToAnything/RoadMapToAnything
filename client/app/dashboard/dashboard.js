@@ -60,9 +60,8 @@ angular.module('dash.ctrl', ['services.user'])
   });
 
 
-  $scope.goToMap = function (mapID){  //refactor to factory, browse also uses
+  $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
-    console.log('routing to map ID', mapID);
   };
   
   $scope.updateLocalDataAfterDelete = function (arr, id) {
