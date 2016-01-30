@@ -1,4 +1,4 @@
-angular.module('app.auth', [])
+angular.module('auth.ctrl', [])
 
 .controller('AuthController', ['$scope', '$http','$state', function($scope, $http, $state){
 

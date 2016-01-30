@@ -1,4 +1,4 @@
-angular.module('app.main', [])
+angular.module('main.ctrl', [])
 .controller('MainController', [ '$scope', '$state', function($scope, $state){
   
   $scope.logout = function () {

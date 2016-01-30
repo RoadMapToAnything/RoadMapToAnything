@@ -1,4 +1,4 @@
-angular.module('app.roadmaps', [])
+angular.module('roadmaps.ctrl', [])
 // Roadmaps have a title, description, author, nodes array, all nodes: , created time
   //
 .controller('RoadMapsController', function($scope,$http){
