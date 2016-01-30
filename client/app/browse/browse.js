@@ -1,4 +1,4 @@
-angular.module('app.browse', [])
+angular.module('browse.ctrl', [])
 
 .controller('BrowseController', ['$scope', '$http', '$state', '$timeout', function($scope, $http, $state, $timeout){
   $scope.mapData = [];

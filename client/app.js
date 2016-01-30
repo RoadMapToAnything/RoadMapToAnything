@@ -1,12 +1,11 @@
 angular.module('app', [
   'ui.router',
-  'app.main',
-  'app.auth',
-  'app.dash',
-  'app.roadmaps',
-  'app.browse',
-  'app.creation',
-  'app.common'
+  'main.ctrl',
+  'auth.ctrl',
+  'dash.ctrl',
+  'roadmaps.ctrl',
+  'browse.ctrl',
+  'creation.ctrl'
   ])
 .run( function($rootScope, $state){
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){

@@ -1,4 +1,4 @@
-angular.module('app.creation', [])
+angular.module('creation.ctrl', ['services.server'])
 
 .controller('CreationController', ['$scope', '$state', 'Server', function($scope, $state, Server){
 

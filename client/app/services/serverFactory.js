@@ -1,4 +1,4 @@
-angular.module('app.common', [])
+angular.module('services.server', [])
 
 .factory('Server', ['$http', function($http){
   var Server = {};

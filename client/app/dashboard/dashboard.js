@@ -1,4 +1,4 @@
-angular.module('app.dash', [])
+angular.module('dash.ctrl', [])
 
 .controller('DashboardController', ['$scope','$http', '$state', function($scope, $http, $state){
   $scope.followed = [];
