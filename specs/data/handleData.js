@@ -8,122 +8,52 @@ var User = require('../../server/api/users/userModel.js'),
     nodes = data.nodes;
 
 
-var seedUsers = function(next) {
+var checkItems = function(seed, db, next, fail) {
 
-  var addUser = function(i) {
-    if (i >= users.length) return next && next();
+  var checkOne = function (i) {
+    if (i >= seed.length) return next && next();
 
-    User(users[i]).save()
-      .then(function (user) {
-        if (user) users[i] = user;
-        addUser(i + 1);
-      });
+    db.findOne(seed[i]._id)
+    .then(function (item) {
+      if (!item) checkOne(i + 1);
+      else if (fail) fail();
+    });
   };
 
-  addUser(0);
+  checkOne(0);
 };
-
-
-var clearUsers = function(next) {
-
-  var removeUser = function(i) {
-    if (i >= users.length) return next && next();
-
-    User.findOne(users[i].username)
-      .then(function (user) {
-        if (user) user.remove();
-        removeUser(i + 1);
-      });
-  };
-
-  removeUser(0);
-};
-
-
-var seedRoadmaps = function(next) {
-
-  var addRoadmap = function(i) {
-    if (i >= maps.length) return next && next();
-
-    Roadmap(maps[i]).save()
-      .then(function (map) {
-        if (map) maps[i] = map;
-        addRoadmap(i + 1);
-      });
-  };
-
-  addRoadmap(0);
-};
-
-
-var clearRoadmaps = function(next) {
-
-  var removeRoadmap = function(i) {
-    if (i >= maps.length) return next && next();
-
-    Roadmap.findOne(maps[i]._id)
-      .then(function (map) {
-        if (map) map.remove();
-        removeRoadmap(i + 1);
-      });
-  };
-
-  removeRoadmap(0);
-};
-
-
-var seedNodes = function(next) {
-
-  var addNode = function(i) {
-    if (i >= nodes.length) return next && next();
-
-    Node(nodes[i]).save()
-      .then(function (node) {
-        if (node) nodes[i] = node;
-        addNode(i + 1);
-      });
-  };
-
-  addNode(0);
-};
-
-var clearNodes = function(next) {
-
-  var removeNode = function(i) {
-    if (i >= nodes.length) return next && next();
-
-    Node.findOne(nodes[i]._id)
-      .then(function (node) {
-        if (node) node.remove();
-        removeNode(i + 1);
-      });
-  };
-
-  removeNode(0);
-};
-
 
 module.exports.checkData = function(next, fail) {
+  checkItems(users, User, function() {
+    checkItems(maps, Roadmap, function() {
+      checkItems(nodes, Node, function() {
+        if (next) next();
+      }, fail);
+    }, fail);
+  }, fail);
+};
 
-  var checkUser = function (i) {
-    if (i >= nodes.length) return next && next();
 
-    User.findOne(users[i].username)
-      .then(function (user) {
-        if (!user) checkUser(i + 1);
-        else if (fail) fail();
+var seedItems = function(seed, db, next) {
+
+  var seedOne = function(i) {
+    if (i >= seed.length) return next && next();
+
+    db(seed[i]).save()
+      .then(function (node) {
+        if (node) seed[i] = node;
+        seedOne(i + 1);
       });
   };
 
-  checkUser(0);
+  seedOne(0);
 };
-
 
 module.exports.seedData = function(next) {
 
-  seedUsers(function() {
-    seedRoadmaps(function() {
-      seedNodes(function() {
+  seedItems(users, User, function() {
+    seedItems(maps, Roadmap, function() {
+      seedItems(nodes, Node, function() {
         console.log('Seeded DB with test data:');
         console.log(users);
         console.log(maps);
@@ -135,11 +65,26 @@ module.exports.seedData = function(next) {
 };
 
 
+var clearItems = function(seed, db, next) {
+
+  var clearOne = function(i) {
+    if (i >= seed.length) return next && next();
+
+    db.findOne(seed[i]._id)
+      .then(function (item) {
+        if (item) item.remove();
+        clearOne(i + 1);
+      });
+  };
+
+  clearOne(0);
+};
+
 module.exports.clearData = function(next) {
 
-  clearNodes(function() {
-    clearRoadmaps(function() {
-      clearUsers(function() {
+  clearItems(nodes, Node, function() {
+    clearItems(maps, Roadmap, function() {
+      clearItems(users, User, function() {
         if (next) next();
       });
     });
