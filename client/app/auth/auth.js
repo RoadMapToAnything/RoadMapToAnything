@@ -14,7 +14,7 @@ angular.module('auth.ctrl', ['services.user'])
 
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {
-      $state.go('dashboard');
+      $state.go('home.dashboard');
     })
     .catch(function (err) {
       if (err.status === 401) {
@@ -34,7 +34,7 @@ angular.module('auth.ctrl', ['services.user'])
       password: $scope.attemptedPassword
     })
     .then(function (res) {
-      $state.go('dashboard');
+      $state.go('home.dashboard');
     })
     .catch(function (err) {
       console.log('Login failed:', err);
