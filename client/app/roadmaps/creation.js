@@ -1,6 +1,6 @@
 angular.module('app.creation', [])
 
-.controller('CreationController', function($scope, $http, $state, Server){
+.controller('CreationController', ['$scope', '$state', 'Server', function($scope, $state, Server){
 
   // As user will be building a brand new roadmap, so the   
   // currently active one must be  removed from local storage
@@ -53,4 +53,4 @@ angular.module('app.creation', [])
     });
   };
 
-});
+}]);
