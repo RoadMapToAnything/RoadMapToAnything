@@ -46,6 +46,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 
 ## Internal APIs
+On any project the internal APIs are many, and generally undocumented. For ease reference, both for the devel;opment team and future contributers, they are exhaustively documented here.
 
 ### Test Data
 
@@ -116,6 +117,49 @@ There are three types of objects stored in the database. When retrieved from the
   updated      : ... // Date
 }
 
+```
+
+### Server API
+The server uses a stateless RESTful API to for all database access. It supports four HTTP verbs: `GET` for retrieving data, `POST` for creating new objects, `PUT` for updating existing objects, and `DELETE` for removing objects. All `POST`, `PUT`, and `DELETE` routes require an authorization token, with the exception of `POST /api/signup`.
+
+#### The Routes
+Most routes follow a `/api/:data_type/:data_identifier` pattern. When an aspect of a route is prefaced with a colon `:` it refers to a variable. ALL of the following routes must be prefaced with `/api`.
+```javascript
+GET     /login                // Authenticate user
+POST    /signup               // Create a user
+
+GET     /users                // Get an array of users 
+GET     /users/:username      // Get a specific user
+PUT     /users/:username      // Update the user's info
+DELETE  /users/:username      // Delete the user
+
+GET     /roadmaps             // Get an array of roadmaps
+GET     /roadmaps/:roadmapId  // Get a specific roadmap
+POST    /roadmaps             // Create a new roadmap
+PUT     /roadmaps/:roadmapId  // Update a roadmap
+DELETE  /roadmaps/:roadmapId  // Delete a roadmap
+
+GET     /nodes/:nodeId        // Get a specific node
+POST    /roadmaps/:roadmapID/nodes // create a new node
+POST    /nodes                // create a new node
+PUT     /nodes/:nodeId        // Update a node
+DELETE  /nodes/:nodeId        // Delete a node
+```
+
+#### Query Strings
+In order to login the user, their credentials must be passed through the following query string appended to `/api/login`:
+```javascript
+?username=:username&password=:password
+```
+
+In addition the following query strings are supported on any of the nonspecific `GET` routes that send back an array of objects. Support for other query strings may be implemented at a later date.
+```javascript
+?sort=:property     // Sorts results ascending by the given :property
+?sort=-:property    // Sorts results in descending order
+
+?:property=:value   // Filters results for :property equaling :value
+?:property=>:value  // Filters results for :property being greater than :value
+?:property=<:value  // Filters results for :property being less than :value
 ```
 
 ### Client Services
