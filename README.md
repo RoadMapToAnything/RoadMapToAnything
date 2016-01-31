@@ -19,8 +19,9 @@ For anything you want to learn, there are a lot of useful, but unconnected resou
   2. [Contributing](#contributing)
 4. [Internal APIs](#internal-apis)
   1. [Test Data](#test-data)
-  2. [Client Services](#client-services)
+  2. [DB Schema](#db-schema)
   3. [Server API](#server-api)
+  4. [Client Services](#client-services)
 
 
 ## Usage
@@ -68,6 +69,55 @@ Will clear the test data, and then reseed it. Additionally, the optional `-test`
 npm run reset -test
 ```
 
+### DB Schema
+There are three types of objects stored in the database. When retrieved from the server, all references to other database objects will be fully populated with complete objects. These objects have the following properties:
+
+####[User](/blob/master/server/api/users/userModel.js)
+```javascript
+{
+  username           : ... // String
+  password           : ... // String
+  firstName          : ... // String
+  lastName           : ... // String
+  imageUrl           : ... // String
+  authoredRoadmaps   : [...] // Array of Roadmap references
+  inProgress.roadmaps: [...] // Array of Roadmap references
+  inProgress.nodes   : [...] // Array of Node references
+  completedRoadmaps  : [...] // Array of Roadmap references
+  created            : ... // Date
+  updated            : ... // Date 
+}
+
+```
+
+####[Roadmap](/blob/master/server/api/roadmaps/roadmapModel.js)
+```javascript
+{
+  title      : ... // String
+  description: ... // String
+  author     : ... // User reference
+  nodes      : [...] // Array of 
+  created    : ... // Date 
+  updated    : ... // Date 
+}
+
+```
+
+####[Node](/blob/master/server/api/nodes/nodeModel.js)
+```javascript
+{
+  title        : ... // String
+  description  : ... // String
+  resourceType : ... // String
+  resourceURL  : ... // String
+  imageUrl     : ... // String
+  parentRoadmap: ... // Roadmap reference
+  created      : ... // Date
+  updated      : ... // Date
+}
+
+```
+
 ### Client Services
 
 A number of Angular factories have been built in order to centralize many common client-side tasks. In order to use these factories in a module, make sure they are properly injected. For example, to inject the User factory:
@@ -101,18 +151,23 @@ Removes the user's username and authToken from local storage.
 Returns `true` if the user has credentials in local storage, `false` if they do not.
 
 **User.followRoadmapById(roadmapId)**
+*aliases: followRoadmap, followMap, follow*
 Accepts a roadmap id, and adds that roadmap to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.unfollowRoadmapById(roadmapId)**
+*aliases: unfollowRoadmap, unfollowMap, unfollow*
 Accepts a roadmap id, and removes that roadmap to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.completeNodeById(nodeId)**
+*aliases: completeNode*
 Accepts a node id, and adds that node to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.completeRoadmapById(roadmapId)**
+*aliases: completeRoadmap, completeMap*
 Accepts a roadmap id, and adds that roadmap to the user's `completed` array. Removes the corresponding roadmap and nodes from `inProgress`. Returns a promise with the entire user object.
 
 **User.getRoadmapProgress([user], [roadmapId])**
+*aliases: getMapProgress, getProgress*
 Accepts a user object and/or a roadmap id. If no user is passed, then it will be fetched from the server, and a promise will be returned. If a roadmap id is passed then the progress data for the specified roadmap will be returned. If no roadmap id is passed, then an array with the progress data for all of the user's `inProgress` roadmaps will be returned. Progress data is formatted like this:
 ```javascript
 {
