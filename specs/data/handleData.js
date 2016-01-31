@@ -54,11 +54,7 @@ module.exports.seedData = function(next) {
   seedItems(users, User, function() {
     seedItems(maps, Roadmap, function() {
       seedItems(nodes, Node, function() {
-        console.log('Seeded DB with test data:');
-        console.log(users);
-        console.log(maps);
-        console.log(nodes);
-        if (next) next();
+        if (next) next([users, maps, nodes]);
       });
     });
   });

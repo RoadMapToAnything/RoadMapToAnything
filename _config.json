@@ -1,7 +1,10 @@
 {
   "PORT": {
-    "LOCAL": 3000,
+    "MAIN": 3000,
     "TEST": 5000
   },
-  "DB_URI": "mongodb://localhost/roadmapToAnything"
+  "DB_URI": {
+    "MAIN": "mongodb://localhost/roadmapToAnything",
+    "TEST": "mongodb://localhost/roadmapTestDB"
+  }
 }
