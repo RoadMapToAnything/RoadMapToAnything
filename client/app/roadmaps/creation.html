@@ -12,13 +12,13 @@
   <form class="col s12">
     <div class="row">
       <div class="input-field col s8">
-        <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle">
+        <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle" required>
         <label for="roadmap_title">Give it a title</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription">
+        <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription" required>
         <label for="roadmap_description">Tell us about it</label>
       </div>
     </div>
@@ -31,30 +31,29 @@
   <form class="col s12" name="nodeForm">
     <div class="row">
       <div class="input-field col s8">
-        <input id="node_title" type="text" class="validate" ng-model="nodeTitle">
+        <input id="node_title" type="text" class="validate" ng-model="nodeTitle" input>
         <label for="node_title">Title the node</label>
       </div>
       <div class="input-field col s4">
         <select ng-model="nodeType">
-          <option value="" disabled selected>What is it?</option>
-          <option value="Blog Post">Blog Post</option>
+          <option value="Blog Post" selected>Blog Post</option>
           <option value="Class">Class</option>
           <option value="Video">Video</option>
           <option value="Music">Music</option>
         </select>
-        <label>Node Type</label>
+        <label>What is it?</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <input id="node_description" type="text" class="validate" ng-model="nodeDescription">
+        <input id="node_description" type="text" class="validate" ng-model="nodeDescription" required>
         <label for="node_description">Describe this step</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s6">
         <input id="node_url" type="url" class="validate" ng-model="nodeUrl">
-        <label for="node_url">What's the link?</label>
+        <label for="node_url">What's the link? (optional)</label>
       </div>
       <div class="input-field col s6">
         <input id="node_image_url" type="url" class="validate" ng-model="nodeImageUrl">

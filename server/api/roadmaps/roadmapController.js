@@ -11,6 +11,9 @@ module.exports = {
   createRoadmap : function (req, res, next) {
     var author = getAuthHeader(req).name;
     var newRoadmap = req.body;
+    console.log('API: creating roadmap');
+    console.log('API: author', author);
+    console.log('API: creating roadmap', newRoadmap);
 
     User.findOne({username: author})
       .then(function (user) {
@@ -20,7 +23,11 @@ module.exports = {
       .then(function(dbResults){
         res.status(201).json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(
+        function(){
+          console.log('API: error creating roadmap');
+          handleError(next)
+        });
   },
 
   getRoadmaps : function (req, res, next) {
