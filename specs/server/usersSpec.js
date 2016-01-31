@@ -2,10 +2,14 @@ process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var expect = require('chai').expect,
     request = require('supertest'),
+    btoa = require('btoa'),
 
     User = require('../../server/api/users/userModel.js'),
-    testUser = require('../data/testData.json').users[0],
-    newUser = require('../data/testData.json').newUser,
+    data = require('../data/testData.json'),
+    testUser = data.users[0],
+    testMap = data.maps[0],
+    testNode = data.nodes[0],
+    newUser = data.newUser,
 
     server = require('../../server/server.js'),
     route = '/api/users';
@@ -29,10 +33,10 @@ describe('The users API', function() {
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Authentication', function() {
-    var username = newUser.username;
-    var password = newUser.password;
+    var name = newUser.username;
+    var pass = newUser.password;
 
-    it('should signup a new user', function (done) {
+    it('Should signup a new user', function (done) {
 
       request(server.app)
       .post('/api/signup')
@@ -40,15 +44,14 @@ describe('The users API', function() {
       .expect('Content-Type', /json/)
       .expect(201)
       .end(function (err, res) {
-
-        expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('username', name);
         expect(res.body.data).to.have.property('authToken');
         newUser.authToken = res.body.data.authToken;
 
-        User.findOne({username: username})
+        User.findOne({username: name})
         .then(function (user) {
 
-          expect(user).to.have.property('username', username);
+          expect(user).to.have.property('username', name);
           done();
 
         });
@@ -57,16 +60,16 @@ describe('The users API', function() {
 
     });
 
-    it('should be able to log in', function (done) {
+    it('Should be able to log in', function (done) {
 
       request(server.app)
       .get('/api/login')
-      .query({username: username, password: password})
+      .query({username: name, password: pass})
       .expect('Content-Type', /json/)
       .expect(201)
       .end(function (err, res) {
 
-        expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('username', name);
         expect(res.body.data).to.have.property('authToken');
         done();
 
@@ -74,17 +77,19 @@ describe('The users API', function() {
 
     });
 
-    it('should delete a user', function (done) {
+    it('Should delete a user', function (done) {
+      var header = btoa('Basic ' + name + newUser.authToken);
 
       request(server.app)
-      .delete(route + '/' + username)
+      .delete(route + '/' + name)
+      .set('Authorization', header)
       .expect('Content-Type', /json/)
       .expect(201)
       .end(function (err, res) {
 
-        expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('username', name);
 
-        User.findOne({username: username})
+        User.findOne({username: name})
         .then(function (user) {
 
           expect(user).to.be.null;
@@ -103,34 +108,71 @@ describe('The users API', function() {
    *              /api/users               *
    * * * * * * * * * * * * * * * * * * * * */
 
+  describe('Fetching A Group of Users', function() {
+    var users;
+
+    before(function(done) {
+      request(server.app)
+      .get(route)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end(function (err, res) {
+        users = res.body.data;
+        done();
+
+      });
+    });
+
+    it('Should return an array of users', function() {
+      expect(users).to.be.an('array');
+      expect(users).to.not.be.empty;
+      expect(users[0]).to.have.property('username', testUser.username);
+    });
+
+    it('Should have a populated authored roadmaps array', function() {
+      var maps = users[0].authoredRoadmaps;
+
+      expect(maps).to.be.an('array');
+      expect(maps).to.not.be.empty;
+      expect(maps[0]).to.have.property('title', testMap.title);
+    });
+
+    it('Should populate its authored roadmaps', function() {
+      var nodes = users[0].authoredRoadmaps[0].nodes;
+
+      expect(nodes).to.be.an('array');
+      expect(nodes).to.not.be.empty;
+      expect(nodes[0]).to.have.property('title', testNode.title);
+    });
+
+  });
+
+  describe('Fetching a Single User', function() {
+    var name = testUser.username;
+    var user;
+
+    before(function(done) {
+      request(server.app)
+      .get(route)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end(function (err, res) {
+        user = res.body.data;
+        done();
+
+      });
+    });
+
+  });
+
   describe('Fetching Users', function() {
     var username = testUser.username;
 
     after(function(done) {
       User.findOneAndUpdate({username: username}, {firstName: testUser.firstName})
-        .then(function() {
-          done();
-        });
-    });
-
-    it('should retrieve an array of users with populated roadmaps', function (done) {
-
-      request(server.app)
-        .get(route)
-        .expect('Content-Type', /json/)
-        .expect(200)
-        .end(function (err, res) {
-          console.log(res.body.data[0].completedRoadmaps);
-          expect(res.body.data).to.be.an('array');
-          expect(res.body.data).to.not.be.empty;
-          expect(res.body.data[0]).to.have.property('username');
-          expect(res.body.data[0].authoredRoadmaps).to.be.an('array');
-          expect(res.body.data[0].authoredRoadmaps).to.not.be.empty;
-          expect(res.body.data[0].authoredRoadmaps[0]).to.have.property('title');
-          done();
-
-        });
-
+      .then(function() {
+        done();
+      });
     });
 
     it('should retrieve a specific user with name properties, timestamps, and populated authoredRoadmaps', function (done) {
