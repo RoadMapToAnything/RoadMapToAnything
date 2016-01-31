@@ -18,43 +18,6 @@ angular.module('roadmaps.factory', [])
         })
     };
 
-
-
-  // Server.getRoadmapById = function(id) {
-
-  //   return $http.get('/api/roadmaps/' + id)
-  //   .then(standardResponse)
-  //   .catch(standardError);
-  // };
-
-
-  // Server.createRoadmap = function(roadmap) {
-
-  //  return $http({
-  //     method: 'POST',
-  //     url: '/api/roadmaps',
-  //     data: roadmap,
-  //     headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-  //   })
-  //   .then(standardResponse)
-  //   .catch(standardError);
-  // };
-
-  //   var standardResponse = function(res) {
-  //   console.log( '(' + res.status + ') ' + 
-  //     res.config.method + ' successful for ' + 
-  //     parseName(res) + ': ', res.data.data );
-
-  //   return res.data.data;
-  // };
-
-  // var standardError = function(err) {
-  //   console.log( '(' + err.status + ') ' +
-  //     err.config.method + ' failed for ' +
-  //     parseName(err) + ': ', err.data );
-  // };
-
-
     return {
       roadmapId: roadmapId,
       getRoadMap: getRoadMap  
