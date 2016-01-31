@@ -84,7 +84,7 @@ angular.module('app', [
   //state for roadmap
   .state('home.roadmapTemplate', {
     auth: true,
-    url: '/roadmaps',
+    url: 'roadmaps',
     views: {
       'content@': {
         templateUrl: 'app/roadmaps/content.html',
