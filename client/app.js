@@ -4,6 +4,7 @@ angular.module('app', [
   'auth.ctrl',
   'dash.ctrl',
   'roadmaps.ctrl',
+  'roadmaps.factory',
   'browse.ctrl',
   'creation.ctrl'
 
@@ -84,7 +85,7 @@ angular.module('app', [
   //state for roadmap
   .state('home.roadmapTemplate', {
     auth: true,
-    url: '/roadmaps',
+    url: 'roadmaps',
     views: {
       'content@': {
         templateUrl: 'app/roadmaps/content.html',
