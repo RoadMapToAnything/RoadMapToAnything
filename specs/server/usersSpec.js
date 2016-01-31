@@ -78,7 +78,7 @@ describe('The users API', function() {
     });
 
     it('Should delete a user', function (done) {
-      var header = btoa('Basic ' + name + newUser.authToken);
+      header = 'Basic ' + btoa(name + ':' + newUser.authToken);
 
       request(server.app)
       .delete(route + '/' + name)

@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test'; // disable morgan
+process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var expect = require('chai').expect,
     request = require('supertest'),
