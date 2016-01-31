@@ -188,26 +188,37 @@ describe('The users API', function() {
 
   describe('Updating a User', function() {
     var name = testUser.username;
-    var timestamp;
+    var timestamp, header;
 
-    before(function(done) {
+    before(function (done) {
       User.findOne({username: name})
       .then(function (user) {
         timestamp = user.updated;
-        done();
+      })
+      .then(function() {
+        request(server.app)
+        .get('/api/login')
+        .query({username: name, password: testUser.password})
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function (err, res) {
+          header = btoa('Basic ' + name + res.body.data.authToken);
+          done();
+        });
       });
     });
 
-    after(function(done) {
+    after(function (done) {
       User.findOneAndUpdate({username: name}, {firstName: testUser.firstName})
       .then(function() {
         done();
       });
     });
 
-    it('Should update a user, updating the timestamp', function(done) {
+    it('Should update a user, updating the timestamp', function (done) {
       request(server.app)
       .put(route + '/' + name)
+      .set('Authorization', header)
       .send({firstName: 'Robert'})
       .expect('Content-Type', /json/)
       .expect(201)
