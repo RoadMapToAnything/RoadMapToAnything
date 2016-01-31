@@ -1,10 +1,11 @@
-process.env.NODE_ENV = 'test'; // disable morgan
+process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var expect = require('chai').expect,
     request = require('supertest'),
 
     User = require('../../server/api/users/userModel.js'),
     testUser = require('../data/testData.json').users[0],
+    newUser = require('../data/testData.json').newUser,
 
     server = require('../../server/server.js'),
     route = '/api/users';
@@ -28,69 +29,70 @@ describe('The users API', function() {
    * * * * * * * * * * * * * * * * * * * * */
 
   describe('Authentication', function() {
-    var username = 'iAmATest';
-    var password = 'shhh';
+    var username = newUser.username;
+    var password = newUser.password;
 
-    it('should create a new user', function (done) {
+    it('should signup a new user', function (done) {
 
       request(server.app)
-        .post('/api/signup')
-        .send({username: username, password: password})
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function (err, res) {
+      .post('/api/signup')
+      .send(newUser)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .end(function (err, res) {
 
-          expect(res.body.data).to.have.property('username', username);
-          expect(res.body.data).to.have.property('authToken');
+        expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('authToken');
+        newUser.authToken = res.body.data.authToken;
 
-          User.findOne({username: username})
-            .then(function (user) {
+        User.findOne({username: username})
+        .then(function (user) {
 
-              expect(user).to.have.property('username', username);
-              done();
+          expect(user).to.have.property('username', username);
+          done();
 
-            });
-          
         });
+        
+      });
 
     });
 
     it('should be able to log in', function (done) {
 
       request(server.app)
-        .get('/api/login')
-        .query({username: username, password: password})
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function (err, res) {
+      .get('/api/login')
+      .query({username: username, password: password})
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .end(function (err, res) {
 
-          expect(res.body.data).to.have.property('username', username);
-          expect(res.body.data).to.have.property('authToken');
-          done();
+        expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('authToken');
+        done();
 
-        });
+      });
 
     });
 
     it('should delete a user', function (done) {
 
       request(server.app)
-        .delete(route + '/' + username)
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function (err, res) {
+      .delete(route + '/' + username)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .end(function (err, res) {
 
-          expect(res.body.data).to.have.property('username', username);
+        expect(res.body.data).to.have.property('username', username);
 
-          User.findOne({username: username})
-            .then(function (user) {
+        User.findOne({username: username})
+        .then(function (user) {
 
-              expect(user).to.be.null;
-              done();
-
-            });
+          expect(user).to.be.null;
+          done();
 
         });
+
+      });
 
     });
 

@@ -92,8 +92,8 @@
   ],
   "newUser": {
     "_id"      : "00000000000000000000000f",
-    "username" : "newtestuser",
-    "password" : "pass",
+    "username" : "iamatest",
+    "password" : "shhh",
     "firstName": "New",
     "lastName" : "User",
     "imageUrl" : "http://cdn.osxdaily.com/wp-content/uploads/2014/07/users-and-groups-icon-mac.png"
