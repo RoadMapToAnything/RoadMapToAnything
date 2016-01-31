@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test'; // disable morgan
+process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var request  = require('supertest'),
     expect   = require('chai').expect,
@@ -6,7 +6,11 @@ var request  = require('supertest'),
     server   = require('../../server/server.js'),
     Node     = require('../../server/api/nodes/nodeModel.js'),
     Roadmap  = require('../../server/api/roadmaps/roadmapModel.js'),
-    seedNode = require('../data/testData.json').nodes[0];
+
+    data     = require('../data/testData.json'),
+    testNode = data.nodes[0],
+    newMap   = data.newMap,
+    newNode  = data.newNode;
 
 
 
@@ -18,61 +22,40 @@ var request  = require('supertest'),
 /* * * * * * * * * * * * * * * * * * * * * * * */
 
 describe('Node Routes - /api/nodes', function() {
-  
-  var testMap = { 
-    title      : 'TestMap',
-    description: 'Learn TDD',
-    author     : '56a04c964c984dbc4f2544d7',
-    nodes      : []
-  };
-
-  var testNode = { 
-    title        : 'TestNode',
-    description  : 'Learn TDD',
-    resourceType : 'link',
-    resourceURL  : 'https://en.wikipedia.org/wiki/Test-driven_development',
-    parentRoadmap: null
-  };
 
 
   /* * * * * * * * * * * * * * * * * * * * * 
   *    POST /api/nodes/                    *
   * * * * * * * * * * * * * * * * * * * * */
 
-  describe('POST /api/nodes', function(){
+  describe('POST /api/nodes', function() {
 
-    var testMapID;
-
-    before('Create test Roadmap', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(dbResults){
-          testMapID = dbResults._id;
-          done();
-        })
-        .catch(function(err){ throw err; })
+    before('Create test Roadmap', function (done) {
+      Roadmap(newMap)
+      .save()
+      .then(function (dbResults) {
+        newMap._id = dbResults._id;
+        done();
+      })
+      .catch(function(err){ throw err; });
     });
 
-    after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: 'TestNode'})
-        .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'})
-        })
-        .then(function(){ 
-          delete testNode.parentRoadmap; // reset to original state
-          done(); 
-        })
-        .catch(function(err){ throw err; });
+    after('Remove test Roadmap and Node', function (done) {
+      Node.findOneAndRemove({title: newNode.title})
+      .then(function() { 
+        return Roadmap.findOneAndRemove({title: newMap.title});
+      })
+      .then(function() { done(); })
+      .catch(function(err){ throw err; });
     });
 
     it('Should respond with 201 when creating a new Node', function(done){
-      testNode.parentRoadmap = testMapID;
 
       request(server.app)
-        .post('/api/nodes')
-        .send(testNode)
-        .expect(201)
-        .end(done);
+      .post('/api/nodes')
+      .send(newNode)
+      .expect(201)
+      .end(done);
     });
   });
 
@@ -81,34 +64,32 @@ describe('Node Routes - /api/nodes', function() {
   *    POST /roadmaps/:roadmapID/nodes     *
   * * * * * * * * * * * * * * * * * * * * */
 
-  describe('POST /api/roadmaps/:roadmapID/nodes', function(){
+  describe('POST /api/roadmaps/:roadmapID/nodes', function() {
 
-    var testMapID;
-
-    before('Create test Roadmap', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(dbResults){
-          testMapID = dbResults._id;
-          done();
-        })
-        .catch(function(err){ throw err; })
+    before('Create test Roadmap', function (done) {
+      Roadmap(newMap)
+      .save()
+      .then(function (dbResults) {
+        newMap._id  = dbResults._id;
+        done();
+      })
+      .catch(function(err){ throw err; });
     });
 
-    after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: 'TestNode'})
-        .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'})
-        })
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+    after('Remove test Roadmap and Node', function (done) {
+      Node.findOneAndRemove({title: newNode.title})
+      .then(function(){ 
+        return Roadmap.findOneAndRemove({title: newMap.title});
+      })
+      .then(function(){ done(); })
+      .catch(function(err){ throw err; });
     });
 
-    it('Should respond with 201 when creating a new Node', function(done){
+    it('Should respond with 201 when creating a new Node', function (done){
 
       request(server.app)
-        .post('/api/roadmaps/'+testMapID+'/nodes')
-        .send(testNode)
+        .post('/api/roadmaps/' + newMap._id + '/nodes')
+        .send(newNode)
         .expect(201)
         .end(done);
     });
@@ -119,47 +100,45 @@ describe('Node Routes - /api/nodes', function() {
   *    GET /api/nodes/:nodeID              *
   * * * * * * * * * * * * * * * * * * * * */
 
-  describe('GET /api/nodes/:nodeID', function(){
-   
-    var testNodeID;
+  describe('GET /api/nodes/:nodeID', function() {
 
-    before('Create test Roadmap and Node', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(savedRoadmap){
-          testNode.parentRoadmap = savedRoadmap._id;
-          return Node(testNode).save();
-        })
-        .then(function(savedNode){
-          testNodeID = savedNode._id;
-          done();
-        })
-        .catch(function(err){ throw err; });
+    before('Create test Roadmap and Node', function (done) {
+      Roadmap(newMap)
+      .save()
+      .then(function (savedRoadmap) {
+        newMap._id = savedRoadmap._id;
+        newNode.parentRoadmap = newMap._id;
+        return Node(newNode).save();
+      })
+      .then(function(savedNode){
+        newNode._id = savedNode._id;
+        done();
+      })
+      .catch(function(err){ throw err; });
     });
 
     after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: 'TestNode'})
-        .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'});
-        })
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; });
+      Node.findOneAndRemove({title: newNode.title})
+      .then(function(){ 
+        return Roadmap.findOneAndRemove({title: newMap.title});
+      })
+      .then(function(){ done(); })
+      .catch(function(err){ throw err; });
     });
 
     it('Should respond with the Node specified by ID, with timestamps', function(done){
      
       request(server.app)
-        .get('/api/nodes/'+testNodeID)
-        .end(function(err, res){
-          if (err) throw err;
-          expect( res.body.data._id ).to.equal( String(testNodeID) );
-          expect( res.body.data ).to.have.property('created');
-          expect( res.body.data ).to.have.property('updated');
+      .get('/api/nodes/' + newNode._id)
+      .end(function(err, res){
+        if (err) throw err;
+        expect( res.body.data._id ).to.equal( String(newNode._id) );
+        expect( res.body.data ).to.have.property('created');
+        expect( res.body.data ).to.have.property('updated');
 
-          // Timestamps must be wrapped in order to ensure a consistent format.
-          expect( res.body.data.created ).to.equal( res.body.data.updated );
-          done();
-        });
+        expect( res.body.data.created ).to.equal( res.body.data.updated );
+        done();
+      });
 
     });
 
@@ -170,27 +149,17 @@ describe('Node Routes - /api/nodes', function() {
   * * * * * * * * * * * * * * * * * * * * */
 
   describe('Check Node population', function(){
-    var seedNodeId;
-
-    before(function (done) {
-      Node.findOne({title: seedNode.title})
-        .then(function (node) {
-          seedNodeId = node._id;
-          done();
-        });
-    });
 
     it('should have a populated parent roadmap', function(done) {
 
       request(server.app)
-        .get('/api/nodes/'+ seedNodeId)
-        .end(function(err, res){
-          if (err) throw err;
-          expect( res.body.data ).to.have.property('parentRoadmap');
-          expect( res.body.data.parentRoadmap ).to.have.property('title');
-          done();
-        });
-
+      .get('/api/nodes/'+ testNode._id)
+      .end(function (err, res) {
+        if (err) throw err;
+        expect( res.body.data ).to.have.property('parentRoadmap');
+        expect( res.body.data.parentRoadmap ).to.have.property('title');
+        done();
+      });
     });
 
   });
@@ -201,54 +170,53 @@ describe('Node Routes - /api/nodes', function() {
   * * * * * * * * * * * * * * * * * * * * */
 
   describe('PUT /api/nodes/:nodeID', function(){
-   
-    var testNodeID;
 
     before('Create test Roadmap and Node', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(savedRoadmap){
-          testNode.parentRoadmap = savedRoadmap._id;
-          return Node(testNode).save();
-        })
-        .then(function(savedNode){
-          testNodeID = savedNode._id;
-          done();
-        })
-        .catch(function(err){ throw err; })
+      Roadmap(newMap)
+      .save()
+      .then(function(savedRoadmap){
+        newMap._id = savedRoadmap._id;
+        newNode.parentRoadmap = newMap._id;
+        return Node(newNode).save();
+      })
+      .then(function(savedNode){
+        newNode._id = savedNode._id;
+        done();
+      })
+      .catch(function(err){ throw err; });
     });
 
     after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: 'TestNode'})
-        .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'})
-        })
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+      Node.findOneAndRemove({title: newNode.title})
+      .then(function() { 
+        return Roadmap.findOneAndRemove({title: newMap.title});
+      })
+      .then(function(){ done(); })
+      .catch(function(err){ throw err; });
     });
 
     it('Should update specified field on Node with provided value, with updated timestamps', function(done){
-      Node.findOne({_id: testNodeID})
-        .then(function (node) {
-          var preUpdateStamp = node.updated;
+      Node.findOne({_id: newNode._id})
+      .then(function (node) {
+        var timestamp = node.updated;
 
-          request(server.app)
-            .put('/api/nodes/'+testNodeID)
-            .send({description: 'Updated Description'})
-            .end(function(err, res){
-              if (err) throw err;
+        request(server.app)
+        .put('/api/nodes/' + newNode._id)
+        .send({description: 'Updated Description'})
+        .end(function (err, res) {
+          if (err) throw err;
 
-              Node.findById(testNodeID)
-                .then(function(dbResults){
-                  expect( dbResults.description ).to.equal( 'Updated Description' );
-                  expect( dbResults.created ).to.not.equal( dbResults.updated );
+          Node.findById(newNode._id)
+          .then(function(dbResults){
+            expect( dbResults.description ).to.equal( 'Updated Description' );
+            expect( dbResults.created ).to.not.equal( dbResults.updated );
 
-                  // Timestamps must be wrapped in order to ensure a consistent format.
-                  expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
-                  done();
-                });
-            });
+            // Timestamps must be wrapped in order to ensure a consistent format.
+            expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(timestamp).getTime() );
+            done();
+          });
         });
+      });
     });
 
   });
@@ -258,53 +226,46 @@ describe('Node Routes - /api/nodes', function() {
   *    DELETE /api/nodes/:nodeID           *
   * * * * * * * * * * * * * * * * * * * * */
 
-  describe('DELETE /api/nodes/:nodeID', function(){
-   
-    var testNodeID;
+  describe('DELETE /api/nodes/:nodeID', function() {
 
-    before('Create test Roadmap and Node', function(done) {
-      Roadmap(testMap)
-        .save()
-        .then(function(savedRoadmap){
-          testNode.parentRoadmap = savedRoadmap._id;
-          return Node(testNode).save();
-        })
-        .then(function(savedNode){
-          testNodeID = savedNode._id;
-          done();
-        })
-        .catch(function(err){ throw err; })
+    before('Create test Roadmap and Node', function (done) {
+      Roadmap(newMap)
+      .save()
+      .then(function (savedRoadmap) {
+        newMap._id = savedRoadmap._id;
+        newNode.parentRoadmap = newMap._id;
+        return Node(newNode).save();
+      })
+      .then(function (savedNode) {
+        newNode._id = savedNode._id;
+        done();
+      })
+      .catch(function(err){ throw err; });
     });
 
     after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: 'TestNode'})
-        .then(function(){ 
-          return Roadmap.findOneAndRemove({title: 'TestMap'})
-        })
-        .then(function(){ done(); })
-        .catch(function(err){ throw err; })
+      Node.findOneAndRemove({title: newNode.title})
+      .then(function(){ 
+        return Roadmap.findOneAndRemove({title: newMap.title});
+      })
+      .then(function(){ done(); })
+      .catch(function(err){ throw err; });
     });
 
     it('Should delete the Node specified by ID', function(done){
       request(server.app)
-        .delete('/api/nodes/'+testNodeID)
-        .end(function(err, res){
-          if (err) throw err;
+      .delete('/api/nodes/' + newNode._id)
+      .end(function (err, res) {
+        if (err) throw err;
 
-          Node.findById(testNodeID)
-            .then(function(dbResults){
-              expect( dbResults ).to.equal( null );
-              done();
-            });
+        Node.findById(newNode._id)
+        .then(function (dbResults) {
+          expect( dbResults ).to.equal( null );
+          done();
         });
+      });
     });
 
   });
-
-
-
-
-
-
 
 });

@@ -202,7 +202,7 @@ describe('The users API', function() {
         .expect('Content-Type', /json/)
         .expect(201)
         .end(function (err, res) {
-          header = btoa('Basic ' + name + res.body.data.authToken);
+          header = 'Basic ' + btoa(name + ':' + res.body.data.authToken);
           done();
         });
       });

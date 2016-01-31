@@ -73,7 +73,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       .set('Authorization', header)
       .send(newMap)
       .end(function(err, res){
-        expect(res.body.data.author).to.not.equal('56a04c964c984dbc4f2544d7');
+        expect(res.body.data.author.toString()).to.not.equal(newMap.author);
         done();
       });
     });
