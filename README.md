@@ -65,9 +65,9 @@ Will remove the test data (but no other data) from the main database.
 npm run reset
 ```
 
-Will clear the test data, and then reseed it. Additionally, the optional `-test` flag can be added after any of these calls to modify the test database instead of the main one. `npm test` will autmoatically run the following command before running any tests:
+Will clear the test data, and then reseed it. Additionally, `-test` can be added after any of these calls to modify the test database instead of the main one. For example, before running any tests, `npm test` autmoatically runs the following command:
 ```sh
-npm run reset -test
+npm run reset-test
 ```
 
 ### DB Schema
