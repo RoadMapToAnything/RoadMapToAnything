@@ -200,6 +200,7 @@ angular.module('services.server', [])
   Server.deleteUser = Server.deleteUserByUsername;
 
   Server.getMaps = Server.getRoadmaps;
+  Server.getMapById = Server.getRoadmapById;
   Server.getRoadmap = Server.getRoadmapById;
   Server.getMap = Server.getRoadmapById;
   Server.createMap = Server.createRoadmap;
