@@ -132,10 +132,11 @@ angular.module('example.ctrl', ['services.user'])
 
 The methods available on each factory are detailed below:
 
-####[User Factory](/blob/master/client/app/services/userFactory.js) ('services.user')**
-Contains varios methods for modifying and accessing data related to the currently logged in user.
+####[User Factory](/blob/master/client/app/services/userFactory.js) **_('services.user')_**
+Contains various methods for modifying and accessing data related to the currently logged in user. Most require the user to be authorized with an `authToken` stored in local storage.
 
 **User.getData()**
+*--requires authorization--*
 Returns a promise with a user object that contains all of the current user's data, with all fields fully populated.
 
 **User.login(username, password)**
@@ -145,28 +146,34 @@ With correct credentials, logs the user in, setting `user.username` and `user.au
 Signs up and logs in a new user. Takes a user object as a parameter. Returns a promise with the new user object.
 
 **User.logout()**
+*--requires authorization--*
 Removes the user's username and authToken from local storage.
 
 **User.isLoggedIn()**
 Returns `true` if the user has credentials in local storage, `false` if they do not.
 
 **User.followRoadmapById(roadmapId)**
+*--requires authorization--*
 *aliases: followRoadmap, followMap, follow*
 Accepts a roadmap id, and adds that roadmap to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.unfollowRoadmapById(roadmapId)**
+*--requires authorization--*
 *aliases: unfollowRoadmap, unfollowMap, unfollow*
 Accepts a roadmap id, and removes that roadmap to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.completeNodeById(nodeId)**
+*--requires authorization--*
 *aliases: completeNode*
 Accepts a node id, and adds that node to the user's `inProgress` array. Returns a promise with the entire user object.
 
 **User.completeRoadmapById(roadmapId)**
+*--requires authorization--*
 *aliases: completeRoadmap, completeMap*
 Accepts a roadmap id, and adds that roadmap to the user's `completed` array. Removes the corresponding roadmap and nodes from `inProgress`. Returns a promise with the entire user object.
 
 **User.getRoadmapProgress([user], [roadmapId])**
+*--requires authorization--*
 *aliases: getMapProgress, getProgress*
 Accepts a user object and/or a roadmap id. If no user is passed, then it will be fetched from the server, and a promise will be returned. If a roadmap id is passed then the progress data for the specified roadmap will be returned. If no roadmap id is passed, then an array with the progress data for all of the user's `inProgress` roadmaps will be returned. Progress data is formatted like this:
 ```javascript
@@ -176,5 +183,50 @@ Accepts a user object and/or a roadmap id. If no user is passed, then it will be
   completed: // The number of nodes the user completed
   percentage: // A completion percentage, out of 100
 }
-
 ```
+
+####[Server Factory](/blob/master/client/app/services/serverFactory.js) **_('services.server')_**
+Contains various methods for modifying and accessing data related to foreign objects in the database: roadmaps, nodes, and other users. Most require the user to be authorized with an `authToken` stored in local storage.
+
+**Server.getUsers()**
+
+**Server.getUserByUsername(username)**
+*aliases: getUser*
+
+**Server.updateUser(user)**
+*--requires authorization--*
+
+**Server.deleteUserByUsername(username)**
+*--requires authorization--*
+*aliases: deleteUser*
+
+**Server.getRoadmaps()**
+*aliases: getMaps*
+
+**Server.getRoadmapById(id)**
+*aliases: getMapById, getRoadmap, getMap*
+
+**Server.createRoadmap(roadmap)**
+*--requires authorization--*
+*aliases: createMap*
+
+**Server.updateRoadmap(roadmap)**
+*--requires authorization--*
+*aliases: updateMap*
+
+**Server.deleteRoadmapById(id)**
+*--requires authorization--*
+*aliases: deleteMapById, deleteRoadmap, deleteMap*
+
+**Server.getNodeById(id)**
+*aliases: getNode*
+
+**Server.createNode(node)**
+*--requires authorization--*
+
+**Server.updateNode(node)**
+*--requires authorization--*
+
+**Server.deleteNodeById(id)**
+*--requires authorization--*
+*aliases: deleteNode*
