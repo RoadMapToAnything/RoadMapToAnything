@@ -24,7 +24,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.renderCurrentNode();
   };
 
-  //When roadmap (identified by its id) data is fetched, set it
+  // When roadmap (identified by its id) data is fetched, set it
   Server.getRoadmapById(roadmapId).then(function (res){
       $scope.currentRoadMapData = res;
     }, function(err){
@@ -44,7 +44,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       // Get node index
       // set currentNode into node at that index;
     } else {
+      //links from a node
       var links = $scope.renderedNodes[0].resourceURL;
+      //description of a node
       var description = $scope.renderedNodes[0].description;
       var title = $scope.renderedNodes[0].title;
     }
@@ -54,11 +56,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentNodeDescription = description;
 
     $scope.connectLines();
-
-
-    // var links = $scope.currentRoadMapData.nodes.resourceURL || ['testlink1', 'testlink2'];
-    // //gets you the description of a particular node
-    // var description = $scope.currentRoadMapData.nodes.description || 'Test Description of what Node is about';
   }
 
   $scope.selectNode = function(index) {
@@ -75,12 +72,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
+    console.log('NODE IS SUBMITTED');
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
   }
 
   // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
+    console.log('ROADMAP IS SUBMITTED');
     User.completeRoadmapById(roadmapId);
   }
 

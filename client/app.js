@@ -4,7 +4,6 @@ angular.module('app', [
   'auth.ctrl',
   'dash.ctrl',
   'roadmaps.ctrl',
-  'roadmaps.factory',
   'browse.ctrl',
   'creation.ctrl'
 
