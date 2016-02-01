@@ -1,6 +1,6 @@
-angular.module('browse.ctrl', ['services.user', 'services.server', 'services.browse'])
+angular.module('browse.ctrl', ['services.user', 'browse.factory'])
 
-.controller('BrowseController', ['$scope', '$http', '$state', '$timeout', 'User', 'Server', 'Browse',  function($scope, $http, $state, $timeout, User, Server, Browse){
+.controller('BrowseController', ['$scope', '$state', 'User', 'Browse',  function($scope, $state, User, Browse){
   $scope.mapData = [];
 
   $scope.showSigninMsg = false;
@@ -14,8 +14,6 @@ angular.module('browse.ctrl', ['services.user', 'services.server', 'services.bro
   $scope.getMapData(function(mapData){
     $scope.mapData = mapData;
   });
-
-
 
 
   $scope.goToDash = function () {
