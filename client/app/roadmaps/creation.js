@@ -4,7 +4,7 @@ angular.module('creation.ctrl', ['services.server'])
 
   $scope.nodeType = "Blog Post";
 
-  var createRoadmap = function() {
+  $scope.createRoadmap = function() {
     return Server.createRoadmap({
       title: $scope.roadmapTitle,
       description: $scope.roadmapDescription
@@ -15,7 +15,7 @@ angular.module('creation.ctrl', ['services.server'])
     });
   };
 
-  var createNode = function() {
+  $scope.createNode = function() {
   console.log('creating node with map id', $scope.roadmapID);
     return Server.createNode({
       title: $scope.nodeTitle,
@@ -28,28 +28,28 @@ angular.module('creation.ctrl', ['services.server'])
   };
 
   // Creates the roadmap before the node if necessary
-  var checkThenCreate = function() {
+  $scope.checkThenCreate = function() {
     console.log('$scope.roadmapID', $scope.roadmapID);
     if (!$scope.roadmapID) {
       console.log('creating roadmap and node');
-      return createRoadmap().then(function() {
-        return createNode();
+      return $scope.createRoadmap().then(function() {
+        return $scope.createNode();
       });
 
     } else {
       console.log('creating node');
-      return createNode();
+      return $scope.createNode();
     }
   };
 
   $scope.submitAndRefresh = function() {
-    checkThenCreate().then(function() {
+    $scope.checkThenCreate().then(function() {
       Materialize.updateTextFields();
     });
   };
 
   $scope.submitAndExit = function() {
-    checkThenCreate().then(function() {
+    $scope.checkThenCreate().then(function() {
       $state.go('home.roadmapTemplate', { 'roadmapID': $scope.roadmapID });
     });
   };
