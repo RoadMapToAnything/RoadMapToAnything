@@ -205,6 +205,11 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
   });
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ *      PUT /api/roadmaps/:roadmapID/:action     *
+ * * * * * * * * * * * * * * * * * * * * * * * * */
+
   describe('PUT /api/roadmaps/:roadmapID/:action', function(){
 
     var User = require('../../server/api/users/userModel.js');
