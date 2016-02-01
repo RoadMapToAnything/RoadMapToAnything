@@ -81,7 +81,20 @@ module.exports.clearData = function(next) {
   clearItems(nodes, Node, function() {
     clearItems(maps, Roadmap, function() {
       clearItems(users, User, function() {
-        if (next) next();
+
+        Node.findOne(data.newNode._id)
+        .then(function (node) {
+          if (node) node.remove();
+          return Roadmap.findOne(data.newMap._id);
+        })
+        .then(function (map) {
+          if (map) map.remove();
+          return User.findOne(data.newUser._id);
+        })
+        .then(function (user) {
+          if (user) user.remove();
+          if (next) next();
+        });
       });
     });
   });

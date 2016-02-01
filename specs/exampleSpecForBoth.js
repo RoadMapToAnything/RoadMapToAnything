@@ -1,11 +1,12 @@
-// Allow running from either npm or karma.
+// Allow running from either npm or karma
 if (typeof window === 'undefined') {
   var expect = require('chai').expect;
   var should = require('chai').should();
 }
 
 
-describe('The Mocha-Chai testing suite', function() {
+// Some examples of what mocha-chai is capable of
+xdescribe('The Mocha-Chai testing suite', function() {
 
   describe('Comparing Numbers', function() {
 

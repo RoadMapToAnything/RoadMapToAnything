@@ -89,5 +89,28 @@
       "imageUrl"     : "http://media2.fdncms.com/chicago/imager/u/original/18699438/straight_outta_compton.jpg",
       "parentRoadmap": "000000000000000000000030"
     }
-  ]
+  ],
+  "newUser": {
+    "_id"      : "00000000000000000000000f",
+    "username" : "iamatest",
+    "password" : "shhh",
+    "firstName": "New",
+    "lastName" : "User",
+    "imageUrl" : "http://cdn.osxdaily.com/wp-content/uploads/2014/07/users-and-groups-icon-mac.png"
+  },
+  "newMap": {
+    "_id"        : "0000000000000000000000f0",
+    "title"      : "New Roadmap",
+    "description": "This is a new roadmap.",
+    "author"     : "00000000000000000000000f" 
+  },
+  "newNode": {
+    "_id"          : "000000000000000000000f00",
+    "title"        : "New Node",
+    "description"  : "This is a new node.",
+    "resourceType" : "Node",
+    "resourceURL"  : "https://nodejs.org/en/blog/release/v5.0.0/",
+    "imageUrl"     : "http://severalnines.com/sites/default/files/asst_arch.png",
+    "parentRoadmap": "0000000000000000000000f0"
+  }
 }
