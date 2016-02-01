@@ -46,9 +46,14 @@ angular.module('services.server', [])
    *                 USERS                 *
    * * * * * * * * * * * * * * * * * * * * */
 
-  Server.getUsers = function() {
+  // Retrieves an array of users with an optional query string parameter
+  Server.getUsers = function(query) {
 
-    return $http.get('/api/users')
+    return $http({
+      method: 'GET',
+      url: '/api/users',
+      params: query || {}
+    })
     .then(standardResponse)
     .catch(standardError);
   };
@@ -89,17 +94,15 @@ angular.module('services.server', [])
    *               ROADMAPS                *
    * * * * * * * * * * * * * * * * * * * * */
 
-  Server.getRoadmaps = function(optionalSortQuery) {
-    if (optionalSortQuery){
-      return $http.get('/api/roadmaps' + optionalSortQuery)
-      .then(standardResponse)
-      .catch(standardError);  
-    } else {
-      return $http.get('/api/roadmaps')
-      .then(standardResponse)
-      .catch(standardError);  
-    }
-    
+  // Retrieves an array of roadmaps with an optional query string parameter
+  Server.getRoadmaps = function(query) {
+    return $http({
+      method: 'GET',
+      url: '/api/roadmaps',
+      params: query || {}
+    })
+    .then(standardResponse)
+    .catch(standardError);  
   };
 
   Server.getRoadmapById = function(id) {
