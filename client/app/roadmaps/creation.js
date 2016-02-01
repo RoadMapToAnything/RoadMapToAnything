@@ -2,7 +2,7 @@ angular.module('creation.ctrl', ['services.server'])
 
 .controller('CreationController', ['$scope', '$state', 'Server', function($scope, $state, Server){
 
-  $scope.nodeType = "";
+  $scope.nodeType = "Blog Post";
 
   var createRoadmap = function() {
     return Server.createRoadmap({
