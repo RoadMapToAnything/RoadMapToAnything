@@ -2,13 +2,16 @@ process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var request  = require('supertest'),
     expect   = require('chai').expect,
+    btoa     = require('btoa'),
 
     server   = require('../../server/server.js'),
+    User     = require('../../server/api/users/userModel.js'),
     Node     = require('../../server/api/nodes/nodeModel.js'),
     Roadmap  = require('../../server/api/roadmaps/roadmapModel.js'),
 
     data     = require('../data/testData.json'),
     testNode = data.nodes[0],
+    newUser  = data.newUser,
     newMap   = data.newMap,
     newNode  = data.newNode;
 
@@ -22,10 +25,31 @@ var request  = require('supertest'),
 /* * * * * * * * * * * * * * * * * * * * * * * */
 
 describe('Node Routes - /api/nodes', function() {
+  var header;
+
+  before(function (done) {
+    request(server.app)
+    .post('/api/signup')
+    .send(newUser)
+    .expect('Content-Type', /json/)
+    .expect(201)
+    .end(function (err, res) {
+      header = 'Basic ' + btoa(newUser.username + ':' + res.body.data.authToken);
+      done();
+    });
+  });
+
+  after(function (done) {
+    User.findOneAndRemove({username: newUser.username})
+    .then(function() {
+      done();
+    });
+  });
 
 
-  /* * * * * * * * * * * * * * * * * * * * * 
-  *    POST /api/nodes/                    *
+
+ /* * * * * * * * * * * * * * * * * * * * * 
+  *           POST /api/nodes/            *
   * * * * * * * * * * * * * * * * * * * * */
 
   describe('POST /api/nodes', function() {
@@ -53,6 +77,7 @@ describe('Node Routes - /api/nodes', function() {
 
       request(server.app)
       .post('/api/nodes')
+      .set('Authorization', header)
       .send(newNode)
       .expect(201)
       .end(done);
@@ -89,6 +114,7 @@ describe('Node Routes - /api/nodes', function() {
 
       request(server.app)
         .post('/api/roadmaps/' + newMap._id + '/nodes')
+        .set('Authorization', header)
         .send(newNode)
         .expect(201)
         .end(done);
@@ -202,6 +228,7 @@ describe('Node Routes - /api/nodes', function() {
 
         request(server.app)
         .put('/api/nodes/' + newNode._id)
+        .set('Authorization', header)
         .send({description: 'Updated Description'})
         .end(function (err, res) {
           if (err) throw err;
@@ -255,6 +282,7 @@ describe('Node Routes - /api/nodes', function() {
     it('Should delete the Node specified by ID', function(done){
       request(server.app)
       .delete('/api/nodes/' + newNode._id)
+      .set('Authorization', header)
       .end(function (err, res) {
         if (err) throw err;
 
