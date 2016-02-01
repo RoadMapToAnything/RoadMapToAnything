@@ -5,16 +5,15 @@
     <div class="col s6 m12">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
-          <span class="card-title"><b>Card Title</b></span>
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
+          <span class="card-title truncate"><b>{{ currentTitle }}</b></span>
+          <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
           <ul>
               <li ng-repeat="link in currentLinks"><a class="truncate" href="{{link}}">{{link}}</a></li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="#">This is a link</a>
-          <a href="#">This is a link</a>
+          <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
+<!--           <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> -->
         </div>
       </div>
     </div>
