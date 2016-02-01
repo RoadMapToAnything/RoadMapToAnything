@@ -9,10 +9,13 @@
   "scripts": {
     "start": "nodemon server/server.js",
     "postinstall": "bower install",
-    "test": "npm run reset & ./node_modules/.bin/mocha --bail specs/*.js specs/server/**/*.js & karma start",
-    "seed": "node specs/data/seed.js",
-    "clear": "node specs/data/clear.js",
-    "reset": "node specs/data/reset.js"
+    "test": "npm run reset-test & ./node_modules/.bin/mocha --bail specs/*.js specs/server/**/*.js & karma start",
+    "seed": "node specs/data/dataScript.js seed",
+    "clear": "node specs/data/dataScript.js clear",
+    "reset": "node specs/data/dataScript.js reset",
+    "seed-test": "node specs/data/dataScript.js seed test",
+    "clear-test": "node specs/data/dataScript.js clear test",
+    "reset-test": "node specs/data/dataScript.js reset test"
   },
   "repository": {
     "type": "git",

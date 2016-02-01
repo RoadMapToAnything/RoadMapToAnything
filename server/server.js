@@ -6,10 +6,14 @@ mongoose.Promise = require('bluebird');
 
 
 var app      = express();
-var port     = process.env.PORT || CONF.PORT.LOCAL;
-if (process.env.NODE_ENV === 'test') port = CONF.PORT.TEST;
+var port     = process.env.PORT || CONF.PORT.MAIN;
+var database = process.env.MONGOLAB_URI || CONF.DB_URI.MAIN;
 
-var database = process.env.MONGOLAB_URI || CONF.DB_URI;
+if (process.env.NODE_ENV === 'test') {
+  port = CONF.PORT.TEST;
+  database = CONF.DB_URI.TEST;
+}
+
 mongoose.connect(database);
 
 require('./middleware.js')(app, express);
