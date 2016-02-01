@@ -82,4 +82,7 @@ footer.page-footer div.footer-copyright {
 .link-box-btn {
   background-color: #ff7043 !important;
 }
+.nodes-container {
+  margin-left: -200px;
+}
 

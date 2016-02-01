@@ -13,54 +13,23 @@
         </div>
         <div class="card-action">
           <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
-<!--           <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> -->
+         <!-- <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> -->
         </div>
       </div>
     </div>
   </div>
-  <!-- size 4 -->
-<!--   <div class="col s4">
-    <div class="row">
-      <div class="col s12">
-        <div class="card-panel hoverable teal lighten-5">
-          <span class="gray-text truncate"><b><h4>{{ currentTitle }}</h4></b>
-            <a ng-repeat="link in currentLinks" href="{{link}}">{{link}}</a>  
-          </span>
-          <br>
-          <div class="divider">
-          </div>
-          <div class="card-action gray-text">
-            <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
-          </div>
-          <div class="row">
-            <button class="btn waves-effect waves-light col s6 offset-s3 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">Node Done
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <br>
-      
-      <div class="row">
-        <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="submitCompletedRoadmap()">
-        Map Done
-        </a>
-      </div>
-    </div>
-  </div> -->
 </div>
-  <!-- end of size 4 -->
 
-  <!-- size 8 -->
-  <div class="col s8">
-    <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
-    <div class="divider"></div>
-    <br>
-    <br>
-   <!--NODE RENDER-->
+  <!-- Roadmap Title -->
+<div class="col s8 roadmap-title">
+  <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
+  <div class="divider"></div>
+</div>
+
+   <!-- Nodes -->
     <div class="row" ng-repeat="node in renderedNodes">
      <!--    Line should go here -->
-        <div class="containerHoldingEntireRoadMap">
+        <div class="nodes-container">
           <div class="offset-s4 col s2 circle teal lighten-5 endPointForConnection">
             <br>
             <br>
@@ -83,43 +52,4 @@
             </div> 
         </div>
     </div>
-    <!-- END NODE RENDER -->
-  </div>
-  <!-- end of size 8 -->
-
-
-<!-- ALTERNATE BOOTSTRAP EXAMPLE 
-
-<div class="row">
-  <div class="large-4 columns">
-   <div class="card">
-  <img class="card-img-top" data-src="put source hree" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">Card title</h4>
-    <p class="card-text">Text</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">item one</li>
-  </ul>
-  <div class="card-block">
-    <a href="#" class="card-link">link</a>
-    <a href="#" class="card-link">link</a>
-  </div>
-</div>
-</div>
-  <div class="large-8 columns">
-   <h5 class="nodetitle" ng-bind="roadMapTitle"><b>Title of the RoadMap Itself<b></h5>
-    <img src= image url/>
-    <h4>TEXT GOES HERE</p>
-  </div>
-</div> -->
-
-
-
-
-
-
-
-
-
 
