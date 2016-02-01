@@ -31,6 +31,9 @@ module.exports = function (apiRouter) {
    apiRouter.put(   '/roadmaps/:roadmapID',       roadmapController.updateRoadmap  );
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
+   // Effects User model
+   apiRouter.put('/roadmaps/:roadmapID/:action', auth, userController.roadmapAction );
+
 
    /*
     *      Node Routes
