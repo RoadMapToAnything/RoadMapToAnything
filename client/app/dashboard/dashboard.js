@@ -62,10 +62,7 @@ angular.module('dash.ctrl', ['services.user'])
 
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
-<<<<<<< HEAD
-=======
   };
->>>>>>> (reafactor) Roadmaps now rendered using id in query params
   
   $scope.updateLocalDataAfterDelete = function (arr, id) {
     return arr.filter(function(map) {
