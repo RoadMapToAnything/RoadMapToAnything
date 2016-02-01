@@ -240,8 +240,8 @@ Accepts the optional parameters of a user object and/or a roadmap id. If no user
 **`Server` | `services.server`**<br>
 Contains various methods for modifying and accessing data related to foreign objects in the database: roadmaps, nodes, and other users. Most require the user to be authorized with `user.authToken` in local storage. All of these methods are asynchronus and return a promise.
 
-**Server.getUsers()**<br>
-Returns a promise with an array of every user object.
+**Server.getUsers( [query] )**<br>
+Accepts an optional query string parameter as object notation. For example: `{sort: '-created'}`. Returns a promise with an array of every user object.
 
 **Server.getUserByUsername( username )**<br>
 *aliases: getUser*<br>
@@ -256,9 +256,9 @@ _!!requires authorization_<br>
 *aliases: deleteUser*<br>
 Accepts a username, and removes that user from the database. Returns a promise with the deleted user object.
 
-**Server.getRoadmaps()**<br>
+**Server.getRoadmaps( [query] )**<br>
 *aliases: getMaps*<br>
-Returns a promise with an array of every roadmap object.
+Accepts an optional query string parameter as object notation. Returns a promise with an array of every roadmap object.
 
 **Server.getRoadmapById( roadmapId )**<br>
 *aliases: getMapById, getRoadmap, getMap*<br>
