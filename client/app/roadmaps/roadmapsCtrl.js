@@ -1,9 +1,9 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
 
-.controller('RoadMapsController', function ($scope, RoadMapsFactory, Server, User){
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', function($scope, $http, $stateParams, RoadMapsFactory, Server, User){  
   angular.extend($scope, RoadMapsFactory);
 
-  var roadmapId = localStorage.getItem('roadmap.id') || '000000000000000000000010';
+  var roadmapId = $stateParams.roadmapID;
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
 
@@ -14,7 +14,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     // Add an index to nodes to make ng-clicking easier
     nodes.map(function(node,index){
       node.index = index;
-    })
+    });
 
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
@@ -92,4 +92,4 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     setTimeout($scope.connectLines,0);
   };
 
-});
+}]);

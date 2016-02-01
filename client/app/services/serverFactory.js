@@ -157,7 +157,7 @@ angular.module('services.server', [])
   };
 
   Server.createNode = function(node) {
-
+    console.log('server factory creating node', node);
    return $http({
       method: 'POST',
       url: '/api/nodes',
