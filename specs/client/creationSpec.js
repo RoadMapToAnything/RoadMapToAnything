@@ -1,5 +1,3 @@
-// angular.module('creation.ctrl', ['services.server'])
-
 describe('CreationController', function () {
   var $scope, $rootScope, createController, $state, Server;
 
