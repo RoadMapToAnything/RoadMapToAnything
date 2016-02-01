@@ -19,7 +19,7 @@ angular.module('browse.ctrl', ['services.user', 'services.server', 'services.bro
 
 
   $scope.goToDash = function () {
-      $state.go('dashboard');
+      $state.go('home.dashboard');
     }
 
   $scope.goToMap = function (mapID){
