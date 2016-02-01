@@ -102,7 +102,7 @@ module.exports = {
     var username  = getAuthHeader(req).name;
     var roadmapID = req.params.roadmapID;
     var action    = req.params.action.toLowerCase();
-    console.log('roadmapID');
+
     var actionMap = {
       
       follow  : { $addToSet: {'inProgress.roadmaps': roadmapID} },
