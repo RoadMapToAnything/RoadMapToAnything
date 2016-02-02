@@ -1,8 +1,8 @@
 <!-- Link box -->
-<!-- <div class="link-box">
+<div class="link-box">
 
   <div class="row">
-    <div class="col s6 m12">
+    <div class="col s12 m16">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
           <span class="card-title truncate"><b>{{ currentTitle }}</b></span>
@@ -13,29 +13,39 @@
         </div>
         <div class="card-action">
           <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
-         <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> 
+         <!-- <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a>  -->
         </div>
       </div>
     </div>
   </div>
 </div>
- -->
+
   <!-- Roadmap Title -->
+
 <div class="col s8 roadmap-title">
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
   <div class="divider"></div>
 </div>
 
    <!-- Nodes -->
-<div class="node-list" ng-repeat="node in renderedNodes">
+<div class="node-list container">
+  <div ng-repeat="node in renderedNodes">
 
-  <span class="circle teal lighten-5" id="{{ 'node-' + node.index }}">
-    <p class="center-align bold node-description" ng-click="selectNode(node.index)"><strong> 12 </strong></p>
-  </span><span class="node-description" ng-bind="node.title"> Title</span>
+    <div class="circle teal lighten-5" id="{{ 'node-' + node.index }}">
+      <div class="number" ng-click="selectNode(node.index)">12
+      </div>
+    </div>
 
-
-  <div class="center-align connector-box">
   <div class="center-align connector"></div>
-  </div>
-  </div>
 
+  </div>
+</div>
+
+
+  <div class="title-list container">
+  <div ng-repeat="node in renderedNodes">
+
+      <span class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
+
+  </div>
+</div>

@@ -75,65 +75,53 @@ footer.page-footer div.footer-copyright {
 }
 .link-box {
   position: fixed !important;
-  left: 30px;
-  top: 70px;
-  width: 400px;
+  left: 5%;
+  top: 200px;
+  width: 27%;
 }
 .link-box-btn {
   background-color: #ff7043 !important;
 }
-.oddNode {
-  position: absolute;
-  margin-left: -220px !important;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-.evenNode {
-  position: absolute !important;
-  margin-left: -500px !important;
-  margin-top: -200px !important;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-.connector-box {
-  width: 100%;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
+
 .connector {
   height: 60px;
-  width: 15px;
+  width: 13px;
   background-color: gray;
-  margin-left: 45%;
+  margin-left: 34px;
   margin-top: 0px;
   margin-bottom: 0px;
   padding: 0px;
 }
-.node {
-  margin-left: 500px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding: 0px;
-  display: inline-block;
-}
+
 /*.node-list {
   background-image: url('app/roadmaps/bgImage1.png');
 }*/
 .circle {
-  max-width: 70px !important;
-  margin-left: 45%;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
-  padding: 0px;
+  padding: 0px 0px 0px 5%;
   display: inline-block;
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 80px;
 
 }
-.node-list p {
-  margin: 0px;
-
+.node-list {
+  margin-left: 35%;
+  width: 90px;
+  display: inline-block;
+  vertical-align: top;
 }
 .node-description {
   display: inline-block;
+}
+.number {
+  padding: 29px 0px 0px 27px;
+}
+.title-list {
+  vertical-align: top;
+  width: 50%;
+  display: inline-block;
+}
+.node-title {
+  margin: 32px 0px 81px 0px;
 }
