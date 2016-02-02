@@ -78,9 +78,9 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
-    var author = getAuthHeader(req).name;
-    if (req.params.username !== author) res.sendStatus(401);
-    
+    var username = getAuthHeader(req).name;
+    if (req.params.username !== username) res.sendStatus(401);
+
     var updateableFields = ['password','firstName','lastName','imageUrl'];
     var updateCommand = {};
 
@@ -88,7 +88,7 @@ module.exports = {
       if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
     });
 
-    User.findOneAndUpdate({username: author}, updateCommand, {new: true})
+    User.findOneAndUpdate({username: username}, updateCommand, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
@@ -98,13 +98,14 @@ module.exports = {
   },
 
   deleteUserByName: function(req, res, next) {
-    User.findOne({username: req.params.username})
+    var username = getAuthHeader(req).name;
+    if (req.params.username !== username) res.sendStatus(401);
+
+    User.findOne({username: username})
       .deepPopulate(populateFields)
       .then( function (user) {
-        if (!user) return res.sendStatus(401);
-
+        if (!user) return res.sendStatus(404);
         user.remove();
-        console.log('deleted user with', req.params);
         res.status(201).json({data: user});
       })
       .catch(handleError(next));
