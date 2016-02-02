@@ -11,14 +11,10 @@
               <li ng-repeat="link in currentLinks"><a class="truncate" href="{{link}}">{{link}}</a></li>
           </ul>
         </div>
-        <div class="card-action">
-          <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
-         <!--   -->
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Roadmap Title -->
 
@@ -40,6 +36,12 @@
 
   </div>
       <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>
+      <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="upVoteMap()">
+        Up Vote!
+        </a>
+        <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="downVoteMap()">
+        Down Vote!
+        </a>
 </div>
   <div class="title-list container">
     <div ng-repeat="node in renderedNodes">
