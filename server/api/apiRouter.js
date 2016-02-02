@@ -32,6 +32,7 @@ module.exports = function (apiRouter) {
    apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
    apiRouter.put(   '/roadmaps/:roadmapID',       roadmapController.updateRoadmap  );
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
+   apiRouter.post(  '/roadmaps/:roadmapID',       roadmapController.updateRoadmapVote  );
 
 
    /* * * * * * * * * * * * * * * * * * * * * 

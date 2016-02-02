@@ -84,6 +84,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     User.completeRoadmapById(roadmapId);
   }
 
+
   $scope.connectAllNodes = function () {
     $timeout(10, function(){
     console.log('connecting nodes');
@@ -98,6 +99,28 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         $(nodeB).css("background-color","blue");
       }
     })
+
+  // Submits a username to the roadmap's upVoteBy array
+  $scope.upVoteMap = function () {
+    console.log('UPVOTE IS SUBMITTED');
+    // Get the current logged in user's username
+    User.getData().then(function(data) {
+      var username = data.username;
+      console.log('THIS IS THE USER', username);
+      // Post the username to the roadmap's upVoteBy array
+      sendUpVote(roadmapId, username)
+      // On success, update the upvote count on the roadmap page
+      .then(function() {})
+      // On error, send error
+      .catch()
+    })
+  }
+
+
+  $scope.connectLines = function(){
+    $('.endPointForConnection').connections();
+  };
+
 
   };
 
