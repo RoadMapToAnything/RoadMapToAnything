@@ -166,6 +166,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   describe('PUT /api/roadmaps/:roadmapID', function(){
 
     before('Create test Roadmap', function(done) {
+      newMap.author = '000000000000000000000001';
       Roadmap(newMap)
       .save()
       .then(function (savedRoadmap){
@@ -175,27 +176,59 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Remove test Roadmap', function(done) {
-      Roadmap.findOneAndRemove({title: newMap.title})
+      newMap.author = '00000000000000000000000f';
+      Roadmap.findOneAndRemove({_id: newMap._id})
       .then(function(){ done(); })
       .catch(function(err){ throw err; });
     });
 
-    it('Should update specified field on Roadmap with provided value and update timestamp', function(done){
+    it('Should respond with 401 when no Authorization header is provided', function (done){
+      request(server.app)
+      .put('/api/roadmaps/' + newMap._id)
+      .expect(401)
+      .end(done);
+    });   
+
+    it('Should respond with 401 when attempting to update other user\'s Roadmaps', function (done){
+      request(server.app)
+      .put('/api/roadmaps/' + data.maps[1]._id)
+      .set('Authorization', header)
+      .expect(401)
+      .end(done);
+    }); 
+
+    it('Should update description field on Roadmap, but not author, and should update timestamp', function(done){
       Roadmap.findOne({_id: newMap._id})
       .then(function (map) {
         var preUpdateStamp = map.updated;
 
+        var update = {
+          title: 'should change',
+          description: newMap.description, 
+          author:  'should not change',
+          nodes:   'should not change',
+          created: 'should not change',
+          updated: 'should not change',
+        }
+
         request(server.app)
         .put('/api/roadmaps/' + newMap._id)
         .set('Authorization', header)
-        .send({description: newMap.description})
+        .send(update)
         .end(function(err, res){
           if (err) throw err;
 
           Roadmap.findById(newMap._id)
           .then(function (dbResults) {
-            expect( dbResults.description ).to.equal( newMap.description );
             expect( dbResults.created ).to.not.equal( dbResults.updated );
+
+            expect( dbResults.title ).to.equal( 'should change' );
+            expect( dbResults.description ).to.equal( newMap.description );
+
+            expect( dbResults.author  ).to.not.equal( 'should not change' );
+            expect( dbResults.nodes   ).to.not.equal( 'should not change' );
+            expect( dbResults.created ).to.not.equal( 'should not change' );
+            expect( dbResults.updated ).to.not.equal( 'should not change' );
 
             // Timestamps must be wrapped in order to ensure a consistent format.
             expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(preUpdateStamp).getTime() );
@@ -304,6 +337,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
   describe('DELETE /api/roadmaps/:roadmapID', function(){
 
     before('Create test Roadmap', function(done) {
+      newMap.author = '000000000000000000000001';
       Roadmap(newMap)
       .save()
       .then(function (savedRoadmap){
@@ -313,24 +347,32 @@ describe('Roadmap Routes - /api/roadmaps', function() {
     });
 
     after('Ensure test Roadmap is removed', function (done) {
+      newMap.author = '00000000000000000000000f';
       Roadmap.findOneAndRemove({title: newMap.title})
       .then(function(){ done(); })
       .catch(function(err){ throw err; })
     });
 
     it('Should respond with 401 when no Authorization header is provided', function (done){
-
       request(server.app)
       .delete('/api/roadmaps/' + newMap._id)
+      .expect(401)
+      .end(done);
+    });    
+
+    it('Should respond with 401 when attempting to delete other user\'s Roadmaps', function (done){
+      request(server.app)
+      .delete('/api/roadmaps/' + data.maps[1]._id)
+      .set('Authorization', header)
       .expect(401)
       .end(done);
     });
 
     it('Should delete the Roadmap specified by ID', function(done){
-
       request(server.app)
       .delete('/api/roadmaps/' + newMap._id)
       .set('Authorization', header)
+      .expect(200)
       .end(function (err, serverResponse) {
         if (err) throw err;
 
