@@ -71,6 +71,21 @@ module.exports = {
         res.json({data: roadmap});
       })
       .catch(handleError(next));
+  },
+
+  updateRoadmapUpVote : function (req, res, next) {
+    var _id = req.params.roadmapID;
+    Roadmap.findOne({_id:_id})
+     /* When id is found, add userId to the appropriate array (upvote, downvote);
+          addToSet ensures that no duplicate items are added to set and does not affect 
+          existing duplicate elements
+      */
+      .addToSet({upvotes: userId})
+
+      .addToSet({downvotes: userId})
+
+      // Send data back, should include latest upvotes' and downvotes' arrays
+      // Do I need a .then() and .catch() here?
   }
 
 };
