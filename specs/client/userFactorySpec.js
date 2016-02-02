@@ -21,6 +21,7 @@ describe('User Factory', function () {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
     $window.localStorage.removeItem('user.authToken');
+    $window.localStorage.removeItem('user.username');
   });
 
   describe('Authorization', function() {
@@ -29,33 +30,59 @@ describe('User Factory', function () {
       authToken: 'sjj232hwjhr3urw90rof'
     };
 
-    it('should have a signup method', function() {
+    it('Should have a signup method', function() {
       expect(User.signup).to.be.a('function');
     });
 
-    it('should store token in localStorage after signup', function() {
-      // create a fake JWT for auth
-
+    it('Should store tokens in localStorage after signup', function() {
+      var storage = $window.localStorage;
 
       // make a 'fake' reques to the server, not really going to our server
       $httpBackend.expectPOST('/api/signup').respond({data: data});
       User.signup();
       $httpBackend.flush();
-      console.log('TOKEN:', $window.localStorage.getItem('user.authToken'));
-      expect($window.localStorage.getItem('user.authToken')).to.equal(data.authToken);
+      expect(storage.getItem('user.authToken')).to.equal(data.authToken);
+      expect(storage.getItem('user.username')).to.equal(data.username);
     });
 
-    it('should have a signin method', function() {
+    it('Should have a signin method', function() {
       expect(User.login).to.be.a('function');
     });
 
-    it('should store token in localStorage after signin', function() {
-      // create a fake JWT for auth
+    it('Should store token in localStorage after signin', function() {
+      var storage = $window.localStorage;
+
       $httpBackend.expectGET('/api/login').respond({data: data});
       User.login();
       $httpBackend.flush();
-      expect($window.localStorage.getItem('user.authToken')).to.equal(data.authToken);
+      expect(storage.getItem('user.authToken')).to.equal(data.authToken);
+      expect(storage.getItem('user.username')).to.equal(data.username);
     });
+
+    it('Should have an isLoggedIn method', function() {
+      expect(User.isLoggedIn).to.be.a('function');
+    });
+
+    it('Should know if the user is logged in', function() {
+      $httpBackend.expectGET('/api/login').respond({data: data});
+      User.login();
+      $httpBackend.flush();
+      
+      expect(User.isLoggedIn()).to.be.true;
+    });
+
+    it('Should have a logout method', function() {
+      expect(User.logout).to.be.a('function');
+    });
+
+    it('Should remove tokens on logout', function() {
+      var storage = $window.localStorage;
+
+      User.logout();
+      expect(storage.getItem('user.authToken')).to.be.null;
+      expect(storage.getItem('user.username')).to.be.null;
+    });
+
   });
 });
 
