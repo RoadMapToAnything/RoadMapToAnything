@@ -13,7 +13,7 @@
         </div>
         <div class="card-action">
           <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
-         <!-- <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a>  -->
+         <!--   -->
         </div>
       </div>
     </div>
@@ -39,13 +39,12 @@
   <div class="center-align connector"></div>
 
   </div>
+      <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>
 </div>
-
-
   <div class="title-list container">
-  <div ng-repeat="node in renderedNodes">
-
+    <div ng-repeat="node in renderedNodes">
       <span class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
+    </div>
 
   </div>
-</div>
+
