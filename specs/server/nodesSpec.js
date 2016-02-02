@@ -248,6 +248,53 @@ describe('Node Routes - /api/nodes', function() {
 
   });
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *    PUT /api/nodes/:nodeID/complete    *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  describe('PUT /api/nodes/:nodeID/complete', function(){
+
+    var User = require('../../server/api/users/userModel.js');
+    var tempUser = {username: 'temp', password: 'pass'}
+    var tempHeader;
+
+    before('Create a new test User', function(done) {
+      request(server.app)
+        .post('/api/signup')
+        .send(tempUser)
+        .expect(201)
+        .end(function (err, res) {
+          if (err) throw err;
+          tempHeader = 'Basic ' + btoa(res.body.data.username + ':' + res.body.data.authToken);
+          done();
+        })
+    });
+
+    after('Remove the test User', function(done) {
+      User.findOneAndRemove({username: tempUser.username})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; });
+    });
+
+    it('Should update specified field on Node with provided value, with updated timestamps', function(done){
+
+      request(server.app)
+        .put('/api/nodes/' + testNode._id + '/complete')
+        .set('Authorization', tempHeader)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          User.findOne({username: tempUser.username})
+            .then(function(user){
+              expect(user.inProgress.nodes).to.include(testNode._id);
+              done();
+            });
+        });
+
+    });
+
+  });
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
   *    DELETE /api/nodes/:nodeID           *
