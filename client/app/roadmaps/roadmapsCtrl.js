@@ -145,10 +145,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
           //   $scope.count++;
           // }
           // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
-          $scope.currentCount = $scope.renderCount();
+         
+           $scope.upvotesCount = 0;
+           for(var i = 0; i < usersUpvoted.length; i++){
+            $scope.upvotesCount++;
+           }
+          $scope.currentCount = $scope.upvotesCount;
       })
-      // // On error, send error
-      // .catch()
     })
 }
 
