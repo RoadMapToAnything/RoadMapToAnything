@@ -98,6 +98,7 @@ module.exports = {
       .catch(handleError(next));
   },
 
+  // Handles requests to /api/roadmaps/:roadmapID/:action
   roadmapAction: function(req, res, next) {
     var username  = getAuthHeader(req).name;
     var roadmapID = req.params.roadmapID;
@@ -117,6 +118,22 @@ module.exports = {
     if ( !actionMap.hasOwnProperty(action) ) res.sendStatus(404);
 
     User.findOneAndUpdate({username: username}, actionMap[action], {new: true})
+      .deepPopulate(populateFields)
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json({data: user});
+      })
+      .catch(handleError(next));
+  },
+
+  // Handles requests to /api/nodes/:nodeID/complete
+  completeNode: function(req, res, next) {
+    var username = getAuthHeader(req).name;
+    var nodeID   = req.params.nodeID;
+
+    var updateCommand = { $addToSet: {'inProgress.nodes': nodeID} };
+
+    User.findOneAndUpdate({username: username}, updateCommand, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
