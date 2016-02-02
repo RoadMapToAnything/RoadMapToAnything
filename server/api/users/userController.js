@@ -71,7 +71,7 @@ module.exports = {
     User.findOne({username: req.params.username})
       .deepPopulate(populateFields)
       .then( function (user) {
-        if (!user) return res.sendStatus(401); 
+        if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
       .catch(handleError(next));
@@ -91,7 +91,7 @@ module.exports = {
     User.findOneAndUpdate({username: username}, updateCommand, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
-        if (!user) return res.sendStatus(401); 
+        if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
       .catch(handleError(next));
