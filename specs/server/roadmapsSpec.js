@@ -187,6 +187,7 @@ describe('Roadmap Routes - /api/roadmaps', function() {
 
         request(server.app)
         .put('/api/roadmaps/' + newMap._id)
+        .set('Authorization', header)
         .send({description: newMap.description})
         .end(function(err, res){
           if (err) throw err;
