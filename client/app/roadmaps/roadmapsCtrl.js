@@ -107,29 +107,31 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     User.getData().then(function(data) {
       var username = data.username;
       console.log('THIS IS THE USER', username);
+      console.log('this is the roadmap id', roadmapId);
       // Post the username to the roadmap's upVoteBy array
-      sendUpVote(roadmapId, username)
+      $scope.sendUpVote(roadmapId, username)
       // On success, update the upvote count on the roadmap page
-      .then(function() {})
-      // On error, send error
-      .catch()
+      // .then(function() {})
+      // // On error, send error
+      // .catch()
     })
-  }
+}
 
   // Submits a username to the roadmap's downVoteBy array
-  $scope.downVoteMap = function () {
-    console.log('DOWNVOTE IS SUBMITTED');
-    // Get the current logged in user's username
-    User.getData().then(function(data) {
-      var username = data.username;
-      console.log('THIS IS THE USER', username);
-      // Post the username to the roadmap's upVoteBy array
-      sendDownVote(roadmapId, username)
-      // On success, update the upvote count on the roadmap page
-      .then(function() {})
-      // On error, send error
-      .catch()
-    })
+  // $scope.downVoteMap = function () {
+  //   console.log('DOWNVOTE IS SUBMITTED');
+  //   // Get the current logged in user's username
+  //   User.getData().then(function(data) {
+  //     var username = data.username;
+  //     console.log('THIS IS THE USER', username);
+  //     // Post the username to the roadmap's upVoteBy array
+  //     // sendDownVote(roadmapId, username)
+  //     // // On success, update the upvote count on the roadmap page
+  //     // .then(function() {})
+  //     // // On error, send error
+  //     // .catch()
+  //   })
+  // }
 
   $scope.connectLines = function(){
     $('.endPointForConnection').connections();
