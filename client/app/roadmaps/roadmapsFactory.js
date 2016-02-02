@@ -4,6 +4,8 @@ angular.module('roadmaps.factory', [])
 
     // Votes count to be displayed on roadmap page
     var upvotes;
+    // var count = 0;
+
     // var downvotes;
 
   //    Server.createRoadmap = function(roadmap) {
@@ -35,9 +37,19 @@ angular.module('roadmaps.factory', [])
        var sendUpVote = function(id, username) {
       // Send a data boolean in the body?
       // Post request to database to update roadmap model to include username in downvotes array...
-       return $http.post('/api/roadmaps/' + id, {username: username});
-       //.then?
-       //.catch?
+       return $http.post('/api/roadmaps/' + id, {username: username})
+      //  .then(function(data){ 
+      //   // var count = 0;
+      //   var usersUpvoted = data.data.upvotes;
+      //   // var count = 0;
+      //     console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
+      //     console.log('UPVOTES FROM USERS:', usersUpvoted);
+      //     //iterate over upvotes made from users array to get a count of upvotes
+      //     for(var i = 0; i < usersUpvoted.length; i++){
+      //       count++;
+      //     }
+      //     console.log('THE COUNT IN THE FACTORY,', count, usersUpvoted);
+      // })
     }
 
 
@@ -52,6 +64,7 @@ angular.module('roadmaps.factory', [])
 
     return {
       upvotes : upvotes,
+      // count : count,
       // downvotes : downvotes,
       sendUpVote : sendUpVote
       // sendDownVote : sendDownVote

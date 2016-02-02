@@ -71,8 +71,7 @@ module.exports = {
         res.json({data: roadmap});
       })
       .catch(handleError(next));
-  }
-  ,
+  },
 
   updateRoadmapUpVote : function (req, res, next) {
     var _id = req.params.roadmapID;
@@ -83,8 +82,9 @@ module.exports = {
     //find roadmap by id and trigger the $addToSet command
     Roadmap.findByIdAndUpdate(_id, updateUpVote, {new: true})
       .then(function(data){
-        console.log('THIS IS THE DATA FROM SERVER', data);
-        res.write(res.statusCode.toString());
+        console.log('DATA FROM SERVER AFTER UPDATE:', data);
+        // res.write(res.statusCode.toString());
+        res.send(data);
       })
       .catch(handleError(next));
   }

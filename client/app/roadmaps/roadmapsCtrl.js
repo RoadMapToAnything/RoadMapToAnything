@@ -7,10 +7,25 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
 
+  // $scope.count = 0;
+
+  // $scope.count = $scope.currentRoadMapData.upvotes;
+
+ //get current count of votes
+ $scope.renderCount = function(){
+   var upvotes = $scope.currentRoadMapData.upvotes;
+   $scope.upvotesCount = 0;
+   for(var i = 0; i < upvotes.length; i++){
+    $scope.upvotesCount++;
+   }
+   return $scope.upvotesCount;
+ } 
+
  // Renders the nodes for the current roadmap to the page
   $scope.renderNodes = function(){
     var title = $scope.currentRoadMapData.title || 'test title';
-    var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];    
+    var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];  
+    var count =   $scope.currentRoadMapData.upvotes;
     // Add an index to nodes to make ng-clicking easier
     nodes.map(function(node,index){
       node.index = index;
@@ -18,11 +33,15 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
+    // $scope.currentCount = count;
+
     // User Logged in Data in the future
     // Some variable that holds that the user is logged in
     $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
+    $scope.currentCount = $scope.renderCount();
   };
+
 
   // When roadmap (identified by its id) data is fetched, set it
   Server.getRoadmapById(roadmapId).then(function (res){
@@ -106,16 +125,33 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     // Get the current logged in user's username
     User.getData().then(function(data) {
       var username = data.username;
-      console.log('THIS IS THE USER', username);
-      console.log('this is the roadmap id', roadmapId);
+      // console.log('THIS IS THE USER', username);
+      // console.log('this is the roadmap id', roadmapId);
       // Post the username to the roadmap's upVoteBy array
       $scope.sendUpVote(roadmapId, username)
       // On success, update the upvote count on the roadmap page
       // .then(function() {})
+      // .then(function(){
+      //   console.log('THE COUNT IN THE CONTROLLER!!!!', $scope.count);
+      // })
+    .then(function(data){ 
+        // var count = 0;
+        var usersUpvoted = data.data.upvotes;
+        // var count = 0;
+          console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
+          console.log('UPVOTES FROM USERS:', usersUpvoted);
+          //iterate over upvotes made from users array to get a count of upvotes
+          // for(var i = 0; i < usersUpvoted.length; i++){
+          //   $scope.count++;
+          // }
+          // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
+          $scope.currentCount = $scope.renderCount();
+      })
       // // On error, send error
       // .catch()
     })
 }
+
 
   // Submits a username to the roadmap's downVoteBy array
   // $scope.downVoteMap = function () {
