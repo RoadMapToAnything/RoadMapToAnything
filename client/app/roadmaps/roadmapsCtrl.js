@@ -1,6 +1,6 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
 
-.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', function($scope, $http, $stateParams, RoadMapsFactory, Server, User){  
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout){  
   angular.extend($scope, RoadMapsFactory);
 
   var roadmapId = $stateParams.roadmapID;
@@ -55,7 +55,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
 
-    $scope.connectLines();
+    $scope.connectAllNodes()
   }
 
   $scope.selectNode = function(index) {
@@ -64,12 +64,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var description = $scope.renderedNodes[index].description;
     var title = $scope.renderedNodes[index].title;
 
+    $scope.currentIndex = index;
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
     $scope.currentNode = $scope.renderedNodes[index];
+    
   };
-
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
     console.log('NODE IS SUBMITTED');
@@ -83,13 +84,22 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     User.completeRoadmapById(roadmapId);
   }
 
-  $scope.connectLines = function(){
-    $('.endPointForConnection').connections();
+  $scope.connectAllNodes = function () {
+    $timeout(10, function(){
+    console.log('connecting nodes');
+      var length = $scope.renderedNodes.length - 2;
+      for( var i = 0; i < length; i++ ){
+        var nodeA = '#node-' + i;
+        var nodeB = '#node-' + (i+1);
+        console.log('nodeA', $(nodeA));
+        console.log('nodeB', $(nodeB));
+        $(nodeA).connections({ to: nodeB });
+        $(nodeA).css("background-color","blue");
+        $(nodeB).css("background-color","blue");
+      }
+    })
+
   };
 
-  // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
-  $scope.asyncConnectLines = function(cb){
-    setTimeout($scope.connectLines,0);
-  };
 
 }]);

@@ -31,10 +31,6 @@ footer.page-footer div.footer-copyright {
 }
 /****** END FOOTER ******/
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f6870752c25db0c4f8289345e7f9f855422db5ba
 .tabs {
   overflow-x: hidden;
 }
@@ -76,4 +72,65 @@ footer.page-footer div.footer-copyright {
 /****** ROADMAPS ******/
 .card-panel {
   word-wrap: break-word;
+}
+.link-box {
+  position: fixed !important;
+  left: 5%;
+  top: 200px;
+  width: 27%;
+}
+.link-box-btn {
+  background-color: #ff7043 !important;
+}
+
+.connector {
+  height: 60px;
+  width: 13px;
+  background-color: gray;
+  margin-left: 34px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+/*.node-list {
+  background-image: url('app/roadmaps/bgImage1.png');
+}*/
+.circle {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding: 0px 0px 0px 5%;
+  display: inline-block;
+  height: 80px;
+  width: 80px;
+  background-color: #e0f2f1;
+}
+.node-list {
+  margin-left: 35%;
+  width: 90px;
+  display: inline-block;
+  vertical-align: top;
+}
+.node-description {
+  display: inline-block;
+}
+.number {
+  padding: 29px 0px 0px 27px;
+}
+.title-list {
+  vertical-align: top;
+  width: 50%;
+  display: inline-block;
+}
+.node-title {
+  margin: 32px 0px 80px 0px;
+}
+.selectedCircle {
+  background-color: #26a69a !important;
+}
+.doneBtn {
+  margin-left: -14px;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 110px;
 }

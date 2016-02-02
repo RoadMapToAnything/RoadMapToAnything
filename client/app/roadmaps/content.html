@@ -1,113 +1,50 @@
+<!-- Link box -->
+<div class="link-box">
 
-<!--Basic Card Box & Future Static Box -->
-<br>
-<br>
-
-<div class="row">
-
-  <!-- size 4 -->
-  <div class="col s4">
-    <div class="row">
-      <div class="col s12">
-        <div class="card-panel hoverable teal lighten-5">
-          <span class="gray-text"><b><h4>Links</h4></b>
-            <a ng-repeat="link in currentLinks" href="{{link}}">{{link}}</a>  
-          </span>
-          <br>
-          <div class="divider">
-          </div>
-          <div class="card-action gray-text">
-            <br>
-            <h5 ng-bind="currentTitle">Title of Node</h5>
-            <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
-          </div>
-          <div class="row">
-            <button class="btn waves-effect waves-light col s6 offset-s3 blue-grey lighten-1" ng-click="submitCompletedNode()" name="action">Node Done
-            </button>
-          </div>
+  <div class="row">
+    <div class="col s12 m16">
+      <div class="card hoverable teal lighten-5">
+        <div class="card-content">
+          <span class="card-title truncate"><b>{{ currentTitle }}</b></span>
+          <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
+          <ul>
+              <li ng-repeat="link in currentLinks"><a class="truncate" href="{{link}}">{{link}}</a></li>
+          </ul>
         </div>
-      </div>
-
-      <br>
-      
-      <div class="row">
-        <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="submitCompletedRoadmap()">
-        Map Done
-        </a>
+        <div class="card-action">
+          <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
+         <!--   -->
+        </div>
       </div>
     </div>
   </div>
-  <!-- end of size 4 -->
+</div>
 
-  <!-- size 8 -->
-  <div class="col s8">
-    <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
-    <div class="divider"></div>
-    <br>
-    <br>
-   <!--NODE RENDER-->
-    <div class="row" ng-repeat="node in renderedNodes">
-     <!--    Line should go here -->
-        <div class="containerHoldingEntireRoadMap">
-          <div class="offset-s4 col s2 circle teal lighten-5 endPointForConnection">
-            <br>
-            <br>
-          <!-- Odd nodes, first node is even -->
-            <p class="center-align bold" ng-click="selectNode(node.index)"><strong> THE NODE </strong></p>  
-            <br>
-            <br>
-          </div>
-          <!-- quickDescription needs to be a little bit above -->
-            <div class="offset-s1 col s5 card  teal lighten-5 quickDescription" ng-if="$even">
-              <div class="card-content black-text">
-                <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
-              </div>
-            </div> 
-              <!--  In a later version lets make this go right-->
-            <div class="offset-s1 col s5 card  teal lighten-5 quickDescriptionOdd" ng-if="$odd">
-              <div class="card-content black-text">
-                <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
-              </div>
-            </div> 
-        </div>
+  <!-- Roadmap Title -->
+
+<div class="col s8 roadmap-title">
+  <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
+  <div class="divider"></div>
+</div>
+
+   <!-- Nodes -->
+<div class="node-list container">
+  <div ng-repeat="node in renderedNodes">
+
+    <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
+      <div class="number">12
+      </div>
     </div>
-    <!-- END NODE RENDER -->
+
+  <div class="center-align connector"></div>
+
   </div>
-  <!-- end of size 8 -->
+      <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>
 </div>
+  <div class="title-list container">
+    <div ng-repeat="node in renderedNodes">
+      <span class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
+    </div>
 
-<!-- ALTERNATE BOOTSTRAP EXAMPLE 
-
-<div class="row">
-  <div class="large-4 columns">
-   <div class="card">
-  <img class="card-img-top" data-src="put source hree" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">Card title</h4>
-    <p class="card-text">Text</p>
   </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">item one</li>
-  </ul>
-  <div class="card-block">
-    <a href="#" class="card-link">link</a>
-    <a href="#" class="card-link">link</a>
-  </div>
-</div>
-</div>
-  <div class="large-8 columns">
-   <h5 class="nodetitle" ng-bind="roadMapTitle"><b>Title of the RoadMap Itself<b></h5>
-    <img src= image url/>
-    <h4>TEXT GOES HERE</p>
-  </div>
-</div> -->
-
-
-
-
-
-
-
-
-
 
