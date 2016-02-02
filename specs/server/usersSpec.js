@@ -101,6 +101,17 @@ describe('The users API', function() {
 
     });
 
+    it('Should respond with 401 when attempting to delete another user', function (done) {
+      header = 'Basic ' + btoa(name + ':' + newUser.authToken);
+
+      request(server.app)
+        .delete(route + '/' + data.users[1])
+        .set('Authorization', header)
+        .expect(401)
+        .end(done);
+
+    });
+
   });
 
 
@@ -219,7 +230,7 @@ describe('The users API', function() {
       request(server.app)
       .put(route + '/' + name)
       .set('Authorization', header)
-      .send({firstName: 'Robert'})
+      .send({firstName: 'Robert', username: 'should not change'})
       .expect('Content-Type', /json/)
       .expect(201)
       .end(function (err, res) {
