@@ -31,8 +31,8 @@
 <div class="node-list container">
   <div ng-repeat="node in renderedNodes">
 
-    <div class="circle teal lighten-5" id="{{ 'node-' + node.index }}">
-      <div class="number" ng-click="selectNode(node.index)">12
+    <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
+      <div class="number">12
       </div>
     </div>
 

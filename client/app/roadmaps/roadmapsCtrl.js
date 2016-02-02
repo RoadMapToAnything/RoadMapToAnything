@@ -64,12 +64,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var description = $scope.renderedNodes[index].description;
     var title = $scope.renderedNodes[index].title;
 
+    $scope.currentIndex = index;
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
     $scope.currentNode = $scope.renderedNodes[index];
+    
   };
-
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
     console.log('NODE IS SUBMITTED');

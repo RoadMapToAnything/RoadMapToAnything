@@ -103,7 +103,7 @@ footer.page-footer div.footer-copyright {
   display: inline-block;
   height: 80px;
   width: 80px;
-
+  background-color: #e0f2f1;
 }
 .node-list {
   margin-left: 35%;
@@ -124,4 +124,7 @@ footer.page-footer div.footer-copyright {
 }
 .node-title {
   margin: 32px 0px 81px 0px;
+}
+.selectedCircle {
+  background-color: #26a69a !important;
 }
