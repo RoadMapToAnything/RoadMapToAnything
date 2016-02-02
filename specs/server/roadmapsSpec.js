@@ -1,8 +1,8 @@
-process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
+// process.env.NODE_ENV = 'test'; // Test mode: switches port, db, and morgan off
 
 var request  = require('supertest'),
     expect   = require('chai').expect,
-    btoa = require('btoa'),
+    btoa     = require('btoa'),
 
     server   = require('../../server/server.js'),
     Roadmap  = require('../../server/api/roadmaps/roadmapModel.js'),
@@ -10,6 +10,7 @@ var request  = require('supertest'),
     data     = require('../data/testData.json'),
     testUser = data.users[0],
     testMap  = data.maps[0],
+    newUser  = data.newUser,
     newMap   = data.newMap;
 
 
@@ -23,7 +24,8 @@ var request  = require('supertest'),
 describe('Roadmap Routes - /api/roadmaps', function() {
   var name = testUser.username,
       pass = testUser.password,
-      result, header;
+      result, 
+      header;
 
 
   before('Get user token for Authorization header', function (done) {
@@ -201,6 +203,97 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         });
       });
     });
+  });
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ *      PUT /api/roadmaps/:roadmapID/:action     *
+ * * * * * * * * * * * * * * * * * * * * * * * * */
+
+  describe('PUT /api/roadmaps/:roadmapID/:action', function(){
+
+    var User = require('../../server/api/users/userModel.js');
+    var tempHeader;
+
+    before('Create a new test User', function(done) {
+      request(server.app)
+        .post('/api/signup')
+        .send(newUser)
+        .end(function (err, res) {
+          if (err) throw err;
+          tempHeader = 'Basic ' + btoa(res.body.data.username + ':' + res.body.data.authToken);
+          done();
+        })
+    });
+
+    after('Remove the test User', function(done) {
+      User.findOneAndRemove({username: newUser.username})
+        .then(function(){ done(); })
+        .catch(function(err){ throw err; });
+    });
+
+    it('Should add Roadmap to user\'s inProgress.roadmaps array when :action is follow', function(done){
+      request(server.app)
+        .put('/api/roadmaps/' + testMap._id + '/follow')
+        .set('Authorization', tempHeader)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          User.findOne({username: newUser.username})
+            .then(function(user){
+              expect(user.inProgress.roadmaps).to.include(testMap._id);
+              done();
+            });
+        });
+    });
+
+    it('Should remove Roadmap from user\'s inProgress.roadmaps array when :action is unfollow', function(done){
+      request(server.app)
+        .put('/api/roadmaps/' + testMap._id + '/unfollow')
+        .set('Authorization', tempHeader)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          User.findOne({username: newUser.username})
+            .then(function(user){
+              expect(user.inProgress.roadmaps).to.not.include(testMap._id);
+              done();
+            });
+        });
+    });
+
+    it('Should add Roadmap to user\'s completedRoadmaps array when :action is complete', function(done){
+
+      request(server.app)
+        .put('/api/roadmaps/' + testMap._id + '/follow')
+        .set('Authorization', tempHeader)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          
+          User.findOne({username: newUser.username})
+            .then(function(user){
+
+              expect(user.inProgress.roadmaps).to.include(testMap._id);
+
+              request(server.app)
+                .put('/api/roadmaps/' + testMap._id + '/complete')
+                .set('Authorization', tempHeader)
+                .expect(200)
+                .end(function (err, res) {
+                  if (err) throw err;
+                  User.findOne({username: newUser.username})
+                    .then(function(user){
+                      expect(user.inProgress.roadmaps).to.not.include(testMap._id);
+                      expect(user.completedRoadmaps).to.include(testMap._id);
+                      done();
+                    });
+                });
+            });
+        });
+    });
+
+
   });
 
   /* * * * * * * * * * * * * * * * * * * * * 

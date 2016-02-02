@@ -1,5 +1,6 @@
 var User = require('./userModel.js'),
     Promise = require('bluebird'),
+    getAuthHeader = require('basic-auth'),
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
     bcrypt = require('bcrypt-nodejs');
@@ -95,6 +96,52 @@ module.exports = {
         res.status(201).json({data: user});
       })
       .catch(handleError(next));
+  },
+
+  // Handles requests to /api/roadmaps/:roadmapID/:action
+  roadmapAction: function(req, res, next) {
+    var username  = getAuthHeader(req).name;
+    var roadmapID = req.params.roadmapID;
+    var action    = req.params.action.toLowerCase();
+
+    var actionMap = {
+      
+      follow  : { $addToSet: {'inProgress.roadmaps': roadmapID} },
+      
+      unfollow: { $pull:     {'inProgress.roadmaps': roadmapID} },
+
+      // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
+      complete: { $addToSet: {'completedRoadmaps'  : roadmapID} }
+
+    };
+
+    if ( !actionMap.hasOwnProperty(action) ) res.sendStatus(404);
+
+    User.findOneAndUpdate({username: username}, actionMap[action], {new: true})
+      .deepPopulate(populateFields)
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json({data: user});
+      })
+      .catch(handleError(next));
+  },
+
+  // Handles requests to /api/nodes/:nodeID/complete
+  completeNode: function(req, res, next) {
+    var username = getAuthHeader(req).name;
+    var nodeID   = req.params.nodeID;
+
+    var updateCommand = { $addToSet: {'inProgress.nodes': nodeID} };
+
+    User.findOneAndUpdate({username: username}, updateCommand, {new: true})
+      .deepPopulate(populateFields)
+      .then( function (user) {
+        if (!user) return res.sendStatus(401); 
+        res.status(200).json({data: user});
+      })
+      .catch(handleError(next));
   }
+
+
 };
 

@@ -6,25 +6,27 @@ var userController    = require('./users/userController.js'),
 module.exports = function (apiRouter) {
 
   /*
-   *      All routes begin with /api/
+   *      All routes begin with /api
    */
 
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *              User Routes              *
+   * * * * * * * * * * * * * * * * * * * * */
   apiRouter.get( '/login',  userController.login);
   apiRouter.post('/signup', userController.createUser);
 
-
-  /*
-   *      User Routes
-   */
   apiRouter.get(   '/users',           userController.getUsers);
   apiRouter.get(   '/users/:username', userController.getUserByName);
   apiRouter.put(   '/users/:username', userController.updateUserByName);
   apiRouter.delete('/users/:username', userController.deleteUserByName);
+  
+  apiRouter.put('/roadmaps/:roadmapID/:action', auth, userController.roadmapAction );
+  apiRouter.put('/nodes/:nodeID/complete',      auth, userController.completeNode );
 
 
-  /*
-   *      Roadmap Routes
-   */
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *              Roadmap Routes           *
+   * * * * * * * * * * * * * * * * * * * * */
    apiRouter.post(  '/roadmaps',            auth, roadmapController.createRoadmap  );
    apiRouter.get(   '/roadmaps',                  roadmapController.getRoadmaps    );
    apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
@@ -32,10 +34,9 @@ module.exports = function (apiRouter) {
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
 
-   /*
-    *      Node Routes
-    */
-
+   /* * * * * * * * * * * * * * * * * * * * * 
+    *              Node Routes              *
+    * * * * * * * * * * * * * * * * * * * * */
     // Create a node
     apiRouter.post('/roadmaps/:roadmapID/nodes', nodeController.createNode);
     apiRouter.post(                    '/nodes', nodeController.createNode);
