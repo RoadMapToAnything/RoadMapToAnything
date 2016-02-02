@@ -32,7 +32,7 @@
   <div ng-repeat="node in renderedNodes">
 
     <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
-      <div class="number">12
+      <div class="number">{{ node.index + 1 }}
       </div>
     </div>
 
