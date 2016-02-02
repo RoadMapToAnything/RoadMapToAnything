@@ -18,19 +18,28 @@ angular.module('roadmaps.factory', [])
   //   .catch(standardError);
   // };
 
-    var sendUpVote = function(id, username) {
-      console.log('THIS IS SEND UP VOTE FROM FACTORY');
+    // var sendUpVote = function(id, username) {
+    //   console.log('THIS IS SEND UP VOTE FROM FACTORY');
+    //   // Send a data boolean in the body?
+    //   // Post request to database to update roadmap model to include username in upvotes array...
+    //    return $http({
+    //     method: 'POST',
+    //     url: '/api/roadmaps/' + id
+    //     // ,
+    //     // data: username
+    //     })
+    //    //.then?
+    //    //.catch?
+    // }
+
+       var sendUpVote = function(id, username) {
       // Send a data boolean in the body?
-      // Post request to database to update roadmap model to include username in upvotes array...
-       return $http({
-        method: 'POST',
-        url: '/api/roadmaps/' + id
-        // ,
-        // data: username
-        })
+      // Post request to database to update roadmap model to include username in downvotes array...
+       return $http.post('/api/roadmaps/' + id, {username: username});
        //.then?
        //.catch?
     }
+
 
     // var sendDownVote = function(roadmapId, username) {
     //   // Send a data boolean in the body?

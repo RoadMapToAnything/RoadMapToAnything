@@ -77,17 +77,11 @@ module.exports = {
   updateRoadmapUpVote : function (req, res, next) {
     var _id = req.params.roadmapID;
     console.log('this is the REQ BODY', req.body);
-    Roadmap.findOne({_id:_id})
-      // When id is found, add userId to the appropriate array (upvote, downvote);
-      //     addToSet ensures that no duplicate items are added to set and does not affect 
-      //     existing duplicate elements
-      
-      // .addToSet({upvotes: username})
-
-      // .addToSet({downvotes: username})
-
-      // Send data back, should include latest upvotes' and downvotes' arrays
-      // Do I need a .then() and .catch() here?
+    console.log('this is the REQ BODY USERNAME', req.body.username); 
+    //$addToSet will only add usernames not already in the upvotes array
+    var updateUpVote = { $addToSet: {upvotes: req.body.username} };
+    //find roadmap by id and trigger the $addToSet command
+    Roadmap.findByIdAndUpdate(_id, updateUpVote, {new: true})
       .then(function(data){
         console.log('THIS IS THE DATA FROM SERVER', data);
         res.write(res.statusCode.toString());
