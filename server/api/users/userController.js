@@ -3,7 +3,9 @@ var User = require('./userModel.js'),
     getAuthHeader = require('basic-auth'),
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
-    bcrypt = require('bcrypt-nodejs');
+    bcrypt = require('bcrypt-nodejs'),
+    getAuthHeader = require('basic-auth');
+    
 
 bcrypt.hash = Promise.promisify(bcrypt.hash); // Promise.promisifyAll did not work
 
@@ -76,7 +78,17 @@ module.exports = {
   },
 
   updateUserByName: function(req, res, next) {
-    User.findOneAndUpdate({username: req.params.username}, req.body, {new: true})
+    var author = getAuthHeader(req).name;
+    if (req.params.username !== author) res.sendStatus(401);
+    
+    var updateableFields = ['password','firstName','lastName','imageUrl'];
+    var updateCommand = {};
+
+    updateableFields.forEach(function(field){
+      if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
+    });
+
+    User.findOneAndUpdate({username: author}, updateCommand, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
         if (!user) return res.sendStatus(401); 
