@@ -1,5 +1,5 @@
 <!-- Link box -->
-<div class="link-box">
+<!-- <div class="link-box">
 
   <div class="row">
     <div class="col s6 m12">
@@ -13,13 +13,13 @@
         </div>
         <div class="card-action">
           <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
-         <!-- <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> -->
+         <a class="link-box-btn" ng-click="submitCompletedRoadmap()">Map Done</a> 
         </div>
       </div>
     </div>
   </div>
 </div>
-
+ -->
   <!-- Roadmap Title -->
 <div class="col s8 roadmap-title">
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
@@ -27,29 +27,15 @@
 </div>
 
    <!-- Nodes -->
-    <div class="row" ng-repeat="node in renderedNodes">
-     <!--    Line should go here -->
-        <div class="nodes-container">
-          <div class="offset-s4 col s2 circle teal lighten-5 endPointForConnection">
-            <br>
-            <br>
-          <!-- Odd nodes, first node is even -->
-            <p class="center-align bold" ng-click="selectNode(node.index)"><strong> THE NODE </strong></p>  
-            <br>
-            <br>
-          </div>
-          <!-- quickDescription needs to be a little bit above -->
-            <div class="offset-s1 col s5 card  teal lighten-5 quickDescription" ng-if="$even">
-              <div class="card-content black-text">
-                <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
-              </div>
-            </div> 
-              <!--  In a later version lets make this go right-->
-            <div class="offset-s1 col s5 card  teal lighten-5 quickDescriptionOdd" ng-if="$odd">
-              <div class="card-content black-text">
-                <span class="card-title" ng-bind="node.title">Quick Description of what this node is about</span>
-              </div>
-            </div> 
-        </div>
-    </div>
+<div class="node-list" ng-repeat="node in renderedNodes">
+
+  <span class="circle teal lighten-5" id="{{ 'node-' + node.index }}">
+    <p class="center-align bold node-description" ng-click="selectNode(node.index)"><strong> 12 </strong></p>
+  </span><span class="node-description" ng-bind="node.title"> Title</span>
+
+
+  <div class="center-align connector-box">
+  <div class="center-align connector"></div>
+  </div>
+  </div>
 

@@ -1,6 +1,6 @@
 angular.module('creation.ctrl', ['services.server'])
 
-.controller('CreationController', ['$scope', '$state', 'Server', function($scope, $state, Server){
+.controller('CreationController', ['$scope', '$state', 'Server',  function($scope, $state, Server){
 
   $scope.nodeType = "Blog Post";
 
@@ -54,4 +54,15 @@ angular.module('creation.ctrl', ['services.server'])
     });
   };
 
-}]);
+  var connectTwoNodes = function(a, b){
+    jQuery(a).connections({ to: b });
+  }
+
+  $scope.connectAllNodes = function () {
+      jQuery(document).ready(function() {
+    
+  });
+  };
+
+
+}])

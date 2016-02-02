@@ -82,7 +82,58 @@ footer.page-footer div.footer-copyright {
 .link-box-btn {
   background-color: #ff7043 !important;
 }
-.nodes-container {
-  margin-left: -200px;
+.oddNode {
+  position: absolute;
+  margin-left: -220px !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
+.evenNode {
+  position: absolute !important;
+  margin-left: -500px !important;
+  margin-top: -200px !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.connector-box {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.connector {
+  height: 60px;
+  width: 15px;
+  background-color: gray;
+  margin-left: 45%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+.node {
+  margin-left: 500px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+  display: inline-block;
+}
+/*.node-list {
+  background-image: url('app/roadmaps/bgImage1.png');
+}*/
+.circle {
+  max-width: 70px !important;
+  margin-left: 45%;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding: 0px;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
 
+}
+.node-list p {
+  margin: 0px;
+
+}
+.node-description {
+  display: inline-block;
+}
