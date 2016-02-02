@@ -37,7 +37,7 @@ describe('User Factory', function () {
     it('Should store tokens in localStorage after signup', function() {
       var storage = $window.localStorage;
 
-      // make a 'fake' reques to the server, not really going to our server
+      // make a 'fake' request to the server, not really going to our server
       $httpBackend.expectPOST('/api/signup').respond({data: data});
       User.signup();
       $httpBackend.flush();
@@ -64,10 +64,10 @@ describe('User Factory', function () {
     });
 
     it('Should know if the user is logged in', function() {
-      $httpBackend.expectGET('/api/login').respond({data: data});
-      User.login();
-      $httpBackend.flush();
-      
+      var storage = $window.localStorage;
+      storage.setItem('user.authToken', data.authToken);
+      storage.setItem('user.username', data.username);
+
       expect(User.isLoggedIn()).to.be.true;
     });
 
@@ -77,10 +77,38 @@ describe('User Factory', function () {
 
     it('Should remove tokens on logout', function() {
       var storage = $window.localStorage;
+      storage.setItem('user.authToken', data.authToken);
+      storage.setItem('user.username', data.username);
 
       User.logout();
       expect(storage.getItem('user.authToken')).to.be.null;
       expect(storage.getItem('user.username')).to.be.null;
+    });
+
+  });
+
+  describe('User Data Methods', function() {
+    var data = {
+      username: 'user',
+      firstName: 'Guy'
+    };
+
+    beforeEach(function() {
+      $window.localStorage.setItem('user.username', data.username);
+    });
+
+    afterEach(function() {
+      $window.localStorage.removeItem('user.username');
+    });
+
+    it('Should have a getData method', function() {
+      expect(User.getData).to.be.a('function');
+    });
+
+    it('Should store tokens in localStorage after signup', function() {
+      $httpBackend.expectGET('/api/users/' + data.username).respond({data: data});
+      User.getData();
+      $httpBackend.flush();
     });
 
   });
