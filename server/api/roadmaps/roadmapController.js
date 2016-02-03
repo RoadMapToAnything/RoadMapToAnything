@@ -53,22 +53,48 @@ module.exports = {
 
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
-    var updateCommand = req.body;
-    Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-      .populate('author nodes')
-      .then(function(dbResults){
-        res.json({data: dbResults});
+    var author = getAuthHeader(req).name;
+
+    var updateableFields = ['title','description'];
+    var updateCommand = {};
+    updateableFields.forEach(function(field){
+      if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
+    });
+
+    Roadmap.findOne({_id:_id})
+      .populate('author')
+      .then(function(roadmap){
+        if (!roadmap) {
+          res.sendStatus(404);
+          return null;
+        } else if (roadmap.author.username !== author) {
+          res.sendStatus(403);
+          return null;
+        } else {
+          return Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
+                        .populate('author nodes');
+        }
+      })
+      .then(function(updatedRoadmap){
+        if (updatedRoadmap) res.json({data: updatedRoadmap});
       })
       .catch(handleError(next));
+      
   },
 
   deleteRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
+    var author = getAuthHeader(req).name;
+
     Roadmap.findOne({_id:_id})
       .populate('author nodes')
       .then(function(roadmap){
-        if (roadmap) roadmap.remove();
-        res.json({data: roadmap});
+        if (!roadmap) res.sendStatus(404);
+        else if (roadmap.author.username !== author) res.sendStatus(403);
+        else {
+          roadmap.remove();
+          res.json({data: roadmap});
+        }
       })
       .catch(handleError(next));
   },
@@ -102,3 +128,5 @@ module.exports = {
   }
 
 };
+
+
