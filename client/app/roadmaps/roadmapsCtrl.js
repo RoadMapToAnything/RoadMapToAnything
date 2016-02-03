@@ -7,12 +7,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
 
-  // $scope.count = 0;
-
-  // $scope.count = $scope.currentRoadMapData.upvotes;
-
- //get current count of votes
- $scope.renderCount = function(){
+ // Get the current number of upvotes from current map
+ $scope.getCountUpVotes = function(){
    var upvotes = $scope.currentRoadMapData.upvotes;
    $scope.upvotesCount = 0;
    for(var i = 0; i < upvotes.length; i++){
@@ -33,13 +29,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
-    // $scope.currentCount = count;
 
     // User Logged in Data in the future
     // Some variable that holds that the user is logged in
     $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
-    $scope.currentCount = $scope.renderCount();
+
+    // Set count for upvotes
+    $scope.currentCountUpVotes = $scope.getCountUpVotes();
   };
 
 
@@ -136,7 +133,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       // })
     .then(function(data){ 
         // var count = 0;
-        var usersUpvoted = data.data.upvotes;
+        var usersUpvoted = data.data.data.upvotes;
         // var count = 0;
           console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
           console.log('UPVOTES FROM USERS:', usersUpvoted);
@@ -146,31 +143,45 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
           // }
           // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
          
-           $scope.upvotesCount = 0;
+           $scope.upvotesAfterClick = 0;
            for(var i = 0; i < usersUpvoted.length; i++){
-            $scope.upvotesCount++;
+            $scope.upvotesAfterClick++;
            }
-          $scope.currentCount = $scope.upvotesCount;
+          $scope.currentCountUpVotes = $scope.upvotesAfterClick;
       })
     })
 }
 
 
   // Submits a username to the roadmap's downVoteBy array
-  // $scope.downVoteMap = function () {
-  //   console.log('DOWNVOTE IS SUBMITTED');
-  //   // Get the current logged in user's username
-  //   User.getData().then(function(data) {
-  //     var username = data.username;
-  //     console.log('THIS IS THE USER', username);
-  //     // Post the username to the roadmap's upVoteBy array
-  //     // sendDownVote(roadmapId, username)
-  //     // // On success, update the upvote count on the roadmap page
-  //     // .then(function() {})
-  //     // // On error, send error
-  //     // .catch()
-  //   })
-  // }
+  $scope.downVoteMap = function () {
+    console.log('DOWNVOTE BUTTON CLICKED');
+    // Get the current logged in user's username
+    User.getData().then(function(data) {
+      var username = data.username;
+      console.log('User from controller:', username);
+      // Post the username to the roadmap's upVoteBy array
+      $scope.sendDownVote(roadmapId, username)
+         .then(function(data){ 
+        // var count = 0;
+        var usersDownVoted = data.data.data.upvotes;
+        // var count = 0;
+          console.log('After downvote, data sent back from server:', data);
+          console.log('current votes after downvote', usersDownVoted);
+          //iterate over upvotes made from users array to get a count of upvotes
+          // for(var i = 0; i < usersUpvoted.length; i++){
+          //   $scope.count++;
+          // }
+          // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
+         
+           $scope.upvotesAfterDownVote = 0;
+           for(var i = 0; i < usersDownVoted.length; i++){
+            $scope.upvotesAfterDownVote++;
+           }
+          $scope.currentCountUpVotes = $scope.upvotesAfterDownVote;
+      })
+    })
+  }
 
   $scope.connectLines = function(){
     $('.endPointForConnection').connections();
