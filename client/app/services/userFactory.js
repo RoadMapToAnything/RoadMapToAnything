@@ -1,6 +1,6 @@
-angular.module('services.user', ['services.server'])
+angular.module('services.user', ['services.request'])
 
-.factory('User', ['$http', 'Server', function($http, Server){
+.factory('User', ['Request', function (Request) {
 
   var User = {};
 
@@ -9,43 +9,12 @@ angular.module('services.user', ['services.server'])
    * * * * * * * * * * * * * * * * * * * * */
 
   // Standard response after for auth actions
-  var authResponse = function (res, message) {
-    console.log(res.data.data.username, message);
-    localStorage.setItem('user.username', res.data.data.username);
-    localStorage.setItem('user.authToken', res.data.data.authToken);
-    return res.data.data;
-  };
-
-  var encodeAuthHeader = function() {
-    var user = localStorage.getItem('user.username');
-    var token = localStorage.getItem('user.authToken');
-    return 'Basic ' + btoa(user + ':' + token);
-  };
-
-  var standardResponse = function(res) {
-    console.log( '(' + res.status + ') ' + 
-      res.config.method + ' successful for ' + 
-      parseName(res) + ': ', res.data.data );
-
-    return res.data.data;
-  };
-
-  // Parses a name to be logged by responses and errors
-  var parseName = function(res) {
-    var nameKeys = ['title', 'username'];
-    var name;
-
-    // Grab the name of the item affected from response
-    if (res.data.data) {
-      nameKeys.forEach(function (key) {
-        if (res.data.data[key]) name = res.data.data[key];
-      });
-    }
-
-    // If name cannot be pulled from response, pull from url
-    if (!name) name = res.config.url.split('/')[2];
-
-    return name;
+  var authResponse = function (data, message) {
+    console.log('DATA', data);
+    console.log(data.username, message);
+    localStorage.setItem('user.username', data.username);
+    localStorage.setItem('user.authToken', data.authToken);
+    return data;
   };
 
   // Calculates user's progress toward completing one or many roadmaps
@@ -88,7 +57,7 @@ angular.module('services.user', ['services.server'])
    * * * * * * * * * * * * * * * * * * * * */
 
   User.getData = function() {
-    return Server.getUser(localStorage.getItem('user.username'));
+    return Request.get('/api/users/' + localStorage.getItem('user.username'));
   };
 
 
@@ -96,24 +65,19 @@ angular.module('services.user', ['services.server'])
    *                 AUTH                  *
    * * * * * * * * * * * * * * * * * * * * */
 
-  User.login = function(username, password) {
-    return $http({
-      method: 'GET',
-      url: '/api/login',
-      params: {
-        username: username,
-        password: password
-      }
-    })
-    .then(function (res) {
-      return authResponse(res, 'successfully logged in.');
+  User.login = function(name, pass) {
+    var credentials = {username: name, password: pass};
+
+    return Request.get('/api/login', credentials, {auth: false, log: false})
+    .then(function (data) {
+      return authResponse(data, 'successfully logged in.');
     });
   };
 
   User.signup = function(user) {
-    return $http.post('/api/signup', user)
-    .then(function (res) {
-      return authResponse(res, 'successfully signed up.');
+    return Request.post('/api/signup', user, {auth: false, log: false})
+    .then(function (data) {
+      return authResponse(data, 'successfully signed up.');
     });
   };
 
@@ -134,35 +98,19 @@ angular.module('services.user', ['services.server'])
    * * * * * * * * * * * * * * * * * * * * */
 
   User.followRoadmapById = function(id) {
-    return $http({
-      method: 'PUT',
-      url: '/api/roadmaps/' + id + '/follow',
-      headers: { Authorization: encodeAuthHeader() }
-    }).then(standardResponse);
+    return Request.put('/api/roadmaps/' + id + '/follow');
   };
 
   User.unfollowRoadmapById = function(id) {
-    return $http({
-      method: 'PUT',
-      url: '/api/roadmaps/' + id + '/unfollow',
-      headers: { Authorization: encodeAuthHeader() }
-    }).then(standardResponse);
+    return Request.put('/api/roadmaps/' + id + '/unfollow');
   };
 
   User.completeNodeById = function(id) {
-    return $http({
-      method: 'PUT',
-      url: '/api/nodes/' + id + '/complete',
-      headers: { Authorization: encodeAuthHeader() }
-    }).then(standardResponse);
+    return Request.put('/api/nodes/' + id + '/complete');
   };
 
   User.completeRoadmapById = function(id) {
-    return $http({
-      method: 'PUT',
-      url: '/api/roadmaps/' + id + '/complete',
-      headers: { Authorization: encodeAuthHeader() }
-    }).then(standardResponse);
+    return Request.put('/api/roadmaps/' + id + '/complete');
   };
 
   // Accepts one or two possible parameters:
@@ -208,7 +156,6 @@ angular.module('services.user', ['services.server'])
 
   User.getMapProgress = User.getRoadmapProgress;
   User.getProgress = User.getRoadmapProgress;
-
 
   return User;
 

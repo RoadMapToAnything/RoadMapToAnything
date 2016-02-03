@@ -1,31 +1,8 @@
 angular.module('services.request', [])
 
 .factory('Request', ['$http', function($http){
+
   var Request = {};
-
-  // Handles all request formatting, as they are only slightly 
-  // different from type to type
-  var makeRequest = function(type, url, data, options) {
-    var request = {
-      method: type,
-      url: url
-    };
-
-    // Attach optional request parameters
-    if (options.auth) request.headers = {Authorization: encodeAuthHeader()};
-    if (type === 'GET' && data) request.params = data;
-    else if (data) request.data = data;
-    
-    // Overwrite standard functions if they are turned off
-    if (!options.format) var standardFormat = function(){};
-    if (!options.log) var standardLog = function(){};
-    
-
-    return $http(request)
-    .then(standardLog)
-    .then(standardFormat)
-    .catch(standardError);
-  };
 
   var encodeAuthHeader = function() {
     var user = localStorage.getItem('user.username');
@@ -78,6 +55,32 @@ angular.module('services.request', [])
     return defaults;
   };
 
+  // Handles all request formatting, as they are only slightly 
+  // different from type to type
+  var makeRequest = function(type, url, data, options) {
+    var format = standardFormat;
+    var log = standardLog;
+    var request = {
+      method: type,
+      url: url
+    };
+
+    // Attach optional request parameters
+    if (options.auth) request.headers = {Authorization: encodeAuthHeader()};
+    if (type === 'GET' && data) request.params = data;
+    else if (data) request.data = data;
+    
+    // Overwrite standard functions if they are turned off
+    if (!options.format) format = function(res){ return res; };
+    if (!options.log) log = function(res){ return res; };
+    
+
+    return $http(request)
+    .then(log)
+    .then(format)
+    .catch(standardError);
+  };
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *           FACTORY METHODS             *
@@ -106,6 +109,7 @@ angular.module('services.request', [])
     options = mergeDefaults(options, {auth: true, log: true, format: true});
     return makeRequest('DELETE', url, null, options);
   };
+
 
   return Request;
 
