@@ -16,6 +16,37 @@ angular.module('services.user', ['services.server'])
     return res.data.data;
   };
 
+  var encodeAuthHeader = function() {
+    var user = localStorage.getItem('user.username');
+    var token = localStorage.getItem('user.authToken');
+    return 'Basic ' + btoa(user + ':' + token);
+  };
+
+  var standardResponse = function(res) {
+    console.log( '(' + res.status + ') ' + 
+      res.config.method + ' successful for ' + 
+      parseName(res) + ': ', res.data.data );
+
+    return res.data.data;
+  };
+
+  // Parses a name to be logged by responses and errors
+  var parseName = function(res) {
+    var nameKeys = ['title', 'username'];
+    var name;
+
+    // Grab the name of the item affected from response
+    if (res.data.data) {
+      nameKeys.forEach(function (key) {
+        if (res.data.data[key]) name = res.data.data[key];
+      });
+    }
+
+    // If name cannot be pulled from response, pull from url
+    if (!name) name = res.config.url.split('/')[2];
+
+    return name;
+  };
 
   // Calculates user's progress toward completing one or many roadmaps
   var calcProgress = function(inProgress, id) {
@@ -40,7 +71,6 @@ angular.module('services.user', ['services.server'])
       var total = map.nodes.length;
 
       results.push({
-        id: map._id,
         _id: map._id,
         completed: completed,
         total: total,
@@ -104,19 +134,35 @@ angular.module('services.user', ['services.server'])
    * * * * * * * * * * * * * * * * * * * * */
 
   User.followRoadmapById = function(id) {
-    return Server.updateUser({ 'inProgress.roadmaps': id });
+    return $http({
+      method: 'PUT',
+      url: '/api/roadmaps/' + id + '/follow',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   User.unfollowRoadmapById = function(id) {
-    // TODO: Enable unfollowing roadmaps.
+    return $http({
+      method: 'PUT',
+      url: '/api/roadmaps/' + id + '/unfollow',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   User.completeNodeById = function(id) {
-    return Server.updateUser({ 'inProgress.nodes': id });
+    return $http({
+      method: 'PUT',
+      url: '/api/nodes/' + id + '/complete',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   User.completeRoadmapById = function(id) {
-    return Server.updateUser({ 'completedRoadmaps': id });
+    return $http({
+      method: 'PUT',
+      url: '/api/roadmaps/' + id + '/complete',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   // Accepts one or two possible parameters:
@@ -146,14 +192,17 @@ angular.module('services.user', ['services.server'])
    *               ALIASES                 *
    * * * * * * * * * * * * * * * * * * * * */
 
+  User.followMapById = User.followRoadmapById;
   User.followRoadmap = User.followRoadmapById;
   User.followMap = User.followRoadmapById;
   User.follow = User.followRoadmapById;
+  User.unfollowMapById = User.unfollowRoadmapById;
   User.unfollowRoadmap = User.unfollowRoadmapById;
   User.unfollowMap = User.unfollowRoadmapById;
   User.unfollow = User.unfollowRoadmapById;
 
   User.completeNode = User.completeNodeById;
+  User.completeMapById = User.completeRoadmapById;
   User.completeRoadmap = User.completeRoadmapById;
   User.completeMap = User.completeRoadmapById;
 
