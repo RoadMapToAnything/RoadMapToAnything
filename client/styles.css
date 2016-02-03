@@ -1,3 +1,13 @@
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}
+
 /****** LINKS ******/
 a:hover {
   cursor: pointer;
@@ -134,3 +144,4 @@ footer.page-footer div.footer-copyright {
   padding-right: 15px;
   width: 110px;
 }
+
