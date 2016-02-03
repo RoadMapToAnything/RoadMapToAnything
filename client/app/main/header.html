@@ -37,13 +37,12 @@
   </nav> 
 </div>
 
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal" ng-controller="AuthController">
-    <div class="container">
-      <h3>Sign In</h3>
-  <div class="row">
+<!-- Modal Structure -->
+<div id="modal1" class="modal" ng-controller="AuthController">
+  <!--Sign Up Form-->
+  <div class="container" ng-show="signin">
+    <h3>Sign In</h3>
     <form class="col s12" ng-submit="attemptLogin()">
-
       <div class="row">
         <div class="input-field col s6">
           <input id="username" type="text" class="validate" ng-model="attemptedUsername">
@@ -57,15 +56,57 @@
         </div>
       </div>
       <div class ="row">
-        Don't have an account? <a ng-show="!isLoggedIn()" ui-sref="home.signup"><strong>Sign up!</strong></a>
+        Don't have an account? <a ng-show="!isLoggedIn()" ng-click="showSignup()"><strong>Sign up!</strong></a>
       </div>
       <div class="row">
-        <input type="submit" class="modal-action modal-close waves-effect waves-light btn"></a>
+        <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat">
         <br>
         <p class="error-msg" ng-show="showUnauthMsg">Sorry, those credentials were not recognized.</p>
       </div>
-
     </form>
+  </div>
+
+  <!--Sign Up Form-->
+  <div class="container" ng-hide="signin">
+
+  <h3>Sign Up</h3>
+    <div class="row">
+      <form class="col s12" ng-submit="attemptSignup()">
+      
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="firstname" type="text" class="validate" ng-model="attemptedFirstName" required>
+            <label for="first_name">First Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="lastname" type="text" class="validate" ng-model="attemptedLastName" required>
+            <label for="last_name">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="username" type="text" class="validate" ng-model="attemptedUsername" required>
+            <label for="user_name">Username</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="password" type="password" class="validate" ng-model="attemptedPassword" required>
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class ="row">
+          Already have an account? <a ng-show="!isLoggedIn()" ng-click="showSignin()"><strong>Sign in!</strong></a>
+        </div>
+        <div class="row">
+          <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat signinSubmitBtn">
+          <br>
+          <p class="error-msg" ng-show="showUnauthMsg">Sorry, that username has been taken</p>
+        </div>
+      </form>
+
     </div>
   </div>
-  </div>
+</div>
