@@ -311,6 +311,7 @@ Looks for the following parameters:
    - auth: if true, sets standard auth headers
    - log: if true, console logs the response 
    - format: if true, sends back response.data.data
+   - err: if true, catches and logs any errors
 
  Returns a promise.
 

@@ -3,7 +3,7 @@ angular.module('services.request', [])
 .factory('Request', ['$http', function($http){
 
   // System wide default options for requests
-  var systemDefaults = {auth: true, log: true, format: true};
+  var systemDefaults = {auth: true, log: true, format: true, err: true};
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *            HELPER METHODS             *
@@ -97,13 +97,18 @@ angular.module('services.request', [])
   //    - auth: if true, sets standard auth headers
   //    - log: if true, console logs the response 
   //    - format: if true, sends back response.data.data
+  //    - err: if true, catches and logs any errors
   //  }
 
   // Generally speaking, this method should not be called directly,
   // instead use the get, post, put, and delete convenience methods
   var Request = function(params) {
+    // Make in-scope versions of handling helper methods
     var format = standardFormat;
     var log = standardLog;
+    var err = standardError;
+
+    // Build standard request object
     var request = {
       method: params.method,
       url: params.url
@@ -117,12 +122,12 @@ angular.module('services.request', [])
     // Overwrite standard functions if they are turned off
     if (!params.options.format) format = function(res){ return res; };
     if (!params.options.log) log = function(res){ return res; };
+    if (!params.options.err) err = undefined;
     
 
     return $http(request)
-    .then(log)
-    .then(format)
-    .catch(standardError);
+    .then(log, err)
+    .then(format);
   };
 
 
@@ -153,7 +158,7 @@ angular.module('services.request', [])
   // Sends a PUT request with an optional query and options objects
   Request.put = function(url, data, options) {
     parseOptionals(data, options);
-    
+
     return Request({
       method: 'PUT', 
       url: url, 
