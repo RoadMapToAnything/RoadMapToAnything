@@ -71,7 +71,6 @@ angular.module('services.user', ['services.server'])
       var total = map.nodes.length;
 
       results.push({
-        id: map._id,
         _id: map._id,
         completed: completed,
         total: total,
@@ -151,11 +150,19 @@ angular.module('services.user', ['services.server'])
   };
 
   User.completeNodeById = function(id) {
-    return Server.updateUser({ 'inProgress.nodes': id });
+    return $http({
+      method: 'PUT',
+      url: '/api/nodes/' + id + '/complete',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   User.completeRoadmapById = function(id) {
-    return Server.updateUser({ 'completedRoadmaps': id });
+    return $http({
+      method: 'PUT',
+      url: '/api/roadmaps/' + id + '/complete',
+      headers: { Authorization: encodeAuthHeader() }
+    }).then(standardResponse);
   };
 
   // Accepts one or two possible parameters:
@@ -195,6 +202,7 @@ angular.module('services.user', ['services.server'])
   User.unfollow = User.unfollowRoadmapById;
 
   User.completeNode = User.completeNodeById;
+  User.completeMapById = User.completeRoadmapById;
   User.completeRoadmap = User.completeRoadmapById;
   User.completeMap = User.completeRoadmapById;
 

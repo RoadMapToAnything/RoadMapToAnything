@@ -101,7 +101,17 @@ describe('User Factory', function () {
     var testId = '0000010';
     var data = {
       username: 'user',
-      firstName: 'Guy'
+      firstName: 'Guy',
+      inProgress: {
+        roadmaps: [{
+          _id: testId,
+          nodes: [1, 2, 3]
+        }],
+        nodes: [{
+          _id: '0000100',
+          parentRoadmap: testId
+        }]
+      }
     };
 
     beforeEach(function() {
@@ -134,7 +144,7 @@ describe('User Factory', function () {
       expect(User.follow).to.be.a('function');
     });
 
-    it('Should send a request to follow ', function() {
+    it('Should send a request to follow roadmap', function() {
       var response;
       $httpBackend.expectPUT('/api/roadmaps/' + testId + '/follow').respond({data: data});
       User.followRoadmapById(testId).then(function (res) {
@@ -152,7 +162,7 @@ describe('User Factory', function () {
       expect(User.unfollow).to.be.a('function');
     });
 
-    it('Should send a request to follow ', function() {
+    it('Should send a request to unfollow roadmap', function() {
       var response;
       $httpBackend.expectPUT('/api/roadmaps/' + testId + '/unfollow').respond({data: data});
       User.unfollowRoadmapById(testId).then(function (res) {
@@ -167,64 +177,57 @@ describe('User Factory', function () {
       expect(User.completeNode).to.be.a('function');
     });
 
-    it('Should send a request to follow ', function() {
+    it('Should send a request to complete node', function() {
       var response;
       $httpBackend.expectPUT('/api/nodes/' + testId + '/complete').respond({data: data});
-      User.completeNode(testId).then(function (res) {
+      User.completeNodeById(testId).then(function (res) {
         response = res;
       });
       $httpBackend.flush();
       expect(response).to.deep.equal(data);
     });
 
+    it('Should have complete roadmap methods', function() {
+      expect(User.completeRoadmapById).to.be.a('function');
+      expect(User.completeMapById).to.be.a('function');
+      expect(User.completeRoadmap).to.be.a('function');
+      expect(User.completeMap).to.be.a('function');
+    });
+
+    it('Should send a request to complete roadmap', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + testId + '/complete').respond({data: data});
+      User.completeRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have progress methods', function() {
+      expect(User.getRoadmapProgress).to.be.a('function');
+      expect(User.getMapProgress).to.be.a('function');
+      expect(User.getProgress).to.be.a('function');
+    });
+
+    it('Should send a request if getting progress with no local data', function() {
+      var response;
+      $httpBackend.expectGET('/api/users/' + data.username).respond({data: data});
+      User.getRoadmapProgress().then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+
+      expect(response).to.be.an('array');
+      expect(response[0]).to.deep.equal({_id: '0000010', completed: 1, total: 3, percent: 33});
+    });
+
+    it('Should send not send a request if getting progress with local data', function() {
+      var response = User.getRoadmapProgress(data);
+
+      expect(response).to.be.an('array');
+      expect(response[0]).to.deep.equal({_id: '0000010', completed: 1, total: 3, percent: 33});
+    });
+
   });
 });
-
-/*
-
-  var mapId = '000000000000000000000010';
-  var nodeId = '000000000000000000000100';
-
-  User.followRoadmapById(mapId)
-  .then(function (user) {
-    console.log('Progress on one', User.getRoadmapProgress(user, mapId) );
-
-    return User.completeNodeById(nodeId)
-  })
-
-  .then(function (user) {
-    console.log('Progress on all', User.getRoadmapProgress(user) );
-
-    return User.getProgress();
-  })
-
-  .then(function (progress) {
-    console.log('Async Progress', progress);
-
-    return User.getData();
-  })
-
-  .then(function (user) {
-    console.log('User data', user);
-
-    User.followRoadmap(mapId);
-    User.followMap(mapId);
-    User.follow(mapId);
-
-    User.unfollowRoadmapById(mapId);
-    User.unfollowRoadmap(mapId);
-    User.unfollowMap(mapId);
-    User.unfollow(mapId);
-
-    User.completeNode(nodeId);
-
-    User.completeRoadmapById(mapId);
-    User.completeRoadmap(mapId);
-    return User.completeMap(mapId);
-  })
-
-  .then(function (user) {
-    console.log('User at end', user);
-  });
-
-*/
