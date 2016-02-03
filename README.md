@@ -295,3 +295,33 @@ Accepts a node object, and updates that node with any properties included in the
 _!!requires authorization_<br>
 *aliases: deleteNode*<br>
 Accepts a node id, and removes that node from the database. Returns a promise with the deleted node object.
+
+####[Request Factory](client/app/services/requestFactory.js) 
+**`Request` | `services.request`**<br>
+Very similar to angular's built in `$http` method, but handles default logging, errory handling, and auth headers. Limited to only the funcionality listed below, this factory none the less should be used in all places that `$http` would be used, but `User` and `Server` would not.
+
+**Request( params )**<br>
+Handles all http requests, with the additional option to handle logging, formatting, and errors. Generally speaking, this method should not be called directly, instead use the get, post, put, and delete convenience methods.
+
+Looks for the following parameters:
+ - method: String, the http method
+ - url: String, the url
+ - data: Object, either data or query, depending on method
+ - options: Object, has any of the following properties (all default to true):
+   - auth: if true, sets standard auth headers
+   - log: if true, console logs the response 
+   - format: if true, sends back response.data.data
+
+ Returns a promise.
+
+**Request.get( url, [query], [options] )**<br>
+Handles all GET requests. Accepts a url string, and optional query and options objects. Defaults `auth` to false. Returns a promise.
+
+**Request.post( url, [data], [options] )**<br>
+Handles all GET requests. Accepts a url string, and optional data and options objects. Returns a promise.
+
+**Request.put( url, [data], [options] )**<br>
+Handles all GET requests. Accepts a url string, and optional data and options objects. Returns a promise.
+
+**Request.delete( url, [options] )**<br>
+Handles all GET requests. Accepts a url string, and an optional options object. Returns a promise.
