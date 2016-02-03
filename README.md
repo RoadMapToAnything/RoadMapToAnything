@@ -145,10 +145,15 @@ PUT     /roadmaps/:roadmapId  // Update a roadmap
 DELETE  /roadmaps/:roadmapId  // Delete a roadmap
 
 GET     /nodes/:nodeId        // Get a specific node
-POST    /roadmaps/:roadmapID/nodes // create a new node
-POST    /nodes                // create a new node
+POST    /roadmaps/:roadmapID/nodes    // Create a new node
+POST    /nodes                // Create a new node
 PUT     /nodes/:nodeId        // Update a node
 DELETE  /nodes/:nodeId        // Delete a node
+
+PUT     /roadmaps/:roadmapId/follow   // Authorized user follows roadmap
+PUT     /roadmaps/:roadmapId/unfollow // Authorized user unfollows roadmap
+PUT     /nodes/:nodeId/complete       // Authorized user completes node
+PUT     /roadmaps/:roadmapId/complete // Authorized user completes roadmap
 ```
 
 #### Query Strings
@@ -175,7 +180,7 @@ A number of Angular factories have been built in order to centralize many common
 ```javascript
 angular.module('example.ctrl', ['services.user'])
 
-.controller('DashboardController', ['$scope', 'User', function($scope, User){
+.controller('DashboardController', ['$scope', 'User', function($scope, User) {
   ...
 }]);
 
@@ -184,7 +189,7 @@ angular.module('example.ctrl', ['services.user'])
 The methods available on each factory are detailed below:
 
 ####[User Factory](client/app/services/userFactory.js) 
-**`User` | `services.user`**<br>
+**`User`** | **`services.user`**<br>
 Contains various methods for modifying and accessing data related to the currently logged in user. Most require the user to be authorized with a hashed token stored at `user.authToken` in local storage.
 
 **User.getData()**<br>
@@ -237,7 +242,7 @@ Accepts the optional parameters of a user object and/or a roadmap id. If no user
 ```
 
 ####[Server Factory](client/app/services/serverFactory.js) 
-**`Server` | `services.server`**<br>
+**`Server`** | **`services.server`**<br>
 Contains various methods for modifying and accessing data related to foreign objects in the database: roadmaps, nodes, and other users. Most require the user to be authorized with `user.authToken` in local storage. All of these methods are asynchronus and return a promise.
 
 **Server.getUsers( [query] )**<br>
@@ -295,3 +300,34 @@ Accepts a node object, and updates that node with any properties included in the
 _!!requires authorization_<br>
 *aliases: deleteNode*<br>
 Accepts a node id, and removes that node from the database. Returns a promise with the deleted node object.
+
+####[Request Factory](client/app/services/requestFactory.js) 
+**`Request`** | **`services.request`**<br>
+Very similar to angular's built in `$http` method, but handles default logging, errory handling, and auth headers. Limited to only the funcionality listed below, this factory none the less should be used in all places that `$http` would be used, but `User` and `Server` would not.
+
+**Request( params )**<br>
+Handles all http requests, with the additional option to handle logging, formatting, and errors. Generally speaking, this method should not be called directly, instead use the get, post, put, and delete convenience methods.
+
+Looks for the following parameters:
+- method: String, the http method
+- url: String, the url
+- data: Object, either data or query, depending on method
+- options: Object, has any of the following properties (all default to true):
+  - auth: if true, sets standard auth headers
+  - log: if true, console logs the response 
+  - format: if true, sends back response.data.data
+  - err: if true, catches and logs any errors
+
+Returns a promise.
+
+**Request.get( url, [query], [options] )**<br>
+Handles all GET requests. Accepts a url string, and optional query and options objects. Defaults `auth` to false. Returns a promise.
+
+**Request.post( url, [data], [options] )**<br>
+Handles all POST requests. Accepts a url string, and optional data and options objects. Returns a promise.
+
+**Request.put( url, [data], [options] )**<br>
+Handles all PUT requests. Accepts a url string, and optional data and options objects. Returns a promise.
+
+**Request.delete( url, [options] )**<br>
+Handles all DELETE requests. Accepts a url string, and an optional options object. Returns a promise.
