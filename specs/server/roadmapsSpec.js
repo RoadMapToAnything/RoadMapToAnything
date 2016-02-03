@@ -327,6 +327,44 @@ describe('Roadmap Routes - /api/roadmaps', function() {
         });
     });
 
+      it('Should upvote a roadmap when :action is upvote', function(done){
+
+      request(server.app)
+        .put('/api/roadmaps/' + testMap._id + '/upvote')
+        .set('Authorization', tempHeader)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          
+          Roadmap.findById(testMap._id)
+            .then(function(roadmap){
+
+              expect(roadmap.upvotes).to.include(newUser._id);
+              expect(roadmap.downvotes).to.not.include(newUser._id);
+              done();
+            });
+        });
+    });
+
+    it('Should downvote a roadmap when :action is downvote', function(done){
+
+    request(server.app)
+      .put('/api/roadmaps/' + testMap._id + '/downvote')
+      .set('Authorization', tempHeader)
+      .expect(200)
+      .end(function (err, res) {
+        if (err) throw err;
+        
+        Roadmap.findById(testMap._id)
+          .then(function(roadmap){
+
+            expect(roadmap.downvotes).to.include(newUser._id);
+            expect(roadmap.upvotes).to.not.include(newUser._id);
+            done();
+          });
+      });
+    });
+
 
   });
 
