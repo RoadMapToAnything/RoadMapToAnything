@@ -14,7 +14,7 @@ module.exports = {
 
     roadmapController.returnAuthor(newNode.parentRoadmap)
     .then(function(authorName){
-      if (!authName) {
+      if (!authorName) {
         res.sendStatus(400);
         return null;
       } else if (authorName !== username) {
