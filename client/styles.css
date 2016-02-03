@@ -11,6 +11,9 @@
 .modal h3 {
   margin: 40px 0px 0px 0px;
 }
+.error-msg {
+  color:  #f44336 !important;
+}
 
 /****** LINKS ******/
 a:hover {
