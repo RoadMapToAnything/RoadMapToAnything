@@ -134,4 +134,29 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $('.endPointForConnection').connections();
   };
 
+
+  // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
+  $scope.asyncConnectLines = function(cb){
+    setTimeout($scope.connectLines,0);
+  };
+
+  $scope.subject = '';
+  $scope.content = '';
+
+  $scope.postComment = function(){
+    // Will probably need to refactor
+    $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
+    var subject = $scope.subject;
+    var content = $scope.content;
+    var roadmapId = $scope.currentRoadMapData._id;
+    var author = localStorage.getItem('user.username') || 'hello';
+
+    completedComment = {}
+    completedComment.subject = subject;
+    completedComment.content = content;
+    completedComment.roadmap = roadmapId;
+    completedComment.author  = author;
+    console.log(completedComment);
+    Server.addComment(completedComment);
+  }
 }]);

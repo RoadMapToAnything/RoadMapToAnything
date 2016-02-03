@@ -239,3 +239,16 @@ module.exports.setNodeHooks = function(NodeSchema) {
   });
 
 };
+
+
+module.exports.setCommentHooks = function(CommentSchema) {
+  CommentSchema.pre('save', function(next) {
+    setCreatedTimestamp.call(this, next);
+  });
+
+  CommentSchema.pre('remove', function(next) {
+    // TODO: Decide how comments behave when their author is removed.
+    next();
+  });
+
+};

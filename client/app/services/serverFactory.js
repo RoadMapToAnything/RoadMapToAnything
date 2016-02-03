@@ -74,10 +74,29 @@ angular.module('services.server', ['services.request'])
     return Request.delete('/api/nodes/' + id);
   };
 
+    /* * * * * * * * * * * * * * * * * * * * * 
+   *               COMMENTS                *
+   * * * * * * * * * * * * * * * * * * * * */
+   
+   Server.addComment = function(comment) {
+
+     return $http({
+       method: 'POST',
+       url: '/api/comments/',
+       data: comment
+     })
+     /*
+     Need to update roadmpa themselve
+     .then()
+     .catch(standardError)*/
+     .then(standardResponse)
+     .catch(standardError);
+   };
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *               ALIASES                 *
    * * * * * * * * * * * * * * * * * * * * */
+
 
   Server.getUser = Server.getUserByUsername;
   Server.deleteUser = Server.deleteUserByUsername;
@@ -91,6 +110,8 @@ angular.module('services.server', ['services.request'])
   Server.deleteMapById = Server.deleteRoadmapById;
   Server.deleteRoadmap = Server.deleteRoadmapById;
   Server.deleteMap = Server.deleteRoadmapById;
+
+  Server.addComment = Server.addComment;
 
   Server.getNode = Server.getNodeById;
   Server.deleteNode = Server.deleteNodeById; 

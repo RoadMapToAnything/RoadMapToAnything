@@ -18,7 +18,8 @@ var UserSchema = new mongoose.Schema({
       },
   completedRoadmaps : [ {type: ObjectId, ref: 'Roadmap'} ],
   created           : { type: Date },
-  updated           : { type: Date } 
+  updated           : { type: Date },
+  comments          : [ {type: ObjectId, ref: 'Comment'} ]
 });
 
 UserSchema.plugin(deepPopulate);

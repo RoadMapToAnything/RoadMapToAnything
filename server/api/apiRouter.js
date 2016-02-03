@@ -1,6 +1,7 @@
 var userController    = require('./users/userController.js'),
     roadmapController = require('./roadmaps/roadmapController.js'),
     nodeController    = require('./nodes/nodeController.js'),
+    commentController = require('./roadmaps/comments/commentController.js')
     auth              = require('../auth.js').authenticate;
 
 module.exports = function (apiRouter) {
@@ -33,6 +34,12 @@ module.exports = function (apiRouter) {
    apiRouter.put(   '/roadmaps/:roadmapID', auth, roadmapController.updateRoadmap  );
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
+   /*
+   *      Comment Routes
+   */
+
+    apiRouter.post('/comments', commentController.addComment);
+  
 
    /* * * * * * * * * * * * * * * * * * * * * 
     *              Node Routes              *

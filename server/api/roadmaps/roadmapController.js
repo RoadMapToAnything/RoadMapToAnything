@@ -1,5 +1,10 @@
 var Roadmap = require('./roadmapModel.js'),
+
     userController = require('../users/userController.js'),
+
+    User = require('../users/userModel.js'),
+    Comment = require('./comments/commentModel.js'),
+
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
@@ -73,14 +78,18 @@ module.exports = {
           return null;
         } else {
           return Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-                        .populate('author nodes');
+            .populate('author nodes comments');
         }
       })
       .then(function(updatedRoadmap){
         if (updatedRoadmap) res.json({data: updatedRoadmap});
+    var updateCommand = req.body;
+    Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
+      .populate('author nodes comments')
+      .then(function(dbResults){
+        res.json({data: dbResults});
       })
       .catch(handleError.bind(null, next));
-      
   },
 
   deleteRoadmap : function (req, res, next) {
