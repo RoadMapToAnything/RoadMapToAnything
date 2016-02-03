@@ -1,5 +1,5 @@
 var Roadmap = require('./roadmapModel.js'),
-    User = require('../users/userModel.js'),
+    userController = require('../users/userController.js'),
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
@@ -8,6 +8,14 @@ var Roadmap = require('./roadmapModel.js'),
 
 module.exports = {
 
+  returnAuthor : function(id) {
+    Roadmap.findById(id)
+    .populate('author')
+    .then(function (roadmap) {
+      if (roadmap) return roadmap.author.username;
+    });
+  },
+
   createRoadmap : function (req, res, next) {
     var author = getAuthHeader(req).name;
     var newRoadmap = req.body;
@@ -15,9 +23,9 @@ module.exports = {
     console.log('API: author', author);
     console.log('API: creating roadmap', newRoadmap);
 
-    User.findOne({username: author})
-      .then(function (user) {
-        newRoadmap.author = user._id;
+    userController.returnId(author)
+      .then(function (id) {
+        newRoadmap.author = id;
         return Roadmap(newRoadmap).save();
       })
       .then(function(dbResults){
@@ -26,7 +34,7 @@ module.exports = {
       .catch(
         function(){
           console.log('API: error creating roadmap');
-          handleError(next)
+          handleError(next);
         });
   },
 

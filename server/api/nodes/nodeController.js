@@ -1,8 +1,8 @@
-var Node          = require('./nodeModel.js'),
-    Roadmap       = require('../roadmaps/roadmapModel.js'),
-    handleError   = require('../../util.js').handleError,
-    handleQuery   = require('../queryHandler.js'),
-    getAuthHeader = require('basic-auth');
+var Node              = require('./nodeModel.js'),
+    roadmapController = require('../roadmaps/roadmapController.js'),
+    handleError       = require('../../util.js').handleError,
+    handleQuery       = require('../queryHandler.js'),
+    getAuthHeader     = require('basic-auth');
 
 module.exports = {
 
@@ -12,24 +12,22 @@ module.exports = {
     // Support /nodes and /roadmaps/roadmapID/nodes
     newNode.parentRoadmap = newNode.parentRoadmap || req.params.roadmapID;
 
-    Roadmap.findById(newNode.parentRoadmap)
-      .populate('author')
-      .then(function(roadmap){
-        console.log(roadmap);
-        if (!roadmap) {
-          res.sendStatus(400);
-          return null;
-        } else if (roadmap.author.username !== username) {
-          res.sendStatus(403);
-          return null;
-        } else {
-          return Node(newNode).save();
-        }
-      })
-      .then(function(newNode){
-        if (newNode) res.status(201).json({data: newNode});
-      })
-      .catch(handleError(next));
+    roadmapController.returnAuthor(newNode.parentRoadmap)
+    .then(function(authorName){
+      if (!authName) {
+        res.sendStatus(400);
+        return null;
+      } else if (authorName !== username) {
+        res.sendStatus(403);
+        return null;
+      } else {
+        return Node(newNode).save();
+      }
+    })
+    .then(function(newNode){
+      if (newNode) res.status(201).json({data: newNode});
+    })
+    .catch(handleError(next));
   },
 
   getNodeByID : function (req, res, next) {

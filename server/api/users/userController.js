@@ -25,6 +25,13 @@ var generateAuthToken = function (user, hashedPassword) {
 
 module.exports = {
 
+  returnId : function( username ) {
+    return User.findOne({username: username})
+    .then(function (user) {
+      return user._id;
+    });
+  },
+
   createUser : function(req, res, next){
     var newUser = req.body;
 
