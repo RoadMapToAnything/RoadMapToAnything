@@ -137,7 +137,6 @@ module.exports = {
 
   // Handles requests to /api/roadmaps/:roadmapID/:action
   actionHandler: function(req, res, next) {
-    var username  = getAuthHeader(req).name;
     var roadmapID = req.params.roadmapID;
     var action    = req.params.action.toLowerCase();
 
