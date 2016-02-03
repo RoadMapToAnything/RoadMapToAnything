@@ -24,6 +24,11 @@ describe('User Factory', function () {
     $window.localStorage.removeItem('user.username');
   });
 
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *             AUTHENTICATION            *
+   * * * * * * * * * * * * * * * * * * * * */
+
   describe('Authorization', function() {
     var data = {
       username: 'test',
@@ -87,7 +92,13 @@ describe('User Factory', function () {
 
   });
 
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *              USER DATA                *
+   * * * * * * * * * * * * * * * * * * * * */
+
   describe('User Data Methods', function() {
+    var testId = '0000010';
     var data = {
       username: 'user',
       firstName: 'Guy'
@@ -105,10 +116,65 @@ describe('User Factory', function () {
       expect(User.getData).to.be.a('function');
     });
 
-    it('Should store tokens in localStorage after signup', function() {
+    it('Should use the username token to send a get request', function() {
+      var response;
       $httpBackend.expectGET('/api/users/' + data.username).respond({data: data});
-      User.getData();
+      User.getData().then(function (res) {
+        response = res;
+      });
       $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have follow roadmap methods', function() {
+      expect(User.followRoadmapById).to.be.a('function');
+      expect(User.followMapById).to.be.a('function');
+      expect(User.followRoadmap).to.be.a('function');
+      expect(User.followMap).to.be.a('function');
+      expect(User.follow).to.be.a('function');
+    });
+
+    it('Should send a request to follow ', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + testId + '/follow').respond({data: data});
+      User.followRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have unfollow roadmap methods', function() {
+      expect(User.unfollowRoadmapById).to.be.a('function');
+      expect(User.unfollowMapById).to.be.a('function');
+      expect(User.unfollowRoadmap).to.be.a('function');
+      expect(User.unfollowMap).to.be.a('function');
+      expect(User.unfollow).to.be.a('function');
+    });
+
+    it('Should send a request to follow ', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + testId + '/unfollow').respond({data: data});
+      User.unfollowRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have complete node methods', function() {
+      expect(User.completeNodeById).to.be.a('function');
+      expect(User.completeNode).to.be.a('function');
+    });
+
+    it('Should send a request to follow ', function() {
+      var response;
+      $httpBackend.expectPUT('/api/nodes/' + testId + '/complete').respond({data: data});
+      User.completeNode(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
     });
 
   });
