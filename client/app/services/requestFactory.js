@@ -2,6 +2,9 @@ angular.module('services.request', [])
 
 .factory('Request', ['$http', function($http){
 
+  // System wide default options for requests
+  var systemDefaults = {auth: true, log: true, format: true};
+
   /* * * * * * * * * * * * * * * * * * * * * 
    *            HELPER METHODS             *
    * * * * * * * * * * * * * * * * * * * * */
@@ -50,19 +53,33 @@ angular.module('services.request', [])
 
   // Starts with system defaults, applies custom defaults, and then instance options
   var mergeDefaults = function(options, customDefaults) {
-    var defaults = {auth: true, log: true, format: true};
-
     for (var key in customDefaults) {
-      defaults[key] = customDefaults[key]
+      systemDefaults[key] = customDefaults[key]
     }
 
     for (var key in options) {
-      defaults[key] = options[key];
+      systemDefaults[key] = options[key];
     }
 
-    return defaults;
+    return systemDefaults;
   };
 
+  // Determines whether a given object is an options object
+  var isOptions = function(obj) {
+    for (var key in systemDefaults) {
+      if (obj[key]) return true;
+    }
+
+    return false;
+  };
+
+  // Ensures factory methods optional parameters are set correctly
+  var parseOptionals = function(data, options) {
+    if (data && !options && isOptions(data)) {
+      options = data;
+      data = undefined;
+    }
+  };
 
 
   /* * * * * * * * * * * * * * * * * * * * * 
@@ -109,8 +126,10 @@ angular.module('services.request', [])
   };
 
 
-  // Sends a GET request with an optional query object, and options
+  // Sends a GET request with an optional query options objects
   Request.get = function(url, query, options) {
+    parseOptionals(query, options);
+
     return Request({
       method: 'GET', 
       url: url, 
@@ -119,8 +138,10 @@ angular.module('services.request', [])
     });
   };
 
-  // Sends a POST request with an optional query object, and options
+  // Sends a POST request with an optional query and options objects
   Request.post = function(url, data, options) {
+    parseOptionals(data, options);
+
     return Request({
       method: 'POST', 
       url: url, 
@@ -129,8 +150,10 @@ angular.module('services.request', [])
     });
   };
 
-  // Sends a PUT request with an optional query object, and options
+  // Sends a PUT request with an optional query and options objects
   Request.put = function(url, data, options) {
+    parseOptionals(data, options);
+    
     return Request({
       method: 'PUT', 
       url: url, 
