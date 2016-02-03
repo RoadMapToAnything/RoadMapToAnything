@@ -133,6 +133,37 @@ module.exports = {
         res.json({data: dbResults});
       })
       .catch(handleError(next));
+  },
+
+  // Handles requests to /api/roadmaps/:roadmapID/:action
+  actionHandler: function(req, res, next) {
+    var username  = getAuthHeader(req).name;
+    var roadmapID = req.params.roadmapID;
+    var action    = req.params.action.toLowerCase();
+
+    var actionMap = {
+      
+      follow  : function() {
+        var command = { $addToSet: {'inProgress.roadmaps': roadmapID} };
+        userController.updateRoadmap(command, req, res, next);
+      },
+      
+      unfollow: function() {
+        var command = { $pull: {'inProgress.roadmaps': roadmapID} };
+        userController.updateRoadmap(command, req, res, next);
+      },
+
+      complete: function() {
+        // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
+        var command = { $addToSet: {'completedRoadmaps'  : roadmapID} };
+        userController.updateRoadmap(command, req, res, next);
+      }
+
+    };
+
+    if ( !actionMap.hasOwnProperty(action) ) return res.sendStatus(404);
+
+    return actionMap(action);
   }
 
 };

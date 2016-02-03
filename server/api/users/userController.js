@@ -25,11 +25,24 @@ var generateAuthToken = function (user, hashedPassword) {
 
 module.exports = {
 
-  returnId : function( username ) {
+  returnId : function(username) {
     return User.findOne({username: username})
     .then(function (user) {
       return user._id;
     });
+  },
+
+  updateRoadmap : function(command, req, res, next) {
+    var username = getAuthHeader(req).name;
+    if (req.params.username !== username) res.sendStatus(403);
+
+    User.findOneAndUpdate({username: username}, command, {new: true})
+    .deepPopulate(populateFields)
+    .then( function (user) {
+      if (!user) return res.sendStatus(404); 
+      res.status(200).json({data: user});
+    })
+    .catch(handleError(next));
   },
 
   createUser : function(req, res, next){
@@ -114,34 +127,6 @@ module.exports = {
         if (!user) return res.sendStatus(404);
         user.remove();
         res.status(201).json({data: user});
-      })
-      .catch(handleError(next));
-  },
-
-  // Handles requests to /api/roadmaps/:roadmapID/:action
-  roadmapAction: function(req, res, next) {
-    var username  = getAuthHeader(req).name;
-    var roadmapID = req.params.roadmapID;
-    var action    = req.params.action.toLowerCase();
-
-    var actionMap = {
-      
-      follow  : { $addToSet: {'inProgress.roadmaps': roadmapID} },
-      
-      unfollow: { $pull:     {'inProgress.roadmaps': roadmapID} },
-
-      // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
-      complete: { $addToSet: {'completedRoadmaps'  : roadmapID} }
-
-    };
-
-    if ( !actionMap.hasOwnProperty(action) ) res.sendStatus(404);
-
-    User.findOneAndUpdate({username: username}, actionMap[action], {new: true})
-      .deepPopulate(populateFields)
-      .then( function (user) {
-        if (!user) return res.sendStatus(404); 
-        res.status(200).json({data: user});
       })
       .catch(handleError(next));
   },
