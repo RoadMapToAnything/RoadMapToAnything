@@ -2,7 +2,9 @@ angular.module('services.request', [])
 
 .factory('Request', ['$http', function($http){
 
-  var Request = {};
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *            HELPER METHODS             *
+   * * * * * * * * * * * * * * * * * * * * */
 
   var encodeAuthHeader = function() {
     var user = localStorage.getItem('user.username');
@@ -46,8 +48,14 @@ angular.module('services.request', [])
     return name;
   };
 
-  // Sets any options passed, and then returns the defaults
-  var mergeDefaults = function(options, defaults) {
+  // Starts with system defaults, applies custom defaults, and then instance options
+  var mergeDefaults = function(options, customDefaults) {
+    var defaults = {auth: true, log: true, format: true};
+
+    for (var key in customDefaults) {
+      defaults[key] = customDefaults[key]
+    }
+
     for (var key in options) {
       defaults[key] = options[key];
     }
@@ -55,24 +63,43 @@ angular.module('services.request', [])
     return defaults;
   };
 
-  // Handles all request formatting, as they are only slightly 
-  // different from type to type
-  var makeRequest = function(type, url, data, options) {
+
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *           FACTORY METHODS             *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  // Similar to $http, Request handles all http requests, with the
+  // additional option to handle logging, formatting, and errors
+
+  // Looks for the following parameters:
+  //  - method: http method
+  //  - url: url
+  //  - data: either data or query object, depending on method
+  //  - options: {
+  //    - auth: if true, sets standard auth headers
+  //    - log: if true, console logs the response 
+  //    - format: if true, sends back response.data.data
+  //  }
+
+  // Generally speaking, this method should not be called directly,
+  // instead use the get, post, put, and delete convenience methods
+  var Request = function(params) {
     var format = standardFormat;
     var log = standardLog;
     var request = {
-      method: type,
-      url: url
+      method: params.method,
+      url: params.url
     };
 
     // Attach optional request parameters
-    if (options.auth) request.headers = {Authorization: encodeAuthHeader()};
-    if (type === 'GET' && data) request.params = data;
-    else if (data) request.data = data;
+    if (params.options.auth) request.headers = {Authorization: encodeAuthHeader()};
+    if (params.method === 'GET' && params.data) request.params = params.data;
+    else if (params.data) request.data = params.data;
     
     // Overwrite standard functions if they are turned off
-    if (!options.format) format = function(res){ return res; };
-    if (!options.log) log = function(res){ return res; };
+    if (!params.options.format) format = function(res){ return res; };
+    if (!params.options.log) log = function(res){ return res; };
     
 
     return $http(request)
@@ -82,32 +109,43 @@ angular.module('services.request', [])
   };
 
 
-  /* * * * * * * * * * * * * * * * * * * * * 
-   *           FACTORY METHODS             *
-   * * * * * * * * * * * * * * * * * * * * */
-
   // Sends a GET request with an optional query object, and options
   Request.get = function(url, query, options) {
-    options = mergeDefaults(options, {auth: false, log: true, format: true});
-    return makeRequest('GET', url, query, options);
+    return Request({
+      method: 'GET', 
+      url: url, 
+      data: query, 
+      options: mergeDefaults(options, {auth: false})
+    });
   };
 
   // Sends a POST request with an optional query object, and options
   Request.post = function(url, data, options) {
-    options = mergeDefaults(options, {auth: true, log: true, format: true});
-    return makeRequest('POST', url, data, options);
+    return Request({
+      method: 'POST', 
+      url: url, 
+      data: data, 
+      options: mergeDefaults(options)
+    });
   };
 
   // Sends a PUT request with an optional query object, and options
   Request.put = function(url, data, options) {
-    options = mergeDefaults(options, {auth: true, log: true, format: true});
-    return makeRequest('PUT', url, data, options);
+    return Request({
+      method: 'PUT', 
+      url: url, 
+      data: data, 
+      options: mergeDefaults(options)
+    });
   };
 
-  // Sends a DELETE request with an optional query object, and options
+  // Sends a DELETE request with any options specified
   Request.delete = function(url, options) {
-    options = mergeDefaults(options, {auth: true, log: true, format: true});
-    return makeRequest('DELETE', url, null, options);
+    return Request({
+      method: 'DELETE', 
+      url: url,
+      options: mergeDefaults(options)
+    });
   };
 
 
