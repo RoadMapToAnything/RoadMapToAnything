@@ -25,19 +25,19 @@ angular.module('auth.ctrl', ['services.user'])
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
     $scope.signin = true;
-
+    console.log('attempting login');
 
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {
       $scope.resetInputs();
+      $('#modal1').closeModal();
       $state.go('home.dashboard');
     })
     .catch(function (err) {
-      if (err.status === 401) {
+      console.log('error', err);
         $scope.resetInputs();
         console.log('(401) Login failed: bad credentials.');
         $scope.showUnauthMsg = true;
-      }
     });
   };
 
@@ -51,7 +51,9 @@ angular.module('auth.ctrl', ['services.user'])
       password: $scope.attemptedPassword
     })
     .then(function (res) {
+      console.log('-----');
       $scope.resetInputs();
+      $('#modal1').closeModal();
       $state.go('home.dashboard');
     })
     .catch(function (err) {

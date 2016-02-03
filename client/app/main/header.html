@@ -55,13 +55,14 @@
           <label for="password" required>Password</label>
         </div>
       </div>
-      <div class ="row">
-        Don't have an account? <a ng-show="!isLoggedIn()" ng-click="showSignup()"><strong>Sign up!</strong></a>
-      </div>
+
       <div class="row">
-        <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat">
+        <input type="submit" class="waves-effect waves-light btn-flat">
         <br>
         <p class="error-msg" ng-show="showUnauthMsg">Sorry, those credentials were not recognized.</p>
+      </div>
+      <div class ="row">
+        Don't have an account? <a ng-show="!isLoggedIn()" ng-click="showSignup()"><strong>Sign up!</strong></a>
       </div>
     </form>
   </div>
@@ -101,7 +102,7 @@
           Already have an account? <a ng-show="!isLoggedIn()" ng-click="showSignin()"><strong>Sign in!</strong></a>
         </div>
         <div class="row">
-          <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat signinSubmitBtn">
+          <input type="submit" class="waves-effect waves-light btn-flat signinSubmitBtn">
           <br>
           <p class="error-msg" ng-show="showUnauthMsg">Sorry, that username has been taken</p>
         </div>
