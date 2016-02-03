@@ -9,12 +9,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
  // Get the current number of upvotes from current map
  $scope.getCountUpVotes = function(){
-   var upvotes = $scope.currentRoadMapData.upvotes;
-   $scope.upvotesCount = 0;
-   for(var i = 0; i < upvotes.length; i++){
-    $scope.upvotesCount++;
-   }
-   return $scope.upvotesCount;
+    var upvotes = $scope.currentRoadMapData.upvotes;
+    $scope.upvotesCount = 0;
+    for(var i = 0; i < upvotes.length; i++){
+      $scope.upvotesCount++;
+    }
+    return $scope.upvotesCount;
  } 
 
  // Renders the nodes for the current roadmap to the page
@@ -101,94 +101,53 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
 
-  $scope.connectAllNodes = function () {
-    $timeout(10, function(){
-    console.log('connecting nodes');
-      var length = $scope.renderedNodes.length - 2;
-      for( var i = 0; i < length; i++ ){
-        var nodeA = '#node-' + i;
-        var nodeB = '#node-' + (i+1);
-        console.log('nodeA', $(nodeA));
-        console.log('nodeB', $(nodeB));
-        $(nodeA).connections({ to: nodeB });
-        $(nodeA).css("background-color","blue");
-        $(nodeB).css("background-color","blue");
-      }
-    })
-
   // Submits a username to the roadmap's upVoteBy array
   $scope.upVoteMap = function () {
     console.log('UPVOTE IS SUBMITTED');
     // Get the current logged in user's username
     User.getData().then(function(data) {
       var username = data.username;
-      // console.log('THIS IS THE USER', username);
-      // console.log('this is the roadmap id', roadmapId);
-      // Post the username to the roadmap's upVoteBy array
+      // Call $http post to upvote route
       $scope.sendUpVote(roadmapId, username)
-      // On success, update the upvote count on the roadmap page
-      // .then(function() {})
-      // .then(function(){
-      //   console.log('THE COUNT IN THE CONTROLLER!!!!', $scope.count);
-      // })
     .then(function(data){ 
-        // var count = 0;
         var usersUpvoted = data.data.data.upvotes;
-        // var count = 0;
-          console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
-          console.log('UPVOTES FROM USERS:', usersUpvoted);
-          //iterate over upvotes made from users array to get a count of upvotes
-          // for(var i = 0; i < usersUpvoted.length; i++){
-          //   $scope.count++;
-          // }
-          // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
-         
-           $scope.upvotesAfterClick = 0;
-           for(var i = 0; i < usersUpvoted.length; i++){
-            $scope.upvotesAfterClick++;
-           }
-          $scope.currentCountUpVotes = $scope.upvotesAfterClick;
+        console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
+        console.log('UPVOTES FROM USERS:', usersUpvoted);
+        $scope.upvotesAfterClick = 0;
+        for(var i = 0; i < usersUpvoted.length; i++){
+          $scope.upvotesAfterClick++;
+        }
+        $scope.currentCountUpVotes = $scope.upvotesAfterClick;
       })
-    })
+  })
 }
 
 
-  // Submits a username to the roadmap's downVoteBy array
+  // Initiate the steps to remove a username from roadmap's upvotes array
   $scope.downVoteMap = function () {
     console.log('DOWNVOTE BUTTON CLICKED');
     // Get the current logged in user's username
     User.getData().then(function(data) {
       var username = data.username;
       console.log('User from controller:', username);
-      // Post the username to the roadmap's upVoteBy array
+      // Call $http post to upvote route
       $scope.sendDownVote(roadmapId, username)
-         .then(function(data){ 
-        // var count = 0;
-        var usersDownVoted = data.data.data.upvotes;
-        // var count = 0;
-          console.log('After downvote, data sent back from server:', data);
+        .then(function(data){ 
+          // Grab the total votes
+          var usersDownVoted = data.data.data.upvotes;
           console.log('current votes after downvote', usersDownVoted);
-          //iterate over upvotes made from users array to get a count of upvotes
-          // for(var i = 0; i < usersUpvoted.length; i++){
-          //   $scope.count++;
-          // }
-          // console.log('CURRENT COUNT,', $scope.count, usersUpvoted);
-         
-           $scope.upvotesAfterDownVote = 0;
-           for(var i = 0; i < usersDownVoted.length; i++){
+          $scope.upvotesAfterDownVote = 0;
+          // Iterate over upvotes made from upvotes array to get a count of upvotes
+          for(var i = 0; i < usersDownVoted.length; i++){
             $scope.upvotesAfterDownVote++;
-           }
+          }
           $scope.currentCountUpVotes = $scope.upvotesAfterDownVote;
-      })
+        })
     })
   }
 
   $scope.connectLines = function(){
     $('.endPointForConnection').connections();
   };
-
-
-  };
-
 
 }]);
