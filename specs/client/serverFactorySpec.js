@@ -1,116 +1,256 @@
-// TODO: Turn the following into a real test
+describe('Server Factory', function () {
+  var $scope, $rootScope, $location, $window, $httpBackend, createController, Server;
+  var testId = '0000000010';
+  var username = 'user';
+  var data = {
+      _id: testId,
+      username: username,
+      firstName: 'Gal',
+      authoredRoadmaps:[testId]
+    };
+  var token = 'sjj232hwjhr3urw90rof';
 
-// describe('Server Factory', function () {
-//   var $scope, $rootScope, $location, $window, $httpBackend, createController, User;
+  // using angular mocks, we can inject the injector
+  // to retrieve our dependencies
+  beforeEach(module('services.server'));
+  beforeEach(inject(function($injector) {
 
-//   // using angular mocks, we can inject the injector
-//   // to retrieve our dependencies
-//   beforeEach(module('services.user'));
-//   beforeEach(inject(function($injector) {
+    // mock out our dependencies
+    $rootScope = $injector.get('$rootScope');
+    $location = $injector.get('$location');
+    $window = $injector.get('$window');
+    $httpBackend = $injector.get('$httpBackend');
+    Server = $injector.get('Server');
+    $scope = $rootScope.$new();
+    $window.localStorage.setItem('user.authToken', token);
+    $window.localStorage.setItem('user.username', username);
+  }));
 
-//     // mock out our dependencies
-//     $rootScope = $injector.get('$rootScope');
-//     $location = $injector.get('$location');
-//     $window = $injector.get('$window');
-//     $httpBackend = $injector.get('$httpBackend');
-//     Server = $injector.get('Server');
-//     $scope = $rootScope.$new();
-//   }));
-
-//   afterEach(function() {
-//     $httpBackend.verifyNoOutstandingExpectation();
-//     $httpBackend.verifyNoOutstandingRequest();
-//     $window.localStorage.removeItem('user.authToken');
-//   });
-
-//   it('should have a signup method', function() {
-//     expect(Server.signup).to.be.a('function');
-//   });
-
-//   it('should store token in localStorage after signup', function() {
-//     // create a fake JWT for auth
-//     var token = 'sjj232hwjhr3urw90rof';
-
-//     // make a 'fake' reques to the server, not really going to our server
-//     $httpBackend.expectPOST('/api/signup').respond({token: token});
-//     Server.signup();
-//     $httpBackend.flush();
-//     expect($window.localStorage.getItem('user.authToken')).to.be(token);
-//   });
-
-//   it('should have a signin method', function() {
-//     expect(Server.signin).to.be.a('function');
-//   });
-
-//   it('should store token in localStorage after signin', function() {
-//     // create a fake JWT for auth
-//     var token = 'sjj232hwjhr3urw90rof';
-//     $httpBackend.expectPOST('/api/signin').respond({token: token});
-//     Server.signin();
-//     $httpBackend.flush();
-//     expect($window.localStorage.getItem('user.authToken')).to.be(token);
-//   });
-// });
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+    $window.localStorage.removeItem('user.authToken');
+    $window.localStorage.removeItem('user.username');
+  });
 
 
-/*
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *             USERS METHODS             *
+   * * * * * * * * * * * * * * * * * * * * */
 
-var username = localStorage.getItem('user.username');
+  describe('Users Methods', function() {
 
-var updateUser = {
-  username: username,
-  firstName: 'Updated Name'
-};
+    it('Should have a getUsers method', function() {
+      expect(Server.getUsers).to.be.a('function');
+    });
 
-var newMap = {
-  title: 'New Roadmap',
-  description: 'I am a brand new roadmap!'
-};
+    it('Should send the right GET request', function() {
+      var response;
+      $httpBackend.expectGET('/api/users').respond({data: data});
+      Server.getUsers().then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
 
-var newNode = {
-  title: 'New Node',
-  description: 'I am a brande new node!',
-  resourceType: 'A Node'
-};
+    it('Should have a getUsers method', function() {
+      expect(Server.getUserByUsername).to.be.a('function');
+      expect(Server.getUser).to.be.a('function');
+    });
+
+    it('Should send a GET request for the right user', function() {
+      var response;
+      $httpBackend.expectGET('/api/users/' + data.username).respond({data: data});
+      Server.getUserByUsername(data.username).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have a updateUser method', function() {
+      expect(Server.updateUser).to.be.a('function');
+    });
+
+    it('Should send a PUT request for the right user with the right data', function() {
+      var response;
+      $httpBackend.expectPUT('/api/users/' + data.username, data).respond({data: data});
+      Server.updateUser(data).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have a deleteUser method', function() {
+      expect(Server.deleteUserByUsername).to.be.a('function');
+      expect(Server.deleteUser).to.be.a('function');
+    });
+
+    it('Should send a DELETE request for the right user', function() {
+      var response;
+      $httpBackend.expectDELETE('/api/users/' + data.username).respond({data: data});
+      Server.deleteUserByUsername(data.username).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+  });
 
 
-Server.createRoadmap(newMap)
-.then(function (map) {
-  var mapId = map._id;
-  var updateMap = {
-    _id: mapId,
-    title: 'Updated Title'
-  };
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *           ROADMAPS METHODS            *
+   * * * * * * * * * * * * * * * * * * * * */
 
-  Server.getRoadmaps();
-  Server.getMaps();
-  Server.getRoadmapById(mapId);
-  Server.getRoadmap(mapId);
-  Server.getMap(mapId);
-  Server.updateRoadmap(updateMap);
-  Server.updateMap(updateMap);
-  Server.deleteRoadmapById(mapId);
+  describe('Roadmaps Methods', function() {
+
+    it('Should have getRoadmaps methods', function() {
+      expect(Server.getRoadmaps).to.be.a('function');
+      expect(Server.getMaps).to.be.a('function');
+    });
+
+    it('Should send a GET request for roadmaps', function() {
+      var response;
+      $httpBackend.expectGET('/api/roadmaps').respond({data: data});
+      Server.getRoadmaps().then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have get roadmap methods', function() {
+      expect(Server.getRoadmapById).to.be.a('function');
+      expect(Server.getMapById).to.be.a('function');
+      expect(Server.getRoadmap).to.be.a('function');
+      expect(Server.getMap).to.be.a('function');
+    });
+
+    it('Should send a GET request for the right roadmap', function() {
+      var response;
+      $httpBackend.expectGET('/api/roadmaps/' + testId).respond({data: data});
+      Server.getRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have create roadmap methods', function() {
+      expect(Server.createRoadmap).to.be.a('function');
+      expect(Server.createMap).to.be.a('function');
+    });
+
+    it('Should send a POST request with the right data', function() {
+      var response;
+      $httpBackend.expectPOST('/api/roadmaps', data).respond({data: data});
+      Server.createRoadmap(data).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have a update roadmap methods', function() {
+      expect(Server.updateRoadmap).to.be.a('function');
+      expect(Server.updateMap).to.be.a('function');
+    });
+
+    it('Should send a PUT request for the right roadmap, with the right data', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + data._id, data).respond({data: data});
+      Server.updateRoadmap(data).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have delete roadmap methods', function() {
+      expect(Server.deleteRoadmapById).to.be.a('function');
+      expect(Server.deleteMapById).to.be.a('function');
+      expect(Server.deleteRoadmap).to.be.a('function');
+      expect(Server.deleteMap).to.be.a('function');
+    });
+
+    it('Should send a DELETE request for the right roadmap', function() {
+      var response;
+      $httpBackend.expectDELETE('/api/roadmaps/' + testId).respond({data: data});
+      Server.deleteRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+  });
+
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *             NODES METHODS             *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  describe('Nodes Methods', function() {
+
+    it('Should have get node methods', function() {
+      expect(Server.getNodeById).to.be.a('function');
+      expect(Server.getNode).to.be.a('function');
+    });
+
+    it('Should send a GET request for the right node', function() {
+      var response;
+      $httpBackend.expectGET('/api/nodes/' + testId).respond({data: data});
+      Server.getNodeById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have a create node method', function() {
+      expect(Server.createNode).to.be.a('function');
+    });
+
+    it('Should send a POST request with the right data', function() {
+      var response;
+      $httpBackend.expectPOST('/api/nodes', data).respond({data: data});
+      Server.createNode(data).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have an update node method', function() {
+      expect(Server.updateNode).to.be.a('function');
+    });
+
+    it('Should send a PUT request for the right node with the right data', function() {
+      var response;
+      $httpBackend.expectPUT('/api/nodes/' + data._id, data).respond({data: data});
+      Server.updateNode(data).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have delete node method', function() {
+      expect(Server.deleteNodeById).to.be.a('function');
+      expect(Server.deleteNode).to.be.a('function');
+    });
+
+    it('Should send a DELETE request for the right node', function() {
+      var response;
+      $httpBackend.expectDELETE('/api/nodes/' + testId).respond({data: data});
+      Server.deleteNodeById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+  });
+
 });
-
-Server.createNode(newNode)
-.then(function (node) {
-  var nodeId = node._id;
-  var updateNode = {
-    _id: nodeId,
-    title: 'Updated Title'
-  };
-
-  Server.getNodeById(nodeId);
-  Server.getNode(nodeId);
-  Server.updateNode(updateNode);
-
-  Server.getUsers();
-  Server.getUserByUsername(username);
-  Server.getUser(username);
-  Server.updateUser(updateUser);
-
-  Server.deleteUserByUsername(username);
-  Server.deleteNodeById(nodeId);
-});
-
-*/

@@ -43,8 +43,8 @@ describe('User Factory', function () {
       var storage = $window.localStorage;
 
       // make a 'fake' request to the server, not really going to our server
-      $httpBackend.expectPOST('/api/signup').respond({data: data});
-      User.signup();
+      $httpBackend.expectPOST('/api/signup', data).respond({data: data});
+      User.signup(data);
       $httpBackend.flush();
       expect(storage.getItem('user.authToken')).to.equal(data.authToken);
       expect(storage.getItem('user.username')).to.equal(data.username);

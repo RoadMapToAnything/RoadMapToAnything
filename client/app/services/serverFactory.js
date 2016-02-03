@@ -81,7 +81,7 @@ angular.module('services.server', [])
   Server.deleteUserByUsername = function(username) {
 
     return $http({
-      method: 'PUT',
+      method: 'DELETE',
       url: '/api/users/' + username,
       headers: { Authorization: 'Basic ' + encodeAuthHeader() }
     })
@@ -208,6 +208,7 @@ angular.module('services.server', [])
   Server.getMap = Server.getRoadmapById;
   Server.createMap = Server.createRoadmap;
   Server.updateMap = Server.updateRoadmap;
+  Server.deleteMapById = Server.deleteRoadmapById;
   Server.deleteRoadmap = Server.deleteRoadmapById;
   Server.deleteMap = Server.deleteRoadmapById;
 

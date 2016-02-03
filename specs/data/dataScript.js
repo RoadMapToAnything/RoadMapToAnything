@@ -3,15 +3,12 @@ var handleData = require('./handleData.js'),
     DB_URI = require('../../_config.json').DB_URI;
 
 var finish = function(results) {
-  // Will not log in test mode.
-  if (results && process.argv[3] !== 'test') {
-    results.forEach(function (result) {
-      console.log(result);
-    });
-  }
+  results.forEach(function (result) {
+    console.log(result);
+  });
 
   db.disconnect();
-  if (results) console.log('Done!!');
+  console.log('Done!!');
 };
 
 var runMode = {
@@ -48,7 +45,13 @@ var runMode = {
 
 // Connect to the appropriate DB and run in the appropriate mode
 var database = process.env.MONGOLAB_URI || DB_URI.MAIN;
-if (process.argv[3] === 'test') database = DB_URI.TEST;
+if (process.argv[3] === 'test') {
+  database = DB_URI.TEST;
+  process.env.NODE_ENV = 'test';
+}
+
+// Suppress console logs when testing
+require("log-suppress").init(console, 'test');
 
 db.connect(database);
 runMode[process.argv[2]]();
