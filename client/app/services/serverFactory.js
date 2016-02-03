@@ -1,46 +1,8 @@
-angular.module('services.server', [])
+angular.module('services.server', ['services.request'])
 
-.factory('Server', ['$http', function($http){
+.factory('Server', ['Request', function (Request) {
+
   var Server = {};
-
-  var encodeAuthHeader = function() {
-    var user = localStorage.getItem('user.username');
-    var token = localStorage.getItem('user.authToken');
-    return btoa(user + ':' + token);
-  };
-
-  var standardResponse = function(res) {
-    console.log( '(' + res.status + ') ' + 
-      res.config.method + ' successful for ' + 
-      parseName(res) + ': ', res.data.data );
-
-    return res.data.data;
-  };
-
-  var standardError = function(err) {
-    console.log( '(' + err.status + ') ' +
-      err.config.method + ' failed for ' +
-      parseName(err) + ': ', err.data );
-  };
-
-  // Parses a name to be logged by responses and errors
-  var parseName = function(res) {
-    var nameKeys = ['title', 'username'];
-    var name;
-
-    // Grab the name of the item affected from response
-    if (res.data.data) {
-      nameKeys.forEach(function (key) {
-        if (res.data.data[key]) name = res.data.data[key];
-      });
-    }
-
-    // If name cannot be pulled from response, pull from url
-    if (!name) name = res.config.url.split('/')[2];
-
-    return name;
-  };
-
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *                 USERS                 *
@@ -48,45 +10,21 @@ angular.module('services.server', [])
 
   // Retrieves an array of users with an optional query string parameter
   Server.getUsers = function(query) {
-
-    return $http({
-      method: 'GET',
-      url: '/api/users',
-      params: query || {}
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.get('/api/users', query);
   };
 
   Server.getUserByUsername = function(username) {
-
-    return $http.get('/api/users/' + username)
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.get('/api/users/' + username);
   };
 
   Server.updateUser = function(user) {
     user.username = localStorage.getItem('user.username');
 
-    return $http({
-      method: 'PUT',
-      url: '/api/users/' + user.username,
-      data: user,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.put('/api/users/' + user.username, user);
   };
 
   Server.deleteUserByUsername = function(username) {
-
-    return $http({
-      method: 'DELETE',
-      url: '/api/users/' + username,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.delete('/api/users/' + username);
   };
 
 
@@ -96,55 +34,23 @@ angular.module('services.server', [])
 
   // Retrieves an array of roadmaps with an optional query string parameter
   Server.getRoadmaps = function(query) {
-    return $http({
-      method: 'GET',
-      url: '/api/roadmaps',
-      params: query || {}
-    })
-    .then(standardResponse)
-    .catch(standardError);  
+    return Request.get('/api/roadmaps', query);
   };
 
   Server.getRoadmapById = function(id) {
-
-    return $http.get('/api/roadmaps/' + id)
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.get('/api/roadmaps/' + id);
   };
 
   Server.createRoadmap = function(roadmap) {
-
-   return $http({
-      method: 'POST',
-      url: '/api/roadmaps',
-      data: roadmap,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.post('/api/roadmaps', roadmap);
   };
 
   Server.updateRoadmap = function(roadmap) {
-
-    return $http({
-      method: 'PUT',
-      url: '/api/roadmaps/' + roadmap._id || roadmap.id,
-      data: roadmap,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.put('/api/roadmaps/' + roadmap._id, roadmap);
   };
 
   Server.deleteRoadmapById = function(id) {
-
-    return $http({
-      method: 'DELETE',
-      url: '/api/roadmaps/' + id,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.delete('/api/roadmaps/' + id);
   };
 
 
@@ -153,45 +59,19 @@ angular.module('services.server', [])
    * * * * * * * * * * * * * * * * * * * * */
 
   Server.getNodeById = function(id) {
-
-    return $http.get('/api/nodes/' + id)
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.get('/api/nodes/' + id);
   };
 
   Server.createNode = function(node) {
-    console.log('server factory creating node', node);
-   return $http({
-      method: 'POST',
-      url: '/api/nodes',
-      data: node,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.post('/api/nodes', node);
   };
 
   Server.updateNode = function(node) {
-
-    return $http({
-      method: 'PUT',
-      url: '/api/nodes/' + node._id || node.id,
-      data: node,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.put('/api/nodes/' + node._id, node);
   };
 
   Server.deleteNodeById = function(id) {
-
-    return $http({
-      method: 'DELETE',
-      url: '/api/nodes/' + id,
-      headers: { Authorization: 'Basic ' + encodeAuthHeader() }
-    })
-    .then(standardResponse)
-    .catch(standardError);
+    return Request.delete('/api/nodes/' + id);
   };
 
 
