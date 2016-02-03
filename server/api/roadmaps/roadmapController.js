@@ -57,7 +57,6 @@ module.exports = {
 
     var updateableFields = ['title','description'];
     var updateCommand = {};
-
     updateableFields.forEach(function(field){
       if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
     });
@@ -69,11 +68,11 @@ module.exports = {
           res.sendStatus(404);
           return null;
         } else if (roadmap.author.username !== author) {
-          res.sendStatus(401);
+          res.sendStatus(403);
           return null;
         } else {
           return Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-                   .populate('author nodes');
+                        .populate('author nodes');
         }
       })
       .then(function(updatedRoadmap){
@@ -91,7 +90,7 @@ module.exports = {
       .populate('author nodes')
       .then(function(roadmap){
         if (!roadmap) res.sendStatus(404);
-        else if (roadmap.author.username !== author) res.sendStatus(401);
+        else if (roadmap.author.username !== author) res.sendStatus(403);
         else {
           roadmap.remove();
           res.json({data: roadmap});

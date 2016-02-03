@@ -61,7 +61,7 @@ module.exports = {
     User.find(dbArgs.filters, dbArgs.fields, dbArgs.params)
       .deepPopulate(populateFields)
       .then(function (users) {
-        if (!users) return res.sendStatus(401);
+        if (!users) return res.sendStatus(404);
         res.status(200).json({data: users});
       })
       .catch(handleError(next));
@@ -79,7 +79,7 @@ module.exports = {
 
   updateUserByName: function(req, res, next) {
     var username = getAuthHeader(req).name;
-    if (req.params.username !== username) res.sendStatus(401);
+    if (req.params.username !== username) res.sendStatus(403);
 
     var updateableFields = ['password','firstName','lastName','imageUrl'];
     var updateCommand = {};
@@ -99,7 +99,7 @@ module.exports = {
 
   deleteUserByName: function(req, res, next) {
     var username = getAuthHeader(req).name;
-    if (req.params.username !== username) res.sendStatus(401);
+    if (req.params.username !== username) res.sendStatus(403);
 
     User.findOne({username: username})
       .deepPopulate(populateFields)
@@ -133,7 +133,7 @@ module.exports = {
     User.findOneAndUpdate({username: username}, actionMap[action], {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
-        if (!user) return res.sendStatus(401); 
+        if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
       .catch(handleError(next));
@@ -149,7 +149,7 @@ module.exports = {
     User.findOneAndUpdate({username: username}, updateCommand, {new: true})
       .deepPopulate(populateFields)
       .then( function (user) {
-        if (!user) return res.sendStatus(401); 
+        if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
       .catch(handleError(next));

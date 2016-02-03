@@ -189,15 +189,15 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       .end(done);
     });   
 
-    it('Should respond with 401 when attempting to update other user\'s Roadmaps', function (done){
+    it('Should respond with 403 when attempting to update other user\'s Roadmaps', function (done){
       request(server.app)
       .put('/api/roadmaps/' + data.maps[1]._id)
       .set('Authorization', header)
-      .expect(401)
+      .expect(403)
       .end(done);
     }); 
 
-    it('Should update description field on Roadmap, but not author, and should update timestamp', function(done){
+    it('Should update only modifiable fields on Roadmap, and should update timestamp', function(done){
       Roadmap.findOne({_id: newMap._id})
       .then(function (map) {
         var preUpdateStamp = map.updated;
@@ -360,11 +360,11 @@ describe('Roadmap Routes - /api/roadmaps', function() {
       .end(done);
     });    
 
-    it('Should respond with 401 when attempting to delete other user\'s Roadmaps', function (done){
+    it('Should respond with 403 when attempting to delete other user\'s Roadmaps', function (done){
       request(server.app)
       .delete('/api/roadmaps/' + data.maps[1]._id)
       .set('Authorization', header)
-      .expect(401)
+      .expect(403)
       .end(done);
     });
 
