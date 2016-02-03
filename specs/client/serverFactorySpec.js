@@ -1,5 +1,3 @@
-// TODO: Turn the following into a real test
-
 describe('Server Factory', function () {
   var $scope, $rootScope, $location, $window, $httpBackend, createController, Server;
   var testId = '0000000010';
