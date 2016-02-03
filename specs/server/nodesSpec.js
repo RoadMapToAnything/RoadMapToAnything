@@ -66,15 +66,14 @@ describe('Node Routes - /api/nodes', function() {
 
     after('Remove test Roadmap and Node', function (done) {
       Node.findOneAndRemove({title: newNode.title})
-      .then(function() { 
-        return Roadmap.findOneAndRemove({title: newMap.title});
-      })
-      .then(function() { done(); })
-      .catch(function(err){ throw err; });
+        .then(function() { 
+          return Roadmap.findOneAndRemove({title: newMap.title});
+        })
+        .then(function() { done(); })
+        .catch(function(err){ throw err; });
     });
 
     it('Should respond with 201 when creating a new Node', function(done){
-
       request(server.app)
       .post('/api/nodes')
       .set('Authorization', header)
@@ -82,6 +81,47 @@ describe('Node Routes - /api/nodes', function() {
       .expect(201)
       .end(done);
     });
+
+    it('Should respond with 400 when creating a new Node with an invalid parentRoadmap', function(done){
+      var correctParent = newNode.parentRoadmap;
+      newNode.parentRoadmap = 'f00000000000000000000000'
+      
+      request(server.app)
+        .post('/api/nodes')
+        .set('Authorization', header)
+        .send(newNode)
+        .expect(400)
+        .end(function(err, result){
+          if (err) throw err;
+          newNode.parentRoadmap = correctParent;
+          done();
+        });
+    });
+
+    it('Should respond with 401 when attempting to create a new Node without logging in', function(done){
+      request(server.app)
+        .post('/api/nodes')
+        .send(newNode)
+        .expect(401)
+        .end(done);
+    });
+
+    it('Should respond with 403 when attempting to create a new Node on another user\'s Roadmap', function(done){
+      var correctParent = newNode.parentRoadmap;
+      newNode.parentRoadmap = '000000000000000000000010'
+
+      request(server.app)
+        .post('/api/nodes')
+        .set('Authorization', header)
+        .send(newNode)
+        .expect(403)
+        .end(function(err, result){
+          if (err) throw err;
+          newNode.parentRoadmap = correctParent;
+          done();
+        });
+    });
+
   });
 
 
@@ -213,7 +253,7 @@ describe('Node Routes - /api/nodes', function() {
     });
 
     after('Remove test Roadmap and Node', function(done) {
-      Node.findOneAndRemove({title: newNode.title})
+      Node.findOneAndRemove({_id: newNode._id})
       .then(function() { 
         return Roadmap.findOneAndRemove({title: newMap.title});
       })
@@ -221,30 +261,68 @@ describe('Node Routes - /api/nodes', function() {
       .catch(function(err){ throw err; });
     });
 
-    it('Should update specified field on Node with provided value, with updated timestamps', function(done){
+    it('Should update only modifiable fields on Node, and should update timestamp', function(done){
       Node.findOne({_id: newNode._id})
       .then(function (node) {
         var timestamp = node.updated;
 
+        var update = {
+          title         : 'should change',
+          description   : 'should change',
+          resourceType  : 'should change',
+          resourceURL   : 'should change',
+          imageUrl      : 'should change',
+          parentRoadmap : 'should not change',
+          created       : 'should not change',
+          updated       : 'should not change'    
+        };
+
         request(server.app)
-        .put('/api/nodes/' + newNode._id)
-        .set('Authorization', header)
-        .send({description: 'Updated Description'})
-        .end(function (err, res) {
-          if (err) throw err;
+          .put('/api/nodes/' + newNode._id)
+          .set('Authorization', header)
+          .send(update)
+          .end(function (err, res) {
+            if (err) throw err;
+  
+              Node.findById(newNode._id)
+              .then(function(dbResults){
 
-          Node.findById(newNode._id)
-          .then(function(dbResults){
-            expect( dbResults.description ).to.equal( 'Updated Description' );
-            expect( dbResults.created ).to.not.equal( dbResults.updated );
-
-            // Timestamps must be wrapped in order to ensure a consistent format.
-            expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(timestamp).getTime() );
-            done();
+                expect( dbResults.title       ).to.equal( 'should change' );
+                expect( dbResults.description ).to.equal( 'should change' );
+                expect( dbResults.resourceType).to.equal( 'should change' );
+                expect( dbResults.resourceURL ).to.equal( 'should change' );
+                expect( dbResults.imageUrl    ).to.equal( 'should change' );
+                
+                expect( dbResults.parentRoadmap ).to.not.equal( 'should not change' );
+                expect( dbResults.created       ).to.not.equal( 'should not change' );
+                expect( dbResults.updated       ).to.not.equal( 'should not change' );
+  
+                // Timestamps must be wrapped in order to ensure a consistent format.
+                expect( new Date(dbResults.updated).getTime() ).to.not.equal( new Date(timestamp).getTime() );
+                done();
+              });
           });
-        });
       });
     });
+
+    
+    it('Should respond with 401 when attempting to update a Node without logging in', function(done){
+      request(server.app)
+        .put('/api/nodes/'+newNode._id)
+        .send({})
+        .expect(401)
+        .end(done);
+    });
+
+    it('Should respond with 403 when attempting to update a Node on another user\'s Roadmap', function(done){
+      request(server.app)
+        .put('/api/nodes/'+ data.nodes[0]._id)
+        .set('Authorization', header)
+        .send({})
+        .expect(403)
+        .end(done);
+    });
+
 
   });
 
@@ -276,7 +354,7 @@ describe('Node Routes - /api/nodes', function() {
         .catch(function(err){ throw err; });
     });
 
-    it('Should update specified field on Node with provided value, with updated timestamps', function(done){
+    it('Should add Node to user\'s inProgress.nodes array', function(done){
 
       request(server.app)
         .put('/api/nodes/' + testNode._id + '/complete')
@@ -324,6 +402,21 @@ describe('Node Routes - /api/nodes', function() {
       })
       .then(function(){ done(); })
       .catch(function(err){ throw err; });
+    });
+
+    it('Should respond with 401 when attempting to delete a Node without logging in', function(done){
+      request(server.app)
+        .delete('/api/nodes/' + newNode._id)
+        .expect(401)
+        .end(done);
+    });
+
+    it('Should respond with 403 when attempting to delete a Node on a Roadmap authored by another user', function(done){
+      request(server.app)
+        .delete('/api/nodes/' + data.nodes[0]._id)
+        .set('Authorization', header)
+        .expect(403)
+        .end(done);
     });
 
     it('Should delete the Node specified by ID', function(done){
