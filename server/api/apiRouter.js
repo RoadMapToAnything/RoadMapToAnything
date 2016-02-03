@@ -20,7 +20,7 @@ module.exports = function (apiRouter) {
   apiRouter.put(   '/users/:username', auth, userController.updateUserByName);
   apiRouter.delete('/users/:username', auth, userController.deleteUserByName);
   
-  apiRouter.put('/roadmaps/:roadmapID/:action', auth, userController.roadmapAction );
+  apiRouter.put('/roadmaps/:roadmapID/:action', auth, roadmapController.actionHandler );
   apiRouter.put('/nodes/:nodeID/complete',      auth, userController.completeNode );
 
 
@@ -32,8 +32,6 @@ module.exports = function (apiRouter) {
    apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
    apiRouter.put(   '/roadmaps/:roadmapID', auth, roadmapController.updateRoadmap  );
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
-   apiRouter.post(  '/roadmaps/:roadmapID/upvote',       roadmapController.updateRoadmapUpVote  );
-   apiRouter.post(  '/roadmaps/:roadmapID/downvote',     roadmapController.updateRoadmapDownVote);
 
 
    /* * * * * * * * * * * * * * * * * * * * * 

@@ -117,6 +117,18 @@ module.exports.setUserHooks = function(UserSchema) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
+// If a user upvotes a roadmap, remove their downvote and vice versa
+var upvoteDownvote = function(next) {
+  var addSet = this._update.$addToSet;
+
+  if (addSet) {
+    if (addSet.upvotes) this.update({},{ $pull:{downvotes: addSet.upvotes} });
+    if (addSet.downvotes) this.update({},{ $pull:{upvotes: addSet.downvotes} });
+  }
+
+  next();
+};
+
 module.exports.setRoadmapHooks = function(RoadmapSchema) {
   RoadmapSchema.pre('save', function(next) {
     // On creation of a Roadmap, push it's ID to the author's roadmaps array
@@ -137,7 +149,6 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
   RoadmapSchema.pre('remove', function(next) {
     // On deletion of a Roadmap, remove it's ID from the author's roadmaps array,
     // and delete all associated nodes
-    console.log('remove roadmap');
     var User = require('./users/userModel.js');
     var Node = require('./nodes/nodeModel.js');
     var authorID = this.author;
@@ -158,15 +169,24 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
   });
 
   RoadmapSchema.pre('update', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    upvoteDownvote.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 
   RoadmapSchema.pre('findOneAndUpdate', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    upvoteDownvote.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 
   RoadmapSchema.pre('findByIdAndUpdate', function(next) {
-    setUpdatedTimestamp.call(this, next);
+    var query = this;
+    upvoteDownvote.call(query, function() {
+      setUpdatedTimestamp.call(query, next);
+    });
   });
 };
 
