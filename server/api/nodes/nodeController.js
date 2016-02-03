@@ -9,11 +9,12 @@ module.exports = {
   createNode : function (req, res, next) {
     var username = getAuthHeader(req).name;
     var newNode = req.body;
+
     // Support /nodes and /roadmaps/roadmapID/nodes
     newNode.parentRoadmap = newNode.parentRoadmap || req.params.roadmapID;
 
     roadmapController.returnAuthor(newNode.parentRoadmap)
-    .then(function(authorName){
+    .then(function (authorName) {
       if (!authorName) {
         res.sendStatus(400);
         return null;
@@ -27,7 +28,7 @@ module.exports = {
     .then(function(newNode){
       if (newNode) res.status(201).json({data: newNode});
     })
-    .catch(handleError(next));
+    .catch(handleError.bind(null, next));
   },
 
   getNodeByID : function (req, res, next) {
@@ -37,7 +38,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   updateNode : function (req, res, next) {
@@ -55,7 +56,6 @@ module.exports = {
     Node.findOne({_id:_id})
       .deepPopulate('parentRoadmap.author')
       .then(function(node){
-        console.log(node);
         if (!node) {
           res.sendStatus(404);
           return null;
@@ -70,7 +70,7 @@ module.exports = {
       .then(function(updatedNode){
         if (updatedNode) res.json({data: updatedNode});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   deleteNode : function (req, res, next) {
@@ -88,7 +88,7 @@ module.exports = {
           res.json({data: node});
         }
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   }
 
 };

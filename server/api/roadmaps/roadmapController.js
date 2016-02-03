@@ -9,7 +9,7 @@ var Roadmap = require('./roadmapModel.js'),
 module.exports = {
 
   returnAuthor : function(id) {
-    Roadmap.findById(id)
+    return Roadmap.findById(id)
     .populate('author')
     .then(function (roadmap) {
       if (roadmap) return roadmap.author.username;
@@ -19,9 +19,6 @@ module.exports = {
   createRoadmap : function (req, res, next) {
     var author = getAuthHeader(req).name;
     var newRoadmap = req.body;
-    console.log('API: creating roadmap');
-    console.log('API: author', author);
-    console.log('API: creating roadmap', newRoadmap);
 
     userController.returnId(author)
       .then(function (id) {
@@ -31,11 +28,7 @@ module.exports = {
       .then(function(dbResults){
         res.status(201).json({data: dbResults});
       })
-      .catch(
-        function(){
-          console.log('API: error creating roadmap');
-          handleError(next);
-        });
+      .catch(handleError.bind(null, next));
   },
 
   getRoadmaps : function (req, res, next) {
@@ -46,7 +39,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   getRoadmapByID : function (req, res, next) {
@@ -56,7 +49,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   updateRoadmap : function (req, res, next) {
@@ -86,7 +79,7 @@ module.exports = {
       .then(function(updatedRoadmap){
         if (updatedRoadmap) res.json({data: updatedRoadmap});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
       
   },
 
@@ -104,7 +97,7 @@ module.exports = {
           res.json({data: roadmap});
         }
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   updateRoadmapUpVote : function (req, res, next) {
@@ -114,25 +107,21 @@ module.exports = {
     //find roadmap by id and trigger the $addToSet command
     Roadmap.findByIdAndUpdate(_id, updateUpVote, {new: true})
       .then(function(dbResults){
-        console.log('DATA FROM SERVER AFTER UPVOTE:', dbResults);
         res.json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   updateRoadmapDownVote : function (req, res, next) {
     var _id = req.params.roadmapID;
-    console.log('this is the REQUEST from server controller in downvote:', req);
-    console.log('this is the REQ BODY USERNAME:', req.body.username); 
     var updateDownVote = { $pull : { upvotes: req.body.username } };
     Roadmap.findByIdAndUpdate(_id, updateDownVote, {new: true})
      .then(function(dbResults){
-        console.log('server controller: DATA FROM SERVER AFTER DOWNVOTE:', dbResults);
         // res.write(res.statusCode.toString());
         // res.send(data);
         res.json({data: dbResults});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   // Handles requests to /api/roadmaps/:roadmapID/:action
@@ -162,7 +151,7 @@ module.exports = {
 
     if ( !actionMap.hasOwnProperty(action) ) return res.sendStatus(404);
 
-    return actionMap(action);
+    return actionMap[action]();
   }
 
 };

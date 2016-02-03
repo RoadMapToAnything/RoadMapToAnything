@@ -149,7 +149,6 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
   RoadmapSchema.pre('remove', function(next) {
     // On deletion of a Roadmap, remove it's ID from the author's roadmaps array,
     // and delete all associated nodes
-    console.log('remove roadmap');
     var User = require('./users/userModel.js');
     var Node = require('./nodes/nodeModel.js');
     var authorID = this.author;

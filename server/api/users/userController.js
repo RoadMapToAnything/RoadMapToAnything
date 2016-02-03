@@ -34,7 +34,7 @@ module.exports = {
 
   updateRoadmap : function(command, req, res, next) {
     var username = getAuthHeader(req).name;
-    if (req.params.username !== username) res.sendStatus(403);
+    if (!username) res.sendStatus(403);
 
     User.findOneAndUpdate({username: username}, command, {new: true})
     .deepPopulate(populateFields)
@@ -42,7 +42,7 @@ module.exports = {
       if (!user) return res.sendStatus(404); 
       res.status(200).json({data: user});
     })
-    .catch(handleError(next));
+    .catch(handleError.bind(null, next));
   },
 
   createUser : function(req, res, next){
@@ -54,7 +54,7 @@ module.exports = {
       .then(function(results){
         res.status(201).json({data: results});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   login : function(req, res, next){
@@ -72,7 +72,7 @@ module.exports = {
       .then(function(results){
         res.status(200).json({data: results});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   getUsers: function(req, res, next) {
@@ -84,7 +84,7 @@ module.exports = {
         if (!users) return res.sendStatus(404);
         res.status(200).json({data: users});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   getUserByName: function(req, res, next) {
@@ -94,7 +94,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   updateUserByName: function(req, res, next) {
@@ -114,7 +114,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   deleteUserByName: function(req, res, next) {
@@ -128,7 +128,7 @@ module.exports = {
         user.remove();
         res.status(201).json({data: user});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   },
 
   // Handles requests to /api/nodes/:nodeID/complete
@@ -144,7 +144,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError(next));
+      .catch(handleError.bind(null, next));
   }
 
 
