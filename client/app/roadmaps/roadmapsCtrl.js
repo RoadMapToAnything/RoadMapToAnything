@@ -3,8 +3,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 .controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout){  
   angular.extend($scope, RoadMapsFactory);
 
-  console.log('Window height', window.innerHeight);
-
   var roadmapId = $stateParams.roadmapID;
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];

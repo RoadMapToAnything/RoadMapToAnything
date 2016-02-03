@@ -145,3 +145,23 @@ footer.page-footer div.footer-copyright {
   width: 110px;
 }
 
+/*  Footer */
+
+* {
+margin: 0;
+}
+html {
+height: 100%;
+}
+body {
+  height: 82%;
+}
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -4em;
+}
+.footer, .push {
+height: 4em;
+}
