@@ -71,7 +71,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentLinks = [links];
     $scope.currentNodeDescription = description;
 
-    $scope.connectAllNodes()
+    // $scope.connectAllNodes()
   }
 
   $scope.selectNode = function(index) {
