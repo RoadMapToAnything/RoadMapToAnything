@@ -14,6 +14,9 @@ if (process.env.NODE_ENV === 'test') {
   database = CONF.DB_URI.TEST;
 }
 
+// Supress all server-side console logs when testing
+require("log-suppress").init(console, 'test');
+
 mongoose.connect(database);
 
 require('./middleware.js')(app, express);

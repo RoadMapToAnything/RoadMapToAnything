@@ -68,6 +68,7 @@
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.5",
     "karma-phantomjs-launcher": "^0.2.3",
+    "log-suppress": "0.0.3",
     "mocha": "^2.3.4",
     "phantomjs": "^1.9.19",
     "supertest": "^1.1.0"
