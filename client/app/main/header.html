@@ -27,7 +27,7 @@
           </ul> 
       </ul>
       <ul class="side-nav" id="collapsed-options">
-        <li><a ng-show="!isLoggedIn()" ui-sref="home.signin">Sign in</a></li>
+        <li><a ng-show="!isLoggedIn()" class="modal-trigger" href="#modal1">Sign in</a></li>
         <li><a ui-sref="home.browse">Browse</a></li>
         <li ng-show="isLoggedIn()"><a ui-sref="home.dashboard">Dashboard</a></li>
         <li ng-show="isLoggedIn()"><a ui-sref="home.roadmapCreation">Create Roadmap</a></li>
