@@ -17,14 +17,6 @@ angular.module('dash.ctrl', ['services.user'])
     });
   };
 
-  $scope.deleteMap = function( id ){
-    Server.deleteRoadmapById(id);
-    $scope.followed = $scope.updateLocalDataAfterDelete( $scope.followed , id );
-    $scope.myMaps = $scope.updateLocalDataAfterDelete( $scope.myMaps , id );
-    $scope.completed = $scope.updateLocalDataAfterDelete( $scope.completed , id );
-  };
-  //$scope.goToMap = DashboardFactory.goToMap;
-
   $scope.changeToFollowed = function(){
     $scope.showFollowed = true;
     $scope.showMyMaps = false;
