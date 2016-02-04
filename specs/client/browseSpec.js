@@ -26,7 +26,7 @@ describe('BrowseController', function () {
     expect($scope.getMapData).to.be.a('function');
   });
 
-  it('should have a function to embark on a map', function (){
+  xit('should have a function to embark on a map', function (){
     expect($scope.addMapToEmbarked).to.be.a('function');
   });
 
