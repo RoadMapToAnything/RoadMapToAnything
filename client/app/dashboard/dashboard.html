@@ -1,3 +1,12 @@
+<script type="text/javascript">
+  $( document ).ready(function(){ 
+    $.get('app/modals/creation.html', function (modal) {
+      $('#creation-modal').append(modal);
+    });
+    $('.modal-trigger').leanModal({ dismissible: true });
+  });
+</script>
+
 <div class="container">
   <div class="dash-buttons">
     <a id="followedBtn" class="btn pressed" ng-click="changeToFollowed()">Maps I Follow</a>
@@ -39,6 +48,12 @@
             </tr>
         </tbody>
         </table>
+        <div class="card hoverable grey lighten-4" ng-show="!followed.length">
+          <div class="card-content center-align">
+            <h5>You haven't followed any Roadmaps!</h5>
+            Find the perfect one <a ui-sref="home.browse">on our browse page.</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -66,6 +81,12 @@
             </tr>
         </tbody>
         </table>
+        <div class="card hoverable grey lighten-4" ng-show="!myMaps.length">
+          <div class="card-content center-align">
+            <h5>You haven't made any Roadmaps!</h5>
+            Drop some knowledge on the world <a class="modal-trigger" href="#creation-modal">by building one</a> now.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -93,8 +114,17 @@
             </tr>
         </tbody>
         </table>
+        <div class="card hoverable grey lighten-4" ng-show="!followed.length">
+          <div class="card-content center-align">
+            <h5>You haven't completed any Roadmaps yet</h5>
+            But don't worry, we know you'll finish one soon!
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- Create Roadmap/Node Popup -->
+<div id="creation-modal" class="modal"></div>

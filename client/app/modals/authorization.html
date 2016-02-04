@@ -1,50 +1,5 @@
-<!-- Materialize needs these scripts. -->
-<!-- TODO: Find a centralized home -->
-<script type="text/javascript">
-  $( document ).ready(function(){ 
-    // $.get('app/modals/authorization.html', function (modal) {
-    //   $('#auth-modal').append(modal);
-    // });
-        $.get('app/modals/creation.html', function (modal) {
-      $('#creation-modal').append(modal);
-    });
-    $(".dropdown-button").dropdown();
-    $(".button-collapse").sideNav();
-    $('.modal-trigger').leanModal({ dismissible: true });
-  });
-</script>
+<div ng-controller="AuthController">
 
-<!--nav bar-->
-<div class="navbar-fixed">
-  <nav class="amber lighten-1">
-    <div class="nav-wrapper container">  
-      <a href="#" class="brand-logo">Roadmap to Anything</a>
-      <a href="#" data-activates="collapsed-options" class="button-collapse right"><i class="material-icons">menu</i></a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <!-- Need to make a dropdown search -->
-        <li><i class="mdi-action-search"></i></li>
-        <li><a ui-sref="home.browse">Browse</a></li>
-        <li><a ng-show="!isLoggedIn()" class="modal-trigger" href="#auth-modal">Sign in</a></li>
-        <li><a ng-show="isLoggedIn()" class="dropdown-button" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
-          <ul id="dropdown" class="dropdown-content collection">
-            <li><a ui-sref="home.dashboard">Dashboard</a></li>
-            <li><a class="modal-trigger" href="#creation-modal">Create Roadmap</a></li>
-            <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
-          </ul> 
-      </ul>
-      <ul class="side-nav" id="collapsed-options">
-        <li><a ng-show="!isLoggedIn()" class="modal-trigger" href="#auth-modal">Sign in</a></li>
-        <li><a ui-sref="home.browse">Browse</a></li>
-        <li ng-show="isLoggedIn()"><a ui-sref="home.dashboard">Dashboard</a></li>
-        <li ng-show="isLoggedIn()"><a class="modal-trigger" href="#creation-modal">Create Roadmap</a></li>
-        <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
-      </ul>
-    </div>
-  </nav> 
-</div>
-
-<!-- Auth Popup, html populated at startup -->
-<div id="auth-modal" class="modal" ng-controller="AuthController">
   <!-- Signin Form -->
   <div class="container" ng-show="signin">
     <h3>Sign In</h3>
@@ -118,6 +73,3 @@
     </div>
   </div>
 </div>
-
-<!-- Create Roadmap/Node Popup, html populated at startup -->
-<div id="creation-modal" class="modal"></div>
