@@ -3,14 +3,13 @@ angular.module('services.request', [])
 .factory('Request', ['$http', function($http){
 
   // System wide default options for requests
-  var systemDefaults = {auth: true, log: true, format: true, err: true};
+  var DEFAULT_OPTIONS = {auth: true, log: true, format: true, err: true};
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *            HELPER METHODS             *
    * * * * * * * * * * * * * * * * * * * * */
 
   var encodeAuthHeader = function() {
-    console.log('encodeAuthHeader is firing!')
     var user = localStorage.getItem('user.username');
     var token = localStorage.getItem('user.authToken');
     return 'Basic ' + btoa(user + ':' + token);
@@ -52,56 +51,24 @@ angular.module('services.request', [])
     return name;
   };
 
-  // Starts with system defaults, applies custom defaults, and then instance options
-  var mergeDefaults = function(options, customDefaults) {
-      /* original mergeDefaults: 
-      for (var key in customDefaults) {
-        console.log('SYSTEM TO CUSTOM')
-        systemDefaults[key] = customDefaults[key]
-      }
+  // Adds defaults into options if not already present
+  var mergeDefaults = function(options, methodDefaults) {
+    options = options || {};
 
-      for (var key in options) {
-        console.log('SYSTEM TO OPTIONS')
-        systemDefaults[key] = options[key];
-      }
+    for (var key in methodDefaults) {
+      if (!options[key]) options[key] = methodDefaults[key];
+    }
 
-      return systemDefaults;
-      */
+    for (var key in DEFAULT_OPTIONS) {
+      if (!options[key]) options[key] = DEFAULT_OPTIONS[key]; 
+    }
 
-      /*
-      if(options && customDefaults){
-          for (var key in customDefaults) {
-          systemDefaults[key] = customDefaults[key]
-        }
-         } else if (options && !customDefaults){
-           for (var key in options) {
-             console.log('SYSTEM TO OPTIONS')
-             systemDefaults[key] = options[key];
-           }
-         }
-         return systemDefaults;
-       }
-      */
-
-    //copy of systemDefaults
-    var copyOfDefaults = JSON.parse(JSON.stringify(systemDefaults));
-
-    for (var key in customDefaults) {
-        console.log('SYSTEM TO CUSTOM')
-        copyOfDefaults[key] = customDefaults[key]
-      }
-
-          for (var key in options) {
-        console.log('SYSTEM TO OPTIONS')
-        copyOfDefaults[key] = options[key];
-      }
-
-    return copyOfDefaults;
+    return options;
   };
 
   // Determines whether a given object is an options object
   var isOptions = function(obj) {
-    for (var key in systemDefaults) {
+    for (var key in DEFAULT_OPTIONS) {
       if (obj[key]) return true;
     }
 
