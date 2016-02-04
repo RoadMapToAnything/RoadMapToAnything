@@ -10,13 +10,12 @@ angular.module('dash.ctrl', ['services.user'])
   $scope.showMyMaps = false;
   $scope.showCompleted = false;
 
-  $scope.deleteMap = function( id ){
-    Server.deleteRoadmapById(id);
-    $scope.followed = $scope.updateLocalDataAfterDelete( $scope.followed , id );
-    $scope.myMaps = $scope.updateLocalDataAfterDelete( $scope.myMaps , id );
-    $scope.completed = $scope.updateLocalDataAfterDelete( $scope.completed , id );
+  $scope.unfollowMap = function (id) {
+    User.unfollowMap(id)
+    .then(function (user) {
+      $scope.followed = user.inProgress.roadmaps;
+    });
   };
-  //$scope.goToMap = DashboardFactory.goToMap;
 
   $scope.changeToFollowed = function(){
     $scope.showFollowed = true;
