@@ -41,14 +41,6 @@
 
       <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>
 
-      <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="upVoteMap()">
-        Up Vote!
-      </a>
-      <div><h5 ng-bind="upVoteCount">Upvotes</h5></div>
-      <div><h5 ng-bind="downVoteCount">Downvotes</h5></div>
-      <a class="waves-effect waves-light btn-large blue-grey lighten-1 col s6 offset-s3" ng-click="downVoteMap()">
-        Down Vote!
-      </a>
 </div>
 
    <!-- Node Descriptions -->
@@ -57,5 +49,10 @@
   <div ng-repeat="node in renderedNodes">
     <span class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
   </div>
+</div>
+
+<div class="center">   <!-- Buttons for Voting -->
+      <p><i class="fa fa-thumbs-o-up fa-lg" ng-click="upVoteMap()" ng-bind="upVoteCount" style="color:green"></i></p>
+      <p><i class="fa fa-thumbs-o-down fa-lg" ng-click="downVoteMap()" ng-bind="downVoteCount" style="color:red"></i></p>
 </div>
 
