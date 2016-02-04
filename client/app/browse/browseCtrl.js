@@ -8,7 +8,7 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
 
   $scope.addTotalNodesOfMaps = Browse.addTotalNodesOfMaps;
   $scope.getMapData = Browse.getMapData;
-  $scope.addMapToEmbarked = Browse.addMapToEmbarked;
+  $scope.followMap = User.followMap;
   $scope.goToMap = Browse.goToMap;
 
   $scope.getMapData(function(mapData){

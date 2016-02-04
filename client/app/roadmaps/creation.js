@@ -14,13 +14,11 @@ angular.module('creation.ctrl', ['services.server'])
       description: $scope.roadmapDescription
     })
     .then(function (roadmap) {
-      console.log('roadmap response:', roadmap);
       $scope.roadmapID = roadmap._id;
     });
   };
 
   $scope.createNode = function() {
-  console.log('creating node with map id', $scope.roadmapID);
     return Server.createNode({
       title: $scope.nodeTitle,
       description: $scope.nodeDescription,
@@ -33,15 +31,12 @@ angular.module('creation.ctrl', ['services.server'])
 
   // Creates the roadmap before the node if necessary
   $scope.checkThenCreate = function() {
-    console.log('$scope.roadmapID', $scope.roadmapID);
     if (!$scope.roadmapID) {
-      console.log('creating roadmap and node');
       return $scope.createRoadmap().then(function() {
         return $scope.createNode();
       });
 
     } else {
-      console.log('creating node');
       return $scope.createNode();
     }
   };
@@ -54,7 +49,6 @@ angular.module('creation.ctrl', ['services.server'])
 
   $scope.submitAndExit = function() {
     $scope.checkThenCreate().then(function() {
-      console.log('Node creation success');
       $('#modal2').closeModal();
       $('.button-collapse').sideNav('hide');
       $state.go('home.roadmapTemplate', { 'roadmapID': $scope.roadmapID });
