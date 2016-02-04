@@ -51,10 +51,10 @@ describe('AuthController', function () {
 
     $scope.showSignup();
     expect($scope.signin).to.be.false;
-    expect($scope.attemptedUsername).to.be("");
-    expect($scope.attemptedPassword).to.be("");
-    expect($scope.attemptedFirstName).to.be("");
-    expect($scope.attemptedLastName).to.be("");
+    expect($scope.attemptedUsername).to.equal("");
+    expect($scope.attemptedPassword).to.equal("");
+    expect($scope.attemptedFirstName).to.equal("");
+    expect($scope.attemptedLastName).to.equal("");
   });
 
   it('should change to signin page and clear inputs', function(){
@@ -65,11 +65,10 @@ describe('AuthController', function () {
 
     $scope.showSignin();
     expect($scope.signin).to.be.true;
-    expect($scope.attemptedUsername).to.be("");
-    expect($scope.attemptedPassword).to.be("");
-    expect($scope.attemptedFirstName).to.be("");
-    expect($scope.attemptedLastName).to.be("");
+    expect($scope.attemptedUsername).to.equal("");
+    expect($scope.attemptedPassword).to.equal("");
+    expect($scope.attemptedFirstName).to.equal("");
+    expect($scope.attemptedLastName).to.equal("");
   });
-  }
 
 });
