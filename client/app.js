@@ -72,14 +72,6 @@ angular.module('app', [
       }
     }
   })
-  .state('home.roadmapCreation', {
-    auth: true,
-    url: 'roadmapCreation',
-    views: {
-      'content@': {
-        templateUrl: 'app/roadmaps/creation.html',
-        controller: 'CreationController'
-      },
       //To get nested subviews the pattern is desiredViewName@stateName
       // 'roadmapCreator@roadmapCreation': {
       //   templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
@@ -89,8 +81,6 @@ angular.module('app', [
       //   templateUrl: 'app/roadmaps/node.creation.html',
       //   controller: 'CreationController'
       // },
-    }
-  })
   .state('home.browse', { //maybe rename as explore?
     url: 'browse',
     views: {
