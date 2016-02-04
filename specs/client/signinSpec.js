@@ -38,5 +38,38 @@ describe('AuthController', function () {
   it('should not start out showing msg about bad credentials', function (){
     expect($scope.showUnauthMsg).to.be.false;
   });
+  
+  it('should show signin page before signup', function(){
+    expect($scope.signin).to.be.true;
+  });
+
+  it('should change to signup page and clear inputs', function(){
+    $scope.attemptedUsername = "test";
+    $scope.attemptedPassword = "test";
+    $scope.attemptedFirstName = 'test';
+    $scope.attemptedLastName = 'test';
+
+    $scope.showSignup();
+    expect($scope.signin).to.be.false;
+    expect($scope.attemptedUsername).to.be("");
+    expect($scope.attemptedPassword).to.be("");
+    expect($scope.attemptedFirstName).to.be("");
+    expect($scope.attemptedLastName).to.be("");
+  });
+
+  it('should change to signin page and clear inputs', function(){
+    $scope.attemptedUsername = "test";
+    $scope.attemptedPassword = "test";
+    $scope.attemptedFirstName = 'test';
+    $scope.attemptedLastName = 'test';
+
+    $scope.showSignin();
+    expect($scope.signin).to.be.true;
+    expect($scope.attemptedUsername).to.be("");
+    expect($scope.attemptedPassword).to.be("");
+    expect($scope.attemptedFirstName).to.be("");
+    expect($scope.attemptedLastName).to.be("");
+  });
+  }
 
 });
