@@ -99,22 +99,6 @@ angular.module('services.request', [])
     return copyOfDefaults;
   };
 
-
-   var mergeDefaults = function(options, customDefaults) {
-    if(options && customDefaults){
-      for (var key in customDefaults) {
-        console.log('SYSTEM TO CUSTOM')
-        systemDefaults[key] = customDefaults[key]
-      }
-    } else if (options && !customDefaults){
-      for (var key in options) {
-        console.log('SYSTEM TO OPTIONS')
-        systemDefaults[key] = options[key];
-      }
-    }
-    return systemDefaults;
-  }
-
   // Determines whether a given object is an options object
   var isOptions = function(obj) {
     for (var key in systemDefaults) {
