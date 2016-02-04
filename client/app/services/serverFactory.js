@@ -42,7 +42,7 @@ angular.module('services.server', ['services.request'])
   };
 
   Server.createRoadmap = function(roadmap) {
-    return Request.post('/api/roadmaps', roadmap);
+    return Request.post('/api/roadmaps', roadmap, {auth: true});
   };
 
   Server.updateRoadmap = function(roadmap) {
@@ -63,7 +63,7 @@ angular.module('services.server', ['services.request'])
   };
 
   Server.createNode = function(node) {
-    return Request.post('/api/nodes', node);
+    return Request.post('/api/nodes', node, {auth: true});
   };
 
   Server.updateNode = function(node) {

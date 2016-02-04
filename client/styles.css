@@ -1,3 +1,22 @@
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}
+
+.modal h3 {
+  margin: 40px 0px 0px 0px;
+  padding: 0px;
+  max-width: 300px !important; 
+}
+.error-msg {
+  color:  #f44336 !important;
+}
+
 /****** LINKS ******/
 a:hover {
   cursor: pointer;
@@ -133,4 +152,25 @@ footer.page-footer div.footer-copyright {
   padding-left: 15px;
   padding-right: 15px;
   width: 110px;
+}
+
+/*  Footer */
+
+* {
+margin: 0;
+}
+html {
+height: 100%;
+}
+body {
+  height: 82%;
+}
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -4em;
+}
+.footer, .push {
+height: 4em;
 }

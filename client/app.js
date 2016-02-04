@@ -50,26 +50,6 @@ angular.module('app', [
         }
       }
     })
-    //state for sign-in
-    .state('home.signin', {
-      url: 'signin',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signin.html',
-          controller: 'AuthController'
-        }
-      }
-    })
-    //state for sign-up
-    .state('home.signup', {
-      url: 'signup',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signup.html',
-          controller: 'AuthController'
-        }
-      }
-    })
     //state for dashboard
     .state('home.dashboard', {
       auth: true,
@@ -92,14 +72,6 @@ angular.module('app', [
       }
     }
   })
-  .state('home.roadmapCreation', {
-    auth: true,
-    url: 'roadmapCreation',
-    views: {
-      'content@': {
-        templateUrl: 'app/roadmaps/creation.html',
-        controller: 'CreationController'
-      },
       //To get nested subviews the pattern is desiredViewName@stateName
       // 'roadmapCreator@roadmapCreation': {
       //   templateUrl: 'app/roadmaps/roadmaps.creationForm.html',
@@ -109,8 +81,6 @@ angular.module('app', [
       //   templateUrl: 'app/roadmaps/node.creation.html',
       //   controller: 'CreationController'
       // },
-    }
-  })
   .state('home.browse', { //maybe rename as explore?
     url: 'browse',
     views: {

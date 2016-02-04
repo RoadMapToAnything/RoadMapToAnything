@@ -2,6 +2,10 @@ angular.module('creation.ctrl', ['services.server'])
 
 .controller('CreationController', ['$scope', '$state', 'Server',  function($scope, $state, Server){
 
+
+  $('select').material_select();
+
+
   $scope.nodeType = "Blog Post";
 
   $scope.createRoadmap = function() {
@@ -50,19 +54,14 @@ angular.module('creation.ctrl', ['services.server'])
 
   $scope.submitAndExit = function() {
     $scope.checkThenCreate().then(function() {
+      console.log('Node creation success');
+      $('#modal2').closeModal();
+      $('.button-collapse').sideNav('hide');
       $state.go('home.roadmapTemplate', { 'roadmapID': $scope.roadmapID });
+    }, 
+    function(err){
+      console.log('error with node creation request', err);
     });
   };
-
-  var connectTwoNodes = function(a, b){
-    jQuery(a).connections({ to: b });
-  }
-
-  $scope.connectAllNodes = function () {
-      jQuery(document).ready(function() {
-    
-  });
-  };
-
 
 }])
