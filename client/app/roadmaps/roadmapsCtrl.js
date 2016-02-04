@@ -8,8 +8,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.renderedNodes = [];
 
  // Get the current number of upvotes from current map
- $scope.getCountUpVotes = function(){
-    var upvotes = $scope.currentRoadMapData.upvotes;
+ $scope.getCountUpVotes = function(upvotes){
     $scope.upvotesCount = 0;
     for(var i = 0; i < upvotes.length; i++){
       $scope.upvotesCount++;
@@ -21,7 +20,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.renderNodes = function(){
     var title = $scope.currentRoadMapData.title || 'test title';
     var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];  
-    var count =   $scope.currentRoadMapData.upvotes;
+    var voteCount = $scope.currentRoadMapData.upvotes;
     // Add an index to nodes to make ng-clicking easier
     nodes.map(function(node,index){
       node.index = index;
@@ -36,7 +35,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.renderCurrentNode();
 
     // Set count for upvotes
-    $scope.currentCountUpVotes = $scope.getCountUpVotes();
+    $scope.currentCountUpVotes = $scope.getCountUpVotes(voteCount);
   };
 
 
@@ -104,21 +103,11 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   // Submits a username to the roadmap's upVoteBy array
   $scope.upVoteMap = function () {
     console.log('UPVOTE IS SUBMITTED');
-    // Get the current logged in user's username
-    User.getData().then(function(data) {
-      var username = data.username;
-      // Call $http post to upvote route
-      $scope.sendUpVote(roadmapId, username)
+    User.upvoteRoadmapById(roadmapId)
     .then(function(data){ 
-        var usersUpvoted = data.data.data.upvotes;
-        console.log('THIS IS DATA SENT BACK FROM SERVER:', data)
-        console.log('UPVOTES FROM USERS:', usersUpvoted);
-        $scope.upvotesAfterClick = 0;
-        for(var i = 0; i < usersUpvoted.length; i++){
-          $scope.upvotesAfterClick++;
-        }
-        $scope.currentCountUpVotes = $scope.upvotesAfterClick;
-      })
+      console.log(data);
+      var voteCount = data.data.data.upvotes;
+      $scope.currentCountUpVotes = $scope.getCountUpVotes(voteCount);
   })
 }
 
@@ -134,14 +123,15 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.sendDownVote(roadmapId, username)
         .then(function(data){ 
           // Grab the total votes
-          var usersDownVoted = data.data.data.upvotes;
-          console.log('current votes after downvote', usersDownVoted);
-          $scope.upvotesAfterDownVote = 0;
-          // Iterate over upvotes made from upvotes array to get a count of upvotes
-          for(var i = 0; i < usersDownVoted.length; i++){
-            $scope.upvotesAfterDownVote++;
-          }
-          $scope.currentCountUpVotes = $scope.upvotesAfterDownVote;
+          var voteCount = data.data.data.upvotes;
+          // console.log('current votes after downvote', usersDownVoted);
+          // $scope.upvotesAfterDownVote = 0;
+          // // Iterate over upvotes made from upvotes array to get a count of upvotes
+          // for(var i = 0; i < usersDownVoted.length; i++){
+          //   $scope.upvotesAfterDownVote++;
+          // }
+          // $scope.currentCountUpVotes = $scope.upvotesAfterDownVote;
+          $scope.currentCountUpVotes = $scope.getCountUpVotes(voteCount);
         })
     })
   }

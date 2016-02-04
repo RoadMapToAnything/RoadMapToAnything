@@ -204,6 +204,42 @@ describe('User Factory', function () {
       expect(response).to.deep.equal(data);
     });
 
+    it('Should have upvote roadmap methods', function() {
+      expect(User.upvoteRoadmapById).to.be.a('function');
+      expect(User.upvoteMapById).to.be.a('function');
+      expect(User.upvoteRoadmap).to.be.a('function');
+      expect(User.upvoteMap).to.be.a('function');
+      expect(User.upvote).to.be.a('function');
+    });
+
+    it('Should send a request to upvote roadmap', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + testId + '/upvote').respond({data: data});
+      User.upvoteRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
+    it('Should have downvote roadmap methods', function() {
+      expect(User.downvoteRoadmapById).to.be.a('function');
+      expect(User.downvoteMapById).to.be.a('function');
+      expect(User.downvoteRoadmap).to.be.a('function');
+      expect(User.downvoteMap).to.be.a('function');
+      expect(User.downvote).to.be.a('function');
+    });
+
+    it('Should send a request to downvote roadmap', function() {
+      var response;
+      $httpBackend.expectPUT('/api/roadmaps/' + testId + '/downvote').respond({data: data});
+      User.downvoteRoadmapById(testId).then(function (res) {
+        response = res;
+      });
+      $httpBackend.flush();
+      expect(response).to.deep.equal(data);
+    });
+
     it('Should have progress methods', function() {
       expect(User.getRoadmapProgress).to.be.a('function');
       expect(User.getMapProgress).to.be.a('function');

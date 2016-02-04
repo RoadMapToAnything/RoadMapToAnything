@@ -113,6 +113,14 @@ angular.module('services.user', ['services.request'])
     return Request.put('/api/roadmaps/' + id + '/complete');
   };
 
+  User.upvoteRoadmapById = function(id) {
+    return Request.put('/api/roadmaps/' + id + '/upvote');
+  };
+
+  User.downvoteRoadmapById = function(id) {
+    return Request.put('/api/roadmaps/' + id + '/downvote');
+  };
+
   // Accepts one or two possible parameters:
   //  id: returns progress for a single roadmap, otherwise returns all
   //  user: passing a user object allows serverless synchronus functionality
@@ -153,6 +161,15 @@ angular.module('services.user', ['services.request'])
   User.completeMapById = User.completeRoadmapById;
   User.completeRoadmap = User.completeRoadmapById;
   User.completeMap = User.completeRoadmapById;
+
+  User.upvoteMapById = User.upvoteRoadmapById;
+  User.upvoteRoadmap = User.upvoteRoadmapById;
+  User.upvoteMap = User.upvoteRoadmapById;
+  User.upvote = User.upvoteRoadmapById;
+  User.downvoteMapById = User.downvoteRoadmapById;
+  User.downvoteRoadmap = User.downvoteRoadmapById;
+  User.downvoteMap = User.downvoteRoadmapById;
+  User.downvote = User.downvoteRoadmapById;
 
   User.getMapProgress = User.getRoadmapProgress;
   User.getProgress = User.getRoadmapProgress;

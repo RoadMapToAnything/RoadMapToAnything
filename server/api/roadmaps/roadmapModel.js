@@ -9,8 +9,8 @@ var RoadmapSchema = new mongoose.Schema({
     nodes      : [ { type: ObjectId, ref: 'Node'} ],
     created    : { type: Date },
     updated    : { type: Date },
-    upvotes    : []
-    // downvotes  : []
+    upvotes    : [ { type: ObjectId, ref: 'User'} ],
+    downvotes  : [ { type: ObjectId, ref: 'User'} ]
 });
 
 hooks.setRoadmapHooks(RoadmapSchema);

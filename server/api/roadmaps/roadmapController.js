@@ -100,30 +100,6 @@ module.exports = {
       .catch(handleError.bind(null, next));
   },
 
-  updateRoadmapUpVote : function (req, res, next) {
-    var _id = req.params.roadmapID;
-    //$addToSet will only add usernames not already in the upvotes array
-    var updateUpVote = { $addToSet: { upvotes: req.body.username } };
-    //find roadmap by id and trigger the $addToSet command
-    Roadmap.findByIdAndUpdate(_id, updateUpVote, {new: true})
-      .then(function(dbResults){
-        res.json({data: dbResults});
-      })
-      .catch(handleError.bind(null, next));
-  },
-
-  updateRoadmapDownVote : function (req, res, next) {
-    var _id = req.params.roadmapID;
-    var updateDownVote = { $pull : { upvotes: req.body.username } };
-    Roadmap.findByIdAndUpdate(_id, updateDownVote, {new: true})
-     .then(function(dbResults){
-        // res.write(res.statusCode.toString());
-        // res.send(data);
-        res.json({data: dbResults});
-      })
-      .catch(handleError.bind(null, next));
-  },
-
   // Handles requests to /api/roadmaps/:roadmapID/:action
   actionHandler: function(req, res, next) {
     var roadmapID = req.params.roadmapID;
@@ -145,6 +121,35 @@ module.exports = {
         // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
         var command = { $addToSet: {'completedRoadmaps'  : roadmapID} };
         userController.updateRoadmap(command, req, res, next);
+      },
+
+      upvote: function(){
+        console.log('THIS IS UPVOTE IN SERVER');
+        var author = getAuthHeader(req).name;
+        userController.returnId(author)
+          .then(function(userId) {
+            var command = { $addToSet: { upvotes: userId } };
+            return Roadmap.findByIdAndUpdate(roadmapID, command, {new: true})
+          })
+          .then(function(dbResults) {
+            //dbResults should be a new roadmap
+            res.json({data : dbResults});
+          })
+          .catch(handleError.bind(null, next));
+      },
+
+      downvote: function(){
+        var author = getAuthHeader(req).name;
+        userController.returnId(author)
+          .then(function(userId) {
+            var command = { $addToSet: { downvotes: userId } };
+            return Roadmap.findByIdAndUpdate(roadmapID, command, {new: true})
+          })
+          .then(function(dbResults) {
+            //dbResults should be a new roadmap
+            res.json({data : dbResults});
+          })
+          .catch(handleError.bind(null, next));
       }
 
     };
