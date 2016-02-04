@@ -124,6 +124,7 @@ module.exports = {
       },
 
       upvote: function(){
+        console.log('THIS IS UPVOTE IN SERVER');
         var author = getAuthHeader(req).name;
         userController.returnId(author)
           .then(function(userId) {

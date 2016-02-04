@@ -10,6 +10,7 @@ angular.module('services.request', [])
    * * * * * * * * * * * * * * * * * * * * */
 
   var encodeAuthHeader = function() {
+    console.log('encodeAuthHeader is firing!')
     var user = localStorage.getItem('user.username');
     var token = localStorage.getItem('user.authToken');
     return 'Basic ' + btoa(user + ':' + token);
@@ -53,16 +54,66 @@ angular.module('services.request', [])
 
   // Starts with system defaults, applies custom defaults, and then instance options
   var mergeDefaults = function(options, customDefaults) {
+      /* original mergeDefaults: 
+      for (var key in customDefaults) {
+        console.log('SYSTEM TO CUSTOM')
+        systemDefaults[key] = customDefaults[key]
+      }
+
+      for (var key in options) {
+        console.log('SYSTEM TO OPTIONS')
+        systemDefaults[key] = options[key];
+      }
+
+      return systemDefaults;
+      */
+
+      /*
+      if(options && customDefaults){
+          for (var key in customDefaults) {
+          systemDefaults[key] = customDefaults[key]
+        }
+         } else if (options && !customDefaults){
+           for (var key in options) {
+             console.log('SYSTEM TO OPTIONS')
+             systemDefaults[key] = options[key];
+           }
+         }
+         return systemDefaults;
+       }
+      */
+
+    //copy of systemDefaults
+    var copyOfDefaults = JSON.parse(JSON.stringify(systemDefaults));
+
     for (var key in customDefaults) {
-      systemDefaults[key] = customDefaults[key]
-    }
+        console.log('SYSTEM TO CUSTOM')
+        copyOfDefaults[key] = customDefaults[key]
+      }
 
-    for (var key in options) {
-      systemDefaults[key] = options[key];
-    }
+          for (var key in options) {
+        console.log('SYSTEM TO OPTIONS')
+        copyOfDefaults[key] = options[key];
+      }
 
-    return systemDefaults;
+    return copyOfDefaults;
   };
+
+
+   var mergeDefaults = function(options, customDefaults) {
+    if(options && customDefaults){
+      for (var key in customDefaults) {
+        console.log('SYSTEM TO CUSTOM')
+        systemDefaults[key] = customDefaults[key]
+      }
+    } else if (options && !customDefaults){
+      for (var key in options) {
+        console.log('SYSTEM TO OPTIONS')
+        systemDefaults[key] = options[key];
+      }
+    }
+    return systemDefaults;
+  }
 
   // Determines whether a given object is an options object
   var isOptions = function(obj) {
@@ -113,6 +164,8 @@ angular.module('services.request', [])
       method: params.method,
       url: params.url
     };
+
+    //
 
     // Attach optional request parameters
     if (params.options.auth) request.headers = {Authorization: encodeAuthHeader()};
