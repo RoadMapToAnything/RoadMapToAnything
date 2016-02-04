@@ -141,6 +141,7 @@ module.exports = {
       },
 
       downvote: function(){
+        console.log('THIS IS DOWNVOTE IN SERVER');
         var author = getAuthHeader(req).name;
         userController.returnId(author)
           .then(function(userId) {
