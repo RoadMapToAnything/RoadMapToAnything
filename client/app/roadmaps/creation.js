@@ -5,6 +5,16 @@ angular.module('creation.ctrl', ['services.server'])
 
   $('select').material_select();
 
+  $scope.clearCreateInputs = function (){
+    $scope.roadmapTitle = '';
+    $scope.roadmapDescription = '';
+    $scope.roadmapID = '';
+    $scope.nodeTitle = '';
+    $scope.nodeDescription = '';
+    $scope.nodeType = 'Blog Post';
+    $scope.nodeUrl = '';
+    $scope.nodeImageUrl = '';
+  };
 
   $scope.nodeType = "Blog Post";
 
@@ -51,7 +61,9 @@ angular.module('creation.ctrl', ['services.server'])
     $scope.checkThenCreate().then(function() {
       $('#modal2').closeModal();
       $('.button-collapse').sideNav('hide');
-      $state.go('home.roadmapTemplate', { 'roadmapID': $scope.roadmapID });
+      var tempID = $scope.roadmapID;
+      $scope.clearCreateInputs();
+      $state.go('home.roadmapTemplate', { 'roadmapID': tempID });
     }, 
     function(err){
       console.log('error with node creation request', err);

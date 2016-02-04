@@ -20,6 +20,7 @@ angular.module('auth.ctrl', ['services.user'])
   $scope.resetInputs();
 
   $scope.showUnauthMsg = false;
+  $scope.showSigninFailMsg = false;
 
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
@@ -30,6 +31,7 @@ angular.module('auth.ctrl', ['services.user'])
     .then(function (data) {
       $scope.resetInputs();
       $('#modal1').closeModal();
+      $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
     .catch(function (err) {
@@ -41,7 +43,7 @@ angular.module('auth.ctrl', ['services.user'])
   };
 
   $scope.attemptSignup = function () {
-    $scope.showUnauthMsg = false;
+    $scope.showSigninFailMsg = false;
 
     User.signup({
       firstName: $scope.attemptedFirstName,
@@ -50,16 +52,17 @@ angular.module('auth.ctrl', ['services.user'])
       password: $scope.attemptedPassword
     })
     .then(function (res) {
-      console.log('-----');
+      console.log('setting signin to true');
+      $scope.signin = true;
       $scope.resetInputs();
       $('#modal1').closeModal();
       $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
     .catch(function (err) {
+      $scope.showSigninFailMsg = true;
       $scope.resetInputs();
       console.log('Login failed:', err);
-      $scope.showUnauthMsg = true;
     });
   };
 
