@@ -10,10 +10,35 @@ angular.module('dash.ctrl', ['services.user'])
   $scope.showMyMaps = false;
   $scope.showCompleted = false;
 
+  var refreshUserData = function() {
+    User.getData()
+    .then(function (user) {
+      $scope.user = user;
+      $scope.myMaps = user.authoredRoadmaps;
+      $scope.followed = user.inProgress.roadmaps;
+      $scope.completed = user.completedRoadmaps;
+
+      $scope.followed.forEach(function (map){
+        var progress = User.getProgress(user, map._id);
+        map.nodesCompleted = progress.completed;
+        map.percentComplete = progress.percent;
+      });
+    });
+  };
+
+  refreshUserData();
+
   $scope.unfollowMap = function (id) {
     User.unfollowMap(id)
     .then(function (user) {
       $scope.followed = user.inProgress.roadmaps;
+    });
+  };
+
+  $scope.deleteMap = function (id) {
+    Server.deleteMap(id)
+    .then(function() {
+      refreshUserData();
     });
   };
 
@@ -44,19 +69,10 @@ angular.module('dash.ctrl', ['services.user'])
     angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
-  User.getData()
-  .then(function (user) {
-    $scope.user = user;
-    $scope.myMaps = user.authoredRoadmaps;
-    $scope.followed = user.inProgress.roadmaps;
-    $scope.completed = user.completedRoadmaps;
 
-    $scope.followed.forEach(function (map){
-      var progress = User.getProgress(user, map._id);
-      map.nodesCompleted = progress.completed;
-      map.percentComplete = progress.percent;
-    });
-  });
+
+
+
 
 
   $scope.goToMap = function (mapID){
