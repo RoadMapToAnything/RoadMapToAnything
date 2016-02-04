@@ -56,6 +56,7 @@ angular.module('creation.ctrl', ['services.server'])
     $scope.checkThenCreate().then(function() {
       console.log('Node creation success');
       $('#modal2').closeModal();
+      $('.button-collapse').sideNav('hide');
       $state.go('home.roadmapTemplate', { 'roadmapID': $scope.roadmapID });
     }, 
     function(err){
