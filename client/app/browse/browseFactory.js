@@ -19,12 +19,6 @@ angular.module('browse.factory', ['services.server'])
     });
   };
 
-  var addMapToEmbarked = function(mapID) {
-    var username = localStorage.getItem('user.username');
-    var user = {'user.username': username, 'inProgress.roadmaps': mapID }
-    Server.updateUser(user);
-  };
-
   var gotToMap = function(mapID){
     localStorage.setItem('roadmap.id', mapID);
     $state.go('home.roadmapTemplate');
@@ -33,9 +27,8 @@ angular.module('browse.factory', ['services.server'])
   return {
     addTotalNodesOfMaps: addTotalNodesOfMaps,
     getMapData: getMapData,
-    addMapToEmbarked: addMapToEmbarked,
     gotToMap: gotToMap
   };
   
 
-}])
+}]);
