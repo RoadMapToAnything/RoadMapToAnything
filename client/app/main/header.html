@@ -37,12 +37,14 @@
   </nav> 
 </div>
 
-<!-- Modal Structure -->
+<!-- Popup -->
+
 <div id="modal1" class="modal" ng-controller="AuthController">
-  <!--Sign Up Form-->
+
+  <!-- Signin Form -->
   <div class="container" ng-show="signin">
     <h3>Sign In</h3>
-    <form class="col s12" ng-submit="attemptLogin()">
+    <form ng-submit="attemptLogin()">
       <div class="row">
         <div class="input-field col s6">
           <input id="username" type="text" class="validate" ng-model="attemptedUsername">
@@ -55,19 +57,20 @@
           <label for="password" required>Password</label>
         </div>
       </div>
-
+      <br>
+      <p>(Don't have an account? <a ng-show="!isLoggedIn()" ng-click="showSignup()"><strong>Sign up!</strong></a>)</p>
+      <br>
       <div class="row">
-        <input type="submit" class="waves-effect waves-light btn-flat">
-        <br>
+        <input type="submit" class="waves-effect waves-light btn">
+        
         <p class="error-msg" ng-show="showUnauthMsg">Sorry, those credentials were not recognized.</p>
-      </div>
-      <div class ="row">
-        Don't have an account? <a ng-show="!isLoggedIn()" ng-click="showSignup()"><strong>Sign up!</strong></a>
+        <br>
       </div>
     </form>
   </div>
 
   <!--Sign Up Form-->
+
   <div class="container" ng-hide="signin">
 
   <h3>Sign Up</h3>
@@ -99,10 +102,10 @@
           </div>
         </div>
         <div class ="row">
-          Already have an account? <a ng-show="!isLoggedIn()" ng-click="showSignin()"><strong>Sign in!</strong></a>
+          (Already have an account? <a ng-show="!isLoggedIn()" ng-click="showSignin()"><strong>Sign in!</strong></a>)
         </div>
         <div class="row">
-          <input type="submit" class="waves-effect waves-light btn-flat signinSubmitBtn">
+          <input type="submit" class="waves-effect waves-light btn signinSubmitBtn">
           <br>
           <p class="error-msg" ng-show="showUnauthMsg">Sorry, that username has been taken</p>
         </div>
