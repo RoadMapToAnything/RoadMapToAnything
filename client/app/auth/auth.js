@@ -30,8 +30,8 @@ angular.module('auth.ctrl', ['services.user'])
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {
       $scope.resetInputs();
-      $('#modal1').closeModal();
       $('.button-collapse').sideNav('hide');
+      $('#auth-modal').closeModal();
       $state.go('home.dashboard');
     })
     .catch(function (err) {
@@ -55,7 +55,7 @@ angular.module('auth.ctrl', ['services.user'])
       console.log('setting signin to true');
       $scope.signin = true;
       $scope.resetInputs();
-      $('#modal1').closeModal();
+      $('#auth-modal').closeModal();
       $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
