@@ -53,6 +53,7 @@ angular.module('auth.ctrl', ['services.user'])
       console.log('-----');
       $scope.resetInputs();
       $('#modal1').closeModal();
+      $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
     .catch(function (err) {

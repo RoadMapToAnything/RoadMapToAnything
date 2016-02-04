@@ -2,9 +2,9 @@ angular.module('creation.ctrl', ['services.server'])
 
 .controller('CreationController', ['$scope', '$state', 'Server',  function($scope, $state, Server){
 
-  $(document).ready(function() {
-      $('select').material_select();
-  });
+
+  $('select').material_select();
+
 
   $scope.nodeType = "Blog Post";
 
