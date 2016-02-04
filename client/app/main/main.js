@@ -3,6 +3,7 @@ angular.module('main.ctrl', ['services.user'])
   
   $scope.logout = function () {
     User.logout();
+    $('.button-collapse').sideNav('hide');
     $state.go('home');
   };
   
