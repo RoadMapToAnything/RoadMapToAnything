@@ -128,17 +128,20 @@ module.exports = {
         var author = getAuthHeader(req).name;
         userController.returnId(author)
           .then(function(userId) {
+            console.log('THIS IS USERID', userId);
             var command = { $addToSet: { upvotes: userId } };
             return Roadmap.findByIdAndUpdate(roadmapID, command, {new: true})
           })
           .then(function(dbResults) {
             //dbResults should be a new roadmap
+            console.log('THIS IS DBRESULTS', dbResults);
             res.json({data : dbResults});
           })
           .catch(handleError.bind(null, next));
       },
 
       downvote: function(){
+        console.log('THIS IS DOWNVOTE IN SERVER');
         var author = getAuthHeader(req).name;
         userController.returnId(author)
           .then(function(userId) {
