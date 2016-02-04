@@ -9,7 +9,8 @@ var CommentSchema = new mongoose.Schema({
     content: { type: String,   required: true },
     roadmap: { type: ObjectId, required: true, ref: 'Roadmap'},
     author     : { type: ObjectId, required: false, ref: 'User' },
-    created    : { type: Date }
+    created    : { type: Date },
+    updated    : { type: Date }
 });
 
 hooks.setCommentHooks(CommentSchema);

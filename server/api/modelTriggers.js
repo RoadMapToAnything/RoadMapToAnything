@@ -243,6 +243,24 @@ module.exports.setNodeHooks = function(NodeSchema) {
 
 module.exports.setCommentHooks = function(CommentSchema) {
   CommentSchema.pre('save', function(next) {
+    if (this.isNew) {
+      console.log(this, 'This is the hoook where we will update roadmap and user');
+        var Roadmap = require('./roadmaps/roadmapModel.js');
+        var User = require('./roadmaps/roadmapModel.js');
+        var authorID = this.author;
+        var roadmapID = this.roadmap;
+        var commentID = this._id;
+
+        var updateAuthor = {$push: {comments: commentID}};
+        var updateRoadmap = {$push: {comments: commentID}};
+
+        Roadmap.findByIdAndUpdate(roadmapID, updateRoadmap)
+          .exec(function(err){ if (err) throw err; });
+
+        User.findByIdAndUpdate(authorID, updateAuthor)
+          .exec(function(err){ if (err) throw err; });  
+    }
+
     setCreatedTimestamp.call(this, next);
   });
 
