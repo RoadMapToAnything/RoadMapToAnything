@@ -12,7 +12,6 @@ angular.module('auth.ctrl', ['services.user'])
     $scope.resetInputs();
   }
   $scope.resetInputs = function() {
-    console.log("resetting inputs");
     $scope.attemptedFirstName = '';
     $scope.attemptedLastName = '';
     $scope.attemptedUsername = '';

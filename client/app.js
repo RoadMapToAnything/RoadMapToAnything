@@ -50,26 +50,6 @@ angular.module('app', [
         }
       }
     })
-    //state for sign-in
-    .state('home.signin', {
-      url: 'signin',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signin.html',
-          controller: 'AuthController'
-        }
-      }
-    })
-    //state for sign-up
-    .state('home.signup', {
-      url: 'signup',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signup.html',
-          controller: 'AuthController'
-        }
-      }
-    })
     //state for dashboard
     .state('home.dashboard', {
       auth: true,

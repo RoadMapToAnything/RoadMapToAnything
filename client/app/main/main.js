@@ -12,6 +12,5 @@ angular.module('main.ctrl', ['services.user'])
     return localStorage.getItem('user.username');
   };
 
-  console.log('Window height', window.innerHeight);
 
 }]);
