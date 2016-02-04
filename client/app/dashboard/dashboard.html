@@ -26,7 +26,7 @@
               <th>Nodes</th>
               <th>Roadmap</th>
               <th>Progress Bar</th>
-              <th>Delete</th>
+              <th>Unfollow</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in followed">
@@ -42,8 +42,8 @@
                 </div>
               </td>
               <td>
-                <a ng-click="deleteMap( map._id )">
-                <span class="mousetoHand">Delete</span></a>
+                <a ng-click="unfollowMap( map._id )">
+                <span class="mousetoHand">Unfollow</span></a>
               </td>
             </tr>
         </tbody>
@@ -99,7 +99,6 @@
             <tr>
               <th>Nodes</th>
               <th>Roadmap</th>
-              <th>Delete</th>
             </tr>
           </tbody>
           <tbody class="follow-map" ng-repeat="map in completed">
@@ -107,9 +106,6 @@
               <td>{{ map.nodes.length }}</td>
               <td class="truncate" ng-click="goToMap( map._id )">
                 <span class="mousetoHand">{{ map.title }}</span>
-              </td>
-              <td>
-                <a ng-click="deleteMap( map._id )"><span class="mousetoHand">Delete</span></a>
               </td>
             </tr>
         </tbody>
