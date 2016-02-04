@@ -12,7 +12,6 @@ var RoadmapSchema = new mongoose.Schema({
     upvotes    : [],
     downvotes  : [],
     comments   : [ { type: ObjectId, ref: 'Comment'} ]
-
 });
 
 hooks.setRoadmapHooks(RoadmapSchema);

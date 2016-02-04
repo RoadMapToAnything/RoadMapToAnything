@@ -134,7 +134,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $('.endPointForConnection').connections();
   };
 
-
   // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
   $scope.asyncConnectLines = function(cb){
     setTimeout($scope.connectLines,0);

@@ -1,10 +1,19 @@
 var Roadmap = require('./roadmapModel.js'),
+<<<<<<< 6131d9cdaf4926e852544b8dd57221a4b587a54c
 
     userController = require('../users/userController.js'),
 
     User = require('../users/userModel.js'),
     Comment = require('./comments/commentModel.js'),
 
+=======
+<<<<<<< HEAD
+    User = require('../users/userModel.js'),
+    Comment = require('./comments/commentModel.js'),
+=======
+    userController = require('../users/userController.js'),
+>>>>>>> 6b0f7db9cef268f50320e47d1660b674fd7f1c2a
+>>>>>>> Git Reset to undo git pull without rebasing
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
@@ -60,8 +69,7 @@ module.exports = {
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     var author = getAuthHeader(req).name;
-
-    var updateableFields = ['title','description'];
+    var updateableFields = ['title','description','comments'];
     var updateCommand = {};
     updateableFields.forEach(function(field){
       if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
@@ -83,13 +91,9 @@ module.exports = {
       })
       .then(function(updatedRoadmap){
         if (updatedRoadmap) res.json({data: updatedRoadmap});
-    var updateCommand = req.body;
-    Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-      .populate('author nodes comments')
-      .then(function(dbResults){
-        res.json({data: dbResults});
       })
       .catch(handleError.bind(null, next));
+
   },
 
   deleteRoadmap : function (req, res, next) {
