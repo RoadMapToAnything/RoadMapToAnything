@@ -167,6 +167,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var content = $scope.content;
     var roadmapId = $scope.currentRoadMapData._id;
     var author = localStorage.getItem('user.username') || 'hello';
+    
 
     completedComment = {}
     completedComment.subject = subject;
