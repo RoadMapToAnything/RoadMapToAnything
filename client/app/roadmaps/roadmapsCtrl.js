@@ -141,8 +141,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.upVoteCount = $scope.getCountVotes(dataUpVoteCount);
       // Update the downvote count
       $scope.downVoteCount = $scope.getCountVotes(dataDownVoteCount);
-    })
-  }
+    });
+  };
 
   $scope.connectLines = function(){
     $('.endPointForConnection').connections();
@@ -159,18 +159,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.postComment = function(){
     // Will probably need to refactor
     $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
-    var subject = $scope.subject;
-    var content = $scope.content;
-    var roadmapId = $scope.currentRoadMapData._id;
-    var author = localStorage.getItem('user.username') || 'hello';
-    
 
-    completedComment = {}
-    completedComment.subject = subject;
-    completedComment.content = content;
-    completedComment.roadmap = roadmapId;
-    completedComment.author  = author;
-    console.log(completedComment);
-    Server.addComment(completedComment);
-  }
+    Server.createComment({
+      subject: $scope.subject,
+      content: $scope.content,
+      roadmap: $scope.currentRoadMapData._id;
+    });
+  };
+  
 }]);
