@@ -15,6 +15,7 @@ angular.module('dash.ctrl', ['services.user'])
     User.getData()
     .then(function (user) {
       $scope.user = user;
+      $scope.user.imageUrl = 'https://pbs.twimg.com/profile_images/1767688436/delventhalz.png';
       $scope.myMaps = user.authoredRoadmaps;
       $scope.followed = user.inProgress.roadmaps;
       $scope.completed = user.completedRoadmaps;
@@ -85,12 +86,6 @@ angular.module('dash.ctrl', ['services.user'])
     angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
-
-
-
-
-
-
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
@@ -103,6 +98,10 @@ angular.module('dash.ctrl', ['services.user'])
         return true;
       }
     });
+  };
+
+  $scope.setUserImage = function() {
+    $('#image-submit-modal').openModal();
   };
 
 }]);
