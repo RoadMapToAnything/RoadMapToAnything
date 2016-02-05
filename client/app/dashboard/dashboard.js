@@ -89,6 +89,10 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
 
+  $scope.openCreationModal = function() {
+    $('#creation-modal').openModal();
+  };
+
   $scope.openImageModal = function() {
     $('#image-submit-modal').openModal();
   };
