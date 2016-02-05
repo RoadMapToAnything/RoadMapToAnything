@@ -15,7 +15,6 @@ angular.module('dash.ctrl', ['services.user'])
     User.getData()
     .then(function (user) {
       $scope.user = user;
-      $scope.user.imageUrl = 'https://pbs.twimg.com/profile_images/1767688436/delventhalz.png';
       $scope.myMaps = user.authoredRoadmaps;
       $scope.followed = user.inProgress.roadmaps;
       $scope.completed = user.completedRoadmaps;
@@ -100,8 +99,17 @@ angular.module('dash.ctrl', ['services.user'])
     });
   };
 
-  $scope.setUserImage = function() {
+  $scope.openImageModal = function() {
     $('#image-submit-modal').openModal();
+  };
+
+  $scope.submitImageUrl = function() {
+    console.log('SUBMITTING URL', $scope.inputImageUrl);
+    User.update({imageUrl: $scope.inputImageUrl});
+    $scope.user.imageUrl = $scope.inputImageUrl;
+    $scope.inputImageUrl = '';
+    $('#image-submit-modal').closeModal();
+    $('.lean-overlay').remove();
   };
 
 }]);
