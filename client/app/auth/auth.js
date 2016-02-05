@@ -1,6 +1,6 @@
 angular.module('auth.ctrl', ['services.user'])
 
-.controller('AuthController', ['$scope','$state', 'User', function($scope, $state, User){
+.controller('AuthController', ['$scope','$state', 'User', '$timeout', function($scope, $state, User, $timeout){
 
   $scope.signin = true;
   $scope.showSignup = function (){
@@ -44,8 +44,9 @@ angular.module('auth.ctrl', ['services.user'])
   };
 
   $scope.attemptSignup = function () {
-    $scope.showSigninFailMsg = false;
+      $scope.showSigninFailMsg = true;
 
+    console.log('attempt signup');
     User.signup({
       firstName: $scope.attemptedFirstName,
       lastName: $scope.attemptedLastName,
@@ -53,7 +54,7 @@ angular.module('auth.ctrl', ['services.user'])
       password: $scope.attemptedPassword
     })
     .then(function (res) {
-      console.log('setting signin to true');
+      $scope.showSigninFailMsg = false
       $scope.signin = true;
       $scope.resetInputs();
       $('#auth-modal').closeModal();
@@ -62,7 +63,6 @@ angular.module('auth.ctrl', ['services.user'])
       $state.go('home.dashboard');
     })
     .catch(function (err) {
-      $scope.showSigninFailMsg = true;
       $scope.resetInputs();
       console.log('Login failed:', err);
     });
