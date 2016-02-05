@@ -1,6 +1,6 @@
-angular.module('dash.ctrl', ['services.user'])
+angular.module('dash.ctrl', ['services.server', 'services.user'])
 
-.controller('DashboardController', ['$scope','$http', '$state', 'User', 'Server', '$stateParams', function($scope, $http, $state, User, Server, $stateParams){
+.controller('DashboardController', ['$scope', '$state', '$stateParams', 'User', 'Server', function($scope, $state, $stateParams, User, Server) {
 
   $scope.followed = [];
   $scope.myMaps = [];
@@ -26,7 +26,6 @@ angular.module('dash.ctrl', ['services.user'])
       });
     });
   };
-
 
   refreshUserData();
   checkStateParams()
@@ -88,16 +87,6 @@ angular.module('dash.ctrl', ['services.user'])
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
-  
-  $scope.updateLocalDataAfterDelete = function (arr, id) {
-    return arr.filter(function(map) {
-      if( map._id === id ){
-        return false;
-      } else {
-        return true;
-      }
-    });
-  };
 
   $scope.openImageModal = function() {
     $('#image-submit-modal').openModal();
@@ -111,7 +100,6 @@ angular.module('dash.ctrl', ['services.user'])
       $scope.inputImageUrl = '';
       $state.go('home.dashboard', {}, {reload: true});
     });
-
   };
 
 }]);
