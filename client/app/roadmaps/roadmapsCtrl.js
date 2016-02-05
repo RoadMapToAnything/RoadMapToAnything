@@ -163,7 +163,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     Server.createComment({
       subject: $scope.subject,
       content: $scope.content,
-      roadmap: $scope.currentRoadMapData._id;
+      roadmap: $scope.currentRoadMapData._id
     });
   };
   
