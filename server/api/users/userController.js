@@ -47,12 +47,22 @@ module.exports = {
 
   createUser : function(req, res, next){
     var newUser = req.body;
+    var accessToken = req.body.accessToken; // if FB user
 
     User(newUser).save()
       .then( hashPassword )
       .spread( generateAuthToken )
       .then(function(results){
-        res.status(201).json({data: results});
+        
+        // New user via Facebook
+        if (accessToken) {
+          results.authToken = new Buffer('AUTHFB'+accessToken, 'ascii').toString('base64');
+          res.redirect('/#/signin/auto?username='  + results.username
+                                    +'&authToken=' + results.authToken);
+        // Default
+        } else {
+          res.status(201).json({data: results});
+        }
       })
       .catch(handleError.bind(null, next));
   },
@@ -146,7 +156,4 @@ module.exports = {
       })
       .catch(handleError.bind(null, next));
   }
-
-
 };
-
