@@ -60,6 +60,10 @@ angular.module('services.user', ['services.request'])
     return Request.get('/api/users/' + localStorage.getItem('user.username'));
   };
 
+  User.update = function(user) {
+    return Request.put('/api/users/' + localStorage.getItem('user.username'), user);
+  };
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *                 AUTH                  *
