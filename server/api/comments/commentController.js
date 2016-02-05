@@ -10,7 +10,7 @@ module.exports = {
     var author = getAuthHeader(req).name;
 
     userController.returnId(author)
-    .then(function (id){
+    .then(function (id) {
       newComment.author = id;
       return Comment(newComment).save();
     })

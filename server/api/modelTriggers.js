@@ -244,20 +244,20 @@ module.exports.setNodeHooks = function(NodeSchema) {
 module.exports.setCommentHooks = function(CommentSchema) {
   CommentSchema.pre('save', function(next) {
     if (this.isNew) {
-        var Roadmap = require('./roadmaps/roadmapModel.js');
-        var User = require('./roadmaps/roadmapModel.js');
-        var authorID = this.author;
-        var roadmapID = this.roadmap;
-        var commentID = this._id;
+      var Roadmap = require('./roadmaps/roadmapModel.js');
+      var User = require('./users/userModel.js');
+      var authorId = this.author;
+      var roadmapId = this.roadmap;
+      var commentId = this._id;
 
-        var updateAuthor = {$push: {comments: commentID}};
-        var updateRoadmap = {$push: {comments: commentID}};
+      var authorUpdate = {$push: {comments: commentId}};
+      var roadmapUpdate = {$push: {comments: commentId}};
 
-        Roadmap.findByIdAndUpdate(roadmapID, updateRoadmap)
-          .exec(function(err){ if (err) throw err; });
+      Roadmap.findByIdAndUpdate(roadmapId, roadmapUpdate)
+        .exec(function(err){ if (err) throw err; });
 
-        User.findByIdAndUpdate(authorID, updateAuthor)
-          .exec(function(err){ if (err) throw err; });  
+      User.findByIdAndUpdate(authorId, authorUpdate)
+        .exec(function(err){ if (err) throw err; });  
     }
 
     setCreatedTimestamp.call(this, next);
@@ -265,6 +265,20 @@ module.exports.setCommentHooks = function(CommentSchema) {
 
   CommentSchema.pre('remove', function(next) {
     // TODO: Decide how comments behave when their author is removed.
+    var Roadmap = require('./roadmaps/roadmapModel.js');
+    var User = require('./users/userModel.js');
+    var authorId = this.author;
+    var roadmapId = this.roadmap;
+
+    var authorUpdate = {$pull: {comments: this._id}};
+    var roadmapUpdate = {$pull: {comments: this._id}};
+
+    Roadmap.findByIdAndUpdate(roadmapId, roadmapUpdate)
+    .exec(function(err){ if (err) throw err; });
+
+    User.findByIdAndUpdate(authorId, authorUpdate)
+    .exec(function(err){ if (err) throw err; });  
+
     next();
   });
 

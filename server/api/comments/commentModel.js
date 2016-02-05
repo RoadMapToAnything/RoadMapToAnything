@@ -5,12 +5,12 @@ var mongoose = require('mongoose'),
 
 
 var CommentSchema = new mongoose.Schema({
-    subject: { type: String,   required: true },
-    content: { type: String,   required: true },
-    roadmap: { type: ObjectId, required: true, ref: 'Roadmap'},
-    author     : { type: ObjectId, required: false, ref: 'User' },
-    created    : { type: Date },
-    updated    : { type: Date }
+    subject : { type: String,   required: true },
+    content : { type: String,   required: true },
+    roadmap : { type: ObjectId, required: true, ref: 'Roadmap'},
+    author  : { type: ObjectId, required: true, ref: 'User' },
+    created : { type: Date },
+    updated : { type: Date }
 });
 
 hooks.setCommentHooks(CommentSchema);
