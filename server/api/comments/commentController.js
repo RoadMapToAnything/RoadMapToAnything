@@ -1,6 +1,6 @@
 var Comment = require('./commentModel.js'),
-    userController = require('../../users/userController.js'),
-    handleError = require('../../../util.js').handleError,
+    userController = require('../users/userController.js'),
+    handleError = require('../../util.js').handleError,
     getAuthHeader = require('basic-auth');
     
 module.exports = {

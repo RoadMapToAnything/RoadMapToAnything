@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    hooks    = require('../../modelTriggers.js');
+    hooks    = require('../modelTriggers.js');
     
 
 
