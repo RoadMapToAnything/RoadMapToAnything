@@ -78,8 +78,12 @@ angular.module('services.server', ['services.request'])
    *               COMMENTS                *
    * * * * * * * * * * * * * * * * * * * * */
    
-   Server.addComment = function(comment) {
+   Server.createComment = function(comment) {
     return Request.post('/api/comments', comment);
+   };
+
+   Server.deleteCommentById = function(id) {
+    return Request.delete('/api/comments/' + id);
    };
 
   /* * * * * * * * * * * * * * * * * * * * * 
@@ -100,10 +104,10 @@ angular.module('services.server', ['services.request'])
   Server.deleteRoadmap = Server.deleteRoadmapById;
   Server.deleteMap = Server.deleteRoadmapById;
 
-  Server.addComment = Server.addComment;
-
   Server.getNode = Server.getNodeById;
-  Server.deleteNode = Server.deleteNodeById; 
+  Server.deleteNode = Server.deleteNodeById;
+
+  Server.deleteComment = Server.deleteCommentById;
 
   return Server;
 
