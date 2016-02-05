@@ -24,6 +24,30 @@
 <div class="col s8 roadmap-title">
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
   <div class="divider"></div>
+
+<!-- ALTERNATE BOOTSTRAP EXAMPLE 
+
+<div class="row">
+  <div class="large-4 columns">
+   <div class="card">
+  <img class="card-img-top" data-src="put source hree" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title">Card title</h4>
+    <p class="card-text">Text</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">item one</li>
+  </ul>
+  <div class="card-block">
+    <a href="#" class="card-link">link</a>
+    <a href="#" class="card-link">link</a>
+  </div>
+</div>
+=======
+<div class="col s8 roadmap-title">
+  <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
+  <div class="divider"></div>
+>>>>>>> 6b0f7db9cef268f50320e47d1660b674fd7f1c2a
 </div>
 
    <!-- Nodes -->
@@ -55,4 +79,43 @@
       <p><i class="fa fa-thumbs-o-up fa-lg" ng-click="upVoteMap()" ng-bind="upVoteCount" style="color:green"></i></p>
       <p><i class="fa fa-thumbs-o-down fa-lg" ng-click="downVoteMap()" ng-bind="downVoteCount" style="color:red"></i></p>
 </div>
+
+<br><br><br><br><br>
+
+
+<div class="row">
+  <button type="submit" class="waves-effect waves-light btn link-box-btn col offset-s3" ng-show="!showComments" ng-click="toggleComments()">Click to Show Comment Section</button>
+</div>
+
+
+<div class="row commentSection" ng-show="showComments">
+  <h4>Comment Section       <i class="material-icons">comment</i> </h4>
+  
+  <div ng-repeat="comment in renderedComments">
+    <h5 class="node-description truncate node-title" ng-bind="comment.subject">I am the subject</h5>
+    <div class="divider"></div>
+    <span class="node-description truncate node-title" ng-bind="comment.content">I am the content</span>
+  </div>
+
+  <h3>Post a Comment!</h3>
+    <form class="col s12" ng-submit="postComment()">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="input_text" type="text" length="20" ng-model="subject">
+          <label for="input_text" >Input text</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="textarea1" class="materialize-textarea" length="120" ng-model="content"></textarea>
+          <label for="textarea1" >Textarea</label>
+        </div>
+      </div>
+      <div class="row">
+          <button type="submit" class="waves-effect waves-light btn commentBtn">Submit your Comment!</button>
+      </div>
+    </form>
+  </div>
+
+
 

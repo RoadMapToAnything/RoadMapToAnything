@@ -8,6 +8,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.renderedNodes = [];
   $('.tooltipped').tooltip({delay: 50});
 
+  $scope.showComments = false;
+
+  $scope.toggleComments = function(){
+    $scope.showComments = true;
+  }
+
+
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
     $scope.votesCount = 0;
@@ -34,16 +41,27 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
   };
+  // Make a $scope.renderComments()
+  $scope.renderComments = function(){
+    var comments = $scope.currentRoadMapData.comments;
+    console.log(comments);
+    comments.map(function(comment,index){
+      comment.index = index;
+    })
+    $scope.renderedComments = comments;
+  }
 
 
   // When roadmap (identified by its id) data is fetched, set it
   Server.getRoadmapById(roadmapId).then(function (res){
       $scope.currentRoadMapData = res;
+      console.log($scope.currentRoadMapData,'I am the roadmap');
     }, function(err){
       if (err) return console.log(err);
     })
     .then(function(){
       $scope.renderNodes();
+      $scope.renderComments();
       // Set the upvotes and downvotes
       var currentMapUpVotes = $scope.currentRoadMapData.upvotes;
       var currentMapDownVotes = $scope.currentRoadMapData.downvotes;
@@ -130,4 +148,29 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $('.endPointForConnection').connections();
   };
 
+  // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
+  $scope.asyncConnectLines = function(cb){
+    setTimeout($scope.connectLines,0);
+  };
+
+  $scope.subject = '';
+  $scope.content = '';
+
+  $scope.postComment = function(){
+    // Will probably need to refactor
+    $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
+    var subject = $scope.subject;
+    var content = $scope.content;
+    var roadmapId = $scope.currentRoadMapData._id;
+    var author = localStorage.getItem('user.username') || 'hello';
+    
+
+    completedComment = {}
+    completedComment.subject = subject;
+    completedComment.content = content;
+    completedComment.roadmap = roadmapId;
+    completedComment.author  = author;
+    console.log(completedComment);
+    Server.addComment(completedComment);
+  }
 }]);

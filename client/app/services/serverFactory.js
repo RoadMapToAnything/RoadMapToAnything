@@ -74,10 +74,18 @@ angular.module('services.server', ['services.request'])
     return Request.delete('/api/nodes/' + id);
   };
 
+    /* * * * * * * * * * * * * * * * * * * * * 
+   *               COMMENTS                *
+   * * * * * * * * * * * * * * * * * * * * */
+   
+   Server.addComment = function(comment) {
+    return Request.post('/api/comments', comment);
+   };
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *               ALIASES                 *
    * * * * * * * * * * * * * * * * * * * * */
+
 
   Server.getUser = Server.getUserByUsername;
   Server.deleteUser = Server.deleteUserByUsername;
@@ -91,6 +99,8 @@ angular.module('services.server', ['services.request'])
   Server.deleteMapById = Server.deleteRoadmapById;
   Server.deleteRoadmap = Server.deleteRoadmapById;
   Server.deleteMap = Server.deleteRoadmapById;
+
+  Server.addComment = Server.addComment;
 
   Server.getNode = Server.getNodeById;
   Server.deleteNode = Server.deleteNodeById; 

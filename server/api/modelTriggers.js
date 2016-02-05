@@ -239,3 +239,33 @@ module.exports.setNodeHooks = function(NodeSchema) {
   });
 
 };
+
+
+module.exports.setCommentHooks = function(CommentSchema) {
+  CommentSchema.pre('save', function(next) {
+    if (this.isNew) {
+        var Roadmap = require('./roadmaps/roadmapModel.js');
+        var User = require('./roadmaps/roadmapModel.js');
+        var authorID = this.author;
+        var roadmapID = this.roadmap;
+        var commentID = this._id;
+
+        var updateAuthor = {$push: {comments: commentID}};
+        var updateRoadmap = {$push: {comments: commentID}};
+
+        Roadmap.findByIdAndUpdate(roadmapID, updateRoadmap)
+          .exec(function(err){ if (err) throw err; });
+
+        User.findByIdAndUpdate(authorID, updateAuthor)
+          .exec(function(err){ if (err) throw err; });  
+    }
+
+    setCreatedTimestamp.call(this, next);
+  });
+
+  CommentSchema.pre('remove', function(next) {
+    // TODO: Decide how comments behave when their author is removed.
+    next();
+  });
+
+};

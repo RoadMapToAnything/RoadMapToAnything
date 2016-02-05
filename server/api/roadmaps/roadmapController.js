@@ -1,5 +1,7 @@
 var Roadmap = require('./roadmapModel.js'),
     userController = require('../users/userController.js'),
+    User = require('../users/userModel.js'),
+    Comment = require('./comments/commentModel.js'),
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
@@ -45,7 +47,7 @@ module.exports = {
   getRoadmapByID : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findById(_id)
-      .populate('author nodes')
+      .populate('author nodes comments')
       .then(function(dbResults){
         res.json({data: dbResults});
       })
@@ -55,8 +57,7 @@ module.exports = {
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     var author = getAuthHeader(req).name;
-
-    var updateableFields = ['title','description'];
+    var updateableFields = ['title','description','comments'];
     var updateCommand = {};
     updateableFields.forEach(function(field){
       if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
@@ -73,14 +74,14 @@ module.exports = {
           return null;
         } else {
           return Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-                        .populate('author nodes');
+            .populate('author nodes comments');
         }
       })
       .then(function(updatedRoadmap){
         if (updatedRoadmap) res.json({data: updatedRoadmap});
       })
       .catch(handleError.bind(null, next));
-      
+
   },
 
   deleteRoadmap : function (req, res, next) {
