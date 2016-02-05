@@ -104,12 +104,14 @@ angular.module('dash.ctrl', ['services.user'])
   };
 
   $scope.submitImageUrl = function() {
-    console.log('SUBMITTING URL', $scope.inputImageUrl);
-    User.update({imageUrl: $scope.inputImageUrl});
-    $scope.user.imageUrl = $scope.inputImageUrl;
-    $scope.inputImageUrl = '';
-    $('#image-submit-modal').closeModal();
-    $('.lean-overlay').remove();
+    User.update({imageUrl: $scope.inputImageUrl})
+    .then(function() {
+      $('#image-submit-modal').closeModal();
+      $('.lean-overlay').remove();
+      $scope.inputImageUrl = '';
+      $state.go('home.dashboard', {}, {reload: true});
+    });
+
   };
 
 }]);
