@@ -25,26 +25,6 @@
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
   <div class="divider"></div>
 
-<div class="row">
-  <form class="col s12" ng-submit="postComment()">
-    <div class="row">
-      <div class="input-field col s6">
-        <input id="input_text" type="text" length="20" ng-model="subject">
-        <label for="input_text" >Input text</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <textarea id="textarea1" class="materialize-textarea" length="120" ng-model="content"></textarea>
-        <label for="textarea1" >Textarea</label>
-      </div>
-    </div>
-    <div class="row">
-        <button type="submit" class="waves-effect waves-light btn commentBtn">Submit your Comment!</button>
-    </div>
-  </form>
-</div>
-
 <!-- ALTERNATE BOOTSTRAP EXAMPLE 
 
 <div class="row">
@@ -99,4 +79,29 @@
       <p><i class="fa fa-thumbs-o-up fa-lg" ng-click="upVoteMap()" ng-bind="upVoteCount" style="color:green"></i></p>
       <p><i class="fa fa-thumbs-o-down fa-lg" ng-click="downVoteMap()" ng-bind="downVoteCount" style="color:red"></i></p>
 </div>
+
+<br><br><br><br><br>
+
+<div class="row commentSection">
+  <form class="col s12" ng-submit="postComment()">
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="input_text" type="text" length="20" ng-model="subject">
+        <label for="input_text" >Input text</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea" length="120" ng-model="content"></textarea>
+        <label for="textarea1" >Textarea</label>
+      </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="waves-effect waves-light btn commentBtn">Submit your Comment!</button>
+    </div>
+  </form>
+</div>
+
+
+
 

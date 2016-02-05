@@ -1,19 +1,7 @@
 var Roadmap = require('./roadmapModel.js'),
-<<<<<<< 6131d9cdaf4926e852544b8dd57221a4b587a54c
-
     userController = require('../users/userController.js'),
-
     User = require('../users/userModel.js'),
     Comment = require('./comments/commentModel.js'),
-
-=======
-<<<<<<< HEAD
-    User = require('../users/userModel.js'),
-    Comment = require('./comments/commentModel.js'),
-=======
-    userController = require('../users/userController.js'),
->>>>>>> 6b0f7db9cef268f50320e47d1660b674fd7f1c2a
->>>>>>> Git Reset to undo git pull without rebasing
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),

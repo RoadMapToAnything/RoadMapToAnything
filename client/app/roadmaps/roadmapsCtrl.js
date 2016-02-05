@@ -38,6 +38,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   // When roadmap (identified by its id) data is fetched, set it
   Server.getRoadmapById(roadmapId).then(function (res){
       $scope.currentRoadMapData = res;
+      console.log($scope.currentRoadMapData,'I am the rodamap');
     }, function(err){
       if (err) return console.log(err);
     })
