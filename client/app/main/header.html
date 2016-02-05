@@ -24,19 +24,19 @@
         <!-- Need to make a dropdown search -->
         <li><i class="mdi-action-search"></i></li>
         <li><a ui-sref="home.browse">Browse</a></li>
-        <li><a ng-show="!isLoggedIn()" class="modal-trigger" href="#auth-modal">Sign in</a></li>
+        <li ng-show="!isLoggedIn()"><a ng-click="openAuthModal()">Sign in</a></li>
         <li><a ng-show="isLoggedIn()" class="dropdown-button" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
           <ul id="dropdown" class="dropdown-content collection">
             <li><a ui-sref="home.dashboard">Dashboard</a></li>
-            <li><a class="modal-trigger" href="#creation-modal">Create Roadmap</a></li>
+            <li><a ng-click="openCreationModal()">Create Roadmap</a></li>
             <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
           </ul> 
       </ul>
       <ul class="side-nav" id="collapsed-options">
-        <li><a ng-show="!isLoggedIn()" class="modal-trigger" href="#auth-modal">Sign in</a></li>
+        <li ng-show="!isLoggedIn()"><a ng-click="openAuthModal()">Sign in</a></li>
         <li><a ui-sref="home.browse">Browse</a></li>
         <li ng-show="isLoggedIn()"><a ui-sref="home.dashboard">Dashboard</a></li>
-        <li ng-show="isLoggedIn()"><a <a class="modal-trigger" href="#creation-modal">Create Roadmap</a></li>
+        <li ng-show="isLoggedIn()"><a ng-click="openCreationModal()">Create Roadmap</a></li>
         <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
       </ul>
     </div>

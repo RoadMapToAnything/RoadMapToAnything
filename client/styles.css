@@ -17,9 +17,24 @@
   color:  #f44336 !important;
 }
 
+.top-row {
+  margin: 5em 0;
+}
+
 /****** LINKS ******/
 a:hover {
   cursor: pointer;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/****** IMAGES ******/
+.profile-image {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 100%;
 }
 
 

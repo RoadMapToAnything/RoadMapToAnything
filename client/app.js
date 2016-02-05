@@ -55,6 +55,10 @@ angular.module('app', [
         'creationModal' : {
           templateUrl: 'app/modals/creation.html',
           controller: 'CreationController'
+        },
+        'imageSubmitModal' : {
+          templateUrl: 'app/modals/imageSubmit.html',
+          controller: 'DashboardController'
         }
       }
     })

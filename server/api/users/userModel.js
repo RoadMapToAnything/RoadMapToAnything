@@ -9,7 +9,7 @@ var UserSchema = new mongoose.Schema({
   password          : { type: String, required: true },
   firstName         : { type: String },
   lastName          : { type: String },
-  imageUrl          : { type: String },
+  imageUrl          : { type: String, default: 'images/newUserIcon.png'},
   authoredRoadmaps  : [ {type: ObjectId, ref: 'Roadmap'} ],
   inProgress        : 
       {

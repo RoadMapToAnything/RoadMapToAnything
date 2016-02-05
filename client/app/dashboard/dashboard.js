@@ -1,6 +1,6 @@
-angular.module('dash.ctrl', ['services.user'])
+angular.module('dash.ctrl', ['services.server', 'services.user'])
 
-.controller('DashboardController', ['$scope','$http', '$state', 'User', 'Server', '$stateParams', function($scope, $http, $state, User, Server, $stateParams){
+.controller('DashboardController', ['$scope', '$state', 'User', 'Server', function($scope, $state, User, Server) {
 
   $scope.followed = [];
   $scope.myMaps = [];
@@ -27,13 +27,8 @@ angular.module('dash.ctrl', ['services.user'])
     });
   };
 
-
-  refreshUserData();
-  checkStateParams()
-
-  function checkStateParams () {
-    console.log('$stateParams.type', $stateParams.type)
-    if( $stateParams.type === 'completed' ){
+  var checkStateParams = function() {
+    if( $state.params.type === 'completed' ) {
       refreshUserData();
       $scope.showFollowed = false;
       $scope.showMyMaps = false;
@@ -42,7 +37,12 @@ angular.module('dash.ctrl', ['services.user'])
       angular.element( '#followedBtn' ).removeClass( 'pressed' );
       angular.element( '#completedBtn' ).addClass( 'pressed' );
     }
-  }
+  };
+
+  checkStateParams();
+  refreshUserData();
+  
+
 
   $scope.unfollowMap = function (id) {
     User.unfollowMap(id)
@@ -85,23 +85,25 @@ angular.module('dash.ctrl', ['services.user'])
     angular.element( '#completedBtn' ).addClass( 'pressed' );
   };
 
-
-
-
-
-
-
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
-  
-  $scope.updateLocalDataAfterDelete = function (arr, id) {
-    return arr.filter(function(map) {
-      if( map._id === id ){
-        return false;
-      } else {
-        return true;
-      }
+
+  $scope.openCreationModal = function() {
+    $('#creation-modal').openModal();
+  };
+
+  $scope.openImageModal = function() {
+    $('#image-submit-modal').openModal();
+  };
+
+  $scope.submitImageUrl = function() {
+    User.update({imageUrl: $scope.inputImageUrl})
+    .then(function() {
+      $('#image-submit-modal').closeModal();
+      $('.lean-overlay').remove();
+      $scope.inputImageUrl = '';
+      $state.go('home.dashboard', {}, {reload: true});
     });
   };
 
