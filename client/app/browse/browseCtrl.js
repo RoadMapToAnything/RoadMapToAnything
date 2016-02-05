@@ -24,6 +24,4 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
 
-  
-
 }]);

@@ -5,19 +5,19 @@ angular.module('auth.ctrl', ['services.user'])
   $scope.signin = true;
   $scope.showSignup = function (){
     $scope.signin = false;
-    $scope.resetInputs();
+    resetInputs();
   }
   $scope.showSignin = function (){
     $scope.signin = true;
-    $scope.resetInputs();
+    resetInputs();
   }
-  $scope.resetInputs = function() {
+  function resetInputs () {
     $scope.attemptedFirstName = '';
     $scope.attemptedLastName = '';
     $scope.attemptedUsername = '';
     $scope.attemptedPassword = '';
   }
-  $scope.resetInputs();
+  resetInputs();
 
   $scope.showUnauthMsg = false;
   $scope.showSigninFailMsg = false;
@@ -29,7 +29,7 @@ angular.module('auth.ctrl', ['services.user'])
 
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {
-      $scope.resetInputs();
+      resetInputs();
       $('.button-collapse').sideNav('hide');
       $('#auth-modal').closeModal();
       $('.lean-overlay').remove();
@@ -37,7 +37,7 @@ angular.module('auth.ctrl', ['services.user'])
     })
     .catch(function (err) {
       console.log('error', err);
-        $scope.resetInputs();
+        resetInputs();
         console.log('(401) Login failed: bad credentials.');
         $scope.showUnauthMsg = true;
     });
@@ -56,14 +56,14 @@ angular.module('auth.ctrl', ['services.user'])
     .then(function (res) {
       $scope.showSigninFailMsg = false
       $scope.signin = true;
-      $scope.resetInputs();
+      resetInputs();
       $('#auth-modal').closeModal();
       $('.lean-overlay').remove();
       $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
     .catch(function (err) {
-      $scope.resetInputs();
+      resetInputs();
       console.log('Login failed:', err);
     });
   };
