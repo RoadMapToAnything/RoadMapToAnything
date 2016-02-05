@@ -13,5 +13,13 @@ angular.module('main.ctrl', ['services.user'])
     return localStorage.getItem('user.username');
   };
 
+  $scope.openAuthModal = function() {
+    $('#auth-modal').openModal();
+  };
+
+  $scope.openCreationModal = function() {
+    $('#creation-modal').openModal();
+  };
+
 
 }]);
