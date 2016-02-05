@@ -61,7 +61,7 @@ angular.module('app', [
     //state for dashboard
     .state('home.dashboard', {
       auth: true,
-      url: 'dashboard',
+      url: 'dashboard/:type',
       views: {
         'content@': {
           templateUrl: 'app/dashboard/dashboard.html',

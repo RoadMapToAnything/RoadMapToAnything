@@ -1,11 +1,12 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
 
-.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout){  
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadMapsFactory);
 
   var roadmapId = $stateParams.roadmapID;
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
+  $('.tooltipped').tooltip({delay: 50});
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
@@ -86,15 +87,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
-    console.log('NODE IS SUBMITTED');
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
+    Materialize.toast('Node Complete!', 4000, 'orangeToast');
   }
 
   // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
-    console.log('ROADMAP IS SUBMITTED');
+    Materialize.toast('Map Complete!', 4000, 'orangeToast');
     User.completeRoadmapById(roadmapId);
+    $state.go('home.dashboard', {type: 'completed'});
   }
 
 

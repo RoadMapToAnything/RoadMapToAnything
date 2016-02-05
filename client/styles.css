@@ -101,6 +101,9 @@ footer.page-footer div.footer-copyright {
 .link-box-btn {
   background-color: #ff7043 !important;
 }
+.orangeToast {
+  background-color: #ff7043 !important;
+}
 
 .connector {
   height: 60px;
@@ -111,10 +114,6 @@ footer.page-footer div.footer-copyright {
   margin-bottom: 0px;
   padding: 0px;
 }
-
-/*.node-list {
-  background-image: url('app/roadmaps/bgImage1.png');
-}*/
 .circle {
   margin-top: 0px !important;
   margin-bottom: 0px !important;

@@ -19,15 +19,9 @@ angular.module('browse.factory', ['services.server'])
     });
   };
 
-  var gotToMap = function(mapID){
-    localStorage.setItem('roadmap.id', mapID);
-    $state.go('home.roadmapTemplate');
-  };
-
   return {
     addTotalNodesOfMaps: addTotalNodesOfMaps,
-    getMapData: getMapData,
-    gotToMap: gotToMap
+    getMapData: getMapData
   };
   
 

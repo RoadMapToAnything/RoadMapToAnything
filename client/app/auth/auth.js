@@ -1,23 +1,23 @@
 angular.module('auth.ctrl', ['services.user'])
 
-.controller('AuthController', ['$scope','$state', 'User', function($scope, $state, User){
+.controller('AuthController', ['$scope','$state', 'User', '$timeout', function($scope, $state, User, $timeout){
 
   $scope.signin = true;
   $scope.showSignup = function (){
     $scope.signin = false;
-    $scope.resetInputs();
+    resetInputs();
   }
   $scope.showSignin = function (){
     $scope.signin = true;
-    $scope.resetInputs();
+    resetInputs();
   }
-  $scope.resetInputs = function() {
+  function resetInputs () {
     $scope.attemptedFirstName = '';
     $scope.attemptedLastName = '';
     $scope.attemptedUsername = '';
     $scope.attemptedPassword = '';
   }
-  $scope.resetInputs();
+  resetInputs();
 
   $scope.showUnauthMsg = false;
   $scope.showSigninFailMsg = false;
@@ -29,7 +29,7 @@ angular.module('auth.ctrl', ['services.user'])
 
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {
-      $scope.resetInputs();
+      resetInputs();
       $('.button-collapse').sideNav('hide');
       $('#auth-modal').closeModal();
       $('.lean-overlay').remove();
@@ -37,15 +37,16 @@ angular.module('auth.ctrl', ['services.user'])
     })
     .catch(function (err) {
       console.log('error', err);
-        $scope.resetInputs();
+        resetInputs();
         console.log('(401) Login failed: bad credentials.');
         $scope.showUnauthMsg = true;
     });
   };
 
   $scope.attemptSignup = function () {
-    $scope.showSigninFailMsg = false;
+      $scope.showSigninFailMsg = true;
 
+    console.log('attempt signup');
     User.signup({
       firstName: $scope.attemptedFirstName,
       lastName: $scope.attemptedLastName,
@@ -53,17 +54,16 @@ angular.module('auth.ctrl', ['services.user'])
       password: $scope.attemptedPassword
     })
     .then(function (res) {
-      console.log('setting signin to true');
+      $scope.showSigninFailMsg = false
       $scope.signin = true;
-      $scope.resetInputs();
+      resetInputs();
       $('#auth-modal').closeModal();
       $('.lean-overlay').remove();
       $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })
     .catch(function (err) {
-      $scope.showSigninFailMsg = true;
-      $scope.resetInputs();
+      resetInputs();
       console.log('Login failed:', err);
     });
   };
