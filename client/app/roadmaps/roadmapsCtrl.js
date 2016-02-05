@@ -6,6 +6,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   var roadmapId = $stateParams.roadmapID;
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
+  $('.tooltipped').tooltip({delay: 50});
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
@@ -88,10 +89,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.submitCompletedNode = function() {
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
+    Materialize.toast('Node Complete!', 4000, 'orangeToast');
   }
 
   // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
+    Materialize.toast('Map Complete!', 4000, 'orangeToast');
     User.completeRoadmapById(roadmapId);
     $state.go('home.dashboard', {type: 'completed'});
   }
