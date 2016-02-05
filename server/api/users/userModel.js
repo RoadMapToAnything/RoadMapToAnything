@@ -17,6 +17,7 @@ var UserSchema = new mongoose.Schema({
           nodes     : [ {type: ObjectId, ref: 'Node'} ]
       },
   completedRoadmaps : [ {type: ObjectId, ref: 'Roadmap'} ],
+  facebookUserId    : { type: String, unique: true },
   created           : { type: Date },
   updated           : { type: Date },
   comments          : [ {type: ObjectId, ref: 'Comment'} ]
