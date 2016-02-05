@@ -1,0 +1,21 @@
+<script type="text/javascript">
+  $( document ).ready(function(){ 
+    $('.modal-trigger').leanModal( {dismissible: true} );
+  });
+</script>
+
+<!-- Input New Image Url -->
+<div class="modal-content">
+  <div class="row">
+    <div class="input-field col s6">
+      <input id="input_image_url" type="url" class="validate" ng-model="inputImageUrl">
+      <label for="input_image_url">Input an Image</label>
+    </div>
+    <div class="col s3">
+      <button class="modal-action btn waves-effect waves-light" type="submit" ng-click="submitImageUrl()" name="action">Save</button>
+    </div>
+    <div class="col s3">
+      <img class="profile-image" ng-src="{{inputImageUrl}}">
+    </div>
+  </div>
+</div>
