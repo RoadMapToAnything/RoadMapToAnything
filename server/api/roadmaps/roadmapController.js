@@ -47,7 +47,7 @@ module.exports = {
   getRoadmapByID : function (req, res, next) {
     var _id = req.params.roadmapID;
     Roadmap.findById(_id)
-      .populate('author nodes')
+      .populate('author nodes comments')
       .then(function(dbResults){
         res.json({data: dbResults});
       })

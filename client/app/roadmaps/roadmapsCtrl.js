@@ -7,6 +7,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
 
+  $scope.showComments = false;
+
+  $scope.toggleComments = function(){
+    $scope.showComments = true;
+  }
+
+
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
     $scope.votesCount = 0;
@@ -33,17 +40,27 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentNode = nodes[0];
     $scope.renderCurrentNode();
   };
+  // Make a $scope.renderComments()
+  $scope.renderComments = function(){
+    var comments = $scope.currentRoadMapData.comments;
+    console.log(comments);
+    comments.map(function(comment,index){
+      comment.index = index;
+    })
+    $scope.renderedComments = comments;
+  }
 
 
   // When roadmap (identified by its id) data is fetched, set it
   Server.getRoadmapById(roadmapId).then(function (res){
       $scope.currentRoadMapData = res;
-      console.log($scope.currentRoadMapData,'I am the rodamap');
+      console.log($scope.currentRoadMapData,'I am the roadmap');
     }, function(err){
       if (err) return console.log(err);
     })
     .then(function(){
       $scope.renderNodes();
+      $scope.renderComments();
       // Set the upvotes and downvotes
       var currentMapUpVotes = $scope.currentRoadMapData.upvotes;
       var currentMapDownVotes = $scope.currentRoadMapData.downvotes;

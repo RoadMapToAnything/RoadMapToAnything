@@ -79,18 +79,7 @@ angular.module('services.server', ['services.request'])
    * * * * * * * * * * * * * * * * * * * * */
    
    Server.addComment = function(comment) {
-
-     return $http({
-       method: 'POST',
-       url: '/api/comments/',
-       data: comment
-     })
-     /*
-     Need to update roadmpa themselve
-     .then()
-     .catch(standardError)*/
-     .then(standardResponse)
-     .catch(standardError);
+    return Request.post('/api/comments', comment);
    };
 
   /* * * * * * * * * * * * * * * * * * * * * 
