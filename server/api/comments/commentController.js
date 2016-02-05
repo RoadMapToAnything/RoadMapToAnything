@@ -1,15 +1,11 @@
-var Roadmap = require('../roadmapModel.js'),
-    User = require('../../users/userModel.js'),
+var Comment = require('./commentModel.js'),
     userController = require('../../users/userController.js'),
-    Comment = require('./commentModel.js')
-    ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../../util.js').handleError,
-    handleQuery = require('../../queryHandler.js'),
     getAuthHeader = require('basic-auth');
     
 module.exports = {
   addComment : function (req, res, next) {
-    var comment = req.body
+    var comment = req.body;
     var subject = comment.subject;
     var content = comment.subject;
     var roadmap = comment.roadmap;

@@ -1,7 +1,7 @@
 var userController    = require('./users/userController.js'),
     roadmapController = require('./roadmaps/roadmapController.js'),
     nodeController    = require('./nodes/nodeController.js'),
-    commentController = require('./roadmaps/comments/commentController.js')
+    commentController = require('./comments/commentController.js')
     auth              = require('../auth.js').authenticate;
 
 module.exports = function (apiRouter) {

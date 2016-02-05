@@ -1,7 +1,5 @@
 var Roadmap = require('./roadmapModel.js'),
     userController = require('../users/userController.js'),
-    User = require('../users/userModel.js'),
-    Comment = require('./comments/commentModel.js'),
     ObjectId = require('mongoose').Types.ObjectId,
     handleError = require('../../util.js').handleError,
     handleQuery = require('../queryHandler.js'),
