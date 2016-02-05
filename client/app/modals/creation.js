@@ -2,13 +2,13 @@ angular.module('creation.ctrl', ['services.server'])
 
 .controller('CreationController', ['$scope', '$state', 'Server',  function($scope, $state, Server){
 
+  var roadmapId = '';
 
-  $('select').material_select();
+  $scope.nodeType = "Blog Post";
 
-  $scope.clearCreateInputs = function (){
+  var clearInputs = function (){
     $scope.roadmapTitle = '';
     $scope.roadmapDescription = '';
-    $scope.roadmapID = '';
     $scope.nodeTitle = '';
     $scope.nodeDescription = '';
     $scope.nodeType = 'Blog Post';
@@ -16,58 +16,61 @@ angular.module('creation.ctrl', ['services.server'])
     $scope.nodeImageUrl = '';
   };
 
-  $scope.nodeType = "Blog Post";
-
-  $scope.createRoadmap = function() {
+  var createRoadmap = function() {
     return Server.createRoadmap({
       title: $scope.roadmapTitle,
       description: $scope.roadmapDescription
     })
     .then(function (roadmap) {
-      $scope.roadmapID = roadmap._id;
+      roadmapId = roadmap._id;
     });
   };
 
-  $scope.createNode = function() {
+  var createNode = function() {
     return Server.createNode({
       title: $scope.nodeTitle,
       description: $scope.nodeDescription,
       resourceType: $scope.nodeType,
       resourceURL: $scope.nodeUrl,
       imageUrl: $scope.nodeImageUrl,
-      parentRoadmap: $scope.roadmapID
+      parentRoadmap: roadmapId
     });
   };
 
   // Creates the roadmap before the node if necessary
-  $scope.checkThenCreate = function() {
-    if (!$scope.roadmapID) {
-      return $scope.createRoadmap().then(function() {
-        return $scope.createNode();
+  var checkThenCreate = function() {
+    if (!roadmapId) {
+      return createRoadmap()
+      .then(function() {
+        createNode();
       });
 
     } else {
-      return $scope.createNode();
+      return createNode();
     }
   };
 
   $scope.submitAndRefresh = function() {
-    $scope.checkThenCreate().then(function() {
+    checkThenCreate()
+    .then(function() {
+      clearInputs();
       Materialize.updateTextFields();
     });
   };
 
   $scope.submitAndExit = function() {
-    $scope.checkThenCreate().then(function() {
-      $('#modal2').closeModal();
+    checkThenCreate()
+    .then(function() {
+      $('#creation-modal').closeModal();
       $('.button-collapse').sideNav('hide');
-      var tempID = $scope.roadmapID;
-      $scope.clearCreateInputs();
-      $state.go('home.roadmapTemplate', { 'roadmapID': tempID });
+      $('.lean-overlay').remove();
+      $state.go('home.roadmapTemplate', { 'roadmapID': roadmapId });
+      clearInputs();
+      roadmapId = '';
     }, 
     function(err){
       console.log('error with node creation request', err);
     });
   };
 
-}])
+}]);

@@ -32,6 +32,7 @@ angular.module('auth.ctrl', ['services.user'])
       $scope.resetInputs();
       $('.button-collapse').sideNav('hide');
       $('#auth-modal').closeModal();
+      $('.lean-overlay').remove();
       $state.go('home.dashboard');
     })
     .catch(function (err) {
@@ -56,6 +57,7 @@ angular.module('auth.ctrl', ['services.user'])
       $scope.signin = true;
       $scope.resetInputs();
       $('#auth-modal').closeModal();
+      $('.lean-overlay').remove();
       $('.button-collapse').sideNav('hide');
       $state.go('home.dashboard');
     })

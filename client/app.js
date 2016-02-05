@@ -47,6 +47,14 @@ angular.module('app', [
         'footer': {
           templateUrl: 'app/main/footer.html',
           controller: 'MainController'
+        },
+        'authModal' : {
+          templateUrl: 'app/modals/authorization.html',
+          controller: 'AuthController'
+        },
+        'creationModal' : {
+          templateUrl: 'app/modals/creation.html',
+          controller: 'CreationController'
         }
       }
     })

@@ -32,8 +32,12 @@
       <div ui-view="content"></div>
       <div ui-view="signup"></div>
     </div>
+
+    <!-- Modals -->
+    <div id="auth-modal" class="modal" ui-view="authModal"></div>
+    <div id="creation-modal" class="modal" ui-view="creationModal"></div>
   
-  <div class="push"></div>
+    <div class="push"></div>
   </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
@@ -64,7 +68,7 @@
   <script src="app/dashboard/dashboard.js"></script>
   <script src="app/roadmaps/roadmapsCtrl.js"></script>
   <script src="app/roadmaps/roadmapsFactory.js"></script>
-  <script src="app/roadmaps/creation.js"></script>
+  <script src="app/modals/creation.js"></script>
   <script src="app/services/requestFactory.js"></script>
   <script src="app/services/serverFactory.js"></script>
   <script src="app/services/userFactory.js"></script>

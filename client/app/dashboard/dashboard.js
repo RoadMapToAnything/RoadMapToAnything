@@ -10,6 +10,7 @@ angular.module('dash.ctrl', ['services.user'])
   $scope.showMyMaps = false;
   $scope.showCompleted = false;
 
+
   var refreshUserData = function() {
     User.getData()
     .then(function (user) {
