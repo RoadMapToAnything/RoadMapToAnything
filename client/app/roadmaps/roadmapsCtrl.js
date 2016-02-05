@@ -102,11 +102,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   // After upvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.upVoteMap = function () {
-    console.log('UPVOTE IS SUBMITTED');
     User.upvoteMapById(roadmapId)
     .then(function(data){ 
-      console.log('the array of upvotes', data.upvotes);
-      console.log('the array of downvotes', data.downvotes);
       var dataUpVoteCount = data.upvotes;
       var dataDownVoteCount = data.downvotes;
       // Update the upvote count
@@ -118,11 +115,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   // After downvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.downVoteMap = function () {
-    console.log('DOWNVOTE BUTTON CLICKED');
     User.downvoteMapById(roadmapId)
     .then(function(data){
-      console.log('the array of upvotes', data.upvotes);
-      console.log('the array of downvotes', data.downvotes);
       var dataUpVoteCount = data.upvotes;
       var dataDownVoteCount = data.downvotes;
       // Update the upvote count

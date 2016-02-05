@@ -138,6 +138,7 @@ GET     /users/:username      // Get a specific user
 PUT     /users/:username      // Update the user's info
 DELETE  /users/:username      // Delete the user
 
+
 GET     /roadmaps             // Get an array of roadmaps
 GET     /roadmaps/:roadmapId  // Get a specific roadmap
 POST    /roadmaps             // Create a new roadmap
@@ -227,6 +228,21 @@ Accepts a node id, and adds that node to the user's `inProgress` array. Returns 
 _!!requires authorization_<br>
 *aliases: completeRoadmap, completeMap*<br>
 Accepts a roadmap id, and adds that roadmap to the user's `completed` array. Removes the corresponding roadmap and nodes from `inProgress`. Returns a promise with the entire user object.
+
+**User.upvoteRoadmapById( roadmapId )**<br>
+_!!requires authorization_<br>
+*aliases: upvoteMapById, upvoteRoadmap, upvoteMap, upvote*<br>
+Accepts a roadmap id, and add user id to the roadmap's `upvotes` array.
+Removes the user id from the roadmap's `downvotes` array if it exists there.
+Returns a promise with the entire roadmap object.
+
+**User.downvoteRoadmapById( roadmapId )**<br>
+_!!requires authorization_<br>
+*aliases: downvoteMapById, downvoteRoadmap, downvoteMap, downvote*<br>
+Accepts a roadmap id, and add user id to the roadmap's `downvotes` array.
+Removes the user id from the roadmap's `upvotes` array if it exists there.
+Returns a promise with the entire roadmap object.
+
 
 **User.getRoadmapProgress( [user], [roadmapId] )**<br>
 _!!requires authorization_<br>
