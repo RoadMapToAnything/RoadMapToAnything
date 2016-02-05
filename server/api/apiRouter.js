@@ -34,11 +34,11 @@ module.exports = function (apiRouter) {
    apiRouter.put(   '/roadmaps/:roadmapID', auth, roadmapController.updateRoadmap  );
    apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
-   /*
-   *      Comment Routes
-   */
+   /* * * * * * * * * * * * * * * * * * * * * 
+    *              Comment Routes           *
+    * * * * * * * * * * * * * * * * * * * * */
 
-    apiRouter.post('/comments', commentController.addComment);
+   apiRouter.post('/comments', commentController.addComment);
   
 
    /* * * * * * * * * * * * * * * * * * * * * 

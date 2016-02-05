@@ -23,13 +23,9 @@ module.exports = {
     
     User.findOne({username: author})
       .then(function(user){
-        var userID = user._id
-        console.log(userID, 'Author id from query')
-        console.log(roadmap, ' this is the roadmap id')
+        var userID = user._id;
         comment.author = userID;
-        console.log(comment, ' after the query')
         var newComment = new Comment(comment);
-        console.log(newComment)
         newComment.save(function(err, comment){
           if (err) return console.error(err); 
         })

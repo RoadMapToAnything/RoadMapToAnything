@@ -244,7 +244,6 @@ module.exports.setNodeHooks = function(NodeSchema) {
 module.exports.setCommentHooks = function(CommentSchema) {
   CommentSchema.pre('save', function(next) {
     if (this.isNew) {
-      console.log(this, 'This is the hoook where we will update roadmap and user');
         var Roadmap = require('./roadmaps/roadmapModel.js');
         var User = require('./roadmaps/roadmapModel.js');
         var authorID = this.author;
