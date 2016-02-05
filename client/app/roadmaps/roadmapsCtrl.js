@@ -1,6 +1,6 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
 
-.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout){  
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadMapsFactory);
 
   var roadmapId = $stateParams.roadmapID;
@@ -86,15 +86,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
   // Submits a node to the user's inProgress.nodes array.
   $scope.submitCompletedNode = function() {
-    console.log('NODE IS SUBMITTED');
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
   }
 
   // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
-    console.log('ROADMAP IS SUBMITTED');
     User.completeRoadmapById(roadmapId);
+    $state.go('home.dashboard', {type: 'completed'});
   }
 
 

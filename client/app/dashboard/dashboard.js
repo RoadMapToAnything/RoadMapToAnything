@@ -1,6 +1,6 @@
 angular.module('dash.ctrl', ['services.user'])
 
-.controller('DashboardController', ['$scope','$http', '$state', 'User', 'Server', function($scope, $http, $state, User, Server){
+.controller('DashboardController', ['$scope','$http', '$state', 'User', 'Server', '$stateParams', function($scope, $http, $state, User, Server, $stateParams){
 
   $scope.followed = [];
   $scope.myMaps = [];
@@ -27,7 +27,22 @@ angular.module('dash.ctrl', ['services.user'])
     });
   };
 
+
   refreshUserData();
+  checkStateParams()
+
+  function checkStateParams () {
+    console.log('$stateParams.type', $stateParams.type)
+    if( $stateParams.type === 'completed' ){
+      refreshUserData();
+      $scope.showFollowed = false;
+      $scope.showMyMaps = false;
+      $scope.showCompleted = true;
+      angular.element( '#myMapsBtn' ).removeClass( 'pressed' );
+      angular.element( '#followedBtn' ).removeClass( 'pressed' );
+      angular.element( '#completedBtn' ).addClass( 'pressed' );
+    }
+  }
 
   $scope.unfollowMap = function (id) {
     User.unfollowMap(id)
