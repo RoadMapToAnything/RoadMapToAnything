@@ -26,6 +26,10 @@ a:hover {
   cursor: pointer;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 /****** IMAGES ******/
 .profile-image {
   max-height: 100%;
