@@ -28,29 +28,33 @@ module.exports = function (apiRouter) {
   /* * * * * * * * * * * * * * * * * * * * * 
    *              Roadmap Routes           *
    * * * * * * * * * * * * * * * * * * * * */
-   apiRouter.post(  '/roadmaps',            auth, roadmapController.createRoadmap  );
-   apiRouter.get(   '/roadmaps',                  roadmapController.getRoadmaps    );
-   apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
-   apiRouter.put(   '/roadmaps/:roadmapID', auth, roadmapController.updateRoadmap  );
-   apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
-   /* * * * * * * * * * * * * * * * * * * * * 
-    *              Comment Routes           *
-    * * * * * * * * * * * * * * * * * * * * */
+  apiRouter.post(  '/roadmaps',            auth, roadmapController.createRoadmap  );
+  apiRouter.get(   '/roadmaps',                  roadmapController.getRoadmaps    );
+  apiRouter.get(   '/roadmaps/:roadmapID',       roadmapController.getRoadmapByID );
+  apiRouter.put(   '/roadmaps/:roadmapID', auth, roadmapController.updateRoadmap  );
+  apiRouter.delete('/roadmaps/:roadmapID', auth, roadmapController.deleteRoadmap  );
 
-   apiRouter.post('/comments', commentController.addComment);
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *              Comment Routes           *
+   * * * * * * * * * * * * * * * * * * * * */
+
+  apiRouter.post(  '/comments',            auth, commentController.createComment );
+  apiRouter.delete('/comments/:commentId', auth, commentController.deleteComment );
   
 
-   /* * * * * * * * * * * * * * * * * * * * * 
-    *              Node Routes              *
-    * * * * * * * * * * * * * * * * * * * * */
-    // Create a node
-    apiRouter.post('/roadmaps/:roadmapID/nodes', auth, nodeController.createNode);
-    apiRouter.post(                    '/nodes', auth, nodeController.createNode);
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *              Node Routes              *
+   * * * * * * * * * * * * * * * * * * * * */
 
-    apiRouter.get(   '/nodes/:nodeID',                 nodeController.getNodeByID);
-    apiRouter.put(   '/nodes/:nodeID',           auth, nodeController.updateNode);
-    apiRouter.delete('/nodes/:nodeID',           auth, nodeController.deleteNode);
+  // Create a node
+  apiRouter.post('/roadmaps/:roadmapID/nodes', auth, nodeController.createNode);
+  apiRouter.post(                    '/nodes', auth, nodeController.createNode);
+
+  apiRouter.get(   '/nodes/:nodeID',                 nodeController.getNodeByID);
+  apiRouter.put(   '/nodes/:nodeID',           auth, nodeController.updateNode);
+  apiRouter.delete('/nodes/:nodeID',           auth, nodeController.deleteNode);
 
 
 };
