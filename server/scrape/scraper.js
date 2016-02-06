@@ -47,6 +47,7 @@ var clean = function(string) {
   var cleaned = '';
 
 
+  // Traverse the string, cleaning each character
   for (var i = 0; i < string.length && i < 300; i++) {
     var char = string[i];
     char = cleanWhitespace(char);
@@ -64,20 +65,27 @@ var nameFromUrl = function(url) {
   var wwwIndex = url.indexOf('www.');
   var name, nameSplit;
 
+  // If there is no slash and no www, then it is already a name
   if (url.indexOf('/') === -1 && wwwIndex === -1) return url;
 
+  name = url;
+
+  // If there is a www, grab everything to the right,
+  // Otherwise, everything to the right of the //
   if (wwwIndex !== -1) name = url.substring(wwwIndex + 4);
   else name = url.substring(url.indexOf('//') + 2);
 
+  // Get everything to the left of the first slash
   name = name.substring(0, name.indexOf('/'));
 
+  // Remove the subdomain
   nameSplit = name.split('.');
-
   if (nameSplit.length > 2) {
     nameSplit.shift();
     name = '' + nameSplit.join('.');
   }
 
+  // Capitalize the first letter
   name = name[0].toUpperCase() + name.substring(1);
 
   return name;
