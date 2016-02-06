@@ -15,6 +15,13 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
     $scope.mapData = mapData;
   });
 
+  $scope.totalComments = function(commentsArray){
+    $scope.total = 0;
+    for(var i = 0; i < commentsArray.length; i++){
+      $scope.total++;
+    }
+    return $scope.total;
+  }
 
   $scope.goToDash = function () {
       $state.go('home.dashboard');
