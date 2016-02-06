@@ -1,9 +1,10 @@
-var getAuthHeader = require('basic-auth'),
-    bcrypt        = require('bcrypt-nodejs'),
-    request       = require('request-promise'),
-    handleError   = require('../util.js').handleError,
-    User          = require('../api/users/userModel.js'),
-    CONF          = require('../../_private-config.json');
+var getAuthHeader  = require('basic-auth'),
+    bcrypt         = require('bcrypt-nodejs'),
+    request        = require('request-promise'),
+    handleError    = require('../util.js').handleError,
+    User           = require('../api/users/userModel.js'),
+    userController = require('../api/users/userController.js'),
+    CONF           = require('../../_private-config.json');
 
 
 var findInDB = function (user, res, next) {
@@ -19,6 +20,14 @@ var findInDB = function (user, res, next) {
         }
       })
     .catch(function(err){ console.log('Authentication Error', err);});
+};
+
+var debugFacebookToken = function (accessToken) {
+  var debugTokenURL = 'https://graph.facebook.com/debug_token' 
+    + '?input_token=' + accessToken
+    + '&access_token=' + CONF.FACEBOOK_APP_ID +'|'+ CONF.FACEBOOK_APP_SECRET;
+
+  return request(debugTokenURL);
 };
 
 module.exports = {
@@ -43,11 +52,36 @@ module.exports = {
       findInDB(user, res, next);
     }
   },
-  debugFacebookToken: function (accessToken) {
-    var debugTokenURL = 'https://graph.facebook.com/debug_token' 
-      + '?input_token=' + accessToken
-      + '&access_token=' + CONF.FACEBOOK_APP_ID +'|'+ CONF.FACEBOOK_APP_SECRET;
 
-    return request(debugTokenURL);
-  }
+  debugFacebookToken: debugFacebookToken, 
+
+  facebookCallbackHandler : function(req, res, next){
+      var authorizationCode = req.query.code;
+
+      var getAccessTokenURL = 'https://graph.facebook.com/v2.5/oauth/access_token'
+        + '?client_id=' + CONF.FACEBOOK_APP_ID
+        + '&redirect_uri=' + 'http://localhost:3000/auth/facebook/callback'
+        + '&client_secret=' + CONF.FACEBOOK_APP_SECRET
+        + '&code=' + authorizationCode; 
+
+      request(getAccessTokenURL)
+        .then(function(response){
+          var accessToken = JSON.parse(response).access_token;
+          return [accessToken, debugFacebookToken(accessToken)];
+        })
+        .spread(function(accessToken, response){
+          var tokenData = JSON.parse(response).data;
+          var facebookUserID = tokenData.user_id;
+          var fakeReq = {
+            body: {
+              username: 'temp-FBUSER-'+facebookUserID,
+              password: 'AUTHFB'+accessToken, // TODO: find another approach
+              facebookUserId: facebookUserID,
+              accessToken: accessToken
+            }
+          };
+          if (tokenData.is_valid) userController.createUser(fakeReq, res, next);
+          else res.sendStatus(400); //invalid FB token
+        })
+    }
 };
