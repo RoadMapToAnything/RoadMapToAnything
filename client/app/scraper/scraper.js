@@ -6,7 +6,6 @@ angular.module('scraper.ctrl', ['services.server'])
   $scope.displayUrl = '';
   $scope.scrape = {};
 
-
   $scope.checkAndSubmit = function() {
     var url = $scope.urlToScrape;
     if (url.length < 4) return;
