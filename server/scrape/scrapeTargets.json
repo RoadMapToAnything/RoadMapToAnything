@@ -87,6 +87,51 @@
     },
 
     {
+      "tag": "#logo img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".logo img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".w3-container img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".infobox img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header1 img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header2 img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".header img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "p img",
+      "attr": "src"
+    },
+
+    {
       "tag": "#article img",
       "attr": "src"
     },
@@ -107,7 +152,7 @@
     },
 
     {
-      "tag": "p img",
+      "tag": ".lpxcenterpageinner img",
       "attr": "src"
     },
 
@@ -257,6 +302,16 @@
       "tag": "span",
       "prop": "itemprop",
       "val": "name",
+      "text": true
+    },
+
+    {
+      "tag": "a.thb-n",
+      "text": true
+    },
+
+    {
+      "tag": ".submitted a",
       "text": true
     }
   ],
