@@ -24,6 +24,11 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.showEditor = function ($index, field, boolean){
+    if(boolean === false){
+      var elementID = '#' + field + '-' + $index;
+      console.log('want to reset', $(elementID).val());
+      $(elementID).val($scope.renderedNodes[$index][field]);
+    }
     var id = field + '-' + $index;
     $scope[id] = boolean;
   };
@@ -35,11 +40,15 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.saveEdit = function($index, field){
     var elementID = '#' + field + '-' + $index;
     var newProperty = $(elementID).val();
-    
+
     Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
       .then(function(node) {
-      console.log(node);
-    });
+      $scope.showEditor($index, field, false);
+      $scope.renderedNodes[$index][field] = newProperty;
+    })
+      .catch(function(){
+        console.log('problem updating node', err);
+      });
   };
 
 
