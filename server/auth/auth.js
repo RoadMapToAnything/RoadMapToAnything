@@ -33,7 +33,7 @@ var debugFacebookToken = function (accessToken) {
 module.exports = {
   authenticate : function(req, res, next) {
     var user = getAuthHeader(req); // Parse information in Authorization header
-    user.pass = new Buffer(user.pass, 'base64').toString('ascii'); // decode token
+    if (user) user.pass = new Buffer(user.pass, 'base64').toString('ascii'); // decode token
     if (user === undefined) {
       res.setHeader('WWW-Authenticate', 'Basic');
       res.status(401).end('Unauthorized');
