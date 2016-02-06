@@ -127,6 +127,9 @@ var handleRating = function(roadmapID, next){
     // upvotes and downvotes are each arrays of ids so we can just take the length of each
     var result = upvotes.length - downvotes.length;
     roadmap.rating = result;
+    roadmap.save(function(err){
+      if (err) console.log(err);
+    })
     next();
   })
 }
