@@ -42,7 +42,7 @@ module.exports = {
       if (!user) return res.sendStatus(404); 
       res.status(200).json({data: user});
     })
-    .catch(handleError.bind(null, next));
+    .catch(handleError(next));
   },
 
   createUser : function(req, res, next){
@@ -64,7 +64,7 @@ module.exports = {
           res.status(201).json({data: results});
         }
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   login : function(req, res, next){
@@ -82,7 +82,7 @@ module.exports = {
       .then(function(results){
         res.status(200).json({data: results});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getUsers: function(req, res, next) {
@@ -94,7 +94,7 @@ module.exports = {
         if (!users) return res.sendStatus(404);
         res.status(200).json({data: users});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getUserByName: function(req, res, next) {
@@ -104,7 +104,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   updateUserByName: function(req, res, next) {
@@ -124,7 +124,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   deleteUserByName: function(req, res, next) {
@@ -138,7 +138,7 @@ module.exports = {
         user.remove();
         res.status(201).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   // Handles requests to /api/nodes/:nodeID/complete
@@ -154,6 +154,6 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   }
 };

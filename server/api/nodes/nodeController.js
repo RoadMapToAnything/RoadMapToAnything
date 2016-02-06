@@ -29,7 +29,7 @@ module.exports = {
     .then(function(newNode){
       if (newNode) res.status(201).json({data: newNode});
     })
-    .catch(handleError.bind(null, next));
+    .catch(handleError(next));
   },
 
   getNodeByID : function (req, res, next) {
@@ -39,7 +39,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   updateNode : function (req, res, next) {
@@ -73,7 +73,7 @@ module.exports = {
       .then(function(updatedNode){
         if (updatedNode) res.json({data: updatedNode});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   deleteNode : function (req, res, next) {
@@ -91,7 +91,7 @@ module.exports = {
           res.json({data: node});
         }
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   }
 
 };

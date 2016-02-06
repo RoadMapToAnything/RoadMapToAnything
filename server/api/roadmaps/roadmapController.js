@@ -28,7 +28,7 @@ module.exports = {
       .then(function(dbResults){
         res.status(201).json({data: dbResults});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getRoadmaps : function (req, res, next) {
@@ -39,7 +39,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getRoadmapByID : function (req, res, next) {
@@ -49,7 +49,7 @@ module.exports = {
       .then(function(dbResults){
         res.json({data: dbResults});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   updateRoadmap : function (req, res, next) {
@@ -78,7 +78,7 @@ module.exports = {
       .then(function(updatedRoadmap){
         if (updatedRoadmap) res.json({data: updatedRoadmap});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
 
   },
 
@@ -96,7 +96,7 @@ module.exports = {
           res.json({data: roadmap});
         }
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   // Handles requests to /api/roadmaps/:roadmapID/:action
@@ -133,7 +133,7 @@ module.exports = {
             //dbResults should be a new roadmap
             res.json({data : dbResults});
           })
-          .catch(handleError.bind(null, next));
+          .catch(handleError(next));
       },
 
       downvote: function(){
@@ -146,7 +146,7 @@ module.exports = {
           .then(function(dbResults) {
             res.json({data : dbResults});
           })
-          .catch(handleError.bind(null, next));
+          .catch(handleError(next));
       }
 
     };
