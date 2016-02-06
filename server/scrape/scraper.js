@@ -22,28 +22,35 @@ var PUNC = {
 var clean = function(string) {
   if (!string) return string;
 
-  var cleanWhitespace = function (char) {
+  var cleanWhitespace = function(char) {
     if (char.charCodeAt(0) < 32) return ' ';
     return char;
   };
 
-  var addSpace = function (char, nextChar) {
+  var addSpace = function(char, nextChar) {
     if (nextChar === undefined) return char;
     if (PUNC[char] && !PUNC[nextChar] && nextChar !== ' ') return char + ' ';
     return char;
   };
 
-  var truncate = function (string) {
+  var removeSpace = function(char, nextChar) {
+    if (nextChar === undefined) return char;
+    if (char === ' ' && nextChar === ' ') return '';
+    return char;
+  };
+
+  var truncate = function(string) {
     if (string.length <= MAX_LENGTH) return string;
     return string.substring(0, MAX_LENGTH - 3) + '...';
   };
 
   var cleaned = '';
 
-  for (var i = 0; i < string.length; i++) {
+  for (var i = 0; i < string.length && i < 300; i++) {
     var char = string[i];
     char = cleanWhitespace(char);
     char = addSpace(char, string[i+1]);
+    char = removeSpace(char, string[i+1]);
     cleaned += char;
   }
 
