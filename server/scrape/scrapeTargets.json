@@ -141,18 +141,6 @@
     }
   ],
 
-  "author" : [
-    {
-      "prop": "name",
-      "val": "author"
-    },
-
-    {
-      "prop": "name",
-      "val": "twitter:creator"
-    }
-  ],
-
   "siteName" : [
     {
       "prop": "property",
@@ -209,6 +197,18 @@
       "prop": "rel",
       "val": "logo",
       "attr": "href"
+    }
+  ],
+
+  "author" : [
+    {
+      "prop": "name",
+      "val": "author"
+    },
+
+    {
+      "prop": "name",
+      "val": "twitter:creator"
     }
   ],
 
