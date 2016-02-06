@@ -35,13 +35,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.getPlaceholder = function($index, field){
-    return $scope.renderedNodes[$index][field];
-  };
-  $scope.getInfoBoxPlaceholder = function($index, field){
-    console.log("$index", $index);
-    console.log('field', field);
-    console.log('placeholder', $scope.renderedNodes[$index][field]);
-    return $scope.renderedNodes[$index][field];
+    return $scope.currentTitle;
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
