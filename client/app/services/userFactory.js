@@ -78,6 +78,8 @@ angular.module('services.user', ['services.request'])
     });
   };
 
+  User.authResponse = authResponse; // used to log in FB users after FB authentication
+
   User.signup = function(user) {
     return Request.post('/api/signup', user, {auth: false, log: false})
     .then(function (data) {
