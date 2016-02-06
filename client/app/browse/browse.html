@@ -65,11 +65,13 @@
               </th>
             </tr>
              <tr> 
-              <td>Author: <b>{{ map.author.username }}</b></td>
-              <td>Date created: <b>{{ map.author.created }}</b></td>
+            <!-- Created by date is presented by ng filter component -->
+              <td>Created on <b>{{ map.author.created | date:"MM/dd/yyyy 'at' h:mma" }}</b> <td>by   <b>{{ map.author.username }}</b></td></td>
+
             </tr>
             <tr>
-              <td><b>{{ totalComments(map.author.comments) }} Comments</b></td>
+              <!-- Displays comments but not linked to comment page yet... should we have a separate comments view? -->
+              <td><a href="">{{ totalComments(map.author.comments) }} Comments</a></td>
               <td>Number of Nodes: <b>{{ map.totalNodes }}</b></td>
               <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn cyan lighten-3">Add!</a></td>
             </tr>

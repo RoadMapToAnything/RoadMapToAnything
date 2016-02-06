@@ -27,8 +27,6 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
       $state.go('home.dashboard');
     }
 
-  // console.log('THIS IS THE MAP ID', mapID);
-
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
