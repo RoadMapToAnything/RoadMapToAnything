@@ -9,6 +9,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $('.tooltipped').tooltip({delay: 50});
 
   $scope.showComments = false;
+  $scope.currentIndex = 0;
 
   $scope.toggleComments = function(){
     $scope.showComments = true;
@@ -44,10 +45,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
-    idPrefix = idPrefix || "";
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    console.log('elementID', $(elementID));
     var newProperty = $(elementID).val();
-
+    console.log('newProperty', newProperty);
     Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
       .then(function(node) {
       $scope.showEditor($index, field, false, idPrefix);
