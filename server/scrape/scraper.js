@@ -1,19 +1,6 @@
 var request = require('request-promise'),
-    cheerio = require('cheerio');
-
-var images = [
-  {tag: 'link', prop: 'itemprop', val: 'thumbnailUrl', attr: 'href'},
-  {prop: 'property', val: 'og:image'},
-  {prop: 'itemprop', val: 'image'}
-];
-
-var titles = [
-  {prop: 'name', val: 'title'},
-  {prop: 'property', val: 'og:title'},
-  {prop: 'name', val: 'twitter:title'},
-  {tag: 'h1', text: true},
-  {tag: 'title', text: true}
-];
+    cheerio = require('cheerio'),
+    targets = require('./scrapeTargets.json');
 
 var scrapeProperty = function($, targets) {
   var tag, prop, val, attr, scrape;
@@ -39,8 +26,9 @@ module.exports = function (url) {
     var $ = cheerio.load(html);
     
     return {
-      title: scrapeProperty($, titles),
-      imageUrl: scrapeProperty($, images)
+      title: scrapeProperty($, targets.title),
+      imageUrl: scrapeProperty($, targets.imageUrl),
+      description: scrapeProperty($, targets.description)
     };
   });
 };

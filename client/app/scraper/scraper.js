@@ -5,7 +5,7 @@ angular.module('scraper.ctrl', ['services.request'])
 
 $('#scrape-results').append('Hello World!');
 
-Request.get('/scrape/node', {url: 'https://vimeo.com/channels/staffpicks/153151039'})
+Request.get('/scrape/node', {url: 'http://benalman.com/news/2010/11/immediately-invoked-function-expression/'})
 .then(function (data) {
   console.log('TEST', data);
 });
