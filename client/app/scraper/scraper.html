@@ -1,2 +1,53 @@
-<h3>Scraper Results Go Here:</h3>
-<div id="scrape-results"></div>
+<h3>Scraper Test</h3>
+<input type="url" ng-model="urlToScrape" ng-change="checkAndSubmit()"/>
+
+<h5>{{ displayUrl }}</h5>
+
+
+<div class="row">
+  <div class="col m2"><strong>title:</strong></div>
+  <div class="col m10">{{ scrape.title }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>imageUrl:</strong></div>
+  <div class="col m10"><div>{{ scrape.imageUrl }}</div>
+  <div><img ng-src="{{ scrape.imageUrl }}" style="max-width:100%"></div></div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>description:</strong></div>
+  <div class="col m10">{{ scrape.description }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>type:</strong></div>
+  <div class="col m10">{{ scrape.type }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>author:</strong></div>
+  <div class="col m10">{{ scrape.author }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>siteName:</strong></div>
+  <div class="col m10">{{ scrape.siteName }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>siteIcon:</strong></div>
+  <div class="col m10"><div>{{ scrape.siteIcon }}</div>
+  <div><img ng-src="{{ scrape.siteIcon }}" style="max-width:100%"></div></div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>price:</strong></div>
+  <div class="col m10">{{ scrape.price }}</div>
+</div>
+
+<div class="row">
+  <div class="col m2"><strong>duration:</strong></div>
+  <div class="col m10">{{ scrape.duration }}</div>
+</div>
+
