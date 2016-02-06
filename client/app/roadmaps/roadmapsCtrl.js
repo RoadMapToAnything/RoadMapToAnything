@@ -12,7 +12,22 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.toggleComments = function(){
     $scope.showComments = true;
-  }
+  };
+
+  $scope.hideText = function ($index){
+    var id = 'title-' + $index;
+    if( $scope[id] ){
+      return  true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.showEditor = function ($index){
+    var id = 'title-' + $index;
+    $scope[id] = true;
+  };
+
 
 
  // Get the current number of upvotes from current map
