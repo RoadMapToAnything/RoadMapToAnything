@@ -37,12 +37,12 @@ module.exports = function (authRouter) {
             body: {
               username: 'temp-FBUSER-'+facebookUserID,
               password: 'AUTHFB'+accessToken, // TODO: find another approach
-              facebookUserID: facebookUserID,
+              facebookUserId: facebookUserID,
               accessToken: accessToken
             }
           };
-
-          userController.createUser(fakeReq, res, next);
+          if (tokenData.is_valid) userController.createUser(fakeReq, res, next);
+          else res.sendStatus(400); //invalid FB token
         })
 
     });
