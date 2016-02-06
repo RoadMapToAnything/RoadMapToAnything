@@ -16,6 +16,7 @@ angular.module('scraper.ctrl', ['services.server'])
 
     Server.scrape(url)
     .then(function (data) {
+      $scope.scrape = {};
       $scope.scrape = data;
     });
   };
