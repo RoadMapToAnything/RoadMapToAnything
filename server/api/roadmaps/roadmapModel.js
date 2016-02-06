@@ -11,7 +11,7 @@ var RoadmapSchema = new mongoose.Schema({
     updated    : { type: Date },
     upvotes    : [],
     downvotes  : [],
-    rating     : { type: Number }
+    rating     : { type: Number },
     comments   : [ { type: ObjectId, ref: 'Comment'} ]
 });
 

@@ -117,15 +117,36 @@ module.exports.setUserHooks = function(UserSchema) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
+
+var handleRating = function(roadmapID, next){
+  var Roadmap = require('./roadmaps/roadmapModel.js');
+  return Roadmap.findById(roadmapID, function(err, roadmap){
+    if (err) console.log(err);
+    var upvotes = roadmap.upvotes;
+    var downvotes = roadmap.downvotes;
+    // upvotes and downvotes are each arrays of ids so we can just take the length of each
+    var result = upvotes.length - downvotes.length;
+    roadmap.rating = result;
+    next();
+  })
+}
+
 // If a user upvotes a roadmap, remove their downvote and vice versa
+
+
 var upvoteDownvote = function(next) {
   var addSet = this._update.$addToSet;
+  var roadmapID = this._conditions;
+
 
   if (addSet) {
     if (addSet.upvotes) this.update({},{ $pull:{downvotes: addSet.upvotes} });
     if (addSet.downvotes) this.update({},{ $pull:{upvotes: addSet.downvotes} });
   }
 
+  // Since our upvote/downvotes already have this trigger let's just calculate our new rating
+  handleRating(roadmapID,next);
+  
   next();
 };
 
