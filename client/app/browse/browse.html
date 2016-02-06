@@ -35,6 +35,11 @@
 
 <!--browse updated collapsible menu-->
 <!-- <div class="container"> -->
+
+
+
+
+
   <div class="browse-box">
    <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn cyan lighten-3 browseBtn">Go To My Maps</a>
   </div>
@@ -43,6 +48,18 @@
     <label>Search: <input ng-model="searchText"></label>
   </div>
   <br>
+  <a class='dropdown-button btn' href='#' data-activates='dropdown3'>Filters</a>
+
+  <!-- Dropdown Structure -->
+  <ul id='dropdown3' class='dropdown-content'>
+    <li><a href="#!" ng-click="">Rating</a></li>
+    <li class="divider"></li>
+    <li><a href="#!" ng-click="">Comments</a></li>
+  </ul>
+
+
+
+ 
   <br>
   <br>
   <div ng-show="showSigninMsg">You must be signed in first</div>
@@ -90,5 +107,17 @@
     $('.collapsible').collapsible({
       accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
+
+    $('.dropdown-button').dropdown({
+         inDuration: 300,
+         outDuration: 225,
+         constrain_width: false, // Does not change width of dropdown to that of the activator
+         hover: false, // Activate on click
+         alignment: 'left', // Aligns dropdown to left or right edge (works with constrain_width)
+         gutter: 0, // Spacing from edge
+         belowOrigin: false // Displays dropdown below the button
+       }
+     );
+
   });
   </script>

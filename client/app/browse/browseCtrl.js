@@ -10,6 +10,7 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   $scope.getMapData = Browse.getMapData;
   $scope.followMap = User.followMap;
   $scope.goToMap = Browse.goToMap;
+  $scope.orderMaps = Browse.orderMaps;
 
   $scope.getMapData(function(mapData){
     $scope.mapData = mapData;
@@ -30,5 +31,7 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   $scope.goToMap = function (mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
+
+  
 
 }]);
