@@ -55,7 +55,7 @@ module.exports = {
   updateRoadmap : function (req, res, next) {
     var _id = req.params.roadmapID;
     var author = getAuthHeader(req).name;
-    var updateableFields = ['title','description','comments'];
+    var updateableFields = ['title','description','comments', 'ratings'];
     var updateCommand = {};
     updateableFields.forEach(function(field){
       if (req.body[field] !== undefined) updateCommand[field] = req.body[field];
@@ -72,7 +72,7 @@ module.exports = {
           return null;
         } else {
           return Roadmap.findByIdAndUpdate(_id, updateCommand, {new: true})
-            .populate('author nodes comments');
+            .populate('author nodes comments ratings');
         }
       })
       .then(function(updatedRoadmap){

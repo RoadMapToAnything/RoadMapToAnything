@@ -19,9 +19,18 @@ angular.module('browse.factory', ['services.server'])
     });
   };
 
+  var orderMaps = function(mapData, criteria){
+    if (!criteria){
+      criteria = 'created'
+    }
+    return mapData[criteria]
+    
+  }
+
   return {
     addTotalNodesOfMaps: addTotalNodesOfMaps,
-    getMapData: getMapData
+    getMapData: getMapData,
+    orderMaps: orderMaps
   };
   
 
