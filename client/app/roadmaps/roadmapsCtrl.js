@@ -91,11 +91,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> (feat) Hide Titles if clicked
 
 =======
   $scope.getPlaceholder = function(){
     return 'place-holder';
+=======
+  $scope.getPlaceholder = function($index, field){
+    return $scope.renderedNodes[$index][field];
+>>>>>>> (feat) Populate editor field with current title
   }
 >>>>>>> (feat) Replace title with text input on click
 
