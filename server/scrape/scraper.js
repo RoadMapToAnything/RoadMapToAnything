@@ -97,7 +97,8 @@ var appendHref = function(full, partial) {
   }
 
   // Appends everything up to the end of the domain
-  append = full.substring( 0, full.indexOf('/', 7) );
+  append = full.substring( 0, full.indexOf('/', 9) );
+
   return append + partial;
 };
 
