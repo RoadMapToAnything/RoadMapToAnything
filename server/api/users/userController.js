@@ -47,16 +47,32 @@ module.exports = {
 
   createUser : function(req, res, next){
     var newUser = req.body;
-    var accessToken = req.body.accessToken; // if FB user
+    var facebookToken = req.body.accessToken; // if FB user
 
-    User(newUser).save()
-      .then( hashPassword )
+    User.findOne({username: newUser.username})
+      .then(function(userExists){
+        if      (userExists  && !facebookToken) res.sendStatus(409);
+        else if (userExists  &&  facebookToken) {
+          return [userExists, userExists.password];
+        }
+        else if (!userExists && !facebookToken) {
+          return User(newUser)
+                   .save()
+                   .then(hashPassword);
+        }
+        else if (!userExists && facebookToken) {
+          return User(newUser)
+                   .save()
+                   .then(function(savedUser){
+                     return [savedUser, savedUser.password];
+                   });
+        }
+      })  
       .spread( generateAuthToken )
       .then(function(results){
         
         // New user via Facebook
-        if (accessToken) {
-          results.authToken = new Buffer('AUTHFB'+accessToken, 'ascii').toString('base64');
+        if (facebookToken) {
           res.redirect('/#/signin/auto?username='  + results.username
                                     +'&authToken=' + results.authToken);
         // Default
