@@ -123,6 +123,19 @@ There are three types of objects stored in the database: users, roadmaps, and no
 
 ```
 
+####[Comment](server/api/comments/commentModel.js)
+```javascript
+{
+  subject:  ...  // String
+  content:  ...  // String
+  author :  ...   // User reference
+  roadmap:  ...  // Roadmap reference
+  created:  ...  // Date
+  updated:  ...  // Date
+}
+
+```
+
 ### Server API
 The server uses a stateless RESTful API for all database access. It supports four HTTP verbs: `GET` for retrieving data, `POST` for creating new objects, `PUT` for updating existing objects, and `DELETE` for removing objects. *NOTE: All `POST`, `PUT`, and `DELETE` routes require an authorization token, with the exception of `POST /api/signup`.*
 
@@ -316,6 +329,34 @@ Accepts a node object, and updates that node with any properties included in the
 _!!requires authorization_<br>
 *aliases: deleteNode*<br>
 Accepts a node id, and removes that node from the database. Returns a promise with the deleted node object.
+
+**Server.createComment( comment )**<br>
+_!!requires authorization_<br>
+*aliases: deleteNode*<br>
+Accepts a comment object, and adds that comment to the database. Must have a populated `roadmap` property, but `author` is populated automatically. Returns a promise with the created comment object.
+
+**Server.deleteCommentById( commentId )**<br>
+_!!requires authorization_<br>
+*aliases: deleteComment*<br>
+Accepts a comment id, and removes that comment from the database. Returns a promise with the deleted comment object.
+
+**Server.scrapeUrl( url )**<br>
+_!!requires authorization_<br>
+*aliases: scrape*<br>
+Accepts a url. Returns a promise with an object that contains a variety of information related to the url. The value of each property is a string. Properties not found are not returned.
+```javascript
+{
+  title      :  ...  // The title of the individual page
+  imageUrl   :  ...  // The url of a header image
+  description:  ...  // A description of the individual page
+  type       :  ...  // What type of page it is
+  siteName   :  ...  // The name of the site hosting the page
+  siteIcon   :  ...  // The url of the icon for that site
+  author     :  ...  // The name of the content's author (experiemental)
+  price      :  ...  // The price of the course (experimental)
+  duration   :  ...  // The duration of the video (experimental)
+}
+```
 
 ####[Request Factory](client/app/services/requestFactory.js) 
 **`Request`** | **`services.request`**<br>

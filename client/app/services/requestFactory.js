@@ -68,19 +68,13 @@ angular.module('services.request', [])
 
   // Determines whether a given object is an options object
   var isOptions = function(obj) {
+    if (typeof obj !== 'object') return false;
+
     for (var key in DEFAULT_OPTIONS) {
-      if (obj[key]) return true;
+      if (obj[key] !== undefined) return true;
     }
 
     return false;
-  };
-
-  // Ensures factory methods optional parameters are set correctly
-  var parseOptionals = function(data, options) {
-    if (data && !options && isOptions(data)) {
-      options = data;
-      data = undefined;
-    }
   };
 
 
@@ -137,7 +131,12 @@ angular.module('services.request', [])
 
   // Sends a GET request with an optional query options objects
   Request.get = function(url, query, options) {
-    parseOptionals(query, options);
+
+    // Allow a options object to be sent in as second parameter
+    if (!options && isOptions(query)) {
+      options = query;
+      query = undefined;
+    }
 
     return Request({
       method: 'GET', 
@@ -149,7 +148,10 @@ angular.module('services.request', [])
 
   // Sends a POST request with an optional query and options objects
   Request.post = function(url, data, options) {
-    parseOptionals(data, options);
+    if (!options && isOptions(data)) {
+      options = data;
+      data = undefined;
+    }
 
     return Request({
       method: 'POST', 
@@ -161,7 +163,10 @@ angular.module('services.request', [])
 
   // Sends a PUT request with an optional query and options objects
   Request.put = function(url, data, options) {
-    parseOptionals(data, options);
+    if (!options && isOptions(data)) {
+      options = data;
+      data = undefined;
+    }
 
     return Request({
       method: 'PUT', 

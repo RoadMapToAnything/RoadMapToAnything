@@ -5,7 +5,8 @@ angular.module('app', [
   'dash.ctrl',
   'roadmaps.ctrl',
   'browse.ctrl',
-  'creation.ctrl'
+  'creation.ctrl',
+  'scraper.ctrl'
 
   ])
 .run( function($rootScope, $state){
@@ -81,6 +82,15 @@ angular.module('app', [
       'content@': {
         templateUrl: 'app/roadmaps/content.html',
         controller: 'RoadMapsController'
+      }
+    }
+  })
+  .state('home.scraper', {
+    url: 'scraper',
+    views: {
+      'content@': {
+        templateUrl: 'app/scraper/scraper.html',
+        controller: 'ScraperController'
       }
     }
   })
