@@ -35,7 +35,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.getPlaceholder = function($index, field){
-    return $scope.currentTitle;
+    var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
+    console.log('placeholder:', $scope['current' + capitalizedField]);
+    return $scope['current' + capitalizedField];
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
@@ -43,7 +45,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     console.log('elementID', $(elementID));
     var newProperty = $(elementID).val();
     console.log('newProperty', newProperty);
-    Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
+    var updateObj = {};
+    updateObj['_id'] = $scope.renderedNodes[$index]._id;
+    updateObj[field] = newProperty;
+    Server.updateNode(updateObj)
       .then(function(node) {
       $scope.showEditor($index, field, false, idPrefix);
       $scope.renderedNodes[$index][field] = newProperty;
@@ -129,7 +134,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
-    $scope.currentNodeDescription = description;
+    $scope.currentDescription = description;
   }
 
   $scope.selectNode = function($index) {
@@ -141,7 +146,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentIndex = $index;
     $scope.currentTitle = title;
     $scope.currentLinks = links;
-    $scope.currentNodeDescription = description;
+    $scope.currentDescription = description;
     $scope.currentNode = $scope.renderedNodes[$index];
     
   };
