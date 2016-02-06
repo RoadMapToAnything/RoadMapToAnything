@@ -15,6 +15,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.showComments = true;
   };
 
+<<<<<<< HEAD
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
@@ -69,6 +70,22 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         console.log('problem updating node', err);
       });
   };
+=======
+  $scope.hideText = function ($index){
+    var id = 'title-' + $index;
+    if( $scope[id] ){
+      return  true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.showEditor = function ($index){
+    var id = 'title-' + $index;
+    $scope[id] = true;
+  };
+
+>>>>>>> (feat) Hide Titles if clicked
 
 
  // Get the current number of upvotes from current map
