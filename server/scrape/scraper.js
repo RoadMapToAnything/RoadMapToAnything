@@ -104,6 +104,29 @@ var appendHref = function(full, partial) {
     return append + partial;
   }
 
+  // Handle ../ notation in urls
+  if (partial.substring(0, 2) === '..') {
+    var upDir = 1;
+
+    partial = partial.split('/').reduce(function (url, elem) {
+      if (elem === '..') {
+        upDir++;
+        return url;
+      }
+      return url + '/' + elem;
+    }, '');
+
+    partial = full.split('/').reverse().reduce(function (url, elem) {
+      if (upDir > 0){
+        upDir--;
+        return url;
+      }
+      return elem + '/' + url;
+    }, partial.substring(1));
+
+    return partial;
+  }
+
   // Appends everything up to the end of the domain
   append = full.substring( 0, full.indexOf('/', 9) );
 
@@ -125,6 +148,8 @@ var scrapeProperty = function($, targets) {
 
     if (target.text) scrape = clean( $(tag + prop + val).text() );
     else scrape = $(tag + prop + val).attr(attr);
+
+    if (scrape) console.log(scrape + ':', tag, prop, val, attr);
 
     if (scrape) return scrape;
   }
