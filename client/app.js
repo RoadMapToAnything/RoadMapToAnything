@@ -51,6 +51,37 @@ angular.module('app', [
         },
         'authModal' : {
           templateUrl: 'app/modals/authorization.html',
+        }
+      }
+    })
+    //state for sign-in
+    .state('home.signin', {
+      url: 'signin',
+      views: {
+        'content@': {
+          templateUrl: 'app/auth/signin.html',
+          controller: 'AuthController'
+        }
+      }
+    })
+    .state('home.signin-auto', {
+        url: 'signin/auto?username&authToken',
+        views: {
+          'content@': {
+            templateUrl: 'app/auth/signin.html',
+            controller: function ($stateParams, $state, User) {
+              User.authResponse($stateParams);
+              $state.go('home.dashboard');
+            }
+          }     
+        }
+    })
+    //state for sign-up
+    .state('home.signup', {
+      url: 'signup',
+      views: {
+        'content@': {
+          templateUrl: 'app/auth/signup.html',
           controller: 'AuthController'
         },
         'creationModal' : {
