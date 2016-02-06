@@ -23,9 +23,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
-  $scope.showEditor = function ($index, field){
+  $scope.showEditor = function ($index, field, boolean){
     var id = field + '-' + $index;
-    $scope[id] = true;
+    $scope[id] = boolean;
   };
 
   $scope.getPlaceholder = function($index, field){
@@ -35,14 +35,11 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.saveEdit = function($index, field){
     var elementID = '#' + field + '-' + $index;
     var newProperty = $(elementID).val();
-    console.log('newProperty', newProperty);
-    Server.updateNode({_id: $stateParams.roadmapID, title: newProperty})
+    
+    Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
       .then(function(node) {
-         console.log(node);
-      })
-      .catch(function(err){
-        console.log('error updating node', err);
-      });
+      console.log(node);
+    });
   };
 
 

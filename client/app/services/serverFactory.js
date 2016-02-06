@@ -67,6 +67,7 @@ angular.module('services.server', ['services.request'])
   };
 
   Server.updateNode = function(node) {
+    console.log("Server controller node:", node);
     return Request.put('/api/nodes/' + node._id, node);
   };
 

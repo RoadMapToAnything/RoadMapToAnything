@@ -43,7 +43,9 @@ module.exports = {
 
   updateNode : function (req, res, next) {
     var username = getAuthHeader(req).name;
+    console.log(req.params);
     var _id = req.params.nodeID;
+    console.log('servier is trying to update node', _id);
 
     var updateableFields = [
       'title','description','resourceType','resourceURL','imageUrl'
