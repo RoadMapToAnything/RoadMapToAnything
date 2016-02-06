@@ -46,6 +46,7 @@ var clean = function(string) {
 
   var cleaned = '';
 
+
   for (var i = 0; i < string.length && i < 300; i++) {
     var char = string[i];
     char = cleanWhitespace(char);
@@ -76,8 +77,8 @@ var nameFromUrl = function(url) {
   return name;
 };
 
-var appendRef = function(full, partial) {
-  if (!partial) return partial;
+var appendHref = function(full, partial) {
+  if (!partial || partial.substring(0, 4) === 'http') return partial;
 
   var append;
 
@@ -126,8 +127,8 @@ module.exports = function (url) {
 
     // Perform some post-processing on particular properties
     scrapes.siteName = nameFromUrl(scrapes.siteName);
-    scrapes.imageUrl = appendRef(url, scrapes.imageUrl);
-    scrapes.siteIcon = appendRef(url, scrapes.siteIcon);
+    scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
+    scrapes.siteIcon = appendHref(url, scrapes.siteIcon);
     
     return scrapes;
   });

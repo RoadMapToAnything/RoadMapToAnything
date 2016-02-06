@@ -64,6 +64,41 @@
       "prop": "property", 
       "val": "og:image",
       "attr": "itemprop"
+    },
+
+    {
+      "tag": "img.header",
+      "attr": "src"
+    },
+
+    {
+      "tag": "img.hero",
+      "attr": "src"
+    },
+
+    {
+      "tag": "img.splash",
+      "attr": "src"
+    },
+
+    {
+      "tag": "img.logo",
+      "attr": "src"
+    },
+
+    {
+      "tag": "img.brand",
+      "attr": "src"
+    },
+
+    {
+      "tag": "body>img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "img",
+      "attr": "src"
     }
   ],
 
@@ -137,6 +172,13 @@
     {
       "prop": "name",
       "val": "twitter:url"
+    },
+
+    {
+      "tag": "link",
+      "prop": "rel",
+      "val": "canonical",
+      "attr":"href"
     }
   ],
 
