@@ -86,7 +86,6 @@ angular.module('app', [
     }
   })
   .state('home.scraper', {
-    auth: true,
     url: 'scraper',
     views: {
       'content@': {

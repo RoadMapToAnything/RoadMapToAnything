@@ -4,12 +4,12 @@ var handleError = require('../util.js').handleError,
 
 module.exports = {
 
-  scrapeForNode : function(req, res, next){
+  scrape : function(req, res, next) {
     var url = req.query.url;
 
     scrape(url)
-    .then(function (result) {
-      res.status(200).json({data: result});
+    .then(function (scrapes) {
+      res.status(200).json({data: scrapes});
     });
   }
 

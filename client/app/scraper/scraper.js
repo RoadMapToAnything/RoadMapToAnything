@@ -1,13 +1,13 @@
-angular.module('scraper.ctrl', ['services.request'])
+angular.module('scraper.ctrl', ['services.server'])
 
 
-.controller('ScraperController', [ '$scope', 'Request', function($scope, Request){
+.controller('ScraperController', [ '$scope', 'Server', function($scope, Server){
 
-$('#scrape-results').append('Hello World!');
+  $('#scrape-results').append('Hello World!');
 
-Request.get('/scrape/node', {url: 'http://www.w3schools.com/js/js_function_closures.asp'})
-.then(function (data) {
-  console.log('TEST', data);
-});
+  Server.scrape('http://www.dcbeekeepers.org/')
+  .then(function (data) {
+    console.log('TEST', data);
+  });
 
 }]);

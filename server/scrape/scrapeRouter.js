@@ -7,6 +7,9 @@ module.exports = function (Router) {
    *      All routes begin with /scrape
    */
 
-  Router.get( '/node', auth, scrapeController.scrapeForNode );
+  // Down the road we may implement model specific routes like this
+  Router.get( '/node', auth, scrapeController.scrape );
 
+  Router.get( '',      auth, scrapeController.scrape );
+  
 };

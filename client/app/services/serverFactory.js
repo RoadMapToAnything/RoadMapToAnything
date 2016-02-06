@@ -74,7 +74,8 @@ angular.module('services.server', ['services.request'])
     return Request.delete('/api/nodes/' + id);
   };
 
-    /* * * * * * * * * * * * * * * * * * * * * 
+
+  /* * * * * * * * * * * * * * * * * * * * * 
    *               COMMENTS                *
    * * * * * * * * * * * * * * * * * * * * */
    
@@ -85,6 +86,16 @@ angular.module('services.server', ['services.request'])
    Server.deleteCommentById = function(id) {
     return Request.delete('/api/comments/' + id);
    };
+
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *               SCRAPING                *
+   * * * * * * * * * * * * * * * * * * * * */
+   
+   Server.scrapeUrl = function(url) {
+    return Request.get('/scrape', {url: url}, {auth: true});
+   };
+
 
   /* * * * * * * * * * * * * * * * * * * * * 
    *               ALIASES                 *
@@ -108,6 +119,8 @@ angular.module('services.server', ['services.request'])
   Server.deleteNode = Server.deleteNodeById;
 
   Server.deleteComment = Server.deleteCommentById;
+
+  Server.scrape = Server.scrapeUrl;
 
   return Server;
 
