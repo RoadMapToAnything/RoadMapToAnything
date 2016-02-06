@@ -85,31 +85,20 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    console.log('hideText elementID', elementID);
-    console.log('$scope[elementID]', $scope[elementID]);
     if( !$scope[elementID] ){
-      console.log('hideText returning true');
       return  false;
 >>>>>>> (fix) Fixed main-title editor after infobox refactor
     } else {
-      console.log('hideText returning false');
       return true;
     }
   };
 
   $scope.showEditor = function ($index, field, boolean, idPrefix){
-    // console.log('CALLING SHOW EDITOR');
-    // console.log('$index', $index);
-    // console.log('field', field);
-    // console.log('boolean', boolean);
-    // console.log('idPrefix', idPrefix);
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    console.log('elementID', elementID);
     $scope.currentIndex = $index;
     if(boolean === false){
       $(elementID).val($scope.renderedNodes[$index][field]);
     }
-    console.log('now updating boolean for scope at', elementID);
     $scope[elementID] = boolean;
   };
 
@@ -122,9 +111,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     return 'place-holder';
 =======
   $scope.getPlaceholder = function($index, field){
-    console.log("$index", $index);
-    console.log('field', field);
-    console.log('placeholder', $scope.renderedNodes[$index][field]);
     return $scope.renderedNodes[$index][field];
   };
   $scope.getInfoBoxPlaceholder = function($index, field){
@@ -146,9 +132,11 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
       .then(function(node) {
-      console.log('node saved !!!');
       $scope.showEditor($index, field, false, idPrefix);
       $scope.renderedNodes[$index][field] = newProperty;
+      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
+      console.log('capitalizedField', capitalizedField);
+      $scope['current' + capitalizedField] = newProperty;
     })
       .catch(function(){
         console.log('problem updating node', err);
