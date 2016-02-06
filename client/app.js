@@ -68,7 +68,7 @@ angular.module('app', [
         url: 'signin/auto?username&authToken',
         views: {
           'content@': {
-            templateUrl: 'app/auth/signin.html',
+            templateUrl: 'app/dashboard/dashboard.html',
             controller: function ($stateParams, $state, User) {
               User.authResponse($stateParams);
               $state.go('home.dashboard');
