@@ -2,15 +2,52 @@ var request = require('request-promise'),
     cheerio = require('cheerio'),
     targets = require('./scrapeTargets.json');
 
+
+// Settings which will control how some functins operate
 var MAX_LENGTH = 256,
     DEFAULT_TAG = 'meta',
     DEFAULT_ATTR = 'content';
 
+var PUNC = {
+  '.': true,
+  '!': true,
+  '?': true,
+  ',': true,
+  ';': true,
+  ':': true
+};
+
 
 // Post-processing helper functions
 var clean = function(string) {
-  if (string.length <= MAX_LENGTH) return string;
-  return string.substring(0, MAX_LENGTH - 3) + '...';
+  if (!string) return string;
+
+  var cleanWhitespace = function (char) {
+    if (char.charCodeAt(0) < 32) return ' ';
+    return char;
+  };
+
+  var addSpace = function (char, nextChar) {
+    if (nextChar === undefined) return char;
+    if (PUNC[char] && !PUNC[nextChar] && nextChar !== ' ') return char + ' ';
+    return char;
+  };
+
+  var truncate = function (string) {
+    if (string.length <= MAX_LENGTH) return string;
+    return string.substring(0, MAX_LENGTH - 3) + '...';
+  };
+
+  var cleaned = '';
+
+  for (var i = 0; i < string.length; i++) {
+    var char = string[i];
+    char = cleanWhitespace(char);
+    char = addSpace(char, string[i+1]);
+    cleaned += char;
+  }
+
+  return truncate(cleaned);
 };
 
 var nameFromUrl = function(url) {
@@ -33,6 +70,8 @@ var nameFromUrl = function(url) {
 };
 
 var appendRef = function(full, partial) {
+  if (!partial) return partial;
+
   var append;
 
   // Just appends http: or https:
