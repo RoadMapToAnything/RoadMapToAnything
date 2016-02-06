@@ -17,6 +17,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
@@ -80,19 +81,36 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 >>>>>>> (feat) Replace title with text input on click
     if( $scope[id] ){
       return  true;
+=======
+  $scope.hideText = function ($index, field, idPrefix){
+    $index = $index || 0;
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    console.log('hideText elementID', elementID);
+    console.log('$scope[elementID]', $scope[elementID]);
+    if( !$scope[elementID] ){
+      console.log('hideText returning true');
+      return  false;
+>>>>>>> (fix) Fixed main-title editor after infobox refactor
     } else {
-      return false;
+      console.log('hideText returning false');
+      return true;
     }
   };
 
-  $scope.showEditor = function ($index, field, boolean){
+  $scope.showEditor = function ($index, field, boolean, idPrefix){
+    // console.log('CALLING SHOW EDITOR');
+    // console.log('$index', $index);
+    // console.log('field', field);
+    // console.log('boolean', boolean);
+    // console.log('idPrefix', idPrefix);
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    console.log('elementID', elementID);
+    $scope.currentIndex = $index;
     if(boolean === false){
-      var elementID = '#' + field + '-' + $index;
-      console.log('want to reset', $(elementID).val());
       $(elementID).val($scope.renderedNodes[$index][field]);
     }
-    var id = field + '-' + $index;
-    $scope[id] = boolean;
+    console.log('now updating boolean for scope at', elementID);
+    $scope[elementID] = boolean;
   };
 
 <<<<<<< HEAD
@@ -104,6 +122,15 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     return 'place-holder';
 =======
   $scope.getPlaceholder = function($index, field){
+    console.log("$index", $index);
+    console.log('field', field);
+    console.log('placeholder', $scope.renderedNodes[$index][field]);
+    return $scope.renderedNodes[$index][field];
+  };
+  $scope.getInfoBoxPlaceholder = function($index, field){
+    console.log("$index", $index);
+    console.log('field', field);
+    console.log('placeholder', $scope.renderedNodes[$index][field]);
     return $scope.renderedNodes[$index][field];
 <<<<<<< HEAD
 >>>>>>> (feat) Populate editor field with current title
@@ -112,8 +139,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 =======
   };
 
-  $scope.saveEdit = function($index, field){
-    var elementID = '#' + field + '-' + $index;
+  $scope.saveEdit = function($index, field, idPrefix){
+    idPrefix = idPrefix || "";
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     var newProperty = $(elementID).val();
 
     Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
@@ -212,8 +240,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentIndex = $index;
     $scope.currentTitle = title;
     $scope.currentLinks = links;
+<<<<<<< HEAD
     $scope.currentResourceURL = $scope.currentLinks[0];
     $scope.currentDescription = description;
+=======
+    $scope.currentNodeDescription = description;
+>>>>>>> (fix) Fixed main-title editor after infobox refactor
     $scope.currentNode = $scope.renderedNodes[$index];
     
   };
