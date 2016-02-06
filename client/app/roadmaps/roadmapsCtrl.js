@@ -30,7 +30,21 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.getPlaceholder = function($index, field){
     return $scope.renderedNodes[$index][field];
-  }
+  };
+
+  $scope.saveEdit = function($index, field){
+    var elementID = '#' + field + '-' + $index;
+    var newProperty = $(elementID).val();
+    console.log('newProperty', newProperty);
+    Server.updateNode({_id: $stateParams.roadmapID, title: newProperty})
+      .then(function(node) {
+         console.log(node);
+      })
+      .catch(function(err){
+        console.log('error updating node', err);
+      });
+  };
+
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){

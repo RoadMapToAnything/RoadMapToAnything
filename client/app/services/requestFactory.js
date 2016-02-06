@@ -24,6 +24,7 @@ angular.module('services.request', [])
   };
 
   var standardFormat = function(res) {
+    console.log('res - standard format', res.data);
     return res.data.data;
   };
 

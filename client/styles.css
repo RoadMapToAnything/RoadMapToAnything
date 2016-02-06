@@ -167,6 +167,10 @@ footer.page-footer div.footer-copyright {
   padding-right: 15px;
   width: 110px;
 }
+.editor {
+  padding: 10px;
+  background-color: black;
+}
 
 /*  Footer */
 

@@ -48,8 +48,8 @@
 <div class="title-list container">
   <div ng-repeat="node in renderedNodes">
     <span ng-hide="hideText($index, 'title')" ng-click="showEditor($index, 'title')" class="node-description truncate node-title" ng-bind="node.title"> Title</span>
-    <div class="input-field col s12">
-          <input ng-show="hideText($index, 'title')" value="{{ getPlaceholder($index, 'title') }}" id="first_name" type="text" class="validate">
+    <div class="input-field col s12" ng-show="hideText($index, 'title')">
+          <input value="{{ getPlaceholder($index, 'title') }}" id="{{'title-' + $index }}" type="text" class="validate"><span class="editor-buttons"><button ng-click="saveEdit($index, 'title')" class="save btn-flat">Save</button><button class="cancel btn-flat">Cancel</button></span>
         </div>
   </div>
 </div>
