@@ -16,6 +16,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
@@ -73,6 +74,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 =======
   $scope.hideText = function ($index){
     var id = 'title-' + $index;
+=======
+  $scope.hideText = function ($index, field){
+    var id = field + '-' + $index;
+>>>>>>> (feat) Replace title with text input on click
     if( $scope[id] ){
       return  true;
     } else {
@@ -80,13 +85,19 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
-  $scope.showEditor = function ($index){
-    var id = 'title-' + $index;
+  $scope.showEditor = function ($index, field){
+    var id = field + '-' + $index;
     $scope[id] = true;
   };
 
+<<<<<<< HEAD
 >>>>>>> (feat) Hide Titles if clicked
 
+=======
+  $scope.getPlaceholder = function(){
+    return 'place-holder';
+  }
+>>>>>>> (feat) Replace title with text input on click
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
