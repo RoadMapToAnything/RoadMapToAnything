@@ -6,9 +6,21 @@
     <div class="col s12 m16">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
-          <span ng-hide="hideText(currentIndex, 'title', 'box')" ng-click="showEditor(currentIndex, 'title', true, 'box')" class="card-title truncate"><b>{{ currentTitle }}</b></span>
-          <div class="input-field col s12" ng-show="hideText($index, 'title', 'box')">
-            <input value="{{ getInfoBoxPlaceholder(currentIndex, 'title') }}" id="{{'box-title-' + $index }}" type="text" class="validate"><span class="editor-buttons"><button ng-click="saveEdit(currentIndex, 'title', 'box')" class="save btn-flat">Save</button><button class="cancel btn-flat" ng-click="showEditor(currentIndex, 'title', false, 'box')">Cancel</button></span>
+          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                class="card-title truncate"><b>{{ currentTitle }}</b></span>
+          <div id="{{'box-title-' + $index }}"
+               class="input-field col s12" 
+               ng-show="hideText($index, 'title', 'box')">
+            <input value="{{ getInfoBoxPlaceholder(currentIndex, 'title') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'title', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'title', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
          </div>
           <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
           <ul>
