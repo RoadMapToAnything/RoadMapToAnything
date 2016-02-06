@@ -32,7 +32,6 @@ module.exports = function (authRouter) {
         })
         .spread(function(accessToken, response){
           var tokenData = JSON.parse(response).data;
-          console.log('teat',tokenData);
           var facebookUserID = tokenData.user_id;
           var fakeReq = {
             body: {
