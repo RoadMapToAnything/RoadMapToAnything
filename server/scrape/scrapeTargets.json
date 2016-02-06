@@ -134,6 +134,11 @@
     },
 
     {
+      "prop": "name",
+      "val": "Description"
+    },
+
+    {
       "tag": "p", 
       "text": true
     }
@@ -155,6 +160,11 @@
     {
       "prop": "property",
       "val": "og:site_name"
+    },
+
+    {
+      "prop": "name",
+      "val": "application-name"
     },
 
     {
@@ -218,7 +228,26 @@
 
     {
       "prop": "name",
+      "val": "Author"
+    },
+
+    {
+      "prop": "name",
       "val": "twitter:creator"
+    },
+
+    {
+      "tag": "span",
+      "prop": "itemprop",
+      "val": "author",
+      "text": true
+    },
+
+    {
+      "tag": "span",
+      "prop": "itemprop",
+      "val": "name",
+      "text": true
     }
   ],
 

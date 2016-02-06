@@ -66,9 +66,6 @@ var nameFromUrl = function(url) {
 
   if (url.indexOf('/') === -1 && wwwIndex === -1) return url;
 
-  var wwwIndex = url.indexOf('www.');
-  var name;
-
   if (wwwIndex !== -1) name = url.substring(wwwIndex + 4);
   else name = url.substring(url.indexOf('//') + 2);
 
@@ -78,7 +75,9 @@ var nameFromUrl = function(url) {
 };
 
 var appendHref = function(full, partial) {
-  if (!partial || partial.substring(0, 4) === 'http') return partial;
+  if (!partial) return partial;
+  if (partial.indexOf('/') === -1) return partial;
+  if (partial.substring(0, 4) === 'http') return partial;
 
   var append;
 
@@ -126,7 +125,7 @@ module.exports = function (url) {
     }
 
     // Perform some post-processing on particular properties
-    scrapes.siteName = nameFromUrl(scrapes.siteName);
+    scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName) );
     scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
     scrapes.siteIcon = appendHref(url, scrapes.siteIcon);
     
