@@ -1,13 +1,13 @@
-<div class="container">
+<!-- <div class="container">
   <div class="browse-box">
     <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn browseBtn">Go To My Maps</a>
   </div>
   <div class='search'>
     <label>Search: <input ng-model="searchText"></label>
   </div>
-  <div ng-show="showSigninMsg">You must be signed in first</div>
+  <div ng-show="showSigninMsg">You must be signed in first</div> -->
   <!--Roadmaps Table-->
-  <div class="browse-table">
+<!--   <div class="browse-table">
     <div class="map-title"><h5>Roadmaps</h5></div>
       <div class="follow-maps">
         <table class="bordered striped highlight0+56+">
@@ -30,4 +30,63 @@
       </table>
     </div>
   </div>
+</div> -->
+
+
+<!--browse updated collapsible menu-->
+<!-- <div class="container"> -->
+  <div class="browse-box">
+   <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn cyan lighten-3 browseBtn">Go To My Maps</a>
+  </div>
+  <br>
+  <div class='search'>
+    <label>Search: <input ng-model="searchText"></label>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div ng-show="showSigninMsg">You must be signed in first</div>
+  <ul class="collapsible" data-collapsible="accordion">
+   <li ng-repeat="map in mapData | filter: searchText">
+      <div class="collapsible-header">
+        <i class="fa fa-map-o" style="color:#1ABBCC">
+        </i>
+        <span class="mousetoHand"> {{ map.title }}
+        </span>
+      </div>
+      <div class="collapsible-body">
+        <div class="container">
+          <table>
+            <tr>
+              <th><i class="fa fa-file-image-o fa-5x"></i></th>
+            </tr>
+            <tr>
+              <th class="truncate" style="color:#0048C4" ng-click="goToMap( map._id )"><b>{{ map.description }}</b>
+              </th>
+            </tr>
+             <tr> 
+              <td>Author: <b>{{ map.author.username }}</b></td>
+              <td>Date created: <b>{{ map.author.created }}</b></td>
+            </tr>
+            <tr>
+              <td><b>{{ totalComments(map.author.comments) }} Comments</b></td>
+              <td>Number of Nodes: <b>{{ map.totalNodes }}</b></td>
+              <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn cyan lighten-3">Add!</a></td>
+            </tr>
+          </table>
+        </div>
+<!--       </div> -->
+    </li>
+  </ul>
 </div>
+
+<br>
+  <br>
+  <br>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  });
+  </script>
