@@ -5,7 +5,7 @@ angular.module('scraper.ctrl', ['services.request'])
 
 $('#scrape-results').append('Hello World!');
 
-Request.get('/scrape/node', {url: 'http://benalman.com/news/2010/11/immediately-invoked-function-expression/'})
+Request.get('/scrape/node', {url: 'http://www.w3schools.com/js/js_function_closures.asp'})
 .then(function (data) {
   console.log('TEST', data);
 });
