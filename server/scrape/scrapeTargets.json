@@ -92,6 +92,16 @@
     },
 
     {
+      "tag": "p>img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".content>img",
+      "attr": "src"
+    },
+
+    {
       "tag": "body>img",
       "attr": "src"
     },
