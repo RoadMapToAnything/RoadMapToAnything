@@ -28,8 +28,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope[id] = true;
   };
 
-  $scope.getPlaceholder = function(){
-    return 'place-holder';
+  $scope.getPlaceholder = function($index, field){
+    return $scope.renderedNodes[$index][field];
   }
 
  // Get the current number of upvotes from current map
