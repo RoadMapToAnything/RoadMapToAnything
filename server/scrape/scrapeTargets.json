@@ -1,0 +1,182 @@
+{
+
+  "title" : [
+    {
+      "prop": "itemprop", 
+      "val": "name"
+    },
+
+    {
+      "prop": "name", 
+      "val": "title"
+    },
+
+    {
+      "prop": "property", 
+      "val": "og:title"
+    },
+
+    {
+      "prop": "name", 
+      "val": "twitter:title"
+    },
+
+    {
+      "tag": "h1", 
+      "text": true
+    },
+
+    {
+      "tag": "title", 
+      "text": true
+    }
+  ],
+
+  "imageUrl" : [
+    {
+      "tag": "link", 
+      "prop": "itemprop", 
+      "val": "thumbnailUrl", 
+      "attr": "href"
+    },
+
+    {
+      "prop": "name", 
+      "val": "image"
+    },
+
+    {
+      "prop": "itemprop", 
+      "val": "image"
+    },
+
+    {
+      "prop": "property", 
+      "val": "og:image"
+    },
+
+    {
+      "prop": "name", 
+      "val": "twitter:img:src"
+    },
+
+    {
+      "prop": "property", 
+      "val": "og:image",
+      "attr": "itemprop"
+    }
+  ],
+
+  "description" : [
+    {
+      "prop": "itemprop",
+      "val": "description"
+    },
+
+    {
+      "prop": "name",
+      "val": "description"
+    },
+
+    {
+      "prop": "property",
+      "val": "og:description"
+    },
+
+    {
+      "prop": "name",
+      "val": "twitter:description"
+    }
+  ],
+
+  "type" : [
+    {
+      "prop": "property",
+      "val": "og:type"
+    },
+
+    {
+      "prop": "property",
+      "val": "udemy_com:category"
+    },
+  ],
+
+  "author" : [
+    {
+      "prop": "name",
+      "val": "author"
+    },
+
+    {
+      "prop": "name",
+      "val": "twitter:creator"
+    }
+  ],
+
+  "siteName" : [
+    {
+      "prop": "property",
+      "val": "og:site_name"
+    },
+
+    {
+      "prop": "itemprop",
+      "val": "url"
+    },
+
+    {
+      "prop": "property",
+      "val": "og:url"
+    },
+
+    {
+      "prop": "name",
+      "val": "twitter:url"
+    }
+  ],
+
+  "siteIcon" : [
+    {
+      "tag": "link",
+      "prop": "rel",
+      "val": "icon",
+      "attr": "href"
+    },
+
+    {
+      "tag": "link",
+      "prop": "rel",
+      "val": "shortcut icon",
+      "attr": "href"
+    },
+
+    {
+      "tag": "link",
+      "prop": "rel",
+      "val": "apple-touch-icon image_src",
+      "attr": "href"
+    },
+
+    {
+      "tag": "link",
+      "prop": "rel",
+      "val": "logo",
+      "attr": "href"
+    },
+  ],
+
+  "price" : [
+    {
+      "prop": "property",
+      "val": "udemy_com:price"
+    }
+  ],
+
+  "duration" : [
+    {
+      "prop": "itemprop",
+      "val": "duration"
+    }
+  ]
+
+}
