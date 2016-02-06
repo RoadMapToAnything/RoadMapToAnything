@@ -1,5 +1,8 @@
 <h3>Scraper Test</h3>
-<input type="url" ng-model="urlToScrape" ng-change="checkAndSubmit()"/>
+<div class="input-field">
+  <input id="url-input" type="url" ng-model="urlToScrape" ng-change="checkAndSubmit()"/>
+  <label for="url-input">Enter a URL</label>
+</div>
 
 <h5>{{ displayUrl }}</h5>
 
