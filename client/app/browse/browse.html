@@ -85,6 +85,7 @@
             <!-- Created by date is presented by ng filter component -->
               <td>Created on <b>{{ map.author.created | date:"MM/dd/yyyy 'at' h:mma" }}</b> <td>by   <b>{{ map.author.username }}</b></td></td>
 
+              <span data-livestamp="{{map.author.created}}"></span>
             </tr>
             <tr>
               <!-- Displays comments but not linked to comment page yet... should we have a separate comments view? -->
@@ -120,4 +121,9 @@
      );
 
   });
+
+  // To use timeago
+   // $(document).ready(function() {
+   //   $("time.timeago").timeago();
+   // });
   </script>
