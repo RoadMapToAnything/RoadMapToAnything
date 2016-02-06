@@ -62,7 +62,7 @@ var nameFromUrl = function(url) {
   if (!url) return url;
 
   var wwwIndex = url.indexOf('www.');
-  var name;
+  var name, nameSplit;
 
   if (url.indexOf('/') === -1 && wwwIndex === -1) return url;
 
@@ -70,6 +70,15 @@ var nameFromUrl = function(url) {
   else name = url.substring(url.indexOf('//') + 2);
 
   name = name.substring(0, name.indexOf('/'));
+
+  nameSplit = name.split('.');
+
+  if (nameSplit.length > 2) {
+    nameSplit.shift();
+    name = '' + nameSplit.join('.');
+  }
+
+  name = name[0].toUpperCase() + name.substring(1);
 
   return name;
 };
@@ -125,7 +134,7 @@ module.exports = function (url) {
     }
 
     // Perform some post-processing on particular properties
-    scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName) );
+    scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName || url) );
     scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
     scrapes.siteIcon = appendHref(url, scrapes.siteIcon);
     
