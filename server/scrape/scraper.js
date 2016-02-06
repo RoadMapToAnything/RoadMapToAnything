@@ -33,11 +33,17 @@ var nameFromUrl = function(url) {
 };
 
 var appendRef = function(full, partial) {
+  var append;
+
+  // Just appends http: or https:
   if (partial.substring(0, 2) === '//') {
-    return full.substring( 0, full.indexOf('//') ) + partial;
+    append = full.substring( 0, full.indexOf('//') );
+    return append + partial;
   }
 
-  return full + partial;
+  // Appends everything up to the end of the domain
+  append = full.substring( 0, full.indexOf('/', 7) );
+  return append + partial;
 };
 
 
@@ -74,6 +80,7 @@ module.exports = function (url) {
 
     // Perform some post-processing on particular properties
     scrapes.siteName = nameFromUrl(scrapes.siteName);
+    scrapes.imageUrl = appendRef(url, scrapes.imageUrl);
     scrapes.siteIcon = appendRef(url, scrapes.siteIcon);
     
     return scrapes;
