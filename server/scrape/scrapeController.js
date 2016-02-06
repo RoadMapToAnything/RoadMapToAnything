@@ -7,7 +7,10 @@ module.exports = {
   scrapeForNode : function(req, res, next){
     var url = req.query.url;
 
-    res.status(200).json({data: scrape(url)});
+    scrape(url)
+    .then(function (result) {
+      res.status(200).json({data: result});
+    });
   }
 
 };
