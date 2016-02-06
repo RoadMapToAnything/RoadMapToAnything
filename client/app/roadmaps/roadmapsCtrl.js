@@ -146,7 +146,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
       .then(function(node) {
-      $scope.showEditor($index, field, false);
+      console.log('node saved !!!');
+      $scope.showEditor($index, field, false, idPrefix);
       $scope.renderedNodes[$index][field] = newProperty;
     })
       .catch(function(){
