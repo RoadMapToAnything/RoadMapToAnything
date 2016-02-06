@@ -47,7 +47,10 @@
 
 <div class="title-list container">
   <div ng-repeat="node in renderedNodes">
-    <span ng-hide="hideText($index)" ng-click="showEditor($index)" class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
+    <span ng-hide="hideText($index, 'title')" ng-click="showEditor($index, 'title')" class="node-description truncate node-title" ng-bind="node.title"> Title</span>
+    <div class="input-field col s6">
+          <input ng-show="hideText($index, 'title')" placeholder="{{ getPlaceholder($index, 'title') }}" id="first_name" type="text" class="validate">
+        </div>
   </div>
 </div>
 

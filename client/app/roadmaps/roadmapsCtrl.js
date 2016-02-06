@@ -14,8 +14,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.showComments = true;
   };
 
-  $scope.hideText = function ($index){
-    var id = 'title-' + $index;
+  $scope.hideText = function ($index, field){
+    var id = field + '-' + $index;
     if( $scope[id] ){
       return  true;
     } else {
@@ -23,12 +23,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
-  $scope.showEditor = function ($index){
-    var id = 'title-' + $index;
+  $scope.showEditor = function ($index, field){
+    var id = field + '-' + $index;
     $scope[id] = true;
   };
 
-
+  $scope.getPlaceholder = function(){
+    return 'place-holder';
+  }
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
