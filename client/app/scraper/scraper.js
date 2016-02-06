@@ -5,8 +5,9 @@ angular.module('scraper.ctrl', ['services.request'])
 
 $('#scrape-results').append('Hello World!');
 
-$.get("https://www.youtube.com/watch?v=Ex4RNBQSTNA").done(function (data) {
-    console.log(data);
-});
+Request.get('/scrape/node', {url: 'http://www.google.com/'})
+.then(function (data) {
+  console.log('TEST', data);
+})
 
 }]);

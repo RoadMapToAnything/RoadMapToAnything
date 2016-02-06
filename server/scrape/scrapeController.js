@@ -1,10 +1,13 @@
-var handleError = require('../util.js').handleError;
+var handleError = require('../util.js').handleError,
+    scrape      = require('./scraper.js');
     
 
 module.exports = {
 
-  test : function(req, res, next){
-    res.status(200).json({data: 'Hello World'});
+  scrapeForNode : function(req, res, next){
+    var url = req.query.url;
+
+    res.status(200).json({data: scrape(url)});
   }
 
 };
