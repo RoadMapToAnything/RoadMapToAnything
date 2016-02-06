@@ -51,16 +51,15 @@ angular.module('app', [
         },
         'authModal' : {
           templateUrl: 'app/modals/authorization.html',
-        }
-      }
-    })
-    //state for sign-in
-    .state('home.signin', {
-      url: 'signin',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signin.html',
           controller: 'AuthController'
+        },
+        'creationModal' : {
+          templateUrl: 'app/modals/creation.html',
+          controller: 'CreationController'
+        },
+        'imageSubmitModal' : {
+          templateUrl: 'app/modals/imageSubmit.html',
+          controller: 'DashboardController'
         }
       }
     })
@@ -75,24 +74,6 @@ angular.module('app', [
             }
           }     
         }
-    })
-    //state for sign-up
-    .state('home.signup', {
-      url: 'signup',
-      views: {
-        'content@': {
-          templateUrl: 'app/auth/signup.html',
-          controller: 'AuthController'
-        },
-        'creationModal' : {
-          templateUrl: 'app/modals/creation.html',
-          controller: 'CreationController'
-        },
-        'imageSubmitModal' : {
-          templateUrl: 'app/modals/imageSubmit.html',
-          controller: 'DashboardController'
-        }
-      }
     })
     //state for dashboard
     .state('home.dashboard', {
