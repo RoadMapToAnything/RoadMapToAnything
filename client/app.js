@@ -111,5 +111,15 @@ angular.module('app', [
         controller: 'BrowseController'
       }
     }
-  });
+  })
+
+  .state('/about', { //maybe rename as explore?
+      url: '/about',
+      views: {
+        'content@': {
+          templateUrl: 'app/main/about.html',
+          controller: 'MainController'
+        }
+      }
+    });
 });

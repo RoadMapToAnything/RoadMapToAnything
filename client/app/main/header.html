@@ -24,6 +24,7 @@
         <!-- Need to make a dropdown search -->
         <li><i class="mdi-action-search"></i></li>
         <li><a ui-sref="home.browse" class="black-text">Browse</a></li>
+        <li><a ui-sref="home.about" class="black-text">About</a></li>
         <li ng-show="!isLoggedIn()"><a ng-click="openAuthModal()" class="black-text">Sign in</a></li>
         <li><a ng-show="isLoggedIn()" class="dropdown-button black-text" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
           <ul id="dropdown" class="dropdown-content collection">
