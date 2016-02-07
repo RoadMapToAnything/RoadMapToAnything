@@ -1,3 +1,43 @@
+/*
+#footerbox {
+  margin-left:auto !important; 
+  margin-right:auto !important;
+}
+.footertable{
+  margin-left:auto !important; 
+  margin-right:auto !important;
+}*/
+
+.copyright{
+  margin-left:auto !important; 
+  margin-right:auto !important;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.outer-container {
+/*    position : absolute;*/
+  margin-left:auto !important; 
+  margin-right:auto !important;
+  display: table;
+  width: 1000px;
+  height: 300px;
+  background: white;
+}
+
+.inner-container {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.centered-content {
+/*  display: inline-block;*/
+  background: #fff;
+  padding : 20px;
+  border : 1px solid #000;
+}
+
 .Site {
   display: flex;
   min-height: 100vh;
