@@ -28,6 +28,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.showEditor = function ($index, field, boolean, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     $scope.currentIndex = $index;
+    if( !$scope.currentResourceURL ) {
+      $scope.currentResourceURL = $scope.currentLinks[0];
+    }
     if(boolean === false){
       $(elementID).val($scope.renderedNodes[$index][field]);
     }
@@ -36,7 +39,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.getPlaceholder = function($index, field){
     var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-    console.log('placeholder:', $scope['current' + capitalizedField]);
+    if( field === 'resourceURL'){
+      console.log('capitalizedField', capitalizedField);
+      console.log('current resourceURL getPlaceholder', $scope['current' + capitalizedField]);
+    }
     return $scope['current' + capitalizedField];
   };
 
@@ -55,6 +61,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
       console.log('capitalizedField', capitalizedField);
       $scope['current' + capitalizedField] = newProperty;
+      if( field === 'resourceURL' ){
+        $scope.currentLinks[0] = newProperty;
+      }
     })
       .catch(function(){
         console.log('problem updating node', err);
@@ -146,6 +155,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentIndex = $index;
     $scope.currentTitle = title;
     $scope.currentLinks = links;
+    $scope.currentResourceURL = $scope.currentLinks[0];
     $scope.currentDescription = description;
     $scope.currentNode = $scope.renderedNodes[$index];
     

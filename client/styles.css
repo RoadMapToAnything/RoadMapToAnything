@@ -20,6 +20,9 @@
 .top-row {
   margin: 5em 0;
 }
+.display-inline {
+  display: inline-block !important;
+}
 
 /****** LINKS ******/
 a:hover {

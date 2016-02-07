@@ -45,7 +45,26 @@
 
 
           <ul>
-            <li ng-repeat="link in currentLinks"><a class="truncate" href="{{link}}">{{link}}</a></li>
+            <li ng-repeat="link in currentLinks">
+              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+                <a class="truncate"
+                   href="{{link}}">{{link}}</a>
+                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')">[edit link]</a>
+              </div>
+              <div class="input-field col s12" 
+                   ng-show="hideText($index, 'resourceURL', 'box')">
+                <input id="{{'box-resourceURL-' + currentIndex }}"
+                       value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
+                       type="text" 
+                       class="validate">
+                <span class="editor-buttons">
+                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
+                          class="save btn-flat">Save</button>
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')"
+                          class="cancel btn-flat">Cancel</button>
+                </span>
+            </div>
+            </li>
           </ul>
         </div>
         <div class="card-action">
