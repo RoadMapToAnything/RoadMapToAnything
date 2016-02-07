@@ -15,29 +15,46 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.showComments = true;
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    if( !$scope[elementID] ){
-      return  false;
+    console.log('hideText called on', elementID);
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    
+    if( username !== roadmapAuthor ){
+      return false;
     } else {
-      return true;
+      if( !$scope[elementID] ){
+        return  false;
+      } else {
+        return true;
+      }
     }
   };
 
   $scope.showEditor = function ($index, field, boolean, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     $scope.currentIndex = $index;
-    if( !$scope.currentResourceURL ) {
-      $scope.currentResourceURL = $scope.currentLinks[0];
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    
+    if( username !== roadmapAuthor ){
+      $scope[elementID] = false;
+      console.log("author fail");
+    } else {
+      if( !$scope.currentResourceURL ) {
+        $scope.currentResourceURL = $scope.currentLinks[0];
+      }
+
+      if(boolean === false){
+        $(elementID).val($scope.renderedNodes[$index][field]);
+      }
+
+      $scope[elementID] = boolean;
     }
-    if(boolean === false){
-      $(elementID).val($scope.renderedNodes[$index][field]);
-    }
-    $scope[elementID] = boolean;
+
+
   };
 
   $scope.getPlaceholder = function($index, field){
@@ -72,78 +89,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         console.log('problem updating node', err);
       });
   };
-=======
-  $scope.hideText = function ($index){
-    var id = 'title-' + $index;
-=======
-  $scope.hideText = function ($index, field){
-    var id = field + '-' + $index;
->>>>>>> (feat) Replace title with text input on click
-    if( $scope[id] ){
-      return  true;
-=======
-  $scope.hideText = function ($index, field, idPrefix){
-    $index = $index || 0;
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    if( !$scope[elementID] ){
-      return  false;
->>>>>>> (fix) Fixed main-title editor after infobox refactor
-    } else {
-      return true;
-    }
-  };
 
-  $scope.showEditor = function ($index, field, boolean, idPrefix){
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    $scope.currentIndex = $index;
-    if(boolean === false){
-      $(elementID).val($scope.renderedNodes[$index][field]);
-    }
-    $scope[elementID] = boolean;
-  };
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> (feat) Hide Titles if clicked
-
-=======
-  $scope.getPlaceholder = function(){
-    return 'place-holder';
-=======
-  $scope.getPlaceholder = function($index, field){
-    return $scope.renderedNodes[$index][field];
-  };
-  $scope.getInfoBoxPlaceholder = function($index, field){
-    console.log("$index", $index);
-    console.log('field', field);
-    console.log('placeholder', $scope.renderedNodes[$index][field]);
-    return $scope.renderedNodes[$index][field];
-<<<<<<< HEAD
->>>>>>> (feat) Populate editor field with current title
-  }
->>>>>>> (feat) Replace title with text input on click
-=======
-  };
-
-  $scope.saveEdit = function($index, field, idPrefix){
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    console.log('elementID', $(elementID));
-    var newProperty = $(elementID).val();
-    console.log('newProperty', newProperty);
-    Server.updateNode({ _id: $scope.renderedNodes[$index]._id, title: newProperty})
-      .then(function(node) {
-      $scope.showEditor($index, field, false, idPrefix);
-      $scope.renderedNodes[$index][field] = newProperty;
-      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-      console.log('capitalizedField', capitalizedField);
-      $scope['current' + capitalizedField] = newProperty;
-    })
-      .catch(function(){
-        console.log('problem updating node', err);
-      });
-  };
-
->>>>>>> (feat) Work on updatenode API
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
@@ -197,6 +143,26 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       var currentMapDownVotes = $scope.currentRoadMapData.downvotes;
       $scope.upVoteCount = $scope.getCountVotes(currentMapUpVotes);
       $scope.downVoteCount = $scope.getCountVotes(currentMapDownVotes);
+
+      // append Editor Mode message
+      var username = localStorage.getItem('user.username');
+      var roadmapAuthor = $scope.currentRoadMapData.author.username;
+        
+      if( username === roadmapAuthor ){
+        $('#editor-placeholder').append(
+        '<div ng-hide="notAuthor()" class="editor-msg row blue lighten-4">' +
+          '<div class="col s0 m1 l1">' +
+            '<i class="fa fa-pencil fa-lg"></i>' +
+          '</div>' +
+          '<div class="col s0 m10 l10">' +
+              'Since you created this roadmap, you can add or edit properties by clicking on them.' +
+          '</div>' +
+          '<div class="col s0 m1 l1">' +
+            '<i class="fa fa-pencil fa-lg"></i>' +
+          '</div>' +
+        '</div>'
+        );
+      }
   });
 
   // Render Title
@@ -229,12 +195,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentIndex = $index;
     $scope.currentTitle = title;
     $scope.currentLinks = links;
-<<<<<<< HEAD
     $scope.currentResourceURL = $scope.currentLinks[0];
     $scope.currentDescription = description;
-=======
-    $scope.currentNodeDescription = description;
->>>>>>> (fix) Fixed main-title editor after infobox refactor
     $scope.currentNode = $scope.renderedNodes[$index];
     
   };
