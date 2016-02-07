@@ -306,6 +306,11 @@
     },
 
     {
+      "tag": ".yt-user-info a",
+      "text": true
+    },
+
+    {
       "tag": "a.thb-n",
       "text": true
     },
