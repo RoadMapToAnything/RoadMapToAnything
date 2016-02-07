@@ -26,8 +26,9 @@
 
           <p ng-hide="hideText(currentIndex, 'description', 'box')"
              ng-click="showEditor(currentIndex, 'description', true, 'box')"
-             ng-bind="currentDescription">This is the description of why this matters.</p>
-          <div class="input-field col s12" 
+             ng-bind="currentDescription"
+             class="author-input">This is the description of why this matters.</p>
+          <div class="input-field col s12 " 
                ng-show="hideText($index, 'description', 'box')">
             <input id="{{'box-description-' + currentIndex }}"
                    value="{{ getPlaceholder(currentIndex, 'description') }}"
@@ -45,9 +46,10 @@
               <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
                 <a class="truncate"
                    href="{{link}}">{{link}}</a>
-                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')">[edit link]</a>
+                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')"
+                   class="author-input">[edit link]</a>
               </div>
-              <div class="input-field col s12" 
+              <div class="input-field col s12"
                    ng-show="hideText($index, 'resourceURL', 'box')">
                 <input id="{{'box-resourceURL-' + currentIndex }}"
                        value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
@@ -75,13 +77,13 @@
   <div id="editor-placeholder"></div>
 
   <!-- Roadmap Title -->
-
 <div class="col s8 roadmap-title">
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
   <div class="divider"></div>
 
    <!-- Nodes -->
 <div class="node-list container">
+
   <div ng-repeat="node in renderedNodes">
 
     <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
@@ -107,15 +109,15 @@
           ng-bind="node.title"> Title</span>
     <div class="input-field col s12"
          ng-show="hideText($index, 'title', 'main')">
-          <input id="{{'main-title-' + $index }}"
-                 value="{{ getPlaceholder($index, 'title') }}"
-                 type="text"
-                 class="validate">
-          <span class="editor-buttons">
-            <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
-            <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main')">Cancel</button>
-          </span>
-        </div>
+      <input id="{{'main-title-' + $index }}"
+             value="{{ getPlaceholder($index, 'title') }}"
+             type="text"
+             class="validate">
+      <span class="editor-buttons">
+        <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
+        <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main')">Cancel</button>
+      </span>
+    </div>
   </div>
 </div>
 
