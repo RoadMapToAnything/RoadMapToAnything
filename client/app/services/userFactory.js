@@ -20,7 +20,7 @@ angular.module('services.user', ['services.request'])
   // Calculates user's progress toward completing one or many roadmaps
   var calcProgress = function(inProgress, id) {
     var maps = inProgress.roadmaps;
-    var nodes = inProgress.nodes;
+    var nodes = _.uniqBy(inProgress.nodes, '_id');
     var nodeCounts = {};
     var results = [];
 
@@ -37,13 +37,13 @@ angular.module('services.user', ['services.request'])
 
     maps.forEach(function (map) {
       var completed = nodeCounts[map._id] || 0;
-      var total = map.nodes.length;
+      var total = map.nodes.length / 2;
 
       results.push({
         _id: map._id,
         completed: completed,
         total: total,
-        percent: Math.floor(completed / total * 100)
+        percent: Math.floor(completed / total * 100) 
       });
     });
 

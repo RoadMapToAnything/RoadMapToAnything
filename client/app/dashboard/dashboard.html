@@ -51,7 +51,7 @@
         <tbody class="follow-map" ng-repeat="map in followed">
           <tr>
             <td>{{ map.nodesCompleted }} /
-            {{ map.nodes.length }}</td>
+            {{ map.nodes.length / 2 }}</td>
             <td class="truncate" ng-click="goToMap( map._id )">
               <span class="mousetoHand">{{ map.title }}</span>
             </td>
