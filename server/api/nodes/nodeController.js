@@ -7,6 +7,7 @@ var Node              = require('./nodeModel.js'),
 module.exports = {
 
   createNode : function (req, res, next) {
+
     var username = getAuthHeader(req).name;
     var newNode = req.body;
 
@@ -22,6 +23,7 @@ module.exports = {
         res.sendStatus(403);
         return null;
       } else {
+        console.log("JUST CREATED NEW NODE");
         return Node(newNode).save();
       }
     })
