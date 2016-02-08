@@ -6,10 +6,63 @@
     <div class="col s12 m16">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
-          <span class="card-title truncate"><b>{{ currentTitle }}</b></span>
-          <p ng-bind="currentNodeDescription">This is the description of why this matters.</p>
+          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                class="card-title truncate"><b>{{ currentTitle }}</b></span>
+          <div class="input-field col s12" 
+               ng-show="hideText($index, 'title', 'box')">
+            <input id="{{'box-title-' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'title') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'title', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'title', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
+
+
+          <p ng-hide="hideText(currentIndex, 'description', 'box')"
+             ng-click="showEditor(currentIndex, 'description', true, 'box')"
+             ng-bind="currentDescription"
+             class="author-input">This is the description of why this matters.</p>
+          <div class="input-field col s12 " 
+               ng-show="hideText($index, 'description', 'box')">
+            <input id="{{'box-description-' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'description') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'description', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'description', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
           <ul>
-            <li ng-repeat="link in currentLinks"><a class="truncate" href="{{link}}">{{link}}</a></li>
+            <li ng-repeat="link in currentLinks">
+              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+                <a class="truncate"
+                   href="{{link}}">{{link}}</a>
+                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')"
+                   class="author-input">[edit link]</a>
+              </div>
+              <div class="input-field col s12"
+                   ng-show="hideText($index, 'resourceURL', 'box')">
+                <input id="{{'box-resourceURL-' + currentIndex }}"
+                       value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
+                       type="text" 
+                       class="validate">
+                <span class="editor-buttons">
+                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
+                          class="save btn-flat">Save</button>
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')"
+                          class="cancel btn-flat">Cancel</button>
+                </span>
+            </div>
+            </li>
           </ul>
         </div>
         <div class="card-action">
@@ -19,39 +72,19 @@
     </div>
   </div>
 </div>
+
+  <!-- Editor Mode Message -->
+  <div id="editor-placeholder"></div>
+
   <!-- Roadmap Title -->
 
 <div class="col s8 roadmap-title">
   <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
   <div class="divider"></div>
 
-<!-- ALTERNATE BOOTSTRAP EXAMPLE 
-
-<div class="row">
-  <div class="large-4 columns">
-   <div class="card">
-  <img class="card-img-top" data-src="put source hree" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">Card title</h4>
-    <p class="card-text">Text</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">item one</li>
-  </ul>
-  <div class="card-block">
-    <a href="#" class="card-link">link</a>
-    <a href="#" class="card-link">link</a>
-  </div>
-</div>
-=======
-<div class="col s8 roadmap-title">
-  <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
-  <div class="divider"></div>
->>>>>>> 6b0f7db9cef268f50320e47d1660b674fd7f1c2a
-</div>
-
    <!-- Nodes -->
 <div class="node-list container">
+
   <div ng-repeat="node in renderedNodes">
 
     <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
@@ -71,7 +104,21 @@
 
 <div class="title-list container">
   <div ng-repeat="node in renderedNodes">
-    <span class="node-description truncate node-title" ng-bind="node.title"> Title</span> 
+    <span ng-hide="hideText($index, 'title', 'main')"
+          ng-click="showEditor($index, 'title', true, 'main')"
+          class="node-description truncate node-title"
+          ng-bind="node.title"> Title</span>
+    <div class="input-field col s12"
+         ng-show="hideText($index, 'title', 'main')">
+      <input id="{{'main-title-' + $index }}"
+             value="{{ getPlaceholder($index, 'title') }}"
+             type="text"
+             class="validate">
+      <span class="editor-buttons">
+        <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
+        <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main')">Cancel</button>
+      </span>
+    </div>
   </div>
 </div>
 

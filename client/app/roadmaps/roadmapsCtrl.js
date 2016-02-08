@@ -9,10 +9,86 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $('.tooltipped').tooltip({delay: 50});
 
   $scope.showComments = false;
+  $scope.currentIndex = 0;
 
   $scope.toggleComments = function(){
     $scope.showComments = true;
-  }
+  };
+
+  $scope.hideText = function ($index, field, idPrefix){
+    $index = $index || 0;
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    console.log('hideText called on', elementID);
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    
+    if( username !== roadmapAuthor ){
+      return false;
+    } else {
+      if( !$scope[elementID] ){
+        return  false;
+      } else {
+        return true;
+      }
+    }
+  };
+
+  $scope.showEditor = function ($index, field, boolean, idPrefix){
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    $scope.currentIndex = $index;
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    
+    if( username !== roadmapAuthor ){
+      $scope[elementID] = false;
+      console.log("author fail");
+    } else {
+      if( !$scope.currentResourceURL ) {
+        $scope.currentResourceURL = $scope.currentLinks[0];
+      }
+
+      if(boolean === false){
+        $(elementID).val($scope.renderedNodes[$index][field]);
+      }
+
+      $scope[elementID] = boolean;
+    }
+
+
+  };
+
+  $scope.getPlaceholder = function($index, field){
+    var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
+    if( field === 'resourceURL'){
+      console.log('capitalizedField', capitalizedField);
+      console.log('current resourceURL getPlaceholder', $scope['current' + capitalizedField]);
+    }
+    return $scope['current' + capitalizedField];
+  };
+
+  $scope.saveEdit = function($index, field, idPrefix){
+    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    console.log('elementID', $(elementID));
+    var newProperty = $(elementID).val();
+    console.log('newProperty', newProperty);
+    var updateObj = {};
+    updateObj['_id'] = $scope.renderedNodes[$index]._id;
+    updateObj[field] = newProperty;
+    Server.updateNode(updateObj)
+      .then(function(node) {
+      $scope.showEditor($index, field, false, idPrefix);
+      $scope.renderedNodes[$index][field] = newProperty;
+      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
+      console.log('capitalizedField', capitalizedField);
+      $scope['current' + capitalizedField] = newProperty;
+      if( field === 'resourceURL' ){
+        $scope.currentLinks[0] = newProperty;
+      }
+    })
+      .catch(function(){
+        console.log('problem updating node', err);
+      });
+  };
 
 
  // Get the current number of upvotes from current map
@@ -67,6 +143,26 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       var currentMapDownVotes = $scope.currentRoadMapData.downvotes;
       $scope.upVoteCount = $scope.getCountVotes(currentMapUpVotes);
       $scope.downVoteCount = $scope.getCountVotes(currentMapDownVotes);
+
+      // append Editor Mode message
+      var username = localStorage.getItem('user.username');
+      var roadmapAuthor = $scope.currentRoadMapData.author.username;
+        
+      if( username === roadmapAuthor ){
+        $('#editor-placeholder').append(
+        '<div ng-hide="notAuthor()" class="editor-msg row blue lighten-4">' +
+          '<div class="col s0 m1 l1">' +
+            '<i class="fa fa-pencil fa-lg"></i>' +
+          '</div>' +
+          '<div class="col s0 m10 l10">' +
+              'Since you created this roadmap, you can add or edit properties by clicking on them.' +
+          '</div>' +
+          '<div class="col s0 m1 l1">' +
+            '<i class="fa fa-pencil fa-lg"></i>' +
+          '</div>' +
+        '</div>'
+        );
+      }
   });
 
   // Render Title
@@ -87,20 +183,21 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     
     $scope.currentTitle = title;
     $scope.currentLinks = [links];
-    $scope.currentNodeDescription = description;
+    $scope.currentDescription = description;
   }
 
-  $scope.selectNode = function(index) {
+  $scope.selectNode = function($index) {
 
-    var links = $scope.renderedNodes[index].resourceURL;
-    var description = $scope.renderedNodes[index].description;
-    var title = $scope.renderedNodes[index].title;
+    var links = $scope.renderedNodes[$index].resourceURL;
+    var description = $scope.renderedNodes[$index].description;
+    var title = $scope.renderedNodes[$index].title;
 
-    $scope.currentIndex = index;
+    $scope.currentIndex = $index;
     $scope.currentTitle = title;
-    $scope.currentLinks = [links];
-    $scope.currentNodeDescription = description;
-    $scope.currentNode = $scope.renderedNodes[index];
+    $scope.currentLinks = links;
+    $scope.currentResourceURL = $scope.currentLinks[0];
+    $scope.currentDescription = description;
+    $scope.currentNode = $scope.renderedNodes[$index];
     
   };
   // Submits a node to the user's inProgress.nodes array.

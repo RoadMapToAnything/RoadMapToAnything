@@ -20,6 +20,9 @@
 .top-row {
   margin: 5em 0;
 }
+.display-inline {
+  display: inline-block !important;
+}
 
 /****** LINKS ******/
 a:hover {
@@ -166,6 +169,19 @@ footer.page-footer div.footer-copyright {
   padding-left: 15px;
   padding-right: 15px;
   width: 110px;
+}
+.editor {
+  padding: 10px;
+  background-color: black;
+}
+.editor-msg {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom: 1px solid #42a5f5;
+  border-right: 1px solid #42a5f5;
+  border-left: 1px solid #42a5f5;
+  padding: 5px;
+  text-align: center;
 }
 
 /*  Footer */
