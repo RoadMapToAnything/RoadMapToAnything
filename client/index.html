@@ -18,7 +18,6 @@
 
   <body>
 
-
     <div ui-view="header"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
@@ -29,9 +28,12 @@
     <div class="container">
       <div ui-view="welcome"></div>
       <div ui-view="browse"></div>
+      <!-- <div ui-view="about"></div> -->
       <div ui-view="content"></div>
       <div ui-view="signup"></div>
     </div>
+    
+    <div ui-view="about"></div>
 
     <!-- Modals -->
     <div id="auth-modal" class="modal" ui-view="authModal"></div>
@@ -49,6 +51,8 @@
 
   <!-- Dependencies -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/livestamp/1.1.2/livestamp.min.js"></script>
   <!-- A library to make connecting lines between elements -->
   <script src="non_bower_dependencies/jquery-connections/jquery.connections.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
