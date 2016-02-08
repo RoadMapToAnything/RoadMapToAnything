@@ -6,9 +6,17 @@ angular.module('creation.ctrl', ['services.server'])
 
   $scope.nodeType = "Blog Post";
 
-  var clearInputs = function (){
+  var clearAllInputs = function (){
     $scope.roadmapTitle = '';
     $scope.roadmapDescription = '';
+    $scope.nodeTitle = '';
+    $scope.nodeDescription = '';
+    $scope.nodeType = 'Blog Post';
+    $scope.nodeUrl = '';
+    $scope.nodeImageUrl = '';
+  };
+
+  var clearNodeInputs = function (){
     $scope.nodeTitle = '';
     $scope.nodeDescription = '';
     $scope.nodeType = 'Blog Post';
@@ -53,7 +61,7 @@ angular.module('creation.ctrl', ['services.server'])
   $scope.submitAndRefresh = function() {
     checkThenCreate()
     .then(function() {
-      clearInputs();
+      clearNodeInputs();
       Materialize.updateTextFields();
     });
   };
@@ -65,7 +73,7 @@ angular.module('creation.ctrl', ['services.server'])
       $('.button-collapse').sideNav('hide');
       $('.lean-overlay').remove();
       $state.go('home.roadmapTemplate', { 'roadmapID': roadmapId });
-      clearInputs();
+      clearAllInputs();
       roadmapId = '';
     }, 
     function(err){
