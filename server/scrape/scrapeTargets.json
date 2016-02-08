@@ -67,42 +67,97 @@
     },
 
     {
-      "tag": "img.header",
+      "tag": "#splash img",
       "attr": "src"
     },
 
     {
-      "tag": "img.hero",
+      "tag": "#landing img",
       "attr": "src"
     },
 
     {
-      "tag": "img.splash",
+      "tag": ".splash img",
       "attr": "src"
     },
 
     {
-      "tag": "img.logo",
+      "tag": ".landing img",
       "attr": "src"
     },
 
     {
-      "tag": "img.brand",
+      "tag": "#logo img",
       "attr": "src"
     },
 
     {
-      "tag": "p>img",
+      "tag": ".logo img",
       "attr": "src"
     },
 
     {
-      "tag": ".content>img",
+      "tag": ".w3-container img",
       "attr": "src"
     },
 
     {
-      "tag": "body>img",
+      "tag": ".infobox img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header1 img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#header2 img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".header img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "p img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#article img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "#content img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".article img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".content img",
+      "attr": "src"
+    },
+
+    {
+      "tag": ".lpxcenterpageinner img",
+      "attr": "src"
+    },
+
+    {
+      "tag": "body img",
       "attr": "src"
     },
 
@@ -247,6 +302,16 @@
       "tag": "span",
       "prop": "itemprop",
       "val": "name",
+      "text": true
+    },
+
+    {
+      "tag": "a.thb-n",
+      "text": true
+    },
+
+    {
+      "tag": ".submitted a",
       "text": true
     }
   ],
