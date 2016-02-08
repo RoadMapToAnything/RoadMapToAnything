@@ -113,8 +113,8 @@ angular.module('app', [
     }
   })
 
-  .state('/about', { //maybe rename as explore?
-      url: '/about',
+  .state('home.about', { 
+      url: 'about',
       views: {
         'content@': {
           templateUrl: 'app/main/about.html',
