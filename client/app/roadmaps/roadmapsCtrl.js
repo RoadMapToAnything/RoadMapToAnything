@@ -81,6 +81,39 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       });
   };
 
+  //roadMapTitle
+
+  $scope.hideTitle = false;
+
+  $scope.showTitleEditor = function (boolean){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    var storedTitle;
+    
+    if( username !== roadmapAuthor ){
+      $scope.hideTitle = false;
+      console.log("author fail");
+    } else {
+      $scope.hideTitle = boolean;
+      return $scope.hideTitle;
+    }
+
+  };
+
+  $scope.saveTitleEdit = function (){
+    var newProperty = $('#main-title').val();
+    var updateObj = {};
+    updateObj['_id'] = roadmapId;
+    updateObj['title'] = newProperty;
+    Server.updateRoadmap(updateObj)
+      .then(function(node) {
+      $scope.hideTitle = false;
+      $scope.roadMapTitle = newProperty;
+    })
+      .catch(function(){
+        console.log('problem updating map title', err);
+      });
+  }
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){

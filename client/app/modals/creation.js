@@ -35,6 +35,8 @@ angular.module('creation.ctrl', ['services.server'])
   };
 
   var createNode = function() {
+    console.log("* calling createNode *");
+    console.log('roadmapID', roadmapId);
     return Server.createNode({
       title: $scope.nodeTitle,
       description: $scope.nodeDescription,

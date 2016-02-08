@@ -79,7 +79,21 @@
   <!-- Roadmap Title -->
 
 <div class="col s8 roadmap-title">
-  <h3 class="center-align" ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
+  <h3 ng-hide="hideTitle"
+      ng-click="showTitleEditor(true)"
+      class="center-align"
+      ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
+    <div class="input-field col s12"
+         ng-show="hideTitle">
+      <input id="main-title"
+             value="{{ roadMapTitle }}"
+             type="text"
+             class="validate">
+      <span class="editor-buttons">
+        <button ng-click="saveTitleEdit()" class="save btn-flat">Save</button>
+        <button class="cancel btn-flat" ng-click="showTitleEditor(false)">Cancel</button>
+      </span>
+    </div>
   <div class="divider"></div>
 
    <!-- Nodes -->

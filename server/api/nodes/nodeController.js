@@ -7,7 +7,6 @@ var Node              = require('./nodeModel.js'),
 module.exports = {
 
   createNode : function (req, res, next) {
-
     var username = getAuthHeader(req).name;
     var newNode = req.body;
 
