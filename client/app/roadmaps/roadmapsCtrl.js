@@ -25,6 +25,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
+  $scope.currentCreationTitle = 'New node title';
+  $scope.currentCreationDescription = 'New node description';
+  $scope.currentCreationType = 'New node type';
+  $scope.currentCreationLink = 'New node link (optional)';
+  $scope.currentCreationImage = 'New node image (optional)';
+
+
+
   $scope.urlToScrape = '';
   $scope.displayUrl = '';
   $scope.scrape = {};

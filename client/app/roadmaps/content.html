@@ -84,31 +84,31 @@
           <span ng-hide="hideText(currentIndex, 'title', 'box')"
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title"><b>Add a Node</b></span>
-<!--           <div class="input-field col s12" 
-               ng-show="hideText($index, 'title', 'box')">
-            <input id="{{'box-title-' + currentIndex }}"
-                   value="{{ getPlaceholder(currentIndex, 'title') }}"
-                   type="text" 
-                   class="validate">
-            <span class="editor-buttons">
-              <button ng-click="saveEdit(currentIndex, 'title', 'box')"
-                      class="save btn-flat">Save</button>
-              <button ng-click="showEditor(currentIndex, 'title', false, 'box')"
-                      class="cancel btn-flat">Cancel</button>
-            </span>
-          </div> -->
-
-
-          
-          <div class="input-field col s12">
+          <div class="input-field col s12 blue lighten-4">
             <input id="{{'box-description-' + currentIndex }}"
-                   value="Paste link here"
+                   value="Paste node link here to get info automatically"
                    type="url">
             <span class="editor-buttons">
               <button ng-click="checkAndSubmit()"
                       class="save btn-flat">Get Info</button>
               <button class="cancel btn-flat">Cancel</button>
             </span>
+          </div>
+            <input id="node-creation-title"
+                   ng-model="currentCreationTitle"
+                   type="text">
+            <input id="node-creation-description"
+                   ng-model="currentCreationDescription"
+                   type="text">
+            <input id="node-creation-type"
+                   ng-model="currentCreationType"
+                   type="text">
+            <input id="node-creation-link"
+                   ng-model="currentCreationLink"
+                   type="url">
+            <input id="node-creation-image"
+                   ng-model="currentCreationImage"
+                   type="url">
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
