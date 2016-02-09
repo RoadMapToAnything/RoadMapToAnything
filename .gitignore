@@ -25,3 +25,6 @@ pids
 *.pid
 *.seed
 .travis.yml
+
+# API Keys
+_private-config.json

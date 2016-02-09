@@ -7,7 +7,8 @@ var User = require('./userModel.js'),
     getAuthHeader = require('basic-auth');
     
 
-bcrypt.hash = Promise.promisify(bcrypt.hash); // Promise.promisifyAll did not work
+bcrypt.hash    = Promise.promisify(bcrypt.hash);    // Promise.promisifyAll did not work
+bcrypt.compare = Promise.promisify(bcrypt.compare); // Promise.promisifyAll did not work
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
@@ -32,6 +33,28 @@ module.exports = {
     });
   },
 
+  findByUsername : function(username) {
+    return User.findOne({username: username});
+  },
+
+  validateUser : function (userFromDB, userFromClient) {
+    return bcrypt.compare(userFromDB.password, userFromClient.pass);
+  },
+
+  findByFacebookId : function(facebookUserId) {
+    return User.findOne({facebookUserId: facebookUserId});
+  },
+
+  createUserFacebook : function(newUser){
+    return User(newUser).save();
+  },
+
+  generateAuthToken: generateAuthToken,
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *         Route Handlers                *
+   * * * * * * * * * * * * * * * * * * * * */
+
   updateRoadmap : function(command, req, res, next) {
     var username = getAuthHeader(req).name;
     if (!username) res.sendStatus(403);
@@ -42,19 +65,23 @@ module.exports = {
       if (!user) return res.sendStatus(404); 
       res.status(200).json({data: user});
     })
-    .catch(handleError.bind(null, next));
+    .catch(handleError(next));
   },
 
   createUser : function(req, res, next){
     var newUser = req.body;
 
-    User(newUser).save()
-      .then( hashPassword )
+    User.findOne({username: newUser.username})
+      .then(function(userExists){
+        if (userExists) res.sendStatus(409); //username taken
+        else return User(newUser).save()
+      })
+      .then(hashPassword)
       .spread( generateAuthToken )
       .then(function(results){
-        res.status(201).json({data: results});
+          res.status(201).json({data: results});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   login : function(req, res, next){
@@ -72,7 +99,7 @@ module.exports = {
       .then(function(results){
         res.status(200).json({data: results});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getUsers: function(req, res, next) {
@@ -84,7 +111,7 @@ module.exports = {
         if (!users) return res.sendStatus(404);
         res.status(200).json({data: users});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   getUserByName: function(req, res, next) {
@@ -94,7 +121,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   updateUserByName: function(req, res, next) {
@@ -114,7 +141,7 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   deleteUserByName: function(req, res, next) {
@@ -128,7 +155,7 @@ module.exports = {
         user.remove();
         res.status(201).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   },
 
   // Handles requests to /api/nodes/:nodeID/complete
@@ -144,9 +171,6 @@ module.exports = {
         if (!user) return res.sendStatus(404); 
         res.status(200).json({data: user});
       })
-      .catch(handleError.bind(null, next));
+      .catch(handleError(next));
   }
-
-
 };
-

@@ -63,6 +63,18 @@ angular.module('app', [
         }
       }
     })
+    .state('home.signin-auto', {
+        url: 'signin/auto?username&authToken',
+        views: {
+          'content@': {
+            templateUrl: 'app/dashboard/dashboard.html',
+            controller: function ($stateParams, $state, User) {
+              User.authResponse($stateParams);
+              $state.go('home.dashboard');
+            }
+          }     
+        }
+    })
     //state for dashboard
     .state('home.dashboard', {
       auth: true,
