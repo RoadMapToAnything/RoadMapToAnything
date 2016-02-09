@@ -92,7 +92,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     
     if( username !== roadmapAuthor ){
       $scope.hideTitle = false;
-      console.log("author fail");
     } else {
       $scope.hideTitle = boolean;
       return $scope.hideTitle;
