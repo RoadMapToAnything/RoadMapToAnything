@@ -152,7 +152,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
 
   // When roadmap (identified by its id) data is fetched, set it
-  Server.getRoadmapById(roadmapId).then(function (res){
+  function populateData (stop){
+    stop = stop || false;
+    Server.getRoadmapById(roadmapId).then(function (res){
+      if( !res.nodes.length && stop === false){
+        populateData(true);
+      }
       $scope.currentRoadMapData = res;
       console.log($scope.currentRoadMapData,'I am the roadmap');
     }, function(err){
@@ -186,7 +191,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         '</div>'
         );
       }
-  });
+    });
+  }
+
+  populateData();
 
   // Render Title
   // Assumes title links and description properties from get method
