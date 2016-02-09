@@ -118,25 +118,30 @@ module.exports.setUserHooks = function(UserSchema) {
  * * * * * * * * * * * * * * * * * * * * */
 
 
-var handleRating = function(roadmapID, next){
-  var Roadmap = require('./roadmaps/roadmapModel.js');
-  return Roadmap.findById(roadmapID, function(err, roadmap){
-    if (err) console.log(err);
-    var upvotes = roadmap.upvotes;
-    var downvotes = roadmap.downvotes;
-    // upvotes and downvotes are each arrays of ids so we can just take the length of each
-    var result = upvotes.length - downvotes.length;
-    roadmap.rating = result;
-    roadmap.save(function(err){
-      if (err) console.log(err);
-    })
-    next();
-  })
-}
+var updateRating = function(roadmap) {
+  roadmap.rating = roadmap.upvotes.length - roadmap.downvotes.length;
+  roadmap.save();
+};
+
+// var handleRating = function(roadmapID, next){
+//   var Roadmap = require('./roadmaps/roadmapModel.js');
+//   return Roadmap.findById(roadmapID, function(err, roadmap){
+//     if (err) console.log(err);
+//     var upvotes = roadmap.upvotes;
+//     var downvotes = roadmap.downvotes;
+//     // upvotes and downvotes are each arrays of ids so we can just take the length of each
+//     var result = upvotes.length - downvotes.length;
+//     roadmap.rating = result;
+//     console.log('PRESAVE', roadmap);
+//     roadmap.save(function(err, roadmap){
+//       console.log('PRESAVE', roadmap);
+//       if (err) console.log(err);
+//     })
+//     next();
+//   })
+// }
 
 // If a user upvotes a roadmap, remove their downvote and vice versa
-
-
 var upvoteDownvote = function(next) {
   var addSet = this._update.$addToSet;
   var roadmapID = this._conditions;
@@ -148,7 +153,7 @@ var upvoteDownvote = function(next) {
   }
 
   // Since our upvote/downvotes already have this trigger let's just calculate our new rating
-  handleRating(roadmapID,next);
+  // handleRating(roadmapID,next);
   
   next();
 };
@@ -211,6 +216,18 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
     upvoteDownvote.call(query, function() {
       setUpdatedTimestamp.call(query, next);
     });
+  });
+
+  RoadmapSchema.post('update', function(roadmap) {
+    updateRating(roadmap);
+  });
+
+  RoadmapSchema.post('findOneAndUpdate', function(roadmap) {
+    updateRating(roadmap);
+  });
+
+  RoadmapSchema.post('findByIdAndUpdate', function(roadmap) {
+    updateRating(roadmap);
   });
 };
 

@@ -1,4 +1,5 @@
 var handleError = require('../util.js').handleError,
+    request = require('request-promise'),
     scrape      = require('./scraper.js');
 
 var blacklist = {
@@ -14,9 +15,9 @@ module.exports = {
     var extension = url.split('.').pop();
     if (blacklist[extension]) return res.sendStatus(400);
 
-    scrape(url)
-    .then(function (scrapes) {
-      res.status(200).json({data: scrapes});
+    request(url)
+    .then(function (html) {
+      res.status(200).json({ data: scrape(html, url) });
     });
   }
 
