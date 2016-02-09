@@ -69,7 +69,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       console.log("author fail");
     } else {
 
-      $scope.nodeCreator = boolean;
+      $scope.displayNodeCreator = boolean;
     }
   }
 
@@ -87,11 +87,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     .then(function(res){
       populateData();
       console.log("node created");
-      $scope.showEditor(0, 'circle', false, 'mini');
+      $scope.displayNodeCreator = false;
       Materialize.toast('Node Added!', 4000, 'orangeToast');
       $scope.resetCreationForm();
     });
   };
+
+  $scope.closeNodeCreator = function(){
+    $scope.displayNodeCreator = false;
+    $scope.resetCreationForm();
+  }
 
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;

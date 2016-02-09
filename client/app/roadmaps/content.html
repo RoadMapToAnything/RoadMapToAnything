@@ -75,7 +75,7 @@
 
 
 <!-- Node Creation Box -->
-<div ng-show="hideText($index, 'circle', 'mini')"
+<div ng-show="displayNodeCreator"
      class="creation-box">
 
   <div class="row">
@@ -86,7 +86,7 @@
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title"><b>Add a Node</b></span>
                 <span class="right">
-                  <i ng-click="showEditor(0, 'circle', false, 'mini');"
+                  <i ng-click="closeNodeCreator()"
                      class="fa fa-times fa-lg"></i>
                 </span>
           <div class="input-field col s12 blue lighten-4">
@@ -175,13 +175,13 @@
       </div>
     </div>
   
-  <div ng-hide="isAuthor()" class="center-align connector"></div>
+    <div ng-hide="isAuthor()" class="center-align connector"></div>
 
-   <div ng-click="showEditor($index, 'circle', true, 'mini')">
-    <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
-    <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
-    <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
-  </div>
+     <div ng-click="showNodeCreator($index, true)">
+      <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
+      <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
+      <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
+    </div>
 
   </div>
 
