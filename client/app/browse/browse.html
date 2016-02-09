@@ -1,65 +1,20 @@
-<!-- <div class="container">
+<!--Browse Page -->
   <div class="browse-box">
-    <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn browseBtn">Go To My Maps</a>
-  </div>
-  <div class='search'>
-    <label>Search: <input ng-model="searchText"></label>
-  </div>
-  <div ng-show="showSigninMsg">You must be signed in first</div> -->
-  <!--Roadmaps Table-->
-<!--   <div class="browse-table">
-    <div class="map-title"><h5>Roadmaps</h5></div>
-      <div class="follow-maps">
-        <table class="bordered striped highlight0+56+">
-          <tbody>
-            <tr>
-              <th>Nodes</th>
-              <th>Roadmap</th>
-              <th>Add To My Maps</th>
-            </tr>
-          </tbody>
-          <tbody class="browse-map" ng-repeat="map in mapData | filter: searchText">
-            <tr>
-              <td>
-              {{ map.totalNodes }}</td>
-              <td class="truncate" ng-click="goToMap( map._id )">
-                <span class="mousetoHand">{{ map.title }}</span></td>
-              <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn">Add!</a></td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div> -->
-
-
-<!--browse updated collapsible menu-->
-<!-- <div class="container"> -->
-
-
-
-
-
-  <div class="browse-box">
-   <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn cyan lighten-3 browseBtn">Go To My Maps</a>
+    <a ng-click="goToDash()" ng-show="isLoggedIn()" class="waves-effect waves-light btn cyan lighten-3 browseBtn">Go To My Maps</a>
   </div>
   <br>
   <div class='search'>
     <label>Search: <input ng-model="searchText"></label>
   </div>
   <br>
-  <a class='dropdown-button btn' href='#' data-activates='dropdown3'>Filters</a>
+  <a class='cyan lighten-3 dropdown-button btn' href='#' data-activates='dropdown3'>Filters</a>
 
   <!-- Dropdown Structure -->
   <ul id='dropdown3' class='dropdown-content'>
-    <li><a href="#!" ng-click="">Rating</a></li>
+    <li><a href="#!" ng-click="" class="cyan-text text-darken-1">Rating</a></li>
     <li class="divider"></li>
-    <li><a href="#!" ng-click="">Comments</a></li>
+    <li><a href="#!" ng-click="" class="cyan-text text-darken-1">Comments</a></li>
   </ul>
-
-
-
- 
   <br>
   <br>
   <div ng-show="showSigninMsg">You must be signed in first</div>
@@ -121,9 +76,4 @@
      );
 
   });
-
-  // To use timeago
-   // $(document).ready(function() {
-   //   $("time.timeago").timeago();
-   // });
   </script>
