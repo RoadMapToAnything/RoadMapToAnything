@@ -85,6 +85,10 @@
           <span ng-hide="hideText(currentIndex, 'title', 'box')"
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title"><b>Add a Node</b></span>
+                <span class="right">
+                  <i ng-click="showEditor(0, 'circle', false, 'mini');"
+                     class="fa fa-times fa-lg"></i>
+                </span>
           <div class="input-field col s12 blue lighten-4">
             <input id="creation-scraper"
                    ng-model="urlToScrape"
@@ -132,7 +136,6 @@
           </ul>
         </div>
         <div class="card-action">
-          <button ng-click="createNode($index)" class="link-box-btn btn">Add Node</button>
         </div>
       </div>
     </div>

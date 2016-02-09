@@ -25,13 +25,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
-  $scope.currentCreationTitle = 'New node title';
-  $scope.currentCreationDescription = 'New node description';
-  $scope.currentCreationType = 'New node type';
-  $scope.currentCreationLink = 'New node link (optional)';
-  $scope.currentCreationImage = 'New node image (optional)';
+  $scope.resetCreationForm = function() {
+    $scope.urlToScrape = "";
+    $scope.currentCreationTitle = 'New node title';
+    $scope.currentCreationDescription = 'New node description';
+    $scope.currentCreationType = 'New node type';
+    $scope.currentCreationLink = 'New node link (optional)';
+    $scope.currentCreationImage = 'New node image (optional)';
+  }
 
-
+  $scope.resetCreationForm();
 
   $scope.urlToScrape = '';
   $scope.displayUrl = '';
@@ -86,7 +89,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       console.log("node created");
       $scope.showEditor(0, 'circle', false, 'mini');
       Materialize.toast('Node Added!', 4000, 'orangeToast');
-
+      $scope.resetCreationForm();
     });
   };
 
@@ -98,9 +101,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     if( username !== roadmapAuthor ){
       return false;
     } else {
-      if( field === 'circle' && idPrefix === 'mini'){
-
-      }
       if( !$scope[elementID] ){
         return  false;
       } else {
@@ -119,6 +119,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope[elementID] = false;
       console.log("author fail");
     } else {
+      if( field === 'circle' && idPrefix === 'mini'){
+        $scope.resetCreationForm();
+      }
       if( !$scope.currentResourceURL ) {
         $scope.currentResourceURL = $scope.currentLinks[0];
       }
