@@ -246,7 +246,7 @@ describe('User Factory', function () {
       expect(User.getProgress).to.be.a('function');
     });
 
-    xit('Should send a request if getting progress with no local data', function() {
+    it('Should send a request if getting progress with no local data', function() {
       var response;
       $httpBackend.expectGET('/api/users/' + data.username).respond({data: data});
       User.getRoadmapProgress().then(function (res) {
@@ -258,7 +258,7 @@ describe('User Factory', function () {
       expect(response[0]).to.deep.equal({_id: '0000010', completed: 1, total: 3, percent: 33});
     });
 
-    xit('Should send not send a request if getting progress with local data', function() {
+    it('Should send not send a request if getting progress with local data', function() {
       var response = User.getRoadmapProgress(data);
 
       expect(response).to.be.an('array');
