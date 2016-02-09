@@ -1,22 +1,5 @@
-/*about page*/
-ul.staff
-{
-/*  margin-bottom: 3em;*/
-}
 
-ul.staff li
-{
-  display: inline-block;
-}
-
-ul.staff li img
-{
-  width: 80%;
-  border-radius: 50%;
-  vertical-align: middle;
-}
- 
-/*footer*/ 
+ /*footer*/ 
 
 .copyright{
   margin-left:auto !important; 
