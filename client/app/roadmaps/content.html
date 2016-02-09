@@ -73,6 +73,81 @@
   </div>
 </div>
 
+
+<!-- Node Creation Box -->
+<div class="creation-box">
+
+  <div class="row">
+    <div class="col s12 m16">
+      <div class="card hoverable teal lighten-5">
+        <div class="card-content">
+          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                class="card-title"><b>Add a Node</b></span>
+          <div class="input-field col s12" 
+               ng-show="hideText($index, 'title', 'box')">
+            <input id="{{'box-title-' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'title') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'title', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'title', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
+
+
+          <p ng-hide="hideText(currentIndex, 'description', 'box')"
+             ng-click="showEditor(currentIndex, 'description', true, 'box')"
+             ng-bind="currentDescription"
+             class="author-input">This is the description of why this matters.</p>
+          <div class="input-field col s12 " 
+               ng-show="hideText($index, 'description', 'box')">
+            <input id="{{'box-description-' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'description') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'description', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'description', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
+          <ul>
+            <li ng-repeat="link in currentLinks">
+              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+                <a class="truncate"
+                   href="{{link}}">{{link}}</a>
+                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')"
+                   class="author-input">[edit link]</a>
+              </div>
+              <div class="input-field col s12"
+                   ng-show="hideText($index, 'resourceURL', 'box')">
+                <input id="{{'box-resourceURL-' + currentIndex }}"
+                       value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
+                       type="text" 
+                       class="validate">
+                <span class="editor-buttons">
+                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
+                          class="save btn-flat">Save</button>
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')"
+                          class="cancel btn-flat">Cancel</button>
+                </span>
+            </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <button class="link-box-btn btn" ng-click="submitCompletedNode()">Node Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Editor Mode Message -->
   <div id="editor-placeholder"></div>
 
@@ -90,7 +165,7 @@
              type="text"
              class="validate">
       <span class="editor-buttons">
-        <button ng-click="saveTitleEdit()" class="save btn-flat">Save</button>
+        <button ngclick="saveTitleEdit()" class="save btn-flat">Save</button>
         <button class="cancel btn-flat" ng-click="showTitleEditor(false)">Cancel</button>
       </span>
     </div>
@@ -105,9 +180,27 @@
       <div class="number">{{ node.index + 1 }}
       </div>
     </div>
+  
+  <div ng-hide="isAuthor()" class="center-align connector"></div>
 
-  <div class="center-align connector"></div>
-
+   <div ng-hide="hideText($index, 'circle', 'mini')"
+       ng-click="showEditor($index, 'circle', true, 'mini')">
+    <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
+    <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
+    <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
+  </div>
+<!--  <div class="input-field col s1 " 
+       ng-show="hideText($index, 'circle', 'mini')">
+    <input id="{{'mini-circle-' + $index }}"
+           value="{{ getPlaceholder($index, 'circle') }}"
+           type="text" 
+           class="validate">
+    <span class="editor-buttons">
+      <button ng-click="saveEdit($index, 'circle', 'mini')"
+              class="save btn-flat">Save</button>
+      <button ng-click="showEditor($index, 'circle', false, 'mini')"
+              class="cancel btn-flat">Cancel</button>
+    </span> -->
   </div>
 
       <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>

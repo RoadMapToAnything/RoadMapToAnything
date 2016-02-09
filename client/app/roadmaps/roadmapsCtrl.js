@@ -15,6 +15,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.showComments = true;
   };
 
+  $scope.isAuthor = function (){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    if (username === roadmapAuthor){
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
