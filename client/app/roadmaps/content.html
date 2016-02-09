@@ -75,7 +75,8 @@
 
 
 <!-- Node Creation Box -->
-<div class="creation-box">
+<div ng-show="hideText($index, 'circle', 'mini')"
+     class="creation-box">
 
   <div class="row">
     <div class="col s12 m16">
@@ -85,8 +86,8 @@
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title"><b>Add a Node</b></span>
           <div class="input-field col s12 blue lighten-4">
-            <input id="{{'box-description-' + currentIndex }}"
-                   value="Paste node link here to get info automatically"
+            <input id="creation-scraper"
+                   ng-model="urlToScrape"
                    type="url">
             <span class="editor-buttons">
               <button ng-click="checkAndSubmit()"
@@ -109,6 +110,7 @@
             <input id="node-creation-image"
                    ng-model="currentCreationImage"
                    type="url">
+            <button class="link-box-btn btn" ng-click="createNode($index)">Add Node</button>
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
@@ -130,7 +132,7 @@
           </ul>
         </div>
         <div class="card-action">
-          <button class="link-box-btn btn" >Add Node</button>
+          <button ng-click="createNode($index)" class="link-box-btn btn">Add Node</button>
         </div>
       </div>
     </div>
@@ -172,24 +174,12 @@
   
   <div ng-hide="isAuthor()" class="center-align connector"></div>
 
-   <div ng-hide="hideText($index, 'circle', 'mini')"
-       ng-click="showEditor($index, 'circle', true, 'mini')">
+   <div ng-click="showEditor($index, 'circle', true, 'mini')">
     <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
     <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
     <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
   </div>
-<!--  <div class="input-field col s1 " 
-       ng-show="hideText($index, 'circle', 'mini')">
-    <input id="{{'mini-circle-' + $index }}"
-           value="{{ getPlaceholder($index, 'circle') }}"
-           type="text" 
-           class="validate">
-    <span class="editor-buttons">
-      <button ng-click="saveEdit($index, 'circle', 'mini')"
-              class="save btn-flat">Save</button>
-      <button ng-click="showEditor($index, 'circle', false, 'mini')"
-              class="cancel btn-flat">Cancel</button>
-    </span> -->
+
   </div>
 
       <button class="link-box-btn btn doneBtn" ng-click="submitCompletedRoadmap()">Map Done</button>

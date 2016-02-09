@@ -38,7 +38,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.scrape = {};
 
   $scope.checkAndSubmit = function() {
+    console.log("scrape initiated");
     var url = $scope.urlToScrape;
+    console.log("url" ,url);
     if (url.length < 4) return;
     if (url.substring(0, 4) !== 'http') url = 'http://' + url;
 
@@ -47,8 +49,44 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     Server.scrape(url)
     .then(function (data) {
       console.log('web scrape date is', data);
-      $scope.scrape = {};
-      $scope.scrape = data;
+        $scope.currentCreationTitle = data.title;
+        $scope.currentCreationDescription = data.description;
+        $scope.currentCreationType = data.type;
+        $scope.currentCreationLink = url;
+        $scope.currentCreationImage = data.imageUrl;
+    });
+  };
+
+  $scope.showNodeCreator = function($index, boolean){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
+    if( username !== roadmapAuthor ){
+      $scope.nodeCreator = false;
+      console.log("author fail");
+    } else {
+
+      $scope.nodeCreator = boolean;
+    }
+  }
+
+  $scope.createNode = function($index) {
+    console.log("* calling createNode *");
+    console.log('roadmapID', roadmapId);
+    return Server.createNode({
+      title: $scope.currentCreationTitle,
+      description: $scope.currentCreationDescription,
+      resourceType: $scope.currentCreationType,
+      resourceURL: $scope.currentCreationLink,
+      imageUrl: $scope.currentCreationImage,
+      parentRoadmap: roadmapId
+    })
+    .then(function(res){
+      populateData();
+      console.log("node created");
+      $scope.showEditor(0, 'circle', false, 'mini');
+      Materialize.toast('Node Added!', 4000, 'orangeToast');
+
     });
   };
 
@@ -60,6 +98,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     if( username !== roadmapAuthor ){
       return false;
     } else {
+      if( field === 'circle' && idPrefix === 'mini'){
+
+      }
       if( !$scope[elementID] ){
         return  false;
       } else {
@@ -82,10 +123,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         $scope.currentResourceURL = $scope.currentLinks[0];
       }
 
-      if(boolean === false){
+      if(boolean === false && field !== 'circle'){
         $(elementID).val($scope.renderedNodes[$index][field]);
       }
-
+      console.log("SHOW EDITOR");
+      console.log('elementID', elementID);
+      console.log('$scope[elementID]', $scope[elementID]);
       $scope[elementID] = boolean;
     }
 
