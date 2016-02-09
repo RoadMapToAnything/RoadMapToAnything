@@ -7,7 +7,8 @@ var User = require('./userModel.js'),
     getAuthHeader = require('basic-auth');
     
 
-bcrypt.hash = Promise.promisify(bcrypt.hash); // Promise.promisifyAll did not work
+bcrypt.hash    = Promise.promisify(bcrypt.hash);    // Promise.promisifyAll did not work
+bcrypt.compare = Promise.promisify(bcrypt.compare); // Promise.promisifyAll did not work
 
 var populateFields = 'authoredRoadmaps.nodes inProgress.roadmaps.nodes inProgress.nodes completedRoadmaps.nodes';
 
@@ -32,6 +33,28 @@ module.exports = {
     });
   },
 
+  findByUsername : function(username) {
+    return User.findOne({username: username});
+  },
+
+  validateUser : function (userFromDB, userFromClient) {
+    return bcrypt.compare(userFromDB.password, userFromClient.pass);
+  },
+
+  findByFacebookId : function(facebookUserId) {
+    return User.findOne({facebookUserId: facebookUserId});
+  },
+
+  createUserFacebook : function(newUser){
+    return User(newUser).save();
+  },
+
+  generateAuthToken: generateAuthToken,
+
+  /* * * * * * * * * * * * * * * * * * * * * 
+   *         Route Handlers                *
+   * * * * * * * * * * * * * * * * * * * * */
+
   updateRoadmap : function(command, req, res, next) {
     var username = getAuthHeader(req).name;
     if (!username) res.sendStatus(403);
@@ -47,38 +70,16 @@ module.exports = {
 
   createUser : function(req, res, next){
     var newUser = req.body;
-    var facebookToken = req.body.accessToken; // if FB user
 
     User.findOne({username: newUser.username})
       .then(function(userExists){
-        if      (userExists  && !facebookToken) res.sendStatus(409);
-        else if (userExists  &&  facebookToken) {
-          return [userExists, userExists.password];
-        }
-        else if (!userExists && !facebookToken) {
-          return User(newUser)
-                   .save()
-                   .then(hashPassword);
-        }
-        else if (!userExists && facebookToken) {
-          return User(newUser)
-                   .save()
-                   .then(function(savedUser){
-                     return [savedUser, savedUser.password];
-                   });
-        }
-      })  
+        if (userExists) res.sendStatus(409); //username taken
+        else return User(newUser).save()
+      })
+      .then(hashPassword)
       .spread( generateAuthToken )
       .then(function(results){
-        
-        // New user via Facebook
-        if (facebookToken) {
-          res.redirect('/#/signin/auto?username='  + results.username
-                                    +'&authToken=' + results.authToken);
-        // Default
-        } else {
           res.status(201).json({data: results});
-        }
       })
       .catch(handleError(next));
   },
