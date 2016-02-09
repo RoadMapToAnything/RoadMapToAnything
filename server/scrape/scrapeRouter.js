@@ -1,5 +1,5 @@
 var scrapeController = require('./scrapeController.js'),
-    auth = require('../auth.js').authenticate;
+    auth = require('../auth/auth.js').authenticate;
 
 module.exports = function (Router) {
 
