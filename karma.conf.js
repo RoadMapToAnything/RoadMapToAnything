@@ -26,7 +26,10 @@ module.exports = function(config) {
 
       // our client-side and general spec files
       'specs/*.js',
-      'specs/client/**/*.js'
+      'specs/client/**/*.js',
+
+      //lodash
+      'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js'
 
     ],
 

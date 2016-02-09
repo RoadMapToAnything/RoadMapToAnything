@@ -18,10 +18,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    console.log('hideText called on', elementID);
     var username = localStorage.getItem('user.username');
     var roadmapAuthor = $scope.currentRoadMapData.author.username;
-    
     if( username !== roadmapAuthor ){
       return false;
     } else {
@@ -59,18 +57,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.getPlaceholder = function($index, field){
     var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-    if( field === 'resourceURL'){
-      console.log('capitalizedField', capitalizedField);
-      console.log('current resourceURL getPlaceholder', $scope['current' + capitalizedField]);
-    }
     return $scope['current' + capitalizedField];
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    console.log('elementID', $(elementID));
     var newProperty = $(elementID).val();
-    console.log('newProperty', newProperty);
     var updateObj = {};
     updateObj['_id'] = $scope.renderedNodes[$index]._id;
     updateObj[field] = newProperty;
@@ -79,7 +71,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.showEditor($index, field, false, idPrefix);
       $scope.renderedNodes[$index][field] = newProperty;
       var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-      console.log('capitalizedField', capitalizedField);
       $scope['current' + capitalizedField] = newProperty;
       if( field === 'resourceURL' ){
         $scope.currentLinks[0] = newProperty;
@@ -90,6 +81,38 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       });
   };
 
+  //roadMapTitle
+
+  $scope.hideTitle = false;
+
+  $scope.showTitleEditor = function (boolean){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    var storedTitle;
+    
+    if( username !== roadmapAuthor ){
+      $scope.hideTitle = false;
+    } else {
+      $scope.hideTitle = boolean;
+      return $scope.hideTitle;
+    }
+
+  };
+
+  $scope.saveTitleEdit = function (){
+    var newProperty = $('#main-title').val();
+    var updateObj = {};
+    updateObj['_id'] = roadmapId;
+    updateObj['title'] = newProperty;
+    Server.updateRoadmap(updateObj)
+      .then(function(node) {
+      $scope.hideTitle = false;
+      $scope.roadMapTitle = newProperty;
+    })
+      .catch(function(){
+        console.log('problem updating map title', err);
+      });
+  }
 
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
@@ -129,7 +152,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
 
   // When roadmap (identified by its id) data is fetched, set it
-  Server.getRoadmapById(roadmapId).then(function (res){
+  function populateData (stop){
+    stop = stop || false;
+    Server.getRoadmapById(roadmapId).then(function (res){
+      if( !res.nodes.length && stop === false){
+        populateData(true);
+      }
       $scope.currentRoadMapData = res;
       console.log($scope.currentRoadMapData,'I am the roadmap');
     }, function(err){
@@ -163,7 +191,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         '</div>'
         );
       }
-  });
+    });
+  }
+
+  populateData();
 
   // Render Title
   // Assumes title links and description properties from get method

@@ -43,7 +43,7 @@ angular.module('services.user', ['services.request'])
         _id: map._id,
         completed: completed,
         total: total,
-        percent: Math.floor(completed / total * 100)
+        percent: Math.floor(completed / total * 100) 
       });
     });
 

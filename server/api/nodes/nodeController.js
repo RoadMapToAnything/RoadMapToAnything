@@ -22,6 +22,7 @@ module.exports = {
         res.sendStatus(403);
         return null;
       } else {
+        console.log("JUST CREATED NEW NODE");
         return Node(newNode).save();
       }
     })
