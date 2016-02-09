@@ -1,4 +1,4 @@
-angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
+angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
 .controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadMapsFactory);
@@ -23,6 +23,25 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     } else {
       return false;
     }
+  };
+
+  $scope.urlToScrape = '';
+  $scope.displayUrl = '';
+  $scope.scrape = {};
+
+  $scope.checkAndSubmit = function() {
+    var url = $scope.urlToScrape;
+    if (url.length < 4) return;
+    if (url.substring(0, 4) !== 'http') url = 'http://' + url;
+
+    $scope.displayUrl = url;
+
+    Server.scrape(url)
+    .then(function (data) {
+      console.log('web scrape date is', data);
+      $scope.scrape = {};
+      $scope.scrape = data;
+    });
   };
 
   $scope.hideText = function ($index, field, idPrefix){
