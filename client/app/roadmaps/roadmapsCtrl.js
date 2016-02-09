@@ -133,9 +133,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       node.index = index;
     });
 
-    //array of uniq nodes
-    nodes = _.uniqBy(nodes, '_id');
-
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
 

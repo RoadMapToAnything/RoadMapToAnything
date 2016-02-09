@@ -18,7 +18,6 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
       $scope.myMaps = user.authoredRoadmaps;
       $scope.followed = user.inProgress.roadmaps;
       $scope.completed = user.completedRoadmaps;
-
       $scope.followed.forEach(function (map){
         var progress = User.getProgress(user, map._id);
         map.nodesCompleted = progress.completed;
