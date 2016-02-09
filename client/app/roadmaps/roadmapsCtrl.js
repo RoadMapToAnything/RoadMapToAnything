@@ -76,6 +76,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.createNode = function($index) {
     console.log("* calling createNode *");
     console.log('roadmapID', roadmapId);
+    $('#editor-placeholder').remove();
     return Server.createNode({
       title: $scope.currentCreationTitle,
       description: $scope.currentCreationDescription,
