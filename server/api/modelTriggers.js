@@ -216,17 +216,30 @@ module.exports.setRoadmapHooks = function(RoadmapSchema) {
  * * * * * * * * * * * * * * * * * * * * */
 
 module.exports.setNodeHooks = function(NodeSchema) {
-  NodeSchema.pre('save', function(next) {
+  NodeSchema.pre('save', function(next, req, callback) {
     // On creation of a Node, push it's ID to the parent Roadmaps nodes array
-    if (this.isNew) {
-      var Roadmap = require('./roadmaps/roadmapModel.js');
-      var parentRoadmapID = this.parentRoadmap;
-      var newNodeID = this._id;
 
-      var update = { $push:{ nodes: newNodeID } };
+    var Roadmap = require('./roadmaps/roadmapModel.js');
+    var parentRoadmapID = this.parentRoadmap;
+    var newNodeID = this._id;
+    var update;
+    var saveAtIndex = req && req.body && req.body.saveAtIndex;
+
+    if (this.isNew) {
+      // If saveAtIndex was provided in the request, save node at that position
+      if (saveAtIndex !== undefined) {
+        update = { $push: { nodes: {
+            $each: [newNodeID],
+            $position: Number(saveAtIndex)
+        }}};
+
+      // Otherwise, push node to the end of the array
+      } else {
+        update = { $push:{ nodes: newNodeID } };
+      }
 
       Roadmap.findByIdAndUpdate(parentRoadmapID, update)
-        .exec(function(err){ if (err) throw err; });     
+        .exec(function(err){ if (err) throw err; });
     }
 
     setCreatedTimestamp.call(this, next);
