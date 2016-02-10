@@ -18,12 +18,8 @@ module.exports = {
     request(url)
     .then(function (html) {
       var scrapedData = scrape(html, url)
-      .catch(function(err){
-        console.log("error with scrape request", err);
-      });
       res.status(200).json({ data: scrapedData });
     });
   }
 
 };
-

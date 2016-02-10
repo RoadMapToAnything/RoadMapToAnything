@@ -26,7 +26,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.resetCreationForm = function() {
-    $scope.urlToScrape = "";
+    $scope.urlToScrape = "Paste a link here to get info automatically";
     $scope.currentCreationTitle = 'New node title';
     $scope.currentCreationDescription = 'New node description';
     $scope.currentCreationType = 'New node type';
@@ -36,7 +36,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.resetCreationForm();
 
-  $scope.urlToScrape = '';
   $scope.displayUrl = '';
   $scope.scrape = {};
 
@@ -46,7 +45,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     if (url.substring(0, 4) !== 'http') url = 'http://' + url;
 
     $scope.displayUrl = url;
-
+    console.log("scraping url", url);
     Server.scrape(url)
     .then(function (data) {
       console.log('web scrape data is', data);
@@ -76,6 +75,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
     }
     $('#editor-placeholder').remove();
+
     return Server.createNode({
       title: $scope.currentCreationTitle,
       description: $scope.currentCreationDescription,
