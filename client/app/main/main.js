@@ -44,6 +44,7 @@ angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
       })
       .then(function(data){
         $('#creation-modal').closeModal();
+        $('.button-collapse').sideNav('hide');
         console.log('default node data', data);
         $state.go( 'home.roadmapTemplate',{ roadmapID: data.parentRoadmap } );
     })

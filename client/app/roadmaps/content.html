@@ -163,7 +163,25 @@
         <button class="cancel btn-flat" ng-click="showTitleEditor(false)">Cancel</button>
       </span>
     </div>
+
+      <p ng-hide="hideDesc"
+      ng-click="showDescEditor(true)"
+      class="center-align"
+      ng-bind="roadMapDesc">Roadmap Description</p>
+    <div class="input-field col s12"
+         ng-show="hideDesc">
+      <input id="main-desc"
+             value="{{ roadMapDesc }}"
+             type="text"
+             class="validate">
+      <span class="editor-buttons">
+        <button ngclick="saveDescEdit()" class="save btn-flat">Save</button>
+        <button class="cancel btn-flat" ng-click="showDescEditor(false)">Cancel</button>
+      </span>
+    </div>
+
   <div class="divider"></div>
+  <br>
 
    <!-- Nodes -->
 <div class="node-list container">
