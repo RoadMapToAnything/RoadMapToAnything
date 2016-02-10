@@ -35,8 +35,9 @@ angular.module('creation.ctrl', ['services.server'])
   };
 
   var createNode = function() {
-    console.log("* calling createNode *");
-    console.log('roadmapID', roadmapId);
+    if( $scope.nodeImageUrl === '' ){
+      $scope.nodeImageUrl = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
+    }
     return Server.createNode({
       title: $scope.nodeTitle,
       description: $scope.nodeDescription,
