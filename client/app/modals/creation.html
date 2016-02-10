@@ -6,69 +6,24 @@
 </script>
 
 <!-- Create Roadmap/Node Popup -->
-<div class="modal-content">
+<div class="modal-content" ng-controller="MainController">
 
   <!-- Roadmap Form -->
 
-  <h3>Create A Roadmap</h3>
+  <h4>Name Your Roadmap!</h4>
   <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s8">
-          <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle" required>
-          <label for="roadmap_title">Give it a title</label>
-        </div>
-      </div>
+    <div class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription" required>
-          <label for="roadmap_description">Tell us about it</label>
+          <input id="roadmap_title" type="text" class="validate" ng-model="roadmapTitle" required
+          placeholder="Title (don't worry, you can change it later)" />
         </div>
-      </div>
-    </form>
-  </div>
-
-  <!-- Node Form -->
-  <h4 ng-click="test()">Add a node</h4>
-  <div class="row">
-    <form class="col s12" name="nodeForm">
-      <div class="row">
-        <div class="input-field col s8">
-          <input id="node_title" type="text" class="validate" ng-model="nodeTitle" input>
-          <label for="node_title">Title the node</label>
-        </div>
-        <div class="input-field col s4">
-          <select ng-model="nodeType">
-            <option value="Blog Post" selected>Blog Post</option>
-            <option value="Class">Class</option>
-            <option value="Video">Video</option>
-            <option value="Music">Music</option>
-          </select>
-          <label>What is it?</label>
-        </div>
-      </div>
-      <div class="row">
         <div class="input-field col s12">
-          <input id="node_description" type="text" class="validate" ng-model="nodeDescription" required>
-          <label for="node_description">Describe this step</label>
+          <input id="roadmap_description" type="text" class="validate" ng-model="roadmapDescription" required
+          placeholder="Description" />
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col s6">
-          <input id="node_url" type="url" class="validate" ng-model="nodeUrl">
-          <label for="node_url">What's the link? (optional)</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="node_image_url" type="url" class="validate" ng-model="nodeImageUrl">
-          <label for="node_image_url">Link an image (optional)</label>
-        </div>
-      </div>
-      <div class="row">
-          <button class="btn waves-effect waves-light" type="submit" onclick="reset()" ng-click="submitAndRefresh()" name="action">Add Another Node
-          </button>
-          <button class="modal-action btn waves-effect waves-light" type="submit" ng-click="submitAndExit()" name="action">Add Node and Finish
-          </button>
-      </div>
-    </form>
+    </div>
   </div>
+  <a ng-click="newRoadmap()" class="waves-effect waves-light btn"><i class="material-icons right">thumb_up</i>Make Roadmap</a>
 </div>

@@ -1,6 +1,6 @@
 angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
-.controller('MainController', [ '$scope', '$state', 'User', '$http', function($scope, $state, User, $http){
-  
+.controller('MainController', [ '$scope', '$state', 'User', '$http', 'Server', function($scope, $state, User, $http, Server){
+
   $scope.logout = function () {
     User.logout();
     $('.button-collapse').sideNav('hide');
@@ -20,6 +20,33 @@ angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
   $scope.openCreationModal = function() {
     $('#creation-modal').openModal();
   };
+
+  $scope.newRoadmap = function() {
+    console.log('creating roadmap');
+    Server.createRoadmap({
+      title: $scope.roadmapTitle,
+      description: $scope.roadmapDescription
+    })
+    .then(function(data){
+      console.log('new roadmap data', data);
+      Server.createNode({
+        title: 'Default Title',
+        description: "Click this node's properties to edit them. Or click the small blue 'plus' node to add a new node!",
+        resourceType: 'blog post',
+        resourceURL: 'https://www.example.com',
+        imageUrl: 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png',
+        parentRoadmap: data._id
+      })
+      .then(function(data){
+        console.log('default node data', data);
+        $state.go( 'home.roadmapTemplate',{ roadmapID: data.parentRoadmap } );
+    })
+    })
+
+    .catch(function(err){
+      console.log('error creating new roadmap', err);
+    })
+  }
 
 
   /* * * Search and Typeahead  * * */
