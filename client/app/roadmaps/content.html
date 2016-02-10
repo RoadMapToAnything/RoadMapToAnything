@@ -73,6 +73,75 @@
   </div>
 </div>
 
+
+<!-- Node Creation Box -->
+<div ng-show="displayNodeCreator"
+     class="creation-box">
+
+  <div class="row">
+    <div class="col s12 m16">
+      <div class="card hoverable teal lighten-5">
+        <div class="card-content">
+          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                class="card-title"><b>Add a Node</b></span>
+                <span class="right">
+                  <i ng-click="closeNodeCreator()"
+                     class="fa fa-times fa-lg"></i>
+                </span>
+          <div class="input-field col s12 blue lighten-4">
+            <input id="creation-scraper"
+                   ng-model="urlToScrape"
+                   type="url">
+            <span class="editor-buttons">
+              <button ng-click="checkAndSubmit()"
+                      class="save btn-flat">Get Info</button>
+              <button class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
+            <input id="node-creation-title"
+                   ng-model="currentCreationTitle"
+                   type="text">
+            <input id="node-creation-description"
+                   ng-model="currentCreationDescription"
+                   type="text">
+            <input id="node-creation-type"
+                   ng-model="currentCreationType"
+                   type="text">
+            <input id="node-creation-link"
+                   ng-model="currentCreationLink"
+                   type="url">
+            <input id="node-creation-image"
+                   ng-model="currentCreationImage"
+                   type="url">
+            <button class="link-box-btn btn" ng-click="createNode($index)">Add Node</button>
+          </div>
+          <ul>
+            <li ng-repeat="link in currentLinks">
+              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+              </div>
+              <div class="input-field col s12"
+                   ng-show="hideText($index, 'resourceURL', 'box')">
+                <input id="{{'box-resourceURL-' + currentIndex }}"
+                       ng-model="urlToScrape"
+                       type="text" 
+                       class="validate">
+                <span class="editor-buttons">
+                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
+                          class="save btn-flat">Save</button>
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')" class="cancel btn-flat">Cancel</button>
+                </span>
+            </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-action">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Editor Mode Message -->
   <div id="editor-placeholder"></div>
 
@@ -90,7 +159,7 @@
              type="text"
              class="validate">
       <span class="editor-buttons">
-        <button ng-click="saveTitleEdit()" class="save btn-flat">Save</button>
+        <button ngclick="saveTitleEdit()" class="save btn-flat">Save</button>
         <button class="cancel btn-flat" ng-click="showTitleEditor(false)">Cancel</button>
       </span>
     </div>
@@ -105,8 +174,14 @@
       <div class="number">{{ node.index + 1 }}
       </div>
     </div>
+  
+    <div ng-hide="isAuthor()" class="center-align connector"></div>
 
-  <div class="center-align connector"></div>
+     <div ng-click="showNodeCreator($index, true)">
+      <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
+      <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
+      <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
+    </div>
 
   </div>
 

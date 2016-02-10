@@ -1,4 +1,4 @@
-angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user'])
+angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
 .controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadMapsFactory);
@@ -14,6 +14,89 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.toggleComments = function(){
     $scope.showComments = true;
   };
+
+  $scope.isAuthor = function (){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    if (username === roadmapAuthor){
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.resetCreationForm = function() {
+    $scope.urlToScrape = "";
+    $scope.currentCreationTitle = 'New node title';
+    $scope.currentCreationDescription = 'New node description';
+    $scope.currentCreationType = 'New node type';
+    $scope.currentCreationLink = 'New node link (optional)';
+    $scope.currentCreationImage = 'New node image (optional)';
+  }
+
+  $scope.resetCreationForm();
+
+  $scope.urlToScrape = '';
+  $scope.displayUrl = '';
+  $scope.scrape = {};
+
+  $scope.checkAndSubmit = function() {
+    var url = $scope.urlToScrape;
+    if (url.length < 4) return;
+    if (url.substring(0, 4) !== 'http') url = 'http://' + url;
+
+    $scope.displayUrl = url;
+
+    Server.scrape(url)
+    .then(function (data) {
+      console.log('web scrape data is', data);
+        $scope.currentCreationTitle = data.title;
+        $scope.currentCreationDescription = data.description;
+        $scope.currentCreationType = data.type;
+        $scope.currentCreationLink = url;
+        $scope.currentCreationImage = data.imageUrl;
+    });
+  };
+
+  $scope.showNodeCreator = function($index, boolean){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
+    if( username !== roadmapAuthor ){
+      $scope.nodeCreator = false;
+      console.log("author fail");
+    } else {
+
+      $scope.displayNodeCreator = boolean;
+    }
+  }
+
+  $scope.createNode = function($index) {
+    if( $scope.currentCreationImage === 'New node image (optional)' ){
+      $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
+    }
+    $('#editor-placeholder').remove();
+    return Server.createNode({
+      title: $scope.currentCreationTitle,
+      description: $scope.currentCreationDescription,
+      resourceType: $scope.currentCreationType,
+      resourceURL: $scope.currentCreationLink,
+      imageUrl: $scope.currentCreationImage,
+      parentRoadmap: roadmapId
+    })
+    .then(function(res){
+      populateData();
+      console.log("node created");
+      $scope.displayNodeCreator = false;
+      Materialize.toast('Node Added!', 4000, 'orangeToast');
+      $scope.resetCreationForm();
+    });
+  };
+
+  $scope.closeNodeCreator = function(){
+    $scope.displayNodeCreator = false;
+    $scope.resetCreationForm();
+  }
 
   $scope.hideText = function ($index, field, idPrefix){
     $index = $index || 0;
@@ -41,14 +124,19 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope[elementID] = false;
       console.log("author fail");
     } else {
+      if( field === 'circle' && idPrefix === 'mini'){
+        $scope.resetCreationForm();
+      }
       if( !$scope.currentResourceURL ) {
         $scope.currentResourceURL = $scope.currentLinks[0];
       }
 
-      if(boolean === false){
+      if(boolean === false && field !== 'circle'){
         $(elementID).val($scope.renderedNodes[$index][field]);
       }
-
+      console.log("SHOW EDITOR");
+      console.log('elementID', elementID);
+      console.log('$scope[elementID]', $scope[elementID]);
       $scope[elementID] = boolean;
     }
 
