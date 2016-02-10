@@ -1,4 +1,4 @@
-/*welcome*/
+/*welcome banner*/
 .wouter-container {
   margin-left:auto !important; 
   margin-right:auto !important;
@@ -26,6 +26,20 @@ ul
 /*  display: block; float: left;*/
   font-size: 20px;
   color: #000000;
+  /*text-align: center;*/
+}
+
+.uwrapper {
+    text-align: center;
+}
+.uwrapper ul {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.uwrapper li {
+    float: left;
+    padding: 2px 5px;
 }
 
 
