@@ -9,6 +9,11 @@ angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
   
   $scope.isLoggedIn = User.isLoggedIn;
 
+  $scope.sidebarTo = function(newState){
+    $('.button-collapse').sideNav('hide');
+    $state.go(newState);
+  }
+
   $scope.getUsername = function () {
     return localStorage.getItem('user.username');
   };
@@ -38,6 +43,7 @@ angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
         parentRoadmap: data._id
       })
       .then(function(data){
+        $('#creation-modal').closeModal();
         console.log('default node data', data);
         $state.go( 'home.roadmapTemplate',{ roadmapID: data.parentRoadmap } );
     })

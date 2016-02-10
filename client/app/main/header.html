@@ -39,8 +39,8 @@
       </ul>
       <ul class="side-nav" id="collapsed-options">
         <li ng-show="!isLoggedIn()"><a ng-click="openAuthModal()">Sign in</a></li>
-        <li><a ui-sref="home.browse">Browse</a></li>
-        <li ng-show="isLoggedIn()"><a ui-sref="home.dashboard">Dashboard</a></li>
+        <li><a ng-click="sidebarTo('home.browse')">Browse</a></li>
+        <li ng-show="isLoggedIn()"><a ng-click="sidebarTo('home.dashboard')">Dashboard</a></li>
         <li ng-show="isLoggedIn()"><a ng-click="openCreationModal()">Create Roadmap</a></li>
         <li ng-show="isLoggedIn()"><a ng-click="logout()">Logout</a></li>
       </ul>
