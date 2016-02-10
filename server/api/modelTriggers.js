@@ -117,29 +117,12 @@ module.exports.setUserHooks = function(UserSchema) {
  *               ROADMAP                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-
 var updateRating = function(roadmap) {
+  var calculateWilsonScore = require('./roadmaps/calculateScores.js');
   roadmap.rating = roadmap.upvotes.length - roadmap.downvotes.length;
+  roadmap.bestRating = calculateWilsonScore(roadmap);
   roadmap.save();
 };
-
-// var handleRating = function(roadmapID, next){
-//   var Roadmap = require('./roadmaps/roadmapModel.js');
-//   return Roadmap.findById(roadmapID, function(err, roadmap){
-//     if (err) console.log(err);
-//     var upvotes = roadmap.upvotes;
-//     var downvotes = roadmap.downvotes;
-//     // upvotes and downvotes are each arrays of ids so we can just take the length of each
-//     var result = upvotes.length - downvotes.length;
-//     roadmap.rating = result;
-//     console.log('PRESAVE', roadmap);
-//     roadmap.save(function(err, roadmap){
-//       console.log('PRESAVE', roadmap);
-//       if (err) console.log(err);
-//     })
-//     next();
-//   })
-// }
 
 // If a user upvotes a roadmap, remove their downvote and vice versa
 var upvoteDownvote = function(next) {
@@ -151,10 +134,6 @@ var upvoteDownvote = function(next) {
     if (addSet.upvotes) this.update({},{ $pull:{downvotes: addSet.upvotes} });
     if (addSet.downvotes) this.update({},{ $pull:{upvotes: addSet.downvotes} });
   }
-
-  // Since our upvote/downvotes already have this trigger let's just calculate our new rating
-  // handleRating(roadmapID,next);
-  
   next();
 };
 

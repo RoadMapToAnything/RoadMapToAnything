@@ -110,6 +110,7 @@ module.exports = {
       .catch(handleError(next));
   },
 
+
   // Handles requests to /api/roadmaps/:roadmapID/:action
   actionHandler: function(req, res, next) {
     var roadmapID = req.params.roadmapID;
@@ -131,6 +132,8 @@ module.exports = {
         // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
         var command = { $addToSet: {'completedRoadmaps'  : roadmapID} };
         userController.updateRoadmap(command, req, res, next);
+        var updateCommand = { $inc: {completions: 1} };
+        Roadmap.findByIdAndUpdate(roadmapID, updateCommand);        
       },
 
       upvote: function(){

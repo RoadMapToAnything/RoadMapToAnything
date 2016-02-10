@@ -11,7 +11,7 @@ angular.module('browse.factory', ['services.server'])
   };
 
   var getMapData = function(cb){
-    var mapData = Server.getRoadmaps({sort: '-created'})
+    var mapData = Server.getRoadmaps({sort: '-bestRating'})
     .then(function(data){
       addTotalNodesOfMaps(data);
       console.log(data);

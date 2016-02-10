@@ -12,6 +12,8 @@ var RoadmapSchema = new mongoose.Schema({
     upvotes    : [],
     downvotes  : [],
     rating     : { type: Number },
+    bestRating : { type: Number },
+    completions: { type: Number, default: 0 },
     comments   : [ { type: ObjectId, ref: 'Comment'} ]
 });
 
