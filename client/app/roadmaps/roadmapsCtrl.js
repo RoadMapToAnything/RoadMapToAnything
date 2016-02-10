@@ -95,7 +95,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       resourceType: $scope.currentCreationType || NODE_DEFAULTS.resourceType,
       resourceURL: $scope.currentCreationLink || NODE_DEFAULTS.resourceURL,
       imageUrl: $scope.currentCreationImage || NODE_DEFAULTS.imageUrl,
-      parentRoadmap: roadmapId
+      parentRoadmap: roadmapId,
+      saveAtIndex: $index + 1
 
     })
     .then(function(res){
