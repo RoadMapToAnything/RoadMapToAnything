@@ -1,22 +1,49 @@
-/*about page*/
-ul.staff
-{
-/*  margin-bottom: 3em;*/
+/*welcome banner*/
+.wouter-container {
+  margin-left:auto !important; 
+  margin-right:auto !important;
+  display: table;
+  width: 1100px;
+  height: 100px;
+  background: white;
 }
 
-ul.staff li
-{
-  display: inline-block;
-}
-
-ul.staff li img
-{
-  width: 80%;
-  border-radius: 50%;
+.winner-container {
+  display: table-cell;
   vertical-align: middle;
+  text-align: center;
 }
- 
-/*footer*/ 
+
+.wcentered-content {
+  background: #fff;
+  padding : 20px;
+  border : 1px solid #D1D0D0;
+} 
+
+ul
+{
+  list-style-type: none;
+/*  display: block; float: left;*/
+  font-size: 18px;
+  color: #000000;
+  /*text-align: center;*/
+}
+
+.uwrapper {
+    text-align: center;
+}
+.uwrapper ul {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.uwrapper li {
+    float: left;
+    padding: 2px 5px;
+}
+
+
+ /*footer*/ 
 
 .copyright{
   margin-left:auto !important; 
@@ -31,7 +58,7 @@ ul.staff li img
   margin-right:auto !important;
   display: table;
   width: 1000px;
-  height: 300px;
+  height: 100px;
   background: white;
 }
 
