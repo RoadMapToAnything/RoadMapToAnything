@@ -1,6 +1,6 @@
 angular.module('browse.ctrl', ['services.user', 'browse.factory'])
 
-.controller('BrowseController', ['$scope', '$state', 'User', 'Browse',  function($scope, $state, User, Browse){
+.controller('BrowseController', ['$scope', '$state', '$filter', 'User', 'Browse',  function($scope, $state, $filter, User, Browse){
   $scope.mapData = [];
 
   $scope.showSigninMsg = false;
@@ -15,6 +15,8 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   $scope.getMapData(function(mapData){
     $scope.mapData = mapData;
   });
+
+  
 
   $scope.totalComments = function(commentsArray){
     $scope.total = 0;
