@@ -1,4 +1,4 @@
-describe('AuthController', function () {
+xdescribe('AuthController', function () {
   var $scope, $rootScope, $location, createController, $httpBackend;
 
   beforeEach(module('app'));
@@ -22,28 +22,28 @@ describe('AuthController', function () {
     createController();
   }));
 
-  it('should have an attemptLogin function', function () {
+  xit('should have an attemptLogin function', function () {
     expect($scope.attemptLogin).to.be.a('function');
   });
 
 
-  it('should have a username on the model', function () {
+  xit('should have a username on the model', function () {
     expect($scope.attemptedUsername).to.equal("");
   });
 
-  it('should have a password on the model', function () {
+  xit('should have a password on the model', function () {
     expect($scope.attemptedPassword).to.equal("");
   });
   
-  it('should not start out showing msg about bad credentials', function (){
+  xit('should not start out showing msg about bad credentials', function (){
     expect($scope.showUnauthMsg).to.be.false;
   });
   
-  it('should show signin page before signup', function(){
+  xit('should show signin page before signup', function(){
     expect($scope.signin).to.be.true;
   });
 
-  it('should change to signup page and clear inputs', function(){
+  xit('should change to signup page and clear inputs', function(){
     $scope.attemptedUsername = "test";
     $scope.attemptedPassword = "test";
     $scope.attemptedFirstName = 'test';
@@ -57,7 +57,7 @@ describe('AuthController', function () {
     expect($scope.attemptedLastName).to.equal("");
   });
 
-  it('should change to signin page and clear inputs', function(){
+  xit('should change to signin page and clear inputs', function(){
     $scope.attemptedUsername = "test";
     $scope.attemptedPassword = "test";
     $scope.attemptedFirstName = 'test';

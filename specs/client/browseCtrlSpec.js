@@ -22,15 +22,15 @@ describe('BrowseController', function () {
   }));
 
 
-  it('should have a function to populate browse page', function (){
+  xit('should have a function to populate browse page', function (){
     expect($scope.getMapData).to.be.a('function');
   });
 
-  it('should have a function to go to dashboard', function (){
+  xit('should have a function to go to dashboard', function (){
     expect($scope.goToDash).to.be.a('function');
   });
 
-  it('should have a function to add up node totals', function (){
+  xit('should have a function to add up node totals', function (){
     expect($scope.addTotalNodesOfMaps).to.be.a('function');
   });
 
