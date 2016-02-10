@@ -222,7 +222,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var newProperty = $('#main-desc').val();
     var updateObj = {};
     updateObj['_id'] = roadmapId;
-    updateObj['descripton'] = newProperty;
+    updateObj['description'] = newProperty;
     console.log('new desc', newProperty);
     Server.updateRoadmap(updateObj)
       .then(function(node) {
