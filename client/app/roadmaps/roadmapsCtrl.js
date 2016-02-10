@@ -218,10 +218,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveDescEdit = function (){
+    console.log('clicked saveDescEdit');
     var newProperty = $('#main-desc').val();
     var updateObj = {};
     updateObj['_id'] = roadmapId;
     updateObj['descripton'] = newProperty;
+    console.log('new desc', newProperty);
     Server.updateRoadmap(updateObj)
       .then(function(node) {
       $scope.hideDesc = false;
