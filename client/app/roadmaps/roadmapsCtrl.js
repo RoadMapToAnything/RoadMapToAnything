@@ -26,7 +26,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.resetCreationForm = function() {
-    $scope.urlToScrape = "";
+    $scope.urlToScrape = "Paste a link here to get info automatically";
     $scope.currentCreationTitle = 'New node title';
     $scope.currentCreationDescription = 'New node description';
     $scope.currentCreationType = 'New node type';
@@ -36,7 +36,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.resetCreationForm();
 
-  $scope.urlToScrape = '';
   $scope.displayUrl = '';
   $scope.scrape = {};
 
