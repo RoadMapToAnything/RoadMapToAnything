@@ -223,7 +223,7 @@ module.exports.setNodeHooks = function(NodeSchema) {
     var parentRoadmapID = this.parentRoadmap;
     var newNodeID = this._id;
     var update;
-    var saveAtIndex = req.body.saveAtIndex;
+    var saveAtIndex = req && req.body && req.body.saveAtIndex;
 
     if (this.isNew) {
       // If saveAtIndex was provided in the request, save node at that position
