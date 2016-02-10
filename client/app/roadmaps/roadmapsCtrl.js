@@ -72,8 +72,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
   $scope.createNode = function($index) {
-    console.log("* calling createNode *");
-    console.log('roadmapID', roadmapId);
+    if( $scope.currentCreationImage === 'New node image (optional)' ){
+      $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
+    }
     $('#editor-placeholder').remove();
     return Server.createNode({
       title: $scope.currentCreationTitle,
