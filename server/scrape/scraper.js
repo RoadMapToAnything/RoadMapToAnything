@@ -1,5 +1,4 @@
-var request = require('request-promise'),
-    cheerio = require('cheerio'),
+var cheerio = require('cheerio'),
     targets = require('./scrapeTargets.json');
 
 
@@ -166,21 +165,19 @@ var scrapeProperty = function($, targets) {
 };
 
 
-module.exports = function (url) {
-  return request(url)
-  .then(function (html) {
-    var $ = cheerio.load(html);
-    var scrapes = {};
+module.exports = function (html, url) {
+  var $ = cheerio.load(html);
+  var scrapes = {};
 
-    // Attempt to scrape every property in scrapeTargets.json
-    for (var key in targets) {
-      scrapes[key] = scrapeProperty($, targets[key]);
-    }
-    // Perform some post-processing on particular properties
-    scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName || url) );
-    scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
-    scrapes.siteIcon = appendHref(url, scrapes.siteIcon);
-    
-    return scrapes;
-  });
+  // Attempt to scrape every property in scrapeTargets.json
+  for (var key in targets) {
+    scrapes[key] = scrapeProperty($, targets[key]);
+  }
+
+  // Perform some post-processing on particular properties
+  scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName || url) );
+  scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
+  scrapes.siteIcon = appendHref(url, scrapes.siteIcon);
+  
+  return scrapes;
 };
