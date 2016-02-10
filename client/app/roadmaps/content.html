@@ -114,7 +114,7 @@
             <input id="node-creation-image"
                    ng-model="currentCreationImage"
                    type="url">
-            <button class="link-box-btn btn" ng-click="createNode($index)">Add Node</button>
+            <button class="link-box-btn btn" ng-click="createNode(currentAddIndex)">Add Node</button>
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
@@ -159,11 +159,29 @@
              type="text"
              class="validate">
       <span class="editor-buttons">
-        <button ngclick="saveTitleEdit()" class="save btn-flat">Save</button>
+        <button ng-click="saveTitleEdit()" class="save btn-flat">Save</button>
         <button class="cancel btn-flat" ng-click="showTitleEditor(false)">Cancel</button>
       </span>
     </div>
+
+      <p ng-hide="hideDesc"
+      ng-click="showDescEditor(true)"
+      class="center-align"
+      ng-bind="roadMapDesc">Roadmap Description</p>
+    <div class="input-field col s12"
+         ng-show="hideDesc">
+      <input id="main-desc"
+             value="{{ roadMapDesc }}"
+             type="text"
+             class="validate">
+      <span class="editor-buttons right">
+        <button ng-click="saveDescEdit()" class="save btn-flat">Save</button>
+        <button class="cancel btn-flat" ng-click="showDescEditor(false)">Cancel</button>
+      </span>
+    </div>
+
   <div class="divider"></div>
+  <br>
 
    <!-- Nodes -->
 <div class="node-list container">

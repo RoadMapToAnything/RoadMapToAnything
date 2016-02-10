@@ -18,7 +18,7 @@
   background: #fff;
   padding : 20px;
   border : 1px solid #D1D0D0;
-} 
+}
 
 ul
 {
@@ -190,7 +190,7 @@ footer.page-footer div.footer-copyright {
 .link-box {
   position: fixed !important;
   left: 5%;
-  top: 200px;
+  top: 220px;
   width: 27%;
   z-index: 10;
 }

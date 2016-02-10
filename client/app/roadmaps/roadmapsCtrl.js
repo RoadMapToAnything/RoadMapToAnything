@@ -61,6 +61,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var username = localStorage.getItem('user.username');
     var roadmapAuthor = $scope.currentRoadMapData.author.username;
     console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
+    $scope.currentAddIndex = $index;
     if( username !== roadmapAuthor ){
       $scope.nodeCreator = false;
       console.log("author fail");
@@ -75,6 +76,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
     }
     $('#editor-placeholder').remove();
+    console.log("$index", $index);
 
     return Server.createNode({
       title: $scope.currentCreationTitle,
@@ -172,6 +174,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   //roadMapTitle
 
   $scope.hideTitle = false;
+  $scope.hideDesc = false;
 
   $scope.showTitleEditor = function (boolean){
     var username = localStorage.getItem('user.username');
@@ -202,6 +205,37 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       });
   }
 
+  $scope.showDescEditor = function (boolean){
+    var username = localStorage.getItem('user.username');
+    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    var storedDesc;
+    
+    if( username !== roadmapAuthor ){
+      $scope.hideDesc= false;
+    } else {
+      $scope.hideDesc = boolean;
+      return $scope.hideDesc;
+    }
+
+  };
+
+  $scope.saveDescEdit = function (){
+    console.log('clicked saveDescEdit');
+    var newProperty = $('#main-desc').val();
+    var updateObj = {};
+    updateObj['_id'] = roadmapId;
+    updateObj['description'] = newProperty;
+    console.log('new desc', newProperty);
+    Server.updateRoadmap(updateObj)
+      .then(function(node) {
+      $scope.hideDesc = false;
+      $scope.roadMapDesc = newProperty;
+    })
+      .catch(function(){
+        console.log('problem updating map description', err);
+      });
+  }
+
  // Get the current number of upvotes from current map
  $scope.getCountVotes = function(votes){
     $scope.votesCount = 0;
@@ -215,6 +249,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.renderNodes = function(){
     var title = $scope.currentRoadMapData.title || 'test title';
     var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];  
+    var desc =  $scope.currentRoadMapData.description || 'default roadmap description - click to edit!';
     // Add an index to nodes to make ng-clicking easier
     nodes.map(function(node,index){
       node.index = index;
@@ -222,6 +257,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
+    $scope.roadMapDesc = desc;
 
     // User Logged in Data in the future
     // Some variable that holds that the user is logged in
