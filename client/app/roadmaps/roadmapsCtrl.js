@@ -96,6 +96,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       resourceURL: $scope.currentCreationLink || NODE_DEFAULTS.resourceURL,
       imageUrl: $scope.currentCreationImage || NODE_DEFAULTS.imageUrl,
       parentRoadmap: roadmapId
+
     })
     .then(function(res){
       populateData();
