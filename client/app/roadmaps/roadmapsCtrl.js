@@ -61,6 +61,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var username = localStorage.getItem('user.username');
     var roadmapAuthor = $scope.currentRoadMapData.author.username;
     console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
+    $scope.currentAddIndex = $index;
     if( username !== roadmapAuthor ){
       $scope.nodeCreator = false;
       console.log("author fail");
@@ -75,6 +76,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
     }
     $('#editor-placeholder').remove();
+    console.log("$index", $index);
 
     return Server.createNode({
       title: $scope.currentCreationTitle,
