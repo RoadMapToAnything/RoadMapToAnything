@@ -1,5 +1,5 @@
-angular.module('main.ctrl', ['services.user'])
-.controller('MainController', [ '$scope', '$state', 'User', function($scope, $state, User){
+angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
+.controller('MainController', [ '$scope', '$state', 'User', '$http', function($scope, $state, User, $http){
   
   $scope.logout = function () {
     User.logout();
@@ -21,5 +21,27 @@ angular.module('main.ctrl', ['services.user'])
     $('#creation-modal').openModal();
   };
 
+
+  /* * * Search and Typeahead  * * */
+
+  $scope.typeaheadHash = {};
+
+  $scope.submitSearch = function (){
+    var roadmapID = $scope.typeaheadHash[$scope.asyncSelected];
+    $state.go('home.roadmapTemplate', {roadmapID:roadmapID} );
+  };
+
+  $scope.populateTypeahead = function(roadmapTitle) {
+    return $http.get('/api/roadmaps/search', {
+      params: {
+        title: roadmapTitle
+      }
+    }).then(function(response){
+      return response.data.data.map(function(map){
+        $scope.typeaheadHash[map.title] = map._id;
+        return map.title;
+      });
+    });
+  };
 
 }]);

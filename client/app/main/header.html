@@ -23,6 +23,11 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down amber-text text-darken-1">
         <!-- Need to make a dropdown search -->
         <li><i class="mdi-action-search"></i></li>
+        <li>
+          <form ng-submit="submitSearch()" method="get">
+            <input type="text" ng-model="asyncSelected" placeholder="Search Roadmaps" uib-typeahead="mapTitle for mapTitle in populateTypeahead($viewValue)" class="form-control">
+          </form>
+        </li>
         <li><a ui-sref="home.browse" class="black-text">Browse</a></li>
         <li ng-show="!isLoggedIn()"><a ng-click="openAuthModal()" class="black-text">Sign in</a></li>
         <li><a ng-show="isLoggedIn()" class="dropdown-button black-text" data-activates="dropdown" data-beloworigin="true">Hi, {{ getUsername() }}<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
