@@ -31,6 +31,17 @@ module.exports = {
       .catch(handleError(next));
   },
 
+  searchRoadmaps : function (req, res, next) {
+    var search = new RegExp(req.query.title, 'i');
+
+    Roadmap.find({ title: search })
+      .limit(3)
+      .then(function(dbResults){
+        res.json({data: dbResults});
+      })
+      .catch(handleError(next));
+  },
+
   getRoadmaps : function (req, res, next) {
     var dbArgs = handleQuery(req.query);
 
