@@ -106,5 +106,26 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
     });
   };
 
+  $scope.editorVisible = function(editor) {
+    return !!$scope[editor];
+  };
+
+  $scope.toggleEditor = function(editor) {
+    $scope[editor] = !$scope[editor];
+  };
+
+  $scope.submitEdit = function(editor) {
+    var property = editor.replace('editor.', '');
+    var submission = {};
+
+    submission[property] = $scope.user[property];
+
+    User.update(submission)
+    .then(function (user) {
+      $scope.user = user;
+      $scope.toggleEditor(editor);
+    });
+  };
+
 }]);
 

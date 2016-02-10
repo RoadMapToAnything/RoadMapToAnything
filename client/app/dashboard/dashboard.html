@@ -20,8 +20,47 @@
     <img class="profile-image clickable" ng-src="{{user.imageUrl}}" ng-click="openImageModal()">
   </div>
   <div class="col s9">
-    <h3>{{user.firstName}}</h3>
-    <h4>{{user.lastName}}</h4>
+
+    <!-- Username -->
+    <h3>
+      <span ng-hide="editorVisible('editor.username')"
+      ng-click="toggleEditor('editor.username')">{{user.username}}</span>
+    </h3>
+    <div class="input-field col s12" 
+   ng-show="editorVisible('editor.username')">
+      <input type="text" 
+         class="validate" ng-model="user.username">
+      <span class="editor-buttons">
+      <button ng-click="submitEdit('editor.username')" class="save btn-flat">Save</button>
+      <button ng-click="toggleEditor('editor.username')" class="cancel btn-flat">Cancel</button>
+      </span>
+    </div>
+
+    <!-- First and Last Name -->
+    <h4>
+      <span ng-hide="editorVisible('editor.firstName') || editorVisible('editor.lastName')"
+      ng-click="toggleEditor('editor.firstName')">{{user.firstName}}</span>
+      <span ng-hide="editorVisible('editor.firstName') || editorVisible('editor.lastName')"
+      ng-click="toggleEditor('editor.lastName')">{{user.lastName}}</span>
+    </h4>
+    <div class="input-field col s12" 
+   ng-show="editorVisible('editor.firstName')">
+      <input type="text" 
+         class="validate" ng-model="user.firstName">
+      <span class="editor-buttons">
+      <button ng-click="submitEdit('editor.firstName')" class="save btn-flat">Save</button>
+      <button ng-click="toggleEditor('editor.firstName')" class="cancel btn-flat">Cancel</button>
+      </span>
+    </div>
+    <div class="input-field col s12" 
+   ng-show="editorVisible('editor.lastName')">
+      <input type="text" 
+         class="validate" ng-model="user.lastName">
+      <span class="editor-buttons">
+      <button ng-click="submitEdit('editor.lastName')" class="save btn-flat">Save</button>
+      <button ng-click="toggleEditor('editor.lastName')" class="cancel btn-flat">Cancel</button>
+      </span>
+    </div>
     <div><strong>Roadmaps Created:</strong> {{user.authoredRoadmaps.length}}</div>
     <div><strong>Roadmaps Completed:</strong> {{user.completedRoadmaps.length}}</div>
   </div>

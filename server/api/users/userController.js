@@ -128,7 +128,7 @@ module.exports = {
     var username = getAuthHeader(req).name;
     if (req.params.username !== username) res.sendStatus(403);
 
-    var updateableFields = ['password','firstName','lastName','imageUrl'];
+    var updateableFields = ['username','password','firstName','lastName','imageUrl'];
     var updateCommand = {};
 
     updateableFields.forEach(function(field){

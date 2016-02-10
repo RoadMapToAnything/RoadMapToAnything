@@ -1,5 +1,5 @@
 var handleError = require('../util.js').handleError,
-    request     = require('request-promise'),
+    request     = require('request-promise').defaults({maxRedirects:20}),
     scrape      = require('./scraper.js');
 
 var blacklist = {
@@ -17,7 +17,7 @@ module.exports = {
 
     request(url)
     .then(function (html) {
-      var scrapedData = scrape(html, url)
+      var scrapedData = scrape(html, url);
       res.status(200).json({ data: scrapedData });
     });
   }
