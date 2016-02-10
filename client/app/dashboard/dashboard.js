@@ -119,16 +119,12 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
     var submission = {};
 
     submission[property] = $scope.user[property];
-    
-    console.log('SUBMITTING:', submission);
 
     User.update(submission)
     .then(function (user) {
-      console.log('NEW USER:', user);
       $scope.user = user;
       $scope.toggleEditor(editor);
     });
-    
   };
 
 }]);
