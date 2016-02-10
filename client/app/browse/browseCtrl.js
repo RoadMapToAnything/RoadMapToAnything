@@ -6,7 +6,6 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   $scope.showSigninMsg = false;
   $scope.isLoggedIn = User.isLoggedIn;
 
-  $scope.addTotalNodesOfMaps = Browse.addTotalNodesOfMaps;
   $scope.getMapData = Browse.getMapData;
   $scope.followMap = User.followMap;
   $scope.goToMap = Browse.goToMap;
@@ -34,16 +33,33 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
       $scope.total++;
     }
     return $scope.total;
-  }
+  };
 
-  $scope.goToDash = function () {
+  $scope.goToDash = function() {
       $state.go('home.dashboard');
-    }
+  };
 
-  $scope.goToMap = function (mapID){
+  $scope.goToMap = function(mapID){
     $state.go('home.roadmapTemplate', { 'roadmapID': mapID });
   };
 
-  
+  $scope.upvote = function(roadmapId, index) {
+    console.log(index);
+    User.upvote(roadmapId)
+    .then(function(roadmap) {
+      $scope.mapData[index].upvotes = roadmap.upvotes;
+      $scope.mapData[index].downvotes = roadmap.downvotes;
+    });
+  };
+
+  $scope.downvote = function(roadmapId, index) {
+    User.downvote(roadmapId)
+    .then(function(roadmap) {
+      $scope.mapData[index].upvotes = roadmap.upvotes;
+      $scope.mapData[index].downvotes = roadmap.downvotes;
+    });
+  };
+
+  console.log($scope.mapData);
 
 }]);
