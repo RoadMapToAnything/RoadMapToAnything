@@ -121,13 +121,8 @@ module.exports = {
         // triggers $pull from inProgress.nodes and inProgress.roadmaps via hooks
         var command = { $addToSet: {'completedRoadmaps'  : roadmapID} };
         userController.updateRoadmap(command, req, res, next);
-
-        Roadmap.findById(roadmapID, function(err, roadmap){
-          roadmap.completions = roadmap.completions + 1;
-          roadmap.save();
-          next();
-        });
-        
+        var updateCommand = { $inc: {completions: 1} };
+        Roadmap.findByIdAndUpdate(roadmapID, updateCommand);        
       },
 
       upvote: function(){
