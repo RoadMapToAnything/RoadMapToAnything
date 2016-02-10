@@ -3,6 +3,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 .controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadMapsFactory);
 
+  var NODE_DEFAULTS = {
+    title: 'New node title',
+    description: 'New node description',
+    resourceType: 'New node type',
+    resourceURL: 'New node link (optional)',
+    imageUrl: 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png'
+  }
+
   var roadmapId = $stateParams.roadmapID;
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
@@ -27,10 +35,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.resetCreationForm = function() {
     $scope.urlToScrape = "Paste a link here to get info automatically";
-    $scope.currentCreationTitle = 'New node title';
-    $scope.currentCreationDescription = 'New node description';
-    $scope.currentCreationType = 'New node type';
-    $scope.currentCreationLink = 'New node link (optional)';
+    $scope.currentCreationTitle = NODE_DEFAULTS.title;
+    $scope.currentCreationDescription = NODE_DEFAULTS.description;
+    $scope.currentCreationType = NODE_DEFAULTS.resourceType;
+    $scope.currentCreationLink = NODE_DEFAULTS.resourceURL;
     $scope.currentCreationImage = 'New node image (optional)';
   }
 
@@ -72,18 +80,19 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
   $scope.createNode = function($index) {
+    console.log($scope.currentCreationImage);
     if( $scope.currentCreationImage === 'New node image (optional)' ){
-      $scope.currentCreationImage = 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png';
+      $scope.currentCreationImage = NODE_DEFAULTS.imageUrl;
     }
     $('#editor-placeholder').remove();
     console.log("$index", $index);
 
     return Server.createNode({
-      title: $scope.currentCreationTitle,
-      description: $scope.currentCreationDescription,
-      resourceType: $scope.currentCreationType,
-      resourceURL: $scope.currentCreationLink,
-      imageUrl: $scope.currentCreationImage,
+      title: $scope.currentCreationTitle || NODE_DEFAULTS.title,
+      description: $scope.currentCreationDescription || NODE_DEFAULTS.description,
+      resourceType: $scope.currentCreationType || NODE_DEFAULTS.resourceType,
+      resourceURL: $scope.currentCreationLink || NODE_DEFAULTS.resourceURL,
+      imageUrl: $scope.currentCreationImage || NODE_DEFAULTS.imageUrl,
       parentRoadmap: roadmapId
     })
     .then(function(res){
