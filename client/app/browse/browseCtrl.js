@@ -17,6 +17,16 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   });
 
   
+  var orderBy = $filter('orderBy');
+
+  $scope.order = function(predicate) {
+      $scope.predicate = predicate;
+      $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+      $scope.mapData = orderBy($scope.mapData, predicate, $scope.reverse);
+    };
+    $scope.order('bestRating', true);
+
+
 
   $scope.totalComments = function(commentsArray){
     $scope.total = 0;
