@@ -65,7 +65,7 @@ module.exports = {
       if (!user) return res.sendStatus(404); 
       res.status(200).json({data: user});
     })
-    .catch(handleError.bind(null, next));
+    .catch(handleError(next));
   },
 
   createUser : function(req, res, next){
