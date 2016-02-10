@@ -10,6 +10,8 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
   $scope.showMyMaps = false;
   $scope.showCompleted = false;
 
+  $scope.editor = {};
+
 
   var refreshUserData = function() {
     User.getData()
@@ -104,6 +106,31 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
       $scope.inputImageUrl = '';
       $state.go('home.dashboard', {}, {reload: true});
     });
+  };
+
+  $scope.editorVisible = function(editor) {
+    return !!$scope[editor];
+  };
+
+  $scope.toggleEditor = function(editor) {
+    $scope[editor] = !$scope[editor];
+  };
+
+  $scope.submitEdit = function(editor) {
+    var property = editor.replace('editor.', '');
+    var submission = {};
+
+    submission[property] = $scope.user[property];
+    
+    console.log('SUBMITTING:', submission);
+
+    User.update(submission)
+    .then(function (user) {
+      console.log('NEW USER:', user);
+      $scope.user = user;
+      $scope.toggleEditor(editor);
+    });
+    
   };
 
 }]);

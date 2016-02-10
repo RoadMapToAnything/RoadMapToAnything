@@ -20,8 +20,32 @@
     <img class="profile-image clickable" ng-src="{{user.imageUrl}}" ng-click="openImageModal()">
   </div>
   <div class="col s9">
-    <h3>{{user.firstName}}</h3>
-    <h4>{{user.lastName}}</h4>
+    <h3>
+      <span ng-hide="editorVisible('editor.username')"
+      ng-click="toggleEditor('editor.username')"
+      class="card-title truncate">{{user.username}}</span>
+    </h3>
+    <div class="input-field col s12" 
+   ng-show="editorVisible('editor.username')">
+      <input type="text" 
+         class="validate" ng-model="user.username">
+      <span class="editor-buttons">
+      <button ng-click="submitEdit('editor.username')" class="save btn-flat">Save</button>
+      <button ng-click="toggleEditor('editor.username')" class="cancel btn-flat">Cancel</button>
+      </span>
+    </div>
+    <h4><span ng-hide="editorVisible('editor.firstName')"
+      ng-click="toggleEditor('editor.firstName')"
+      class="card-title truncate">{{user.firstName}}</span></h4>
+    <div class="input-field col s12" 
+   ng-show="editorVisible('editor.firstName')">
+      <input type="text" 
+         class="validate" ng-model="user.firstName">
+      <span class="editor-buttons">
+      <button ng-click="submitEdit('editor.firstName')" class="save btn-flat">Save</button>
+      <button ng-click="toggleEditor('editor.firstName')" class="cancel btn-flat">Cancel</button>
+      </span>
+    </div>
     <div><strong>Roadmaps Created:</strong> {{user.authoredRoadmaps.length}}</div>
     <div><strong>Roadmaps Completed:</strong> {{user.completedRoadmaps.length}}</div>
   </div>
