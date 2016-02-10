@@ -1,5 +1,5 @@
 var handleError = require('../util.js').handleError,
-    request = require('request-promise'),
+    request     = require('request-promise'),
     scrape      = require('./scraper.js');
 
 var blacklist = {
