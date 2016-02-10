@@ -10,26 +10,24 @@
   <a class='cyan lighten-3 dropdown-button btn' href='#' data-activates='dropdown3'>Filters</a>
 
   <!-- Dropdown Structure -->
-
+   <ul id='dropdown3' class='dropdown-content'>
+     <li><a href="#!" ng-click="order('bestRating')" class="cyan-text text-darken-1">Rating</a></li>
+     <li class="divider"></li>
+     <li><a href="#!" ng-click="order('comments.length')" class="cyan-text text-darken-1">Comments</a></li>
+   </ul>
   <br>
   <br>
   <div ng-show="showSigninMsg">You must be signed in first</div>
   <ul class="collapsible" data-collapsible="accordion">
 
    <li ng-repeat="map in mapData | filter: searchText">
-
-   <ul id='dropdown3' class='dropdown-content'>
-     <li><a href="#!" ng-click="order('bestRating')" class="cyan-text text-darken-1">Rating</a></li>
-     <li class="divider"></li>
-     <li><a href="#!" ng-click="order('comments.length')" class="cyan-text text-darken-1">Comments</a></li>
-   </ul>
-
-      <div class="collapsible-header">
-        <i class="fa fa-map-o" style="color:#1ABBCC">
-        </i>
-        <span class="mousetoHand"> {{ map.title }}
-        </span>
-      </div>
+      <span class="collapsible-header">
+        <span style="float:left;padding-right:1em">{{map.upvotes.length - map.downvotes.length}} </span>
+        <i class="fa fa-map-o" style="color:#1ABBCC"></i>
+        <span class="mousetoHand"><strong>{{ map.title }}</strong> 
+        by {{map.author.username}}</span>
+        <i class="fa fa-angle-down" style="float:right"></i>
+      </span>
       <div class="collapsible-body">
         <div class="container">
           <table>
@@ -48,9 +46,12 @@
             </tr>
             <tr>
               <!-- Displays comments but not linked to comment page yet... should we have a separate comments view? -->
-              <td><a href="">{{ totalComments(map.comments) }} Comments</a></td>
-              <td>Number of Nodes: <b>{{ map.totalNodes }}</b></td>
-              <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn cyan lighten-3">Add!</a></td>
+              <td><i class="fa fa-arrow-up clickable" ng-click="upvote(map._id, $index)"></i>
+              {{map.upvotes.length - map.downvotes.length}}
+              <i class="fa fa-arrow-down clickable" ng-click="downvote(map._id, $index)"></i>
+              <td><a href="">{{map.comments.length}} Comments</a></td>
+              <td><b>{{ map.nodes.length }} Nodes</b></td>
+              <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn cyan lighten-3">Follow</a></td>
             </tr>
           </table>
         </div>
