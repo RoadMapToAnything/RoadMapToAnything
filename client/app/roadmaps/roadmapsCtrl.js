@@ -41,9 +41,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.scrape = {};
 
   $scope.checkAndSubmit = function() {
-    console.log("scrape initiated");
     var url = $scope.urlToScrape;
-    console.log("url" ,url);
     if (url.length < 4) return;
     if (url.substring(0, 4) !== 'http') url = 'http://' + url;
 
@@ -51,7 +49,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
     Server.scrape(url)
     .then(function (data) {
-      console.log('web scrape date is', data);
+      console.log('web scrape data is', data);
         $scope.currentCreationTitle = data.title;
         $scope.currentCreationDescription = data.description;
         $scope.currentCreationType = data.type;

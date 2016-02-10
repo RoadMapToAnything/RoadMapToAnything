@@ -12,7 +12,6 @@ angular.module('scraper.ctrl', ['services.server'])
     if (url.substring(0, 4) !== 'http') url = 'http://' + url;
 
     $scope.displayUrl = url;
-
     Server.scrape(url)
     .then(function (data) {
       $scope.scrape = {};

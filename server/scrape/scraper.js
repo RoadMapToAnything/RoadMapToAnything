@@ -176,7 +176,6 @@ module.exports = function (url) {
     for (var key in targets) {
       scrapes[key] = scrapeProperty($, targets[key]);
     }
-
     // Perform some post-processing on particular properties
     scrapes.siteName = nameFromUrl( appendHref(url, scrapes.siteName || url) );
     scrapes.imageUrl = appendHref(url, scrapes.imageUrl);
