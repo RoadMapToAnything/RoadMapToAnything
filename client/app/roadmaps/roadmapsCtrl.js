@@ -66,6 +66,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.showNodeCreator = function($index, boolean){
+    console.log("SHOWNODECRETAOR $index:", $index);
+    $scope.currentAddIndex = $index + 1;
     var username = localStorage.getItem('user.username');
     var roadmapAuthor = $scope.currentRoadMapData.author.username;
     console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
@@ -85,7 +87,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.currentCreationImage = NODE_DEFAULTS.imageUrl;
     }
     $('#editor-placeholder').remove();
-    console.log("$index", $index);
+    console.log("CREATE NODE $index", $index);
 
     return Server.createNode({
       title: $scope.currentCreationTitle || NODE_DEFAULTS.title,
