@@ -10,6 +10,13 @@ angular.module('roadmaps.factory', [])
         })
         return comments;
       },
+      getCountVotes : function(votes){
+        votesCount = 0;
+        for(var i = 0; i < votes.length; i++){
+          votesCount++;
+        }
+        return votesCount;
+      }, 
 
 
       NODE_DEFAULTS: {
