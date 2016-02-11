@@ -90,22 +90,22 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     }
   };
 
-  $scope.showEditor = function ($index, field, boolean, idPrefix){
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+  $scope.showEditor = function ($index, type, boolean, id){
+    var elementID = '#' + id + $index;
     $scope.currentIndex = $index;
     console.log('elementID', elementID);
     if( !$scope.isAuthor ){
       $scope[elementID] = false;
     } else {
-      if( field === 'circle' && idPrefix === 'mini'){
+      if( type === 'mini-circle'){
         resetCreationForm();
       }
       if( !$scope.currentResourceURL ) {
         $scope.currentResourceURL = $scope.currentLinks[0];
       }
 
-      if(boolean === false && field !== 'circle'){
-        $(elementID).val($scope.renderedNodes[$index][field]);
+      if(boolean === false && type !== 'circle' && type !== 'mini-circle'){
+        $(elementID).val($scope.renderedNodes[$index][type]);
       }
 
       $scope[elementID] = boolean;

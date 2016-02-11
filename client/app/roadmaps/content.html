@@ -7,7 +7,7 @@
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
           <span ng-hide="hideText('box-title', currentIndex)"
-                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box-title')"
                 class="card-title truncate"><b>{{ currentTitle }}</b></span>
           <div class="input-field col s12" 
                ng-show="hideText('box-title', currentIndex)">
@@ -18,14 +18,14 @@
             <span class="editor-buttons">
               <button ng-click="saveEdit(currentIndex, 'title', 'box')"
                       class="save btn-flat">Save</button>
-              <button ng-click="showEditor(currentIndex, 'title', false, 'box')"
+              <button ng-click="showEditor(currentIndex, 'title', false, 'box-title')"
                       class="cancel btn-flat">Cancel</button>
             </span>
           </div>
 
 
           <p ng-hide="hideText('box-desc', currentIndex)"
-             ng-click="showEditor(currentIndex, 'description', true, 'box')"
+             ng-click="showEditor(currentIndex, 'desc', true, 'box-desc')"
              ng-bind="currentDescription"
              class="author-input">This is the description of why this matters.</p>
           <div class="input-field col s12 " 
@@ -37,20 +37,20 @@
             <span class="editor-buttons">
               <button ng-click="saveEdit(currentIndex, 'description', 'box')"
                       class="save btn-flat">Save</button>
-              <button ng-click="showEditor(currentIndex, 'description', false, 'box')"
+              <button ng-click="showEditor(currentIndex,'desc', false, 'box-desc')"
                       class="cancel btn-flat">Cancel</button>
             </span>
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
-              <div ng-hide="hideText('box-url', currentIndex)">
+              <div ng-hide="hideText('box-link', currentIndex)">
                 <a class="truncate"
                    href="{{link}}">{{link}}</a>
-                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')"
+                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
                    class="author-input">[edit link]</a>
               </div>
               <div class="input-field col s12"
-                   ng-show="hideText('box-url, currentIndex)">
+                   ng-show="hideText('box-link, currentIndex)">
                 <input id="{{'box-resourceURL-' + currentIndex }}"
                        value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
                        type="text" 
@@ -58,7 +58,7 @@
                 <span class="editor-buttons">
                   <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
                           class="save btn-flat">Save</button>
-                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')"
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box-link')"
                           class="cancel btn-flat">Cancel</button>
                 </span>
             </div>
@@ -66,7 +66,7 @@
           </ul>
 
           <img ng-hide="hideText('box-image', currentIndex)"
-             ng-click="showEditor(currentIndex, 'image', true, 'box')"
+             ng-click="showEditor(currentIndex, 'image', true, 'box-image')"
              ng-src="{{currentImageUrl}}"
              class="author-input node-image" />
           <div class="input-field col s12 " 
@@ -78,7 +78,7 @@
             <span class="editor-buttons">
               <button ng-click="saveEdit(currentIndex, 'image', 'box')"
                       class="save btn-flat">Save</button>
-              <button ng-click="showEditor(currentIndex, 'image', false, 'box')"
+              <button ng-click="showEditor(currentIndex, 'image', false, 'box-image')"
                       class="cancel btn-flat">Cancel</button>
             </span>
           </div>
@@ -101,7 +101,7 @@
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
           <span ng-hide="hideText('box-title', currentIndex)"
-                ng-click="showEditor(currentIndex, 'title', true, 'box')"
+                ng-click="showEditor(currentIndex, 'title', true, 'box-title')"
                 class="card-title"><b>Add a Node</b></span>
                 <span class="right">
                   <i ng-click="closeNodeCreator()"
@@ -136,10 +136,10 @@
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
-              <div ng-hide="hideText('box-url', currentIndex)">
+              <div ng-hide="hideText('box-link', currentIndex)">
               </div>
               <div class="input-field col s12"
-                   ng-show="hideText('box-url', currentIndex)">
+                   ng-show="hideText('box-link', currentIndex)">
                 <input id="{{'box-resourceURL-' + currentIndex }}"
                        ng-model="urlToScrape"
                        type="text" 
@@ -147,7 +147,7 @@
                 <span class="editor-buttons">
                   <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
                           class="save btn-flat">Save</button>
-                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box')" class="cancel btn-flat">Cancel</button>
+                  <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box-link')" class="cancel btn-flat">Cancel</button>
                 </span>
             </div>
             </li>
@@ -230,7 +230,7 @@
 <div class="title-list container">
   <div ng-repeat="node in renderedNodes">
     <span ng-hide="hideText('main-title', $index)"
-          ng-click="showEditor($index, 'title', true, 'main')"
+          ng-click="showEditor($index, 'title', true, 'main-title')"
           class="node-description truncate node-title"
           ng-bind="node.title"> Title</span>
     <div class="input-field col s12"
@@ -241,7 +241,7 @@
              class="validate">
       <span class="editor-buttons">
         <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
-        <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main')">Cancel</button>
+        <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main-title')">Cancel</button>
       </span>
     </div>
   </div>
