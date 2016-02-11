@@ -175,13 +175,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveDescEdit = function (){
-    updateObj['_id'] = roadmapId;
-    updateObj['description'] = $('#main-desc').val();
-    console.log('new desc', newProperty);
-    Server.updateRoadmap(updateObj)
+    Server.updateRoadmap({ _id : roadmapId, description: $('#main-desc').val()})
       .then(function(node) {
       $scope.hideDesc = false;
-      $scope.roadMapDesc = newProperty;
+      $scope.roadMapDesc = $('#main-desc').val();
     })
       .catch(function(){
         console.log('problem updating map description', err);
