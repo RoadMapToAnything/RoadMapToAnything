@@ -6,11 +6,11 @@
     <div class="col s12 m16">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
-          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+          <span ng-hide="hideText('box-title', currentIndex)"
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title truncate"><b>{{ currentTitle }}</b></span>
           <div class="input-field col s12" 
-               ng-show="hideText($index, 'title', 'box')">
+               ng-show="hideText('box-title', currentIndex)">
             <input id="{{'box-title-' + currentIndex }}"
                    value="{{ getPlaceholder(currentIndex, 'title') }}"
                    type="text" 
@@ -24,13 +24,13 @@
           </div>
 
 
-          <p ng-hide="hideText(currentIndex, 'description', 'box')"
+          <p ng-hide="hideText('box-desc', currentIndex)"
              ng-click="showEditor(currentIndex, 'description', true, 'box')"
              ng-bind="currentDescription"
              class="author-input">This is the description of why this matters.</p>
           <div class="input-field col s12 " 
-               ng-show="hideText($index, 'description', 'box')">
-            <input id="{{'box-description-' + currentIndex }}"
+               ng-show="hideText('box-desc', currentIndex)">
+            <input id="{{'box-desc' + currentIndex }}"
                    value="{{ getPlaceholder(currentIndex, 'description') }}"
                    type="text" 
                    class="validate">
@@ -43,14 +43,14 @@
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
-              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+              <div ng-hide="hideText('box-url', currentIndex)">
                 <a class="truncate"
                    href="{{link}}">{{link}}</a>
                 <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box')"
                    class="author-input">[edit link]</a>
               </div>
               <div class="input-field col s12"
-                   ng-show="hideText($index, 'resourceURL', 'box')">
+                   ng-show="hideText('box-url, currentIndex)">
                 <input id="{{'box-resourceURL-' + currentIndex }}"
                        value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
                        type="text" 
@@ -65,12 +65,12 @@
             </li>
           </ul>
 
-          <img ng-hide="hideText(currentIndex, 'image', 'box')"
+          <img ng-hide="hideText('box-image', currentIndex)"
              ng-click="showEditor(currentIndex, 'image', true, 'box')"
              ng-src="{{currentImageUrl}}"
              class="author-input node-image" />
           <div class="input-field col s12 " 
-               ng-show="hideText($index, 'image', 'box')">
+               ng-show="hideText('box-image', currentIndex)">
             <input id="{{'box-image-' + currentIndex }}"
                    value="{{ getPlaceholder(currentIndex, 'image') }}"
                    type="text" 
@@ -100,7 +100,7 @@
     <div class="col s12 m16">
       <div class="card hoverable teal lighten-5">
         <div class="card-content">
-          <span ng-hide="hideText(currentIndex, 'title', 'box')"
+          <span ng-hide="hideText('box-title', currentIndex)"
                 ng-click="showEditor(currentIndex, 'title', true, 'box')"
                 class="card-title"><b>Add a Node</b></span>
                 <span class="right">
@@ -136,10 +136,10 @@
           </div>
           <ul>
             <li ng-repeat="link in currentLinks">
-              <div ng-hide="hideText(currentIndex, 'resourceURL', 'box')">
+              <div ng-hide="hideText('box-url', currentIndex)">
               </div>
               <div class="input-field col s12"
-                   ng-show="hideText($index, 'resourceURL', 'box')">
+                   ng-show="hideText('box-url', currentIndex)">
                 <input id="{{'box-resourceURL-' + currentIndex }}"
                        ng-model="urlToScrape"
                        type="text" 
@@ -211,12 +211,12 @@
       </div>
     </div>
   
-    <div ng-hide="isAuthor()" class="center-align connector"></div>
+    <div ng-hide="isAuthor" class="center-align connector"></div>
 
      <div ng-click="showNodeCreator($index, true)">
-      <div ng-show="isAuthor()" class="center-align mini-connector-a"></div>
-      <div ng-show="isAuthor()" class="mini-circle"><div class="plus">+</div></div>
-      <div ng-show="isAuthor()" class="center-align mini-connector-b"></div>
+      <div ng-show="isAuthor" class="center-align mini-connector-a"></div>
+      <div ng-show="isAuthor" class="mini-circle"><div class="plus">+</div></div>
+      <div ng-show="isAuthor" class="center-align mini-connector-b"></div>
     </div>
 
   </div>
@@ -229,12 +229,12 @@
 
 <div class="title-list container">
   <div ng-repeat="node in renderedNodes">
-    <span ng-hide="hideText($index, 'title', 'main')"
+    <span ng-hide="hideText('main-title', $index)"
           ng-click="showEditor($index, 'title', true, 'main')"
           class="node-description truncate node-title"
           ng-bind="node.title"> Title</span>
     <div class="input-field col s12"
-         ng-show="hideText($index, 'title', 'main')">
+         ng-show="hideText('main-title', $index)">
       <input id="{{'main-title-' + $index }}"
              value="{{ getPlaceholder($index, 'title') }}"
              type="text"

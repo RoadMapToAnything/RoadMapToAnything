@@ -77,8 +77,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     resetCreationForm();
   }
 
-  $scope.hideText = function ($index, field, idPrefix){
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+  $scope.hideText = function (id, $index){
+    var elementID = '#' + id + $index;
     if( !$scope.isAuthor ){
       return false;
     } else {
@@ -93,7 +93,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.showEditor = function ($index, field, boolean, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     $scope.currentIndex = $index;
-    
+    console.log('elementID', elementID);
     if( !$scope.isAuthor ){
       $scope[elementID] = false;
     } else {
@@ -174,11 +174,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveDescEdit = function (){
-    console.log('clicked saveDescEdit');
-    var newProperty = $('#main-desc').val();
-    var updateObj = {};
     updateObj['_id'] = roadmapId;
-    updateObj['description'] = newProperty;
+    updateObj['description'] = $('#main-desc').val();
     console.log('new desc', newProperty);
     Server.updateRoadmap(updateObj)
       .then(function(node) {
@@ -191,13 +188,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
  // Get the current number of upvotes from current map
- $scope.getCountVotes = function(votes){
-    $scope.votesCount = 0;
-    for(var i = 0; i < votes.length; i++){
-      $scope.votesCount++;
-    }
-    return $scope.votesCount;
- } 
 
  // Renders the nodes for the current roadmap to the page
   $scope.renderNodes = function(){
@@ -212,22 +202,11 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.renderedNodes = nodes;
     $scope.roadMapTitle = title;
     $scope.roadMapDesc = desc;
-
-    // User Logged in Data in the future
-    // Some variable that holds that the user is logged in
     $scope.currentNode = nodes[0];
-    $scope.renderCurrentNode();
+    $scope.currentTitle = $scope.renderedNodes[0].title;
+    $scope.currentLinks = [$scope.renderedNodes[0].resourceURL];
+    $scope.currentDescription = $scope.renderedNodes[0].description;
   };
-  // Make a $scope.renderComments()
-  $scope.renderComments = function(){
-    var comments = $scope.currentRoadMapData.comments;
-    console.log(comments);
-    comments.map(function(comment,index){
-      comment.index = index;
-    })
-    $scope.renderedComments = comments;
-  }
-
 
   // When roadmap (identified by its id) data is fetched, set it
   function populateData (stop){
@@ -244,12 +223,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     })
     .then(function(){
       $scope.renderNodes();
-      $scope.renderComments();
+      $scope.renderedComments = RoadmapsFactory.renderComments($scope.currentRoadMapData.comments);
       // Set the upvotes and downvotes
-      var currentMapUpVotes = $scope.currentRoadMapData.upvotes;
-      var currentMapDownVotes = $scope.currentRoadMapData.downvotes;
-      $scope.upVoteCount = $scope.getCountVotes(currentMapUpVotes);
-      $scope.downVoteCount = $scope.getCountVotes(currentMapDownVotes);
+      $scope.upVoteCount = RoadmapsFactory.getCountVotes($scope.currentRoadMapData.upvotes);
+      $scope.downVoteCount = RoadmapsFactory.getCountVotes($scope.currentRoadMapData.downvotes);
 
       // append Editor Mode message
       username = localStorage.getItem('user.username');
@@ -264,81 +241,41 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   populateData();
 
-  // Render Title
-  // Assumes title links and description properties from get method
-  $scope.renderCurrentNode = function(){
-    // For now lets make $scope.loggedIn be false, if logged in we can change it to true later.
-    $scope.loggedin = false;
-    if($scope.loggedIn) {
-      // Get node index
-      // set currentNode into node at that index;
-    } else {
-      //links from a node
-      var links = $scope.renderedNodes[0].resourceURL;
-      //description of a node
-      var description = $scope.renderedNodes[0].description;
-      var title = $scope.renderedNodes[0].title;
-    }
-    
-    $scope.currentTitle = title;
-    $scope.currentLinks = [links];
-    $scope.currentDescription = description;
-  }
-
   $scope.selectNode = function($index) {
-
-    var links = $scope.renderedNodes[$index].resourceURL;
-    var description = $scope.renderedNodes[$index].description;
-    var title = $scope.renderedNodes[$index].title;
-    var imageUrl = $scope.renderedNodes[$index].imageUrl;
-
     $scope.currentIndex = $index;
-    $scope.currentTitle = title;
-    $scope.currentLinks = links;
+    $scope.currentTitle = $scope.renderedNodes[$index].title;
+    $scope.currentLinks = $scope.renderedNodes[$index].resourceURL;
     $scope.currentResourceURL = $scope.currentLinks[0];
-    $scope.currentDescription = description;
+    $scope.currentDescription = $scope.renderedNodes[$index].description;
     $scope.currentNode = $scope.renderedNodes[$index];
-    $scope.currentImageUrl = imageUrl;
-    
+    $scope.currentImageUrl = $scope.renderedNodes[$index].imageUrl;
   };
-  // Submits a node to the user's inProgress.nodes array.
+
   $scope.submitCompletedNode = function() {
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
     Materialize.toast('Node Complete!', 4000, 'orangeToast');
   }
 
-  // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
     Materialize.toast('Map Complete!', 4000, 'orangeToast');
     User.completeRoadmapById(roadmapId);
     $state.go('home.dashboard', {type: 'completed'});
   }
 
-
-  // After upvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.upVoteMap = function () {
     User.upvoteMapById(roadmapId)
     .then(function(data){ 
-      var dataUpVoteCount = data.upvotes;
-      var dataDownVoteCount = data.downvotes;
-      // Update the upvote count
-      $scope.upVoteCount = $scope.getCountVotes(dataUpVoteCount);
-      // Update the downvote count
-      $scope.downVoteCount = $scope.getCountVotes(dataDownVoteCount);
+      $scope.upVoteCount = RoadmapsFactory.getCountVotes();
+      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
     })
   }
 
-  // After downvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.downVoteMap = function () {
     User.downvoteMapById(roadmapId)
     .then(function(data){
-      var dataUpVoteCount = data.upvotes;
-      var dataDownVoteCount = data.downvotes;
-      // Update the upvote count
-      $scope.upVoteCount = $scope.getCountVotes(dataUpVoteCount);
-      // Update the downvote count
-      $scope.downVoteCount = $scope.getCountVotes(dataDownVoteCount);
+      $scope.upVoteCount = RoadmapsFactory.getCountVotes(data.upvotes);
+      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
     });
   };
 
