@@ -133,5 +133,14 @@ angular.module('app', [
           controller: 'MainController'
         }
       }
+    })
+  .state('home.tutorial', { 
+      url: 'tutorial',
+      views: {
+        'content@': {
+          templateUrl: 'app/main/tutorial.html',
+          controller: 'MainController'
+        }
+      }
     });
 });
