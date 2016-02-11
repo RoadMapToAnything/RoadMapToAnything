@@ -66,19 +66,19 @@
           </ul>
 
           <img ng-hide="hideText('box-image', currentIndex)"
-             ng-click="showEditor(currentIndex, 'image', true, 'box-image')"
+             ng-click="showEditor(currentIndex, 'imageUrl', true, 'box-image')"
              ng-src="{{currentImageUrl}}"
              class="author-input node-image" />
           <div class="input-field col s12 " 
                ng-show="hideText('box-image', currentIndex)">
-            <input id="{{'box-image-' + currentIndex }}"
-                   value="{{ getPlaceholder(currentIndex, 'image') }}"
+            <input id="{{'box-image' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'imageUrl') }}"
                    type="text" 
                    class="validate">
             <span class="editor-buttons">
-              <button ng-click="saveEdit(currentIndex, 'image', 'box')"
+              <button ng-click="saveEdit(currentIndex, 'imageUrl', 'box-image')"
                       class="save btn-flat">Save</button>
-              <button ng-click="showEditor(currentIndex, 'image', false, 'box-image')"
+              <button ng-click="showEditor(currentIndex, 'imageUrl', false, 'box-image')"
                       class="cancel btn-flat">Cancel</button>
             </span>
           </div>
