@@ -93,7 +93,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.showEditor = function ($index, field, boolean, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     $scope.currentIndex = $index;
-    
+    console.log('elementID', elementID);
     if( !$scope.isAuthor ){
       $scope[elementID] = false;
     } else {
