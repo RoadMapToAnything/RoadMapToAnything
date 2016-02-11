@@ -1,4 +1,10 @@
-/*welcome banner*/
+/***** Input Customization *****/
+input[type=text]:focus{
+border-bottom: 1px solid black;
+box-shadow: 0 1px 0 0 black;
+}
+
+/****** WELCOME BANNER ******/
 .wouter-container {
   margin-left:auto !important; 
   margin-right:auto !important;
@@ -43,7 +49,7 @@ ul
 }
 
 
- /*footer*/ 
+/****** MAIN FOOTER ******/
 
 .copyright{
   margin-left:auto !important; 
@@ -337,12 +343,39 @@ height: 4em;
 }
 
 ul.dropdown-menu li {
-  background-color: #000;
+  background-color: #d6d6d6;
   display: block;
   clear: both;
   width: 100%;
 }
 
 ul.dropdown-menu li.active {
-  background-color: #777;
+  background-color: #d6d6d6;
 }
+
+/* Modified Css for Search/Typehead to have dropdown line up with input box and fix input box*/
+
+/* .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+  position: absolute;
+  float: none;
+  display: block;
+  min-width: 160px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+ul.dropdown-menu li {
+  position: absolute;
+  background-color: #d6d6d6;
+  max-width: 400px;
+  display: block;
+  clear: both;
+  white-space: nowrap;
+  width: 100%;
+}
+
+ul.dropdown-menu li.active {
+  background-color: #d6d6d6;
+}*/
+

@@ -2,27 +2,46 @@ var getAuthHeader  = require('basic-auth'),
     bcrypt         = require('bcrypt-nodejs'),
     request        = require('request-promise'),
     handleError    = require('../util.js').handleError,
-    userController = require('../api/users/userController.js'),
-    CONF           = require('../../_private-config.json');
+    userController = require('../api/users/userController.js');
 
+// Check if we are in deployed state and if not, require the _private-config.json file   
+if(process.env.FACEBOOK_APP_ID === undefined && process.env.FACEBOOK_APP_SECRET === undefined){
+  var  CONF             = require('../../_private-config.json');
+}
 
 
 
 var Facebook = {};
 Facebook.getTokenData = function (accessToken) {
-  var debugTokenURL = 'https://graph.facebook.com/debug_token' 
-    + '?input_token=' + accessToken
-    + '&access_token=' + CONF.FACEBOOK_APP_ID +'|'+ CONF.FACEBOOK_APP_SECRET;
+  // Check if process.env Facebook keys are available
+  if(process.env.FACEBOOK_APP_ID === undefined && process.env.FACEBOOK_APP_SECRET === undefined){
+    var debugTokenURL = 'https://graph.facebook.com/debug_token' 
+      + '?input_token=' + accessToken
+      + '&access_token=' + CONF.FACEBOOK_APP_ID +'|'+ CONF.FACEBOOK_APP_SECRET;
+  } else {
+    var debugTokenURL = 'https://graph.facebook.com/debug_token' 
+      + '?input_token=' + accessToken
+      + '&access_token=' + process.env.FACEBOOK_APP_ID +'|'+ process.env.FACEBOOK_APP_SECRET;
+  }
 
   return request(debugTokenURL);
 };
 
 Facebook.getAccessToken = function (authorizationCode) {
-  var getAccessTokenURL = 'https://graph.facebook.com/v2.5/oauth/access_token'
-    + '?client_id=' + CONF.FACEBOOK_APP_ID
-    + '&redirect_uri=' + 'http://localhost:3000/auth/facebook/callback'
-    + '&client_secret=' + CONF.FACEBOOK_APP_SECRET
-    + '&code=' + authorizationCode; 
+  // Check if process.env Facebook keys are available
+  if(process.env.FACEBOOK_APP_ID === undefined && process.env.FACEBOOK_APP_SECRET === undefined){
+    var getAccessTokenURL = 'https://graph.facebook.com/v2.5/oauth/access_token'
+      + '?client_id=' + CONF.FACEBOOK_APP_ID
+      + '&redirect_uri=' + 'http://localhost:3000/auth/facebook/callback'
+      + '&client_secret=' + CONF.FACEBOOK_APP_SECRET
+      + '&code=' + authorizationCode;
+    } else {
+      var getAccessTokenURL = 'https://graph.facebook.com/v2.5/oauth/access_token'
+      + '?client_id=' + process.env.FACEBOOK_APP_ID
+      + '&redirect_uri=' + 'http://localhost:3000/auth/facebook/callback'
+      + '&client_secret=' + process.env.FACEBOOK_APP_SECRET
+      + '&code=' + authorizationCode;
+    }
 
   return request(getAccessTokenURL);
 };
