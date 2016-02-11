@@ -114,7 +114,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
   $scope.hideText = function ($index, field, idPrefix){
-    $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     var username = localStorage.getItem('user.username');
     var roadmapAuthor = $scope.currentRoadMapData.author.username || '';
@@ -359,6 +358,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var links = $scope.renderedNodes[$index].resourceURL;
     var description = $scope.renderedNodes[$index].description;
     var title = $scope.renderedNodes[$index].title;
+    var imageUrl = $scope.renderedNodes[$index].imageUrl;
 
     $scope.currentIndex = $index;
     $scope.currentTitle = title;
@@ -366,6 +366,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentResourceURL = $scope.currentLinks[0];
     $scope.currentDescription = description;
     $scope.currentNode = $scope.renderedNodes[$index];
+    $scope.currentImageUrl = imageUrl;
     
   };
   // Submits a node to the user's inProgress.nodes array.

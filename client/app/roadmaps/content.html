@@ -64,6 +64,24 @@
             </div>
             </li>
           </ul>
+
+          <img ng-hide="hideText(currentIndex, 'image', 'box')"
+             ng-click="showEditor(currentIndex, 'image', true, 'box')"
+             ng-src="{{currentImageUrl}}"
+             class="author-input node-image" />
+          <div class="input-field col s12 " 
+               ng-show="hideText($index, 'image', 'box')">
+            <input id="{{'box-image-' + currentIndex }}"
+                   value="{{ getPlaceholder(currentIndex, 'image') }}"
+                   type="text" 
+                   class="validate">
+            <span class="editor-buttons">
+              <button ng-click="saveEdit(currentIndex, 'image', 'box')"
+                      class="save btn-flat">Save</button>
+              <button ng-click="showEditor(currentIndex, 'image', false, 'box')"
+                      class="cancel btn-flat">Cancel</button>
+            </span>
+          </div>
         </div>
         <div class="card-action">
           <button class="link-box-btn amber darken-1 btn" ng-click="submitCompletedNode()">Node Done</button>
