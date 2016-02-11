@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/RoadMapToAnything/RoadMapToAnything#readme",
   "dependencies": {
+    "angular-ui-bootstrap": "^1.1.2",
     "basic-auth": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.1.1",

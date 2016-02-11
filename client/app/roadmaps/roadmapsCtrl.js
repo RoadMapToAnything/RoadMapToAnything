@@ -20,7 +20,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.currentIndex = 0;
 
   $scope.toggleComments = function(){
-    $scope.showComments = true;
+    $scope.showComments = !$scope.showComments;
   };
 
   $scope.isAuthor = function (){
@@ -117,7 +117,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $index = $index || 0;
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
+    var roadmapAuthor = $scope.currentRoadMapData.author.username || '';
     if( username !== roadmapAuthor ){
       return false;
     } else {
