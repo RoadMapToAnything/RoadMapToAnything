@@ -49,7 +49,7 @@
               <td><i class="fa fa-arrow-up clickable" ng-click="upvote(map._id, $index)"></i>
               {{map.upvotes.length - map.downvotes.length}}
               <i class="fa fa-arrow-down clickable" ng-click="downvote(map._id, $index)"></i>
-              <td><a href="">{{map.comments.length}} Comments</a></td>
+              <td><b>{{map.comments.length}} Comments</b></td>
               <td><b>{{ map.nodes.length }} Nodes</b></td>
               <td><a ng-click="followMap( map._id )" class="waves-effect waves-light btn cyan lighten-3">Follow</a></td>
             </tr>
