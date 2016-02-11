@@ -346,3 +346,30 @@ ul.dropdown-menu li {
 ul.dropdown-menu li.active {
   background-color: #777;
 }
+
+/* Modified Css for Search/Typehead to have dropdown line up with input box and fix input box*/
+
+/* .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+  position: absolute;
+  float: none;
+  display: block;
+  min-width: 160px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+ul.dropdown-menu li {
+  position: absolute;
+  background-color: #d6d6d6;
+  max-width: 400px;
+  display: block;
+  clear: both;
+  white-space: nowrap;
+  width: 100%;
+}
+
+ul.dropdown-menu li.active {
+  background-color: #d6d6d6;
+}*/
+
