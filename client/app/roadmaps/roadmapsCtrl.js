@@ -250,43 +250,32 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentNode = $scope.renderedNodes[$index];
     $scope.currentImageUrl = $scope.renderedNodes[$index].imageUrl;
   };
-  // Submits a node to the user's inProgress.nodes array.
+
   $scope.submitCompletedNode = function() {
     var nodeId = $scope.currentNode._id;
     User.completeNodeById(nodeId);
     Materialize.toast('Node Complete!', 4000, 'orangeToast');
   }
 
-  // Submits a roadmap to the user's completedRoadmaps array.
   $scope.submitCompletedRoadmap = function() {
     Materialize.toast('Map Complete!', 4000, 'orangeToast');
     User.completeRoadmapById(roadmapId);
     $state.go('home.dashboard', {type: 'completed'});
   }
 
-  // After upvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.upVoteMap = function () {
     User.upvoteMapById(roadmapId)
     .then(function(data){ 
-      var dataUpVoteCount = data.upvotes;
-      var dataDownVoteCount = data.downvotes;
-      // Update the upvote count
-      $scope.upVoteCount = RoadmapsFactory.getCountVotes(dataUpVoteCount);
-      // Update the downvote count
-      $scope.downVoteCount = RoadmapsFactory.getCountVotes(dataDownVoteCount);
+      $scope.upVoteCount = RoadmapsFactory.getCountVotes();
+      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
     })
   }
 
-  // After downvote, submits vote update to the roadmap's upvotes and downvotes array
   $scope.downVoteMap = function () {
     User.downvoteMapById(roadmapId)
     .then(function(data){
-      var dataUpVoteCount = data.upvotes;
-      var dataDownVoteCount = data.downvotes;
-      // Update the upvote count
-      $scope.upVoteCount = RoadmapsFactory.getCountVotes(dataUpVoteCount);
-      // Update the downvote count
-      $scope.downVoteCount = RoadmapsFactory.getCountVotes(dataDownVoteCount);
+      $scope.upVoteCount = RoadmapsFactory.getCountVotes(data.upvotes);
+      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
     });
   };
 
