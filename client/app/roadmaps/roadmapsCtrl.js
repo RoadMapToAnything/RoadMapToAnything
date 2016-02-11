@@ -1,59 +1,31 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
-.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadMapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadMapsFactory, Server, User, $timeout, $state){  
-  angular.extend($scope, RoadMapsFactory);
-
-  var NODE_DEFAULTS = {
-    title: 'New node title',
-    description: 'New node description',
-    resourceType: 'New node type',
-    resourceURL: 'New node link (optional)',
-    imageUrl: 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png'
-  }
+.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
+  angular.extend($scope, RoadmapsFactory);
 
   var roadmapId = $stateParams.roadmapID;
+
   $scope.currentRoadMapData = {};
   $scope.renderedNodes = [];
   $('.tooltipped').tooltip({delay: 50});
 
+  $scope.isAuthor = false;
   $scope.showComments = false;
   $scope.currentIndex = 0;
+  $scope.hideTitle = false;
+  $scope.hideDesc = false;
 
   $scope.toggleComments = function(){
     $scope.showComments = !$scope.showComments;
   };
 
-  $scope.isAuthor = function (){
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
-    if (username === roadmapAuthor){
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  $scope.resetCreationForm = function() {
-    $scope.urlToScrape = "Paste a link here to get info automatically";
-    $scope.currentCreationTitle = NODE_DEFAULTS.title;
-    $scope.currentCreationDescription = NODE_DEFAULTS.description;
-    $scope.currentCreationType = NODE_DEFAULTS.resourceType;
-    $scope.currentCreationLink = NODE_DEFAULTS.resourceURL;
-    $scope.currentCreationImage = 'New node image (optional)';
-  }
-
-  $scope.resetCreationForm();
-
-  $scope.displayUrl = '';
-  $scope.scrape = {};
+  resetCreationForm();
 
   $scope.checkAndSubmit = function() {
     var url = $scope.urlToScrape;
     if (url.length < 4) return;
     if (url.substring(0, 4) !== 'http') url = 'http://' + url;
 
-    $scope.displayUrl = url;
-    console.log("scraping url", url);
     Server.scrape(url)
     .then(function (data) {
       console.log('web scrape data is', data);
@@ -66,17 +38,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.showNodeCreator = function($index, boolean){
-    console.log("SHOWNODECRETAOR $index:", $index);
     $scope.currentAddIndex = $index + 1;
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
-    console.log("'mini-circle-' + $index", 'mini-circle-' + $index);
-    $scope.currentAddIndex = $index;
-    if( username !== roadmapAuthor ){
+    if( !$scope.isAuthor ){
       $scope.nodeCreator = false;
-      console.log("author fail");
     } else {
-
       $scope.displayNodeCreator = boolean;
     }
   }
@@ -96,28 +61,25 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       resourceURL: $scope.currentCreationLink || NODE_DEFAULTS.resourceURL,
       imageUrl: $scope.currentCreationImage || NODE_DEFAULTS.imageUrl,
       parentRoadmap: roadmapId,
-      saveAtIndex: $index + 1
+      saveAtIndex: $index
 
     })
     .then(function(res){
       populateData();
-      console.log("node created");
       $scope.displayNodeCreator = false;
       Materialize.toast('Node Added!', 4000, 'orangeToast');
-      $scope.resetCreationForm();
+      resetCreationForm();
     });
   };
 
   $scope.closeNodeCreator = function(){
     $scope.displayNodeCreator = false;
-    $scope.resetCreationForm();
+    resetCreationForm();
   }
 
   $scope.hideText = function ($index, field, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username || '';
-    if( username !== roadmapAuthor ){
+    if( !$scope.isAuthor ){
       return false;
     } else {
       if( !$scope[elementID] ){
@@ -131,15 +93,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.showEditor = function ($index, field, boolean, idPrefix){
     var elementID = '#' + idPrefix + '-' + field + '-' + $index;
     $scope.currentIndex = $index;
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
     
-    if( username !== roadmapAuthor ){
+    if( !$scope.isAuthor ){
       $scope[elementID] = false;
-      console.log("author fail");
     } else {
       if( field === 'circle' && idPrefix === 'mini'){
-        $scope.resetCreationForm();
+        resetCreationForm();
       }
       if( !$scope.currentResourceURL ) {
         $scope.currentResourceURL = $scope.currentLinks[0];
@@ -148,9 +107,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       if(boolean === false && field !== 'circle'){
         $(elementID).val($scope.renderedNodes[$index][field]);
       }
-      console.log("SHOW EDITOR");
-      console.log('elementID', elementID);
-      console.log('$scope[elementID]', $scope[elementID]);
+
       $scope[elementID] = boolean;
     }
 
@@ -183,23 +140,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       });
   };
 
-  //roadMapTitle
-
-  $scope.hideTitle = false;
-  $scope.hideDesc = false;
-
   $scope.showTitleEditor = function (boolean){
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
-    var storedTitle;
-    
-    if( username !== roadmapAuthor ){
+    if( !$scope.isAuthor ){
       $scope.hideTitle = false;
     } else {
       $scope.hideTitle = boolean;
       return $scope.hideTitle;
     }
-
   };
 
   $scope.saveTitleEdit = function (){
@@ -218,17 +165,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   }
 
   $scope.showDescEditor = function (boolean){
-    var username = localStorage.getItem('user.username');
-    var roadmapAuthor = $scope.currentRoadMapData.author.username;
-    var storedDesc;
-    
-    if( username !== roadmapAuthor ){
+    if( !$scope.isAuthor ){
       $scope.hideDesc= false;
     } else {
       $scope.hideDesc = boolean;
       return $scope.hideDesc;
     }
-
   };
 
   $scope.saveDescEdit = function (){
@@ -289,6 +231,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   // When roadmap (identified by its id) data is fetched, set it
   function populateData (stop){
+    // conditional populateData call can't be called more than once
     stop = stop || false;
     Server.getRoadmapById(roadmapId).then(function (res){
       if( !res.nodes.length && stop === false){
@@ -309,23 +252,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.downVoteCount = $scope.getCountVotes(currentMapDownVotes);
 
       // append Editor Mode message
-      var username = localStorage.getItem('user.username');
-      var roadmapAuthor = $scope.currentRoadMapData.author.username;
+      username = localStorage.getItem('user.username');
+      roadmapAuthor = $scope.currentRoadMapData.author.username;
+      $scope.isAuthor = username === roadmapAuthor;
         
-      if( username === roadmapAuthor ){
-        $('#editor-placeholder').append(
-        '<div ng-hide="notAuthor()" class="editor-msg row blue lighten-4">' +
-          '<div class="col s0 m1 l1">' +
-            '<i class="fa fa-pencil fa-lg"></i>' +
-          '</div>' +
-          '<div class="col s0 m10 l10">' +
-              'Since you created this roadmap, you can add or edit properties by clicking on them.' +
-          '</div>' +
-          '<div class="col s0 m1 l1">' +
-            '<i class="fa fa-pencil fa-lg"></i>' +
-          '</div>' +
-        '</div>'
-        );
+      if( !$scope.isAuthor ){
+        $('#editor-placeholder').append(RoadmapsFactory.editorMsgHTML);
       }
     });
   }
@@ -410,15 +342,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     });
   };
 
-  $scope.connectLines = function(){
-    $('.endPointForConnection').connections();
-  };
-
-  // We need async because ng-repeat creates the nodes before this function runs set timeout changes the loop.
-  $scope.asyncConnectLines = function(cb){
-    setTimeout($scope.connectLines,0);
-  };
-
   $scope.subject = '';
   $scope.content = '';
 
@@ -432,5 +355,15 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       roadmap: $scope.currentRoadMapData._id
     });
   };
+
+  // utility functions
+  function resetCreationForm () {
+    $scope.urlToScrape = "Paste a link here to get info automatically";
+    $scope.currentCreationTitle = RoadmapsFactory.NODE_DEFAULTS.title;
+    $scope.currentCreationDescription = RoadmapsFactory.NODE_DEFAULTS.description;
+    $scope.currentCreationType = RoadmapsFactory.NODE_DEFAULTS.resourceType;
+    $scope.currentCreationLink = RoadmapsFactory.NODE_DEFAULTS.resourceURL;
+    $scope.currentCreationImage = 'New node image (optional)';
+  }
 
 }]);
