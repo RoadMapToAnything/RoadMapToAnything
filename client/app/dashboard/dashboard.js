@@ -1,6 +1,6 @@
 angular.module('dash.ctrl', ['services.server', 'services.user'])
 
-.controller('DashboardController', ['$scope', '$state', 'User', 'Server', function($scope, $state, User, Server) {
+.controller('DashboardController', ['$scope', '$state', 'User', 'Server', '$timeout', function($scope, $state, User, Server, $timeout) {
 
   $scope.followed = [];
   $scope.myMaps = [];
@@ -127,5 +127,16 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
     });
   };
 
-}]);
+  // $scope.changeFbUsername = function(){
+  //   User.update({username: $('#fb-username').val() })
+  //   .then(function(res){
+  //     if(res.username.slice(0,11) !== "temp-FBUSER"){
+  //       $('#fbModal').closeModal();
+  //     } else {
+  //       $scope.differentUsername = true;
+  //       $timeout(function(){
+  //         $scope.differentUsername = false;
+  //       }, 10000);
+  //     }
+  // };
 

@@ -178,3 +178,21 @@
   </div>
 
 </div>
+
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn modal-trigger blue lighten-2" href="#fbModal">Change Username</a>
+
+<!-- Modal Structure -->
+<div id="fbModal" class="modal">
+  <div class="modal-content">
+    <h4>Set a unique username</h4>
+    
+    <input id="fb-username" type="text" class="validate">
+    <label for="fb-username">Username</label>
+
+    <a ng-click="changeFbUsername()" class="waves-effect waves-light btn modal-trigger" href="#fbModal">Ok!</a>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
