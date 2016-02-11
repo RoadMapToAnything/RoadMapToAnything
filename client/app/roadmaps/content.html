@@ -239,10 +239,15 @@
 
 <div class="row">
   <button type="submit" class="waves-effect waves-light btn link-box-btn col offset-s3" ng-show="!showComments" ng-click="toggleComments()">Click to Show Comment Section</button>
+  <button type="submit" class="waves-effect waves-light btn link-box-btn col offset-s3" ng-show="showComments" ng-click="toggleComments()">Click to Hide Comment Section</button>
+
 </div>
 
 
 <div class="row commentSection" ng-show="showComments">
+  <div class="col s7 offset-s4">
+    
+  
   <h4>Comment Section       <i class="material-icons">comment</i> </h4>
   
   <div ng-repeat="comment in renderedComments">
@@ -269,6 +274,7 @@
           <button type="submit" class="waves-effect waves-light btn commentBtn">Submit your Comment!</button>
       </div>
     </form>
+    </div>
   </div>
 
 
