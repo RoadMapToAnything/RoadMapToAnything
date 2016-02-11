@@ -307,6 +307,10 @@ footer.page-footer div.footer-copyright {
   padding: 5px;
   text-align: center;
 }
+.node-image {
+  max-height: 80px !important;
+  max-width: 150px !important;
+}
 
 /*  Footer */
 
