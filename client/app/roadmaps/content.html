@@ -238,9 +238,11 @@
 
 
 <div class="row">
-  <button type="submit" class="waves-effect waves-light btn link-box-btn col offset-s3" ng-show="!showComments" ng-click="toggleComments()">Click to Show Comment Section</button>
-  <button type="submit" class="waves-effect waves-light btn link-box-btn col offset-s3" ng-show="showComments" ng-click="toggleComments()">Click to Hide Comment Section</button>
+  <button type="submit" class="btn amber darken-1 link-box-btn col offset-s3" ng-show="!showComments" ng-click="toggleComments()">Click to Show Comment Section</button>
+  <button type="submit" class="btn amber darken-1 link-box-btn col offset-s3" ng-show="showComments" ng-click="toggleComments()">Click to Hide Comment Section</button>
 </div>
+<!-- <button class="link-box-btn amber darken-1 btn" ng-click="submitCompletedNode()">Node Done</button> -->
+
 
 
 <div class="row commentSection" ng-show="showComments">
@@ -260,17 +262,17 @@
       <div class="row">
         <div class="input-field col s6">
           <input id="input_text" type="text" length="20" ng-model="subject">
-          <label for="input_text" >Input text</label>
+          <label for="input_text" >Subject</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
           <textarea id="textarea1" class="materialize-textarea" length="120" ng-model="content"></textarea>
-          <label for="textarea1" >Textarea</label>
+          <label for="textarea1" >Content</label>
         </div>
       </div>
       <div class="row">
-          <button type="submit" class="waves-effect waves-light btn commentBtn">Submit your Comment!</button>
+          <button type="submit" class="link-box-btn btn amber darken-1 commentBtn">Submit your Comment!</button>
       </div>
     </form>
     </div>
