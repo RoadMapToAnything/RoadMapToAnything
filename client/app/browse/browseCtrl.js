@@ -14,7 +14,6 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   $scope.getMapData(function(mapData){
     $scope.mapData = mapData;
   });
-
   
   var orderBy = $filter('orderBy');
 
@@ -59,7 +58,5 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
       $scope.mapData[index].downvotes = roadmap.downvotes;
     });
   };
-
-  console.log($scope.mapData);
 
 }]);

@@ -20,6 +20,7 @@
   <div ng-show="showSigninMsg">You must be signed in first</div>
   <ul class="collapsible" data-collapsible="accordion">
 
+
    <li ng-repeat="map in mapData | filter: searchText">
       <span class="collapsible-header">
         <span style="float:left;padding-right:1em">{{map.upvotes.length - map.downvotes.length}} </span>
@@ -28,11 +29,12 @@
         by {{map.author.username}}</span>
         <i class="fa fa-angle-down" style="float:right"></i>
       </span>
+      <!-- <span><img src="{{map.nodes[0].imageUrl}}" height="100px" width="50px"></span> -->
       <div class="collapsible-body">
         <div class="container">
           <table>
             <tr>
-              <th><i class="mousetoHand fa fa-file-image-o fa-5x" ng-click="goToMap( map._id )"></i></th>
+              <th><!-- <i class="mousetoHand fa fa-file-image-o fa-5x" ng-click="goToMap( map._id )"> --><img src="{{map.nodes[0].imageUrl}}" width="150px" class="mousetoHand" ng-click="goToMap( map._id )"></i></th>
             </tr>
             <tr>
               <th class="mousetoHand truncate" style="color:#0048C4" ng-click="goToMap( map._id )"><b><u>{{ map.description }}</u></b>

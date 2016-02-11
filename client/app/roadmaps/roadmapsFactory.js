@@ -24,7 +24,7 @@ angular.module('roadmaps.factory', [])
         description: 'New node description',
         resourceType: 'New node type',
         resourceURL: 'New node link (optional)',
-        imageUrl: 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png'
+        imageUrl: 'https://www.globalbrigades.org/media_gallery/thumb/320/0/VRS_Poster_512x512x32_2.png'
       },
       editorMsgHTML : '<div ng-hide="notAuthor()" class="editor-msg row blue lighten-4">' +
           '<div class="col s0 m1 l1">' +
