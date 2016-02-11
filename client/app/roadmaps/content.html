@@ -35,7 +35,7 @@
                    type="text" 
                    class="validate">
             <span class="editor-buttons">
-              <button ng-click="saveEdit(currentIndex, 'description', 'box')"
+              <button ng-click="saveEdit(currentIndex, 'description', 'box-desc')"
                       class="save btn-flat">Save</button>
               <button ng-click="showEditor(currentIndex,'desc', false, 'box-desc')"
                       class="cancel btn-flat">Cancel</button>
@@ -50,13 +50,13 @@
                    class="author-input">[edit link]</a>
               </div>
               <div class="input-field col s12"
-                   ng-show="hideText('box-link, currentIndex)">
-                <input id="{{'box-resourceURL-' + currentIndex }}"
+                   ng-show="hideText('box-link', currentIndex)">
+                <input id="{{'box-link' + currentIndex }}"
                        value="{{ getPlaceholder(currentIndex, 'resourceURL') }}"
                        type="text" 
                        class="validate">
                 <span class="editor-buttons">
-                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box')"
+                  <button ng-click="saveEdit(currentIndex, 'resourceURL', 'box-link')"
                           class="save btn-flat">Save</button>
                   <button ng-click="showEditor(currentIndex, 'resourceURL', false, 'box-link')"
                           class="cancel btn-flat">Cancel</button>

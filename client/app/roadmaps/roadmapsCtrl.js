@@ -120,8 +120,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
-    var elementID = '#' + idPrefix + '-' + field + '-' + $index;
+    var elementID = '#' + idPrefix + $index;
     var newProperty = $(elementID).val();
+    console.log('newProperty', newProperty);
     var updateObj = {};
     updateObj['_id'] = $scope.renderedNodes[$index]._id;
     updateObj[field] = newProperty;
