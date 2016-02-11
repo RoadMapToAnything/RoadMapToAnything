@@ -8,8 +8,8 @@ var passport         = require('passport'),
 module.exports = function (authRouter) {
 
   passport.use(new FacebookStrategy({
-      clientID: CONF.FACEBOOK_APP_ID,
-      clientSecret: CONF.FACEBOOK_APP_SECRET,
+      clientID: process.env.FACEBOOK_APP_ID || CONF.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET || CONF.FACEBOOK_APP_SECRET,
       callbackURL: '/auth/facebook/callback'
     }, function(){/*not used*/}));
 
