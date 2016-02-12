@@ -119,27 +119,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     return $scope['current' + capitalizedField];
   };
 
-  $scope.saveEdit = function($index, field, idPrefix){
-    var elementID = '#' + idPrefix + $index;
-    var newProperty = $(elementID).val();
-    console.log('newProperty', newProperty);
-    var updateObj = {};
-    updateObj['_id'] = $scope.renderedNodes[$index]._id;
-    updateObj[field] = newProperty;
-    Server.updateNode(updateObj)
-      .then(function(node) {
-      $scope.showEditor($index, field, false, idPrefix);
-      $scope.renderedNodes[$index][field] = newProperty;
-      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-      $scope['current' + capitalizedField] = newProperty;
-      if( field === 'resourceURL' ){
-        $scope.currentLinks[0] = newProperty;
-      }
-    })
-      .catch(function(){
-        console.log('problem updating node', err);
-      });
-  };
+
 
   $scope.showTitleEditor = function (boolean){
     if( !$scope.isAuthor ){

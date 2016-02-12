@@ -138,5 +138,5 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
   //         $scope.differentUsername = false;
   //       }, 10000);
   //     }
-  // };
-
+ }
+]);
