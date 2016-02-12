@@ -117,20 +117,20 @@
             </span>
           </div>
             <input id="node-creation-title"
-                   ng-model="currentCreationTitle"
+                   ng-model="newNode.title"
                    type="text"
                    placeholder="Get node info automatically by pasting the link here">
             <input id="node-creation-description"
-                   ng-model="currentCreationDescription"
+                   ng-model="newNode.description"
                    type="text">
             <input id="node-creation-type"
-                   ng-model="currentCreationType"
+                   ng-model="newNode.type"
                    type="text">
             <input id="node-creation-link"
-                   ng-model="currentCreationLink"
+                   ng-model="newNode.resourceURL"
                    type="url">
             <input id="node-creation-image"
-                   ng-model="currentCreationImage"
+                   ng-model="newNode.imageUrl"
                    type="url">
             <button class="link-box-btn btn" ng-click="createNode(currentAddIndex)">Add Node</button>
           </div>
@@ -204,7 +204,7 @@
    <!-- Nodes -->
 <div class="node-list container">
 
-  <div ng-repeat="node in renderedNodes">
+  <div ng-repeat="node in roadmap.nodes">
 
     <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
       <div class="number">{{ node.index + 1 }}
@@ -228,7 +228,7 @@
    <!-- Node Descriptions -->
 
 <div class="title-list container">
-  <div ng-repeat="node in renderedNodes">
+  <div ng-repeat="node in roadmap.nodes">
     <span ng-hide="hideText('main-title', $index)"
           ng-click="showEditor($index, 'title', true, 'main-title')"
           class="node-description truncate node-title"
