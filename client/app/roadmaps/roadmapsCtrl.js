@@ -2,10 +2,42 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
 .controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
   angular.extend($scope, RoadmapsFactory);
+  
+  $scope.roadmap = {
+    _id: $stateParams.roadmapID
+  };
 
-  var roadmapId = $stateParams.roadmapID;
+  function populateData (stop){
+    // conditional populateData call can't be called more than once
+    stop = stop || false;
+    Server.getRoadmapById($scope.roadmap._id).then(function (res){
+      if( !res.nodes.length && stop === false){
+        populateData(true);
+      }
+      $scope.roadmap = res;
+    }, function(err){
+      if (err) return console.log(err);
+    })
+    .then(function(){
+      $scope.renderNodes();
+      $scope.roadmap.comments = RoadmapsFactory.renderComments($scope.roadmap.comments);
+      $scope.roadmap.upvotes = RoadmapsFactory.getCountVotes($scope.roadmap.upvotes);
+      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes($scope.roadmap.downvotes);
 
-  $scope.currentRoadMapData = {};
+      // append Editor Mode message
+      username = localStorage.getItem('user.username');
+      roadmapAuthor = $scope.roadmap.author.username;
+      $scope.isAuthor = username === roadmapAuthor;
+        
+      if( !$scope.isAuthor ){
+        $('#editor-placeholder').append(RoadmapsFactory.editorMsgHTML);
+      }
+    });
+  }
+
+  populateData();
+
+  $scope.roadmap = {};
   $scope.renderedNodes = [];
   $('.tooltipped').tooltip({delay: 50});
 
@@ -60,7 +92,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       resourceType: $scope.currentCreationType || NODE_DEFAULTS.resourceType,
       resourceURL: $scope.currentCreationLink || NODE_DEFAULTS.resourceURL,
       imageUrl: $scope.currentCreationImage || NODE_DEFAULTS.imageUrl,
-      parentRoadmap: roadmapId,
+      parentRoadmap: $scope.roadmap._id,
       saveAtIndex: $index
 
     })
@@ -119,7 +151,27 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     return $scope['current' + capitalizedField];
   };
 
-
+  $scope.saveEdit = function($index, field, idPrefix){
+    var elementID = '#' + idPrefix + $index;
+    var newProperty = $(elementID).val();
+    console.log('newProperty', newProperty);
+    var updateObj = {};
+    updateObj['_id'] = $scope.renderedNodes[$index]._id;
+    updateObj[field] = newProperty;
+    Server.updateNode(updateObj)
+      .then(function(node) {
+      $scope.showEditor($index, field, false, idPrefix);
+      $scope.renderedNodes[$index][field] = newProperty;
+      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
+      $scope['current' + capitalizedField] = newProperty;
+      if( field === 'resourceURL' ){
+        $scope.currentLinks[0] = newProperty;
+      }
+    })
+      .catch(function(){
+        console.log('problem updating node', err);
+      });
+  };
 
   $scope.showTitleEditor = function (boolean){
     if( !$scope.isAuthor ){
@@ -133,7 +185,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.saveTitleEdit = function (){
     var newProperty = $('#main-title').val();
     var updateObj = {};
-    updateObj['_id'] = roadmapId;
+    updateObj['_id'] = $scope.roadmap._id;
     updateObj['title'] = newProperty;
     Server.updateRoadmap(updateObj)
       .then(function(node) {
@@ -155,7 +207,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveDescEdit = function (){
-    Server.updateRoadmap({ _id : roadmapId, description: $('#main-desc').val()})
+    Server.updateRoadmap({ _id : $scope.roadmap._id, description: $('#main-desc').val()})
       .then(function(node) {
       $scope.hideDesc = false;
       $scope.roadMapDesc = $('#main-desc').val();
@@ -169,9 +221,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
  // Renders the nodes for the current roadmap to the page
   $scope.renderNodes = function(){
-    var title = $scope.currentRoadMapData.title || 'test title';
-    var nodes = $scope.currentRoadMapData.nodes || ['testnode1', 'testnode2'];  
-    var desc =  $scope.currentRoadMapData.description || 'default roadmap description - click to edit!';
+    var title = $scope.roadmap.title || 'test title';
+    var nodes = $scope.roadmap.nodes || ['testnode1', 'testnode2'];  
+    var desc =  $scope.roadmap.description || 'default roadmap description - click to edit!';
     // Add an index to nodes to make ng-clicking easier
     nodes.map(function(node,index){
       node.index = index;
@@ -186,38 +238,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.currentDescription = $scope.renderedNodes[0].description;
   };
 
-  // When roadmap (identified by its id) data is fetched, set it
-  function populateData (stop){
-    // conditional populateData call can't be called more than once
-    stop = stop || false;
-    Server.getRoadmapById(roadmapId).then(function (res){
-      if( !res.nodes.length && stop === false){
-        populateData(true);
-      }
-      $scope.currentRoadMapData = res;
-      console.log($scope.currentRoadMapData,'I am the roadmap');
-    }, function(err){
-      if (err) return console.log(err);
-    })
-    .then(function(){
-      $scope.renderNodes();
-      $scope.renderedComments = RoadmapsFactory.renderComments($scope.currentRoadMapData.comments);
-      // Set the upvotes and downvotes
-      $scope.upVoteCount = RoadmapsFactory.getCountVotes($scope.currentRoadMapData.upvotes);
-      $scope.downVoteCount = RoadmapsFactory.getCountVotes($scope.currentRoadMapData.downvotes);
 
-      // append Editor Mode message
-      username = localStorage.getItem('user.username');
-      roadmapAuthor = $scope.currentRoadMapData.author.username;
-      $scope.isAuthor = username === roadmapAuthor;
-        
-      if( !$scope.isAuthor ){
-        $('#editor-placeholder').append(RoadmapsFactory.editorMsgHTML);
-      }
-    });
-  }
-
-  populateData();
 
   $scope.selectNode = function($index) {
     $scope.currentIndex = $index;
@@ -237,23 +258,23 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.submitCompletedRoadmap = function() {
     Materialize.toast('Map Complete!', 4000, 'orangeToast');
-    User.completeRoadmapById(roadmapId);
+    User.completeRoadmapById($scope.roadmap._id);
     $state.go('home.dashboard', {type: 'completed'});
   }
 
   $scope.upVoteMap = function () {
-    User.upvoteMapById(roadmapId)
+    User.upvoteMapById($scope.roadmap._id)
     .then(function(data){ 
-      $scope.upVoteCount = RoadmapsFactory.getCountVotes();
-      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
+      $scope.roadmap.upvotes = RoadmapsFactory.getCountVotes();
+      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.downvotes);
     })
   }
 
   $scope.downVoteMap = function () {
-    User.downvoteMapById(roadmapId)
+    User.downvoteMapById($scope.roadmap._id)
     .then(function(data){
-      $scope.upVoteCount = RoadmapsFactory.getCountVotes(data.upvotes);
-      $scope.downVoteCount = RoadmapsFactory.getCountVotes(data.downvotes);
+      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.upvotes);
+      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.downvotes);
     });
   };
 
@@ -262,11 +283,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.postComment = function(){
     // Will probably need to refactor
+<<<<<<< HEAD
     $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
+=======
+    $scope.roadmap.comments = $scope.roadmap.comments || [];
+
+>>>>>>> (refactor) Move scope vars to roadmap obj
     Server.createComment({
       subject: $scope.subject,
       content: $scope.content,
-      roadmap: $scope.currentRoadMapData._id
+      roadmap: $scope.roadmap._id
     });
   };
 
