@@ -268,12 +268,13 @@
     
   
   <h4>Comment Section       <i class="material-icons">comment</i> </h4>
-  
-  <div ng-repeat="comment in renderedComments">
-    <h5 class="node-description truncate node-title" ng-bind="comment.subject">I am the subject</h5>
-    <div class="divider"></div>
-    <span class="node-description truncate node-title" ng-bind="comment.content">I am the content</span>
-  </div>
+
+  <ul class="collapsible" data-collapsible="accordion">
+    <li ng-repeat="comment in renderedComments">
+      <div class="collapsible-header" ><h5 ng-bind="comment.subject">I am the subject</h5> </div>
+      <div class="collapsible-body"> <p ng-bind="comment.content">I am the content</p> </div>
+    </li>
+  </ul>
 
   <h3>Post a Comment!</h3>
     <form class="col s12" ng-submit="postComment()">

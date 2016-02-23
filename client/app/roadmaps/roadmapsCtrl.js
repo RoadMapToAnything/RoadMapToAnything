@@ -286,13 +286,18 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.postComment = function(){
     // Will probably need to refactor
     $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
-
     Server.createComment({
       subject: $scope.subject,
       content: $scope.content,
       roadmap: $scope.currentRoadMapData._id
     });
   };
+
+  $(document).ready(function(){
+     $('.collapsible').collapsible({
+       accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+     });
+   });
 
   // utility functions
   function resetCreationForm () {
