@@ -44,9 +44,13 @@ angular.module('auth.ctrl', ['services.user'])
   };
 
   $scope.attemptSignup = function () {
+    $timeout(function(){
       $scope.showSigninFailMsg = true;
+    }, 2000);
+    $timeout(function(){
+      $scope.showSigninFailMsg = false;
+    }, 6000);
 
-    console.log('attempt signup');
     User.signup({
       firstName: $scope.attemptedFirstName,
       lastName: $scope.attemptedLastName,
