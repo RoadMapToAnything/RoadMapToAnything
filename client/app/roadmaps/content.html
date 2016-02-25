@@ -46,7 +46,7 @@
               <div ng-hide="hideText('box-link', currentIndex)">
                 <a class="truncate"
                    href="{{link}}">{{link}}</a>
-                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
+                <a ng-show="isAuthor" ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
                    class="author-input">[edit link]</a>
               </div>
               <div class="input-field col s12"
