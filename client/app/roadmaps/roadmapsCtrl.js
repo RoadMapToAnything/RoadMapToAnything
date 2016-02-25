@@ -125,9 +125,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       if( type === 'mini-circle'){
         resetCreationForm();
       }
-      // if( !$scope.currentResourceURL ) {
-      //   $scope.currentResourceURL = $scope.currentLink[0];
-      // }
 
       if(boolean === false && type !== 'circle' && type !== 'mini-circle'){
         $(elementID).val($scope.nodes[$index][type]);
@@ -150,8 +147,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     var selectedInput = $(elementID);
     var newProperty = $(elementID).val();
     var updateObj = {};
-    console.log("elementID", elementID);
-    console.log('newProperty', newProperty);
+
     updateObj['_id'] = $scope.nodes[$index]._id;
     updateObj[field] = newProperty;
     
@@ -161,10 +157,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       $scope.nodes[$index][field] = newProperty;
       var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
       $scope['current' + capitalizedField] = newProperty;
-      if( field === 'resourceURL' ){
-        console.log("***!!!***")
-        $scope.currentResourceURL = newProperty;
-      }
     })
       .catch(function(){
         console.log('problem updating node', err);
