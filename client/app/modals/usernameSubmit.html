@@ -1,0 +1,22 @@
+<script type="text/javascript">
+  $( document ).ready(function(){ 
+    $('.modal-trigger').leanModal( {dismissible: true} );
+  });
+</script>
+
+<!-- Input New Image Url -->
+<div class="modal-content" id="username-submit-modal">
+  <div class="row">
+      <div class="input-field col s12">
+        <input type="text" id="input_username"
+            class="validate" ng-model="user.username">
+        <label for="input_username">Please set a username</label>
+        <span class="editor-buttons">
+          <button ng-click="submitEdit('editor.username')" class="save btn-flat">Save</button>
+        </span>
+      </div>
+    <div class="col s12">
+      <p ng-show="differentUsername" class="error-msg">Please choose another username</p>
+    </div>
+  </div>
+</div>

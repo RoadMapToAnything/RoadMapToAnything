@@ -58,7 +58,11 @@ angular.module('app', [
           controller: 'CreationController'
         },
         'imageSubmitModal' : {
-          templateUrl: 'app/modals/imageSubmit.html',
+          templateUrl: 'app/modals/imageSubmit.html', //usernameSubmitModal
+          controller: 'DashboardController'
+        },
+        'usernameSubmitModal' : {
+          templateUrl: 'app/modals/usernameSubmit.html',
           controller: 'DashboardController'
         }
       }
