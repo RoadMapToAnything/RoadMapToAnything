@@ -271,13 +271,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.content = '';
 
   $scope.postComment = function(){
-    // Will probably need to refactor
-<<<<<<< HEAD
-    $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
-=======
-    $scope.roadmap.comments = $scope.roadmap.comments || [];
 
->>>>>>> (refactor) Move scope vars to roadmap obj
+    $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
+
     Server.createComment({
       subject: $scope.subject,
       content: $scope.content,
