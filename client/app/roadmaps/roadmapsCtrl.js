@@ -106,8 +106,10 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       return false;
     } else {
       if( !$scope[elementID] ){
+        console.log('$scope[' + elementID + ']', false);
         return  false;
       } else {
+        console.log('$scope[' + elementID + ']', true);
         return true;
       }
     }
@@ -143,7 +145,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
+  //  console.log('** $index', $index);
+  //  console.log('** idPrefix', idPrefix);
     var elementID = '#' + idPrefix + $index;
+    console.log('** elementID', elementID);
+    var selectedInput = $(elementID);
+    console.log('jQuery obj', selectedInput);
+    console.log('jQuery val', selectedInput.val());
     var newProperty = $(elementID).val();
     console.log('newProperty', newProperty);
     var updateObj = {};
@@ -174,7 +182,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveTitleEdit = function (){
-    var newProperty = $('#main-title').val();
+    var newProperty = $('#map-title').val();
     var updateObj = {};
     updateObj['_id'] = $scope.roadmap._id;
     updateObj['title'] = newProperty;

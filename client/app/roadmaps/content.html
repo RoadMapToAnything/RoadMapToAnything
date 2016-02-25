@@ -172,7 +172,7 @@
       ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
     <div class="input-field col s12"
          ng-show="hideTitle">
-      <input id="main-title"
+      <input id="map-title"
              value="{{ roadMapTitle }}"
              type="text"
              class="validate">
@@ -235,12 +235,12 @@
           ng-bind="node.title"> Title</span>
     <div class="input-field col s12"
          ng-show="hideText('main-title', $index)">
-      <input id="{{'main-title-' + $index }}"
+      <input id="{{'main-title' + $index }}"
              value="{{ getPlaceholder($index, 'title') }}"
              type="text"
              class="validate">
       <span class="editor-buttons">
-        <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
+        <button ng-click="saveEdit($index, 'title', 'main-title')" class="save btn-flat">Save</button>
         <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main-title')">Cancel</button>
       </span>
     </div>
