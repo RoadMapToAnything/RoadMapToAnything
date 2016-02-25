@@ -42,11 +42,12 @@
             </span>
           </div>
           <ul>
-            <li ng-repeat="link in currentLinks">
+            <li> 
               <div ng-hide="hideText('box-link', currentIndex)">
                 <a class="truncate"
-                   href="{{link}}">{{link}}</a>
-                <a ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
+                   target="_blank" 
+                   ng-href={{currentResourceURL}}>{{currentResourceURL}}</a>
+                <a ng-show="isAuthor" ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
                    class="author-input">[edit link]</a>
               </div>
               <div class="input-field col s12"
@@ -117,25 +118,25 @@
             </span>
           </div>
             <input id="node-creation-title"
-                   ng-model="currentCreationTitle"
+                   ng-model="newNode.title"
                    type="text"
                    placeholder="Get node info automatically by pasting the link here">
             <input id="node-creation-description"
-                   ng-model="currentCreationDescription"
+                   ng-model="newNode.description"
                    type="text">
             <input id="node-creation-type"
-                   ng-model="currentCreationType"
+                   ng-model="newNode.type"
                    type="text">
             <input id="node-creation-link"
-                   ng-model="currentCreationLink"
+                   ng-model="newNode.resourceURL"
                    type="url">
             <input id="node-creation-image"
-                   ng-model="currentCreationImage"
+                   ng-model="newNode.imageUrl"
                    type="url">
             <button class="link-box-btn btn" ng-click="createNode(currentAddIndex)">Add Node</button>
           </div>
           <ul>
-            <li ng-repeat="link in currentLinks">
+            <li>
               <div ng-hide="hideText('box-link', currentIndex)">
               </div>
               <div class="input-field col s12"
@@ -172,7 +173,7 @@
       ng-bind="roadMapTitle">Title of the RoadMap Itself</h3>
     <div class="input-field col s12"
          ng-show="hideTitle">
-      <input id="main-title"
+      <input id="map-title"
              value="{{ roadMapTitle }}"
              type="text"
              class="validate">
@@ -204,7 +205,7 @@
    <!-- Nodes -->
 <div class="node-list container">
 
-  <div ng-repeat="node in renderedNodes">
+  <div ng-repeat="node in roadmap.nodes">
 
     <div ng-class="{ selectedCircle : $index == currentIndex, circle : true }" id="{{ 'node-' + node.index }}" ng-click="selectNode(node.index)">
       <div class="number">{{ node.index + 1 }}
@@ -228,19 +229,19 @@
    <!-- Node Descriptions -->
 
 <div class="title-list container">
-  <div ng-repeat="node in renderedNodes">
+  <div ng-repeat="node in roadmap.nodes">
     <span ng-hide="hideText('main-title', $index)"
           ng-click="showEditor($index, 'title', true, 'main-title')"
           class="node-description truncate node-title"
           ng-bind="node.title"> Title</span>
     <div class="input-field col s12"
          ng-show="hideText('main-title', $index)">
-      <input id="{{'main-title-' + $index }}"
+      <input id="{{'main-title' + $index }}"
              value="{{ getPlaceholder($index, 'title') }}"
              type="text"
              class="validate">
       <span class="editor-buttons">
-        <button ng-click="saveEdit($index, 'title', 'main')" class="save btn-flat">Save</button>
+        <button ng-click="saveEdit($index, 'title', 'main-title')" class="save btn-flat">Save</button>
         <button class="cancel btn-flat" ng-click="showEditor($index, 'title', false, 'main-title')">Cancel</button>
       </span>
     </div>
@@ -248,8 +249,8 @@
 </div>
 
 <div class="center">   <!-- Buttons for Voting -->
-      <p><i class="fa fa-thumbs-o-up fa-lg" ng-click="upVoteMap()" ng-bind="upVoteCount" style="color:green"></i></p>
-      <p><i class="fa fa-thumbs-o-down fa-lg" ng-click="downVoteMap()" ng-bind="downVoteCount" style="color:red"></i></p>
+      <p><i class="fa fa-thumbs-o-up fa-lg" ng-click="upVoteMap()" ng-bind="roadmap.upvotes" style="color:green"></i></p>
+      <p><i class="fa fa-thumbs-o-down fa-lg" ng-click="downVoteMap()" ng-bind="roadmap.downvotes" style="color:red"></i></p>
 </div>
 
 <br><br><br><br><br>

@@ -1,6 +1,6 @@
 angular.module('dash.ctrl', ['services.server', 'services.user'])
 
-.controller('DashboardController', ['$scope', '$state', 'User', 'Server', function($scope, $state, User, Server) {
+.controller('DashboardController', ['$scope', '$state', 'User', 'Server', '$timeout', function($scope, $state, User, Server, $timeout) {
 
   $scope.followed = [];
   $scope.myMaps = [];
@@ -23,6 +23,11 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
         map.nodesCompleted = progress.completed;
         map.percentComplete = progress.percent;
       });
+      if( user.username.slice(0,11) === 'temp-FBUSER'){
+        user.username = "";
+        $('#username-submit-modal').openModal();
+
+      }
     });
   };
 
@@ -96,6 +101,10 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
     $('#image-submit-modal').openModal();
   };
 
+  $scope.openUsernameModal = function() {
+    $('#username-modal').openModal();
+  };
+
   $scope.submitImageUrl = function() {
     User.update({imageUrl: $scope.inputImageUrl})
     .then(function() {
@@ -122,10 +131,56 @@ angular.module('dash.ctrl', ['services.server', 'services.user'])
 
     User.update(submission)
     .then(function (user) {
-      $scope.user = user;
-      $scope.toggleEditor(editor);
+      if(user.username.slice(0,11) !== "temp-FBUSER"){
+
+        $scope.user = user;
+        $scope[editor] = false;
+        $('#username-submit-modal').closeModal();
+        $('.lean-overlay').remove();
+        $state.go('home.dashboard', {}, {reload: true});
+
+      } else {
+
+        $scope.differentUsername = true;
+        $timeout(function(){
+          $scope.differentUsername = false;
+        }, 5000);
+
+      }
+
+    })
+    // .catch(function(){
+    //     $scope.differentUsername = true;
+    //     $timeout(function(){
+    //       $scope.differentUsername = false;
+    //     }, 5000);
+    // });
+  };
+
+  $scope.changeFbUsername = function(){
+    var newUsername = $('#fb-username').val();
+    User.update({username: newUsername})
+    .then(function() {
+      
+
+      $('#username-submit-modal').closeModal();
+      $('.lean-overlay').remove();
+    //  $scope.inputImageUrl = '';
+      $state.go('home.dashboard', {}, {reload: true});
     });
+
+
+    // User.update({username: $('#fb-username').val() })
+    // .then(function(res){
+    //   if(res.username.slice(0,11) !== "temp-FBUSER"){
+    //     $('#fbModal').closeModal();
+    //   } else {
+    //     $scope.differentUsername = true;
+    //     $timeout(function(){
+    //       $scope.differentUsername = false;
+    //     }, 5000);
+    //   }
+    // });
   };
 
 }]);
-

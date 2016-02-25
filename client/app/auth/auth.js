@@ -40,13 +40,20 @@ angular.module('auth.ctrl', ['services.user'])
         resetInputs();
         console.log('(401) Login failed: bad credentials.');
         $scope.showUnauthMsg = true;
+        $timeout(function(){
+          $scope.showUnauthMsg = false;
+        }, 5000);
     });
   };
 
   $scope.attemptSignup = function () {
+    $timeout(function(){
       $scope.showSigninFailMsg = true;
+    }, 2000);
+    $timeout(function(){
+      $scope.showSigninFailMsg = false;
+    }, 6000);
 
-    console.log('attempt signup');
     User.signup({
       firstName: $scope.attemptedFirstName,
       lastName: $scope.attemptedLastName,
