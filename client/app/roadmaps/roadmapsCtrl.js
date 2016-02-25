@@ -145,18 +145,14 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
-  //  console.log('** $index', $index);
-  //  console.log('** idPrefix', idPrefix);
     var elementID = '#' + idPrefix + $index;
-    console.log('** elementID', elementID);
     var selectedInput = $(elementID);
-    console.log('jQuery obj', selectedInput);
-    console.log('jQuery val', selectedInput.val());
     var newProperty = $(elementID).val();
-    console.log('newProperty', newProperty);
     var updateObj = {};
+
     updateObj['_id'] = $scope.nodes[$index]._id;
     updateObj[field] = newProperty;
+    
     Server.updateNode(updateObj)
       .then(function(node) {
       $scope.showEditor($index, field, false, idPrefix);
