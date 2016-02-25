@@ -42,10 +42,11 @@
             </span>
           </div>
           <ul>
-            <li ng-repeat="link in currentLinks">
+            <li> 
               <div ng-hide="hideText('box-link', currentIndex)">
                 <a class="truncate"
-                   href="{{link}}">{{link}}</a>
+                   target="_blank" 
+                   ng-href={{currentResourceURL}}>{{currentResourceURL}}</a>
                 <a ng-show="isAuthor" ng-click="showEditor(currentIndex, 'resourceURL', true, 'box-link')"
                    class="author-input">[edit link]</a>
               </div>
@@ -135,7 +136,7 @@
             <button class="link-box-btn btn" ng-click="createNode(currentAddIndex)">Add Node</button>
           </div>
           <ul>
-            <li ng-repeat="link in currentLinks">
+            <li>
               <div ng-hide="hideText('box-link', currentIndex)">
               </div>
               <div class="input-field col s12"

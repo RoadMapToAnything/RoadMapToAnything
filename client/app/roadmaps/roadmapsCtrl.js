@@ -125,9 +125,9 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       if( type === 'mini-circle'){
         resetCreationForm();
       }
-      if( !$scope.currentResourceURL ) {
-        $scope.currentResourceURL = $scope.currentLinks[0];
-      }
+      // if( !$scope.currentResourceURL ) {
+      //   $scope.currentResourceURL = $scope.currentLink[0];
+      // }
 
       if(boolean === false && type !== 'circle' && type !== 'mini-circle'){
         $(elementID).val($scope.nodes[$index][type]);
@@ -145,11 +145,13 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
   $scope.saveEdit = function($index, field, idPrefix){
+    console.log("elementID", elementID);
     var elementID = '#' + idPrefix + $index;
     var selectedInput = $(elementID);
     var newProperty = $(elementID).val();
     var updateObj = {};
-
+    console.log("elementID", elementID);
+    console.log('newProperty', newProperty);
     updateObj['_id'] = $scope.nodes[$index]._id;
     updateObj[field] = newProperty;
     
@@ -160,7 +162,8 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
       $scope['current' + capitalizedField] = newProperty;
       if( field === 'resourceURL' ){
-        $scope.currentLinks[0] = newProperty;
+        console.log("***!!!***")
+        $scope.currentResourceURL = newProperty;
       }
     })
       .catch(function(){
@@ -229,7 +232,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.roadMapDesc = desc;
     $scope.currentNode = nodes[0];
     $scope.currentTitle = $scope.nodes[0].title;
-    $scope.currentLinks = [$scope.nodes[0].resourceURL];
+    $scope.currentResourceURL = $scope.nodes[0].resourceURL;
     $scope.currentDescription = $scope.nodes[0].description;
   };
 
@@ -238,8 +241,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.selectNode = function($index) {
     $scope.currentIndex = $index;
     $scope.currentTitle = $scope.nodes[$index].title;
-    $scope.currentLinks = $scope.nodes[$index].resourceURL;
-    $scope.currentResourceURL = $scope.currentLinks[0];
+    $scope.currentResourceURL = $scope.nodes[$index].resourceURL;
     $scope.currentDescription = $scope.nodes[$index].description;
     $scope.currentNode = $scope.nodes[$index];
     $scope.currentImageUrl = $scope.nodes[$index].imageUrl;
