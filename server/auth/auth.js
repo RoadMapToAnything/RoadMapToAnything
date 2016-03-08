@@ -38,7 +38,7 @@ Facebook.getAccessToken = function (authorizationCode) {
     } else {
       var getAccessTokenURL = 'https://graph.facebook.com/v2.5/oauth/access_token'
       + '?client_id=' + process.env.FACEBOOK_APP_ID
-      + '&redirect_uri=' + 'http://localhost:3000/auth/facebook/callback'
+      + '&redirect_uri=' + 'http://roadmaptoanything.herokuapp.com/auth/facebook/callback'
       + '&client_secret=' + process.env.FACEBOOK_APP_SECRET
       + '&code=' + authorizationCode;
     }
