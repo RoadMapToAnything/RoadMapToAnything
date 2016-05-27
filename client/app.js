@@ -96,7 +96,7 @@ angular.module('app', [
     views: {
       'content@': {
         templateUrl: 'app/roadmaps/content.html',
-        controller: 'RoadMapsController'
+        controller: 'RoadmapsController'
       }
     }
   })
