@@ -39,16 +39,18 @@
 <!-- Selected Node Card -->
 <div class="selected-card" ng-show="selected">
   <div class="card">
+    <div class="card-action">
+      <textarea class="editable-text clipped" rows="1" ng-model="selected.resourceURL" ng-change="scrapeSelected()"></textarea>
+    </div>
     <div class="card-image">
-      <img src="../images/banner.jpg">
-      <span class="card-title">{{ selected.title }}</span>
+      <img src="{{ selected.imageUrl }}">
+      <span class="card-title"><textarea class="editable-text clipped" rows="1" ng-model="selected.title"></textarea></span>
     </div>
     <div class="card-content">
-      <p>I am a very simple card. I am good at containing small bits of information.
-      I am convenient because I require little markup to use effectively.</p>
+      <p><textarea class="editable-text" rows="4" ng-model="selected.description"></textarea></p>
     </div>
     <div class="card-action">
-      <a href="#">This is a link</a>
+      <a ng-click="updateSelected()">Save Changes</a>
     </div>
   </div>
 </div>

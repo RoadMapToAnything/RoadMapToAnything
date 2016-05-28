@@ -326,12 +326,31 @@ footer.page-footer div.footer-copyright {
   z-index: 10;
 }
 
+.card-title {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.editable-text {
+  font: inherit;
+  border: none;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  outline: none;
+}
+
+.editable-text.clipped {
+  overflow: hidden;
+}
+
 .node-list {
   margin-left: 75%;
   width: 90px;
   display: inline-block;
   vertical-align: top;
 }
+
 
 /*  Footer */
 

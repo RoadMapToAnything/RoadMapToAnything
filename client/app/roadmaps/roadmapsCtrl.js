@@ -11,6 +11,22 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.selectNode = function(node) {
     $scope.selected = node;
+    console.log(node);
+  };
+
+  $scope.updateSelected = function() {
+    Server.updateNode( $scope.selected );
+  };
+
+  $scope.scrapeSelected = function() {
+    Server.scrape( $scope.selected.resourceURL )
+    .then(function(data){
+
+      for (var key in data) {
+        if (data[key]) $scope.selected[key] = data[key];
+      }
+      
+    });
   };
 
 }]);
