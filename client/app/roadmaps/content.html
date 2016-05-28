@@ -1,8 +1,5 @@
 
-<!-- Node Card -->
-<div class="link-box">
 
-</div>
 
 
 <!-- Editor Mode Message -->
@@ -19,13 +16,39 @@
 <!-- Nodes -->
 <div class="node-list container">
 
-  <div ng-repeat="node in nodes">
-    {{ node }}
+  <div class="node-container" ng-repeat="node in map.nodes">
+    <div class="fixed-action-btn horizontal">
+      <a class="btn-floating btn-large red" ng-click="selectNode(node)"> <!-- TODO: color from completion -->
+        <i class="large material-icons">change_history</i> <!-- TODO: icon from type -->
+      </a><!-- TODO: title goes here -->
+      <ul>
+        <li><a class="btn-floating red lighten-2" title="Edit node"><i class="material-icons">mode_edit</i></a></li>
+        <li><a class="btn-floating amber darken-1" title="Add new node below"><i class="material-icons">add</i></a></li>
+        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!"><i class="material-icons">done</i></a></li>
+      </ul>
+    </div>
+    <div ng-hide="$last" class="vertical-rule"></div>
   </div>
+  
 
   <button class="link-box-btn amber darken-1 btn doneBtn" ng-click="completeRoadmap()">Map Done</button>
 
 </div>
 
 
-
+<!-- Selected Node Card -->
+<div class="selected-card" ng-show="selected">
+  <div class="card">
+    <div class="card-image">
+      <img src="../images/banner.jpg">
+      <span class="card-title">{{ selected.title }}</span>
+    </div>
+    <div class="card-content">
+      <p>I am a very simple card. I am good at containing small bits of information.
+      I am convenient because I require little markup to use effectively.</p>
+    </div>
+    <div class="card-action">
+      <a href="#">This is a link</a>
+    </div>
+  </div>
+</div>
