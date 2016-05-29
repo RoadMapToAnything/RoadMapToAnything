@@ -27,34 +27,19 @@ angular.module('main.ctrl', ['ui.bootstrap', 'services.user'])
   };
 
   $scope.newRoadmap = function() {
-    console.log('creating roadmap');
     Server.createRoadmap({
       title: $scope.roadmapTitle,
       description: $scope.roadmapDescription
     })
-    .then(function(data){
-      console.log('new roadmap data', data);
-      Server.createNode({
-        title: 'Default Title',
-        description: "Click this node's properties to edit them. Or click the small blue 'plus' node to add a new node!",
-        resourceType: 'blog post',
-        resourceURL: 'https://www.example.com',
-        imageUrl: 'https://openclipart.org/image/2400px/svg_to_png/103885/SimpleStar.png',
-        parentRoadmap: data._id
-      })
-      .then(function(data){
-        $('#creation-modal').closeModal();
-        $('.button-collapse').sideNav('hide');
-        console.log('default node data', data);
-        $state.go( 'home.roadmapTemplate',{ roadmapID: data.parentRoadmap } );
+    .then(function(map){
+      $('#creation-modal').closeModal();
+      $('.button-collapse').sideNav('hide');
+      $state.go( 'home.roadmapTemplate', {roadmapID: map._id} );
     })
-    })
-
     .catch(function(err){
       console.log('error creating new roadmap', err);
-    })
-  }
-
+    });
+  };
 
   /* * * Search and Typeahead  * * */
 

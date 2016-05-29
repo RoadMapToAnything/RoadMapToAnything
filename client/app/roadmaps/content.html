@@ -22,18 +22,14 @@
         <i class="large material-icons">change_history</i> <!-- TODO: icon from type -->
       </a><!-- TODO: title goes here -->
       <ul>
-        <li><a class="btn-floating red lighten-2" title="Edit node" ng-click="editNode(node)" ng-show="isAuthor()"><i class="material-icons">mode_edit</i></a></li>
+        <li><a class="btn-floating red lighten-2" title="Edit node" ng-click="editNode(node)" ng-show="isAuthor() && !isEditing(node)"><i class="material-icons">mode_edit</i></a></li>
         <li><a class="btn-floating amber darken-1" title="Add new node below" ng-click="addNode($index)" ng-show="isAuthor()"><i class="material-icons">add</i></a></li>
-        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!" ng-click="completeNode(node)"><i class="material-icons">done</i></a></li>
+        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!" ng-click="completeNode(node)" ng-hide="isCompleted(node)"><i class="material-icons">done</i></a></li>
       </ul>
     </div>
     <div ng-hide="$last" class="vertical-rule"></div>
-  </div>
-  
-
-  <button class="link-box-btn amber darken-1 btn doneBtn" ng-click="completeRoadmap()">Map Done</button>
-
-</div>
+  </div> <!-- /ng-repeat -->
+</div> <!-- /node-list -->
 
 
 <!-- Selected Node Card -->
@@ -47,16 +43,16 @@
 
     <div class="card-image">
       <img src="{{ selected.imageUrl }}" ng-show="selected.imageUrl">
-      <span class="placeholder" ng-hide="selected.imageUrl"><i class="large material-icons">change_history</i></span>
-      <span class="card-title"><textarea class="editable-text clipped" rows="1" ng-model="selected.title" disabled="{{isEditing()}}"></textarea></span>
+      <div class="image-placeholder" ng-hide="selected.imageUrl"><i class="large material-icons">change_history</i></div>
+      <span class="card-title"><textarea class="editable-text clipped" rows="1" ng-model="selected.title" ng-disabled="!isEditing()"></textarea></span>
     </div>
 
     <div class="card-content">
-      <p><textarea class="editable-text" rows="4" ng-model="selected.description" disabled="{{isEditing()}}"></textarea></p>
+      <p><textarea class="editable-text" rows="4" ng-model="selected.description" ng-disabled="!isEditing()"></textarea></p>
     </div>
 
     <div class="card-action" ng-show="isEditing()">
-      <a ng-click="updateSelected()">Save Changes</a>
+      <a ng-click="updateSelected()">Save Node</a>
     </div>
   </div>
 </div>

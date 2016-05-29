@@ -1,14 +1,16 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
 .controller('RoadmapsController', [ '$scope', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
-  angular.extend($scope, RoadmapsFactory);
-
   var editingSelected = false;
+
+  $scope.truncate = RoadmapsFactory.truncate;
 
   // Fetch the current roadmap and user from server and attach to $scope
   Server.getMap($stateParams.roadmapID)
   .then(function(map) {
     $scope.map = map;
+
+    if (!map.nodes.length) $scope.addNode(0);
   });
 
   Server.getUser( localStorage.getItem('user.username') )
@@ -44,8 +46,17 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.completeNode = function(node) {
     User.completeNode(node._id)
-    .then(function(response) {
-      $scope.user = response.data;
+    .then(function(user) {
+      $scope.user = user;
+
+      if ( RoadmapsFactory.isCompletedMapUntracked($scope.user, $scope.map) ) {
+        User.completeMap( $scope.map._id )
+        .then(function(user) {
+          $scope.user = user;
+          console.log(user);
+        });
+        Materialize.toast('Roadmap completed!', 4000, 'orangeToast');
+      }
     });
   };
 
@@ -66,8 +77,12 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     return $scope.user && $scope.user.username === $scope.map.author.username;
   };
 
-  $scope.isEditing = function() {
-    return editingSelected;
+  $scope.isEditing = function(node) {
+    return editingSelected && (!node || node._id === $scope.selected._id);
+  };
+
+  $scope.isCompleted = function(node) {
+    return RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node);
   };
 
   $scope.getNodeColor = function(node) {
@@ -75,7 +90,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
       return 'amber darken-1';
     }
 
-    if ( $scope.isCompleted($scope.user, $scope.map, node) ) {
+    if ( RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node) ) {
       return 'teal lighten-2';
     }
 
