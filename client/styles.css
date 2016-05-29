@@ -351,6 +351,12 @@ footer.page-footer div.footer-copyright {
   vertical-align: top;
 }
 
+.placeholder {
+  padding: 100px auto;
+  color: grey;
+  text-align: right;
+}
+
 
 /*  Footer */
 

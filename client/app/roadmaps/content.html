@@ -18,13 +18,13 @@
 
   <div class="node-container" ng-repeat="node in map.nodes">
     <div class="fixed-action-btn horizontal">
-      <a class="btn-floating btn-large red" ng-click="selectNode(node)"> <!-- TODO: color from completion -->
+      <a class="btn-floating btn-large {{getNodeColor(node)}}" ng-click="selectNode(node)"> <!-- TODO: color from completion -->
         <i class="large material-icons">change_history</i> <!-- TODO: icon from type -->
       </a><!-- TODO: title goes here -->
       <ul>
-        <li><a class="btn-floating red lighten-2" title="Edit node"><i class="material-icons">mode_edit</i></a></li>
-        <li><a class="btn-floating amber darken-1" title="Add new node below"><i class="material-icons">add</i></a></li>
-        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!"><i class="material-icons">done</i></a></li>
+        <li><a class="btn-floating red lighten-2" title="Edit node" ng-click="editNode(node)" ng-show="isAuthor()"><i class="material-icons">mode_edit</i></a></li>
+        <li><a class="btn-floating amber darken-1" title="Add new node below" ng-click="addNode($index)" ng-show="isAuthor()"><i class="material-icons">add</i></a></li>
+        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!" ng-click="completeNode(node)"><i class="material-icons">done</i></a></li>
       </ul>
     </div>
     <div ng-hide="$last" class="vertical-rule"></div>
@@ -39,17 +39,23 @@
 <!-- Selected Node Card -->
 <div class="selected-card" ng-show="selected">
   <div class="card">
+
     <div class="card-action">
-      <textarea class="editable-text clipped" rows="1" ng-model="selected.resourceURL" ng-change="scrapeSelected()"></textarea>
+      <a href="{{ selected.resourceURL }}" target="_blank" ng-hide="isEditing()">{{ truncate(selected.resourceURL, 24) }}</a>
+      <textarea class="editable-text clipped" rows="1" ng-model="selected.resourceURL" ng-change="scrapeSelected()" ng-show="isEditing()"></textarea>
     </div>
+
     <div class="card-image">
-      <img src="{{ selected.imageUrl }}">
-      <span class="card-title"><textarea class="editable-text clipped" rows="1" ng-model="selected.title"></textarea></span>
+      <img src="{{ selected.imageUrl }}" ng-show="selected.imageUrl">
+      <span class="placeholder" ng-hide="selected.imageUrl"><i class="large material-icons">change_history</i></span>
+      <span class="card-title"><textarea class="editable-text clipped" rows="1" ng-model="selected.title" disabled="{{isEditing()}}"></textarea></span>
     </div>
+
     <div class="card-content">
-      <p><textarea class="editable-text" rows="4" ng-model="selected.description"></textarea></p>
+      <p><textarea class="editable-text" rows="4" ng-model="selected.description" disabled="{{isEditing()}}"></textarea></p>
     </div>
-    <div class="card-action">
+
+    <div class="card-action" ng-show="isEditing()">
       <a ng-click="updateSelected()">Save Changes</a>
     </div>
   </div>

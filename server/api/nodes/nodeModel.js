@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var NodeSchema = new mongoose.Schema({
   title         : { type: String,   required: true },
   description   : { type: String,   required: true },
-  resourceType  : { type: String,   required: true },
+  resourceType  : { type: String },
   resourceURL   : { type: String },
   imageUrl      : { type: String },
   parentRoadmap : { type: ObjectId, ref: 'Roadmap'},
