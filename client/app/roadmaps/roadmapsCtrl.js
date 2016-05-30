@@ -26,14 +26,16 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   $scope.upvote = function() {
     User.upvote($scope.map._id)
     .then(function(map) {
-      $scope.map = map;
+      $scope.map.upvotes = map.upvotes;
+      $scope.map.downvotes = map.downvotes;
     });
   };
 
   $scope.downvote = function() {
     User.downvote($scope.map._id)
     .then(function(map) {
-      $scope.map = map;
+      $scope.map.upvotes = map.upvotes;
+      $scope.map.downvotes = map.downvotes;
     });
   };
 
@@ -50,6 +52,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   /**  Global State Methods **/
   $scope.isAuthor = function() {
+    if (!$scope.user || !$scope.map) return false;
     return $scope.user && $scope.user.username === $scope.map.author.username;
   };
 
