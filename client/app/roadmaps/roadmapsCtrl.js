@@ -1,15 +1,27 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
 .controller('RoadmapsController', [ '$scope', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
+
+  /**  Initialize Page  **/
   var editingSelected = false;
+  var commentsVisible = false;
 
   $scope.truncate = RoadmapsFactory.truncate;
 
-  // Fetch the current roadmap and user from server and attach to $scope
   Server.getMap($stateParams.roadmapID)
   .then(function(map) {
     $scope.map = map;
+    console.log(map);
 
+    if (!$scope.map.comments.length) {
+      Server.createComment({
+        subject: 'Test comment',
+        content: 'Test description',
+        roadmap: $scope.map._id
+      });
+    }
+
+    // If the roadmap has no nodes, add one
     if (!map.nodes.length) $scope.addNode(0);
   });
 
@@ -18,6 +30,26 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     $scope.user = user;
   });
 
+
+  /**  Global State Methods **/
+  $scope.isAuthor = function() {
+    return $scope.user && $scope.user.username === $scope.map.author.username;
+  };
+
+  $scope.isEditing = function(node) {
+    return editingSelected && (!node || node._id === $scope.selected._id);
+  };
+
+  $scope.isCompleted = function(node) {
+    return RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node);
+  };
+
+  $scope.isCommentsVisible = function() {
+    return commentsVisible;
+  };
+
+
+  /**  Node Timeline Button Methods  **/
   $scope.selectNode = function(node) {
     if (!editingSelected && $scope.selected && $scope.selected._id === node._id) {
       $scope.selected = false;
@@ -29,7 +61,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
 
   $scope.editNode = function(node) {
     editingSelected = $scope.isAuthor();
-    $scope.selected = node;
+    if (node) $scope.selected = node;
   };
 
   $scope.addNode = function(index) {
@@ -60,8 +92,25 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     });
   };
 
+  $scope.getNodeColor = function(node) {
+    if ($scope.selected && node._id === $scope.selected._id) {
+      return 'amber darken-1';
+    }
+
+    if ( RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node) ) {
+      return 'teal lighten-2';
+    }
+
+    return 'red lighten-2';
+  };
+
+
+  /**  Selected Node Card Methods  **/
   $scope.updateSelected = function() {
-    Server.updateNode( $scope.selected );
+    Server.updateNode( $scope.selected )
+    .then(function() {
+      editingSelected = false;
+    });
   };
 
   $scope.scrapeSelected = function() {
@@ -73,28 +122,30 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
     });
   };
 
-  $scope.isAuthor = function() {
-    return $scope.user && $scope.user.username === $scope.map.author.username;
+
+  /**  Comments Section Methods  **/
+  $scope.toggleComments = function() {
+    commentsVisible = !commentsVisible;
+    $('#comments-section').slideToggle();
   };
 
-  $scope.isEditing = function(node) {
-    return editingSelected && (!node || node._id === $scope.selected._id);
+  $scope.submitComment = function() {
+    Server.createComment({
+      subject: $scope.commentTitle,
+      content: $scope.commentContent,
+      roadmap: $scope.map._id
+    })
+    .then(function(comment) {
+      comment.author = $scope.user;
+      $scope.map.comments.push(comment);
+      $scope.commentTitle = '';
+      $scope.commentContent = '';
+      Materialize.resetTextFields();
+    });
   };
 
-  $scope.isCompleted = function(node) {
-    return RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node);
-  };
-
-  $scope.getNodeColor = function(node) {
-    if ($scope.selected && node._id === $scope.selected._id) {
-      return 'amber darken-1';
-    }
-
-    if ( RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node) ) {
-      return 'teal lighten-2';
-    }
-
-    return 'red lighten-2';
+  $scope.getCommentClass = function(index) {
+    return index % 2 ? '' : 'odd-comment';
   };
 
 }]);

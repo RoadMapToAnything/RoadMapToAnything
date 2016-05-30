@@ -1,8 +1,7 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
+    hooks    = require('../modelTriggers.js'),
     deepPopulate = require('mongoose-deep-populate')(mongoose);
-
-    hooks    = require('../modelTriggers.js');
 
 var UserSchema = new mongoose.Schema({
   username          : { type: String, required: true, unique: true },

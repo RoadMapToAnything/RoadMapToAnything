@@ -1,15 +1,7 @@
-
-
-
-
-<!-- Editor Mode Message -->
-<div id="editor-placeholder"></div>
-
-
 <!-- Roadmap Title -->
 <div class="col s8 roadmap-title">
-  <h3 class="center-align" ng-bind="map.title">Roadmap Title</h3>
-  <p class="center-align" ng-bind="map.description">Roadmap Description</p>
+  <h3 class="center-align" ng-bind="map.title"></h3>
+  <p class="center-align" ng-bind="map.description"></p>
 </div>
 
 
@@ -37,7 +29,7 @@
   <div class="card">
 
     <div class="card-action">
-      <a href="{{ selected.resourceURL }}" target="_blank" ng-hide="isEditing()">{{ truncate(selected.resourceURL, 24) }}</a>
+      <a href="{{ selected.resourceURL }}" target="_blank" ng-hide="isEditing()">{{ truncate(selected.resourceURL, 36) }}</a>
       <textarea class="editable-text clipped" rows="1" ng-model="selected.resourceURL" ng-change="scrapeSelected()" ng-show="isEditing()"></textarea>
     </div>
 
@@ -51,8 +43,46 @@
       <p><textarea class="editable-text" rows="4" ng-model="selected.description" ng-disabled="!isEditing()"></textarea></p>
     </div>
 
-    <div class="card-action" ng-show="isEditing()">
-      <a ng-click="updateSelected()">Save Node</a>
+    <div class="card-action" ng-show="isAuthor()">
+      <a ng-click="updateSelected()" ng-show="isEditing()">Save Node</a>
+      <a ng-click="editNode()" ng-hide="isEditing()">Edit Node</a>
     </div>
   </div>
 </div>
+
+
+<!-- Comments Section -->
+<a class="waves-effect waves-teal btn-flat" ng-click="toggleComments()">
+  <span ng-hide="isCommentsVisible()">Show</span>
+  <span ng-show="isCommentsVisible()">Hide</span>
+   Comments
+</a>
+<hr ng-hide="isCommentsVisible()">
+
+<ul id="comments-section" class="collection">
+  <li class="collection-item">
+    <div class="row">
+      <span class="title">Leave A Comment</span>
+      <a class="secondary-content" title="Sumbit your comment!" ng-click="submitComment()"><i class="medium material-icons">done</i></a>
+    </div>
+    <div class="row">
+      <div class="input-field col s9">
+        <input id="comment-title" type="text" ng-model="commentTitle">
+        <label for="comment-title">Title</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="comment-content" type="text" ng-model="commentContent">
+        <label for="comment-content">Content</label>
+      </div>
+    </div>
+  </li>
+
+  <li class="collection-item avatar {{getCommentClass($index)}}" ng-repeat="comment in map.comments">
+    <img src="{{comment.author.imageUrl}}" alt="User icon" class="comment-avatar">
+    <span class="title">{{comment.subject}}</span>
+    <p>{{comment.content}}</p>
+  </li>
+
+</ul>
