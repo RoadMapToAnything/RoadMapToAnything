@@ -43,7 +43,6 @@ angular.module('browse.ctrl', ['services.user', 'browse.factory'])
   };
 
   $scope.upvote = function(roadmapId, index) {
-    console.log(index);
     User.upvote(roadmapId)
     .then(function(roadmap) {
       $scope.mapData[index].upvotes = roadmap.upvotes;

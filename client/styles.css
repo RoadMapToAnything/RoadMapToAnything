@@ -60,6 +60,7 @@ ul
 
 .outer-container {
 /*    position : absolute;*/
+  margin-top: 4em;
   margin-left:auto !important; 
   margin-right:auto !important;
   display: table;
@@ -193,13 +194,6 @@ footer.page-footer div.footer-copyright {
 .card-panel {
   word-wrap: break-word;
 }
-.link-box {
-  position: fixed !important;
-  left: 5%;
-  top: 220px;
-  width: 27%;
-  z-index: 10;
-}
 .link-box-btn {
   background-color: #ff7043 !important;
 }
@@ -265,12 +259,6 @@ footer.page-footer div.footer-copyright {
   margin-top: 5px !important;
   margin-left: 7px !important;
 }
-.node-list {
-  margin-left: 35%;
-  width: 90px;
-  display: inline-block;
-  vertical-align: top;
-}
 .node-description {
   display: inline-block;
 }
@@ -281,9 +269,6 @@ footer.page-footer div.footer-copyright {
   vertical-align: top;
   width: 50%;
   display: inline-block;
-}
-.node-title {
-  margin: 32px 0px 80px 0px;
 }
 .selectedCircle {
   background-color: #26a69a !important;
@@ -311,6 +296,120 @@ footer.page-footer div.footer-copyright {
   max-height: 80px !important;
   max-width: 150px !important;
 }
+
+.upvotes-container {
+  padding-top: 1em;
+}
+
+.total-upvotes {
+  padding: 0 0.5em;
+  font-size: 1.5em;
+}
+
+.total-upvotes.positive {
+  color: #4DB6AC;
+}
+
+.total-upvotes.negative {
+  color: #E57373;
+}
+
+.vertical-rule {
+  height: 100px;
+  width: 1px;
+  margin: -20px auto;
+  z-index: -10;
+  border: 1px solid #D7D7D7;
+}
+
+.node-container {
+  text-align: center;
+}
+
+.fixed-action-btn {
+  position:relative;
+  top: 0;
+  left:-8px;
+  z-index: 0;
+}
+
+.selected-card {
+  position: fixed;
+  left: 5%;
+  top: 220px;
+  width: 45%;
+  z-index: 10;
+}
+
+.card-action {
+  overflow: hidden;
+}
+
+.card-image {
+  max-height: 45vw;
+}
+
+.card-title {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.editable-text {
+  font: inherit;
+  border: none;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  outline: none;
+}
+
+.editable-text.clipped {
+  overflow: hidden;
+}
+
+.node-list {
+  margin-left: 75%;
+  padding: 100px 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.timeline-column {
+  width: 90px;
+}
+
+.node-title {
+  position: relative;
+  top: -40px;
+  left: 80px;
+  text-align: left;
+}
+
+.image-placeholder {
+  padding: 4em 0;
+  color: grey;
+  text-align: center;
+}
+
+.comment-avatar {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#comments-section {
+  display: none;
+}
+
+#comments-section .odd-comment {
+  background-color: #eee;
+}
+
 
 /*  Footer */
 

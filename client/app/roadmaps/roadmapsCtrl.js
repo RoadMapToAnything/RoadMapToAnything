@@ -1,303 +1,170 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
-.controller('RoadMapsController', [ '$scope', '$http', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $http, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
-  angular.extend($scope, RoadmapsFactory);
+.controller('RoadmapsController', ['$scope', '$stateParams', 'RoadmapsFactory', 'Server', 'User', function($scope, $stateParams, RoadmapsFactory, Server, User) {  
 
-  $('.tooltipped').tooltip({delay: 50});
+  /**  Initialize Page  **/
+  var editingSelected = false;
+  var commentsVisible = false;
 
-  $scope.roadmap = {
-    _id: $stateParams.roadmapID
-  };
-  $scope.newNode = {};
-  $scope.isAuthor = false;
-  $scope.showComments = false;
-  $scope.currentIndex = 0;
-  $scope.hideTitle = false;
-  $scope.hideDesc = false;
+  $scope.truncate = RoadmapsFactory.truncate;
 
-  populateData();
+  Server.getMap($stateParams.roadmapID)
+  .then(function(map) {
+    $scope.map = map;
 
-  resetCreationForm();
+    // If the roadmap has no nodes, add one
+    if (!map.nodes.length) $scope.addNode(0);
+  });
 
-  function populateData (stop){
-    // conditional populateData call can't be called more than once
-    stop = stop || false;
-    Server.getRoadmapById($scope.roadmap._id).then(function (res){
-      if( !res.nodes.length && stop === false){
-        populateData(true);
-      }
-      $scope.roadmap = res;
-    }, function(err){
-      if (err) return console.log(err);
-    })
-    .then(function(){
-      $scope.renderNodes();
-      $scope.roadmap.comments = RoadmapsFactory.renderComments($scope.roadmap.comments);
-      $scope.roadmap.upvotes = RoadmapsFactory.getCountVotes($scope.roadmap.upvotes);
-      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes($scope.roadmap.downvotes);
+  User.getData()
+  .then(function(user) {
+    $scope.user = user;
+  });
 
-      // append Editor Mode message
-      username = localStorage.getItem('user.username');
-      roadmapAuthor = $scope.roadmap.author.username;
-      $scope.isAuthor = username === roadmapAuthor;
-        
-      if( !$scope.isAuthor  && $('#editor-placeholder').length === 0 ){
-        $('#editor-placeholder').append(RoadmapsFactory.editorMsgHTML);
-      }
-    });
-  }
 
-  $scope.checkAndSubmit = function() {
-    var url = $scope.urlToScrape;
-    if (url.length < 4) return;
-    if (url.substring(0, 4) !== 'http') url = 'http://' + url;
-
-    Server.scrape(url)
-    .then(function (data) {
-        $scope.newNode.title = data.title;
-        $scope.newNode.description = data.description;
-        $scope.newNode.type = data.type;
-        $scope.newNode.resourceURL = url;
-        $scope.newNode.imageUrl = data.imageUrl;
+  /**  Upvote Methods  **/
+  $scope.upvote = function() {
+    User.upvote($scope.map._id)
+    .then(function(map) {
+      $scope.map.upvotes = map.upvotes;
+      $scope.map.downvotes = map.downvotes;
     });
   };
 
-  $scope.showNodeCreator = function($index, boolean){
-    $scope.currentAddIndex = $index + 1;
-    if( !$scope.isAuthor ){
-      $scope.nodeCreator = false;
-    } else {
-      $scope.displayNodeCreator = boolean;
-    }
-  }
-
-  $scope.createNode = function($index) {
-    console.log($scope.newNode.imageUrl);
-    if( $scope.newNode.imageUrl === 'New node image (optional)' ){
-      $scope.newNode.imageUrl = NODE_DEFAULTS.imageUrl;
-    }
-
-    return Server.createNode({
-      title: $scope.newNode.title || NODE_DEFAULTS.title,
-      description: $scope.newNode.description || NODE_DEFAULTS.description,
-      resourceType: $scope.newNode.type || NODE_DEFAULTS.resourceType,
-      resourceURL: $scope.newNode.resourceURL || NODE_DEFAULTS.resourceURL,
-      imageUrl: $scope.newNode.imageUrl || NODE_DEFAULTS.imageUrl,
-      parentRoadmap: $scope.roadmap._id,
-      saveAtIndex: $index
-
-    })
-    .then(function(res){
-      populateData();
-      $scope.displayNodeCreator = false;
-      Materialize.toast('Node Added!', 4000, 'orangeToast');
-      resetCreationForm();
+  $scope.downvote = function() {
+    User.downvote($scope.map._id)
+    .then(function(map) {
+      $scope.map.upvotes = map.upvotes;
+      $scope.map.downvotes = map.downvotes;
     });
   };
 
-  $scope.closeNodeCreator = function(){
-    $scope.displayNodeCreator = false;
-    resetCreationForm();
-  }
+  $scope.getUpvoteClass = function() {
+    if (!$scope.map) return 'positive';
 
-  $scope.hideText = function (id, $index){
-    var elementID = '#' + id + $index;
-    if( !$scope.isAuthor ){
-      return false;
+    if ($scope.map.upvotes.length - $scope.map.downvotes.length < 0) {
+      return 'negative';
+    }
+
+    return 'positive';
+  };
+
+
+  /**  Global State Methods **/
+  $scope.isAuthor = function() {
+    if (!$scope.user || !$scope.map) return false;
+    return $scope.user && $scope.user.username === $scope.map.author.username;
+  };
+
+  $scope.isEditing = function(node) {
+    return editingSelected && (!node || node._id === $scope.selected._id);
+  };
+
+  $scope.isCompleted = function(node) {
+    return RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node);
+  };
+
+  $scope.isCommentsVisible = function() {
+    return commentsVisible;
+  };
+
+
+  /**  Node List Methods  **/
+  $scope.selectNode = function(node) {
+    if (!editingSelected && $scope.selected && $scope.selected._id === node._id) {
+      $scope.selected = false;
     } else {
-      if( !$scope[elementID] ){
-        console.log('$scope[' + elementID + ']', false);
-        return  false;
-      } else {
-        console.log('$scope[' + elementID + ']', true);
-        return true;
-      }
+      editingSelected = false;
+      $scope.selected = node;
     }
   };
 
-  $scope.showEditor = function ($index, type, boolean, id){
-    var elementID = '#' + id + $index;
-    $scope.currentIndex = $index;
-    console.log('elementID', elementID);
-    if( !$scope.isAuthor ){
-      $scope[elementID] = false;
-    } else {
-      if( type === 'mini-circle'){
-        resetCreationForm();
-      }
-
-      if(boolean === false && type !== 'circle' && type !== 'mini-circle'){
-        $(elementID).val($scope.nodes[$index][type]);
-      }
-
-      $scope[elementID] = boolean;
-    }
-
-
+  $scope.editNode = function(node) {
+    editingSelected = $scope.isAuthor();
+    if (node) $scope.selected = node;
   };
 
-  $scope.getPlaceholder = function($index, field){
-    var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-    return $scope['current' + capitalizedField];
-  };
+  $scope.addNode = function(index) {
+    var newNode = RoadmapsFactory.defaultNode;
+    newNode.parentRoadmap = $scope.map._id;
+    newNode.saveAtIndex = index + 1;
 
-  $scope.saveEdit = function($index, field, idPrefix){
-    console.log("elementID", elementID);
-    var elementID = '#' + idPrefix + $index;
-    var selectedInput = $(elementID);
-    var newProperty = $(elementID).val();
-    var updateObj = {};
-
-    updateObj['_id'] = $scope.nodes[$index]._id;
-    updateObj[field] = newProperty;
-    
-    Server.updateNode(updateObj)
-      .then(function(node) {
-      $scope.showEditor($index, field, false, idPrefix);
-      $scope.nodes[$index][field] = newProperty;
-      var capitalizedField = field.substr(0, 1).toUpperCase() + field.substr(1);
-      $scope['current' + capitalizedField] = newProperty;
-    })
-      .catch(function(){
-        console.log('problem updating node', err);
-      });
-  };
-
-  $scope.showTitleEditor = function (boolean){
-    if( !$scope.isAuthor ){
-      $scope.hideTitle = false;
-    } else {
-      $scope.hideTitle = boolean;
-      return $scope.hideTitle;
-    }
-  };
-
-  $scope.saveTitleEdit = function (){
-    var newProperty = $('#map-title').val();
-    var updateObj = {};
-    updateObj['_id'] = $scope.roadmap._id;
-    updateObj['title'] = newProperty;
-    Server.updateRoadmap(updateObj)
-      .then(function(node) {
-      $scope.hideTitle = false;
-      $scope.roadMapTitle = newProperty;
-    })
-      .catch(function(){
-        console.log('problem updating map title', err);
-      });
-  }
-
-  $scope.showDescEditor = function (boolean){
-    if( !$scope.isAuthor ){
-      $scope.hideDesc= false;
-    } else {
-      $scope.hideDesc = boolean;
-      return $scope.hideDesc;
-    }
-  };
-
-  $scope.saveDescEdit = function (){
-    Server.updateRoadmap({ _id : $scope.roadmap._id, description: $('#main-desc').val()})
-      .then(function(node) {
-      $scope.hideDesc = false;
-      $scope.roadMapDesc = $('#main-desc').val();
-    })
-      .catch(function(){
-        console.log('problem updating map description', err);
-      });
-  }
-
- // Get the current number of upvotes from current map
-
- // Renders the nodes for the current roadmap to the page
-  $scope.renderNodes = function(){
-    var title = $scope.roadmap.title || 'test title';
-    var nodes = $scope.roadmap.nodes || ['testnode1', 'testnode2'];  
-    var desc =  $scope.roadmap.description || 'default roadmap description - click to edit!';
-    // Add an index to nodes to make ng-clicking easier
-    nodes.map(function(node,index){
-      node.index = index;
+    Server.createNode(newNode)
+    .then(function(node) {
+      $scope.map.nodes.splice(index + 1, 0, node);
+      $scope.editNode(node);
     });
+  };
 
-    $scope.nodes = nodes;
-    $scope.roadMapTitle = title;
-    $scope.roadMapDesc = desc;
-    $scope.currentNode = nodes[0];
-    $scope.currentTitle = $scope.nodes[0].title;
-    $scope.currentResourceURL = $scope.nodes[0].resourceURL;
-    $scope.currentDescription = $scope.nodes[0].description;
+  $scope.completeNode = function(node) {
+    User.completeNode(node._id)
+    .then(function(user) {
+      $scope.user = user;
+
+      if ( RoadmapsFactory.isCompletedMapUntracked($scope.user, $scope.map) ) {
+        User.completeMap( $scope.map._id )
+        .then(function(user) {
+          $scope.user = user;
+        });
+        Materialize.toast('Roadmap completed!', 4000, 'orangeToast');
+      }
+    });
+  };
+
+  $scope.getNodeColor = function(node) {
+    if ($scope.selected && node._id === $scope.selected._id) {
+      return 'amber darken-1';
+    }
+
+    if ( RoadmapsFactory.isNodeCompleted($scope.user, $scope.map, node) ) {
+      return 'teal lighten-2';
+    }
+
+    return 'red lighten-2';
   };
 
 
-
-  $scope.selectNode = function($index) {
-    $scope.currentIndex = $index;
-    $scope.currentTitle = $scope.nodes[$index].title;
-    $scope.currentResourceURL = $scope.nodes[$index].resourceURL;
-    $scope.currentDescription = $scope.nodes[$index].description;
-    $scope.currentNode = $scope.nodes[$index];
-    $scope.currentImageUrl = $scope.nodes[$index].imageUrl;
+  /**  Selected Node Card Methods  **/
+  $scope.updateSelected = function() {
+    Server.updateNode( $scope.selected )
+    .then(function() {
+      editingSelected = false;
+    });
   };
 
-  $scope.submitCompletedNode = function() {
-    var nodeId = $scope.currentNode._id;
-    User.completeNodeById(nodeId);
-    Materialize.toast('Node Complete!', 4000, 'orangeToast');
-  }
-
-  $scope.submitCompletedRoadmap = function() {
-    Materialize.toast('Map Complete!', 4000, 'orangeToast');
-    User.completeRoadmapById($scope.roadmap._id);
-    $state.go('home.dashboard', {type: 'completed'});
-  }
-
-  $scope.upVoteMap = function () {
-    User.upvoteMapById($scope.roadmap._id)
-    .then(function(data){ 
-      $scope.roadmap.upvotes = RoadmapsFactory.getCountVotes();
-      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.downvotes);
-    })
-  }
-
-  $scope.downVoteMap = function () {
-    User.downvoteMapById($scope.roadmap._id)
+  $scope.scrapeSelected = function() {
+    Server.scrape( $scope.selected.resourceURL )
     .then(function(data){
-      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.upvotes);
-      $scope.roadmap.downvotes = RoadmapsFactory.getCountVotes(data.downvotes);
+      for (var key in data) {
+        if (data[key]) $scope.selected[key] = data[key];
+      }
     });
   };
 
-  $scope.subject = '';
-  $scope.content = '';
 
-  $scope.postComment = function(){
+  /**  Comments Section Methods  **/
+  $scope.toggleComments = function() {
+    commentsVisible = !commentsVisible;
+    $('#comments-section').slideToggle();
+  };
 
-    $scope.currentRoadMapData.comments = $scope.currentRoadMapData.comments || [];
-
+  $scope.submitComment = function() {
     Server.createComment({
-      subject: $scope.subject,
-      content: $scope.content,
-      roadmap: $scope.roadmap._id
+      subject: $scope.commentTitle,
+      content: $scope.commentContent,
+      roadmap: $scope.map._id
+    })
+    .then(function(comment) {
+      comment.author = $scope.user;
+      $scope.map.comments.push(comment);
+      $scope.commentTitle = '';
+      $scope.commentContent = '';
+      Materialize.resetTextFields();
     });
   };
 
-  $(document).ready(function(){
-     $('.collapsible').collapsible({
-       accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-     });
-   });
-
-  // utility functions
-  function resetCreationForm () {
-    $scope.urlToScrape = "Paste a link here to get info automatically";
-    $scope.newNode.title = RoadmapsFactory.NODE_DEFAULTS.title;
-    $scope.newNode.description = RoadmapsFactory.NODE_DEFAULTS.description;
-    $scope.newNode.type = RoadmapsFactory.NODE_DEFAULTS.resourceType;
-    $scope.newNode.resourceURL = RoadmapsFactory.NODE_DEFAULTS.resourceURL;
-    $scope.newNode.imageUrl = 'New node image (optional)';
-  }
-  $scope.toggleComments = function(){
-    $scope.showComments = !$scope.showComments;
+  $scope.getCommentClass = function(index) {
+    return index % 2 ? '' : 'odd-comment';
   };
 
 }]);

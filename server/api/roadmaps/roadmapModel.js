@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    hooks    = require('../modelTriggers.js');
+    hooks    = require('../modelTriggers.js'),
+    deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var RoadmapSchema = new mongoose.Schema({
     title      : { type: String,   required: true },
@@ -16,6 +17,8 @@ var RoadmapSchema = new mongoose.Schema({
     completions: { type: Number, default: 0 },
     comments   : [ { type: ObjectId, ref: 'Comment'} ]
 });
+
+RoadmapSchema.plugin(deepPopulate);
 
 hooks.setRoadmapHooks(RoadmapSchema);
 
