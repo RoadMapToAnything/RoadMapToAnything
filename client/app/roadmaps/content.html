@@ -1,11 +1,20 @@
-<!-- Roadmap Title -->
-<div class="col s8 roadmap-title">
-  <h3 class="center-align" ng-bind="map.title"></h3>
-  <p class="center-align" ng-bind="map.description"></p>
+<!-- Roadmap Header -->
+<div class="row center-align">
+  <div class="col s9 roadmap-title">
+    <h3 ng-bind="map.title"></h3>
+    <p ng-bind="map.description"></p>
+  </div>
+  <div class="col s3">
+    <div class="upvotes-container">
+      <a class="btn-floating waves-effect waves-light teal lighten-2" ng-click="upvote()"><i class="large material-icons">expand_less</i></a>
+      <span class="total-upvotes {{getUpvoteClass()}}">{{ map.upvotes.length - map.downvotes.length }}</span>
+      <a class="btn-floating waves-effect waves-light red lighten-2" ng-click="downvote()"><i class="large material-icons">expand_more</i></a>
+    </div>
+  </div>
 </div>
 
 
-<!-- Nodes -->
+<!-- Node List -->
 <div class="node-list container">
 
   <div class="node-container" ng-repeat="node in map.nodes">
@@ -80,7 +89,7 @@
   </li>
 
   <li class="collection-item avatar {{getCommentClass($index)}}" ng-repeat="comment in map.comments">
-    <img src="{{comment.author.imageUrl}}" alt="User icon" class="comment-avatar">
+    <img ng-src="{{comment.author.imageUrl}}" alt="User icon" class="comment-avatar">
     <span class="title">{{comment.subject}}</span>
     <p>{{comment.content}}</p>
   </li>

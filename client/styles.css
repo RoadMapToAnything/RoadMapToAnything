@@ -60,6 +60,7 @@ ul
 
 .outer-container {
 /*    position : absolute;*/
+  margin-top: 4em;
   margin-left:auto !important; 
   margin-right:auto !important;
   display: table;
@@ -297,6 +298,23 @@ footer.page-footer div.footer-copyright {
 .node-image {
   max-height: 80px !important;
   max-width: 150px !important;
+}
+
+.upvotes-container {
+  padding-top: 1em;
+}
+
+.total-upvotes {
+  padding: 0 0.5em;
+  font-size: 1.5em;
+}
+
+.total-upvotes.positive {
+  color: #4DB6AC;
+}
+
+.total-upvotes.negative {
+  color: #E57373;
 }
 
 .vertical-rule {

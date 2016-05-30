@@ -1,6 +1,6 @@
 angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'services.user', 'scraper.ctrl'])
 
-.controller('RoadmapsController', [ '$scope', '$stateParams', 'RoadmapsFactory', 'Server', 'User', '$timeout', '$state', function($scope, $stateParams, RoadmapsFactory, Server, User, $timeout, $state){  
+.controller('RoadmapsController', ['$scope', '$stateParams', 'RoadmapsFactory', 'Server', 'User', function($scope, $stateParams, RoadmapsFactory, Server, User) {  
 
   /**  Initialize Page  **/
   var editingSelected = false;
@@ -11,24 +11,41 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   Server.getMap($stateParams.roadmapID)
   .then(function(map) {
     $scope.map = map;
-    console.log(map);
-
-    if (!$scope.map.comments.length) {
-      Server.createComment({
-        subject: 'Test comment',
-        content: 'Test description',
-        roadmap: $scope.map._id
-      });
-    }
 
     // If the roadmap has no nodes, add one
     if (!map.nodes.length) $scope.addNode(0);
   });
 
-  Server.getUser( localStorage.getItem('user.username') )
+  User.getData()
   .then(function(user) {
     $scope.user = user;
   });
+
+
+  /**  Upvote Methods  **/
+  $scope.upvote = function() {
+    User.upvote($scope.map._id)
+    .then(function(map) {
+      $scope.map = map;
+    });
+  };
+
+  $scope.downvote = function() {
+    User.downvote($scope.map._id)
+    .then(function(map) {
+      $scope.map = map;
+    });
+  };
+
+  $scope.getUpvoteClass = function() {
+    if (!$scope.map) return 'positive';
+
+    if ($scope.map.upvotes.length - $scope.map.downvotes.length < 0) {
+      return 'negative';
+    }
+
+    return 'positive';
+  };
 
 
   /**  Global State Methods **/
@@ -49,7 +66,7 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
   };
 
 
-  /**  Node Timeline Button Methods  **/
+  /**  Node List Methods  **/
   $scope.selectNode = function(node) {
     if (!editingSelected && $scope.selected && $scope.selected._id === node._id) {
       $scope.selected = false;
@@ -85,7 +102,6 @@ angular.module('roadmaps.ctrl', ['roadmaps.factory', 'services.server', 'service
         User.completeMap( $scope.map._id )
         .then(function(user) {
           $scope.user = user;
-          console.log(user);
         });
         Materialize.toast('Roadmap completed!', 4000, 'orangeToast');
       }

@@ -25,7 +25,6 @@ angular.module('auth.ctrl', ['services.user'])
   $scope.attemptLogin = function () {
     $scope.showUnauthMsg = false;
     $scope.signin = true;
-    console.log('attempting login');
 
     User.login($scope.attemptedUsername, $scope.attemptedPassword)
     .then(function (data) {

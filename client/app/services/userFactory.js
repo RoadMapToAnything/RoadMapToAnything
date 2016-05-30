@@ -10,7 +10,6 @@ angular.module('services.user', ['services.request'])
 
   // Standard response after for auth actions
   var authResponse = function (data, message) {
-    console.log('DATA', data);
     console.log(data.username, message);
     localStorage.setItem('user.username', data.username);
     localStorage.setItem('user.authToken', data.authToken);
