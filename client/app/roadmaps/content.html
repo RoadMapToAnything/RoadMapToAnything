@@ -6,9 +6,9 @@
   </div>
   <div class="col s3">
     <div class="upvotes-container">
-      <a class="btn-floating waves-effect waves-light teal lighten-2" ng-click="upvote()"><i class="large material-icons">expand_less</i></a>
-      <span class="total-upvotes {{getUpvoteClass()}}">{{ map.upvotes.length - map.downvotes.length }}</span>
-      <a class="btn-floating waves-effect waves-light red lighten-2" ng-click="downvote()"><i class="large material-icons">expand_more</i></a>
+      <a title="Upvote roadmap" class="btn-floating waves-effect waves-light teal lighten-2" ng-click="upvote()"><i class="large material-icons">expand_less</i></a>
+      <span class="total-upvotes {{ getUpvoteClass() }}">{{ map.upvotes.length - map.downvotes.length }}</span>
+      <a title="Downvote roadmap" class="btn-floating waves-effect waves-light red lighten-2" ng-click="downvote()"><i class="large material-icons">expand_more</i></a>
     </div>
   </div>
 </div>
@@ -18,17 +18,27 @@
 <div class="node-list container">
 
   <div class="node-container" ng-repeat="node in map.nodes">
-    <div class="fixed-action-btn horizontal">
-      <a class="btn-floating btn-large {{getNodeColor(node)}}" ng-click="selectNode(node)"> <!-- TODO: color from completion -->
-        <i class="large material-icons">change_history</i> <!-- TODO: icon from type -->
-      </a><!-- TODO: title goes here -->
-      <ul>
-        <li><a class="btn-floating red lighten-2" title="Edit node" ng-click="editNode(node)" ng-show="isAuthor() && !isEditing(node)"><i class="material-icons">mode_edit</i></a></li>
-        <li><a class="btn-floating amber darken-1" title="Add new node below" ng-click="addNode($index)" ng-show="isAuthor()"><i class="material-icons">add</i></a></li>
-        <li><a class="btn-floating teal lighten-2" title="Mark node as completed!" ng-click="completeNode(node)" ng-hide="isCompleted(node)"><i class="material-icons">done</i></a></li>
-      </ul>
+    <div class="timeline-column">
+      <div class="fixed-action-btn horizontal">
+        <a class="btn-floating btn-large {{ getNodeColor(node) }}" ng-click="selectNode(node)">
+          <i class="large material-icons">change_history</i> <!-- TODO: icon from type -->
+        </a>
+
+        <ul>
+          <li><a class="btn-floating red lighten-2" title="Edit node" ng-click="editNode(node)" ng-show="isAuthor() && !isEditing(node)"><i class="material-icons">mode_edit</i></a></li>
+          <li><a class="btn-floating amber darken-1" title="Add new node below" ng-click="addNode($index)" ng-show="isAuthor()"><i class="material-icons">add</i></a></li>
+          <li><a class="btn-floating teal lighten-2" title="Mark node as completed!" ng-click="completeNode(node)" ng-hide="isCompleted(node)"><i class="material-icons">done</i></a></li>
+        </ul>
+
+      </div> <!-- /fixed-action-btn -->
+    </div> <!-- /timeline-column -->
+
+    <div class="node-title">{{ truncate(node.title, 24) }}</div>
+
+    <div class="timeline-column">
+      <div ng-hide="$last" class="vertical-rule"></div>
     </div>
-    <div ng-hide="$last" class="vertical-rule"></div>
+
   </div> <!-- /ng-repeat -->
 </div> <!-- /node-list -->
 
@@ -88,10 +98,10 @@
     </div>
   </li>
 
-  <li class="collection-item avatar {{getCommentClass($index)}}" ng-repeat="comment in map.comments">
-    <img ng-src="{{comment.author.imageUrl}}" alt="User icon" class="comment-avatar">
-    <span class="title">{{comment.subject}}</span>
-    <p>{{comment.content}}</p>
+  <li class="collection-item avatar {{ getCommentClass($index) }}" ng-repeat="comment in map.comments">
+    <img ng-src="{{ comment.author.imageUrl }}" alt="User icon" class="comment-avatar">
+    <span class="title">{{ comment.subject }}</span>
+    <p>{{ comment.content }}</p>
   </li>
 
 </ul>
